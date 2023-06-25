@@ -11,24 +11,26 @@ class Lokasikerja extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/lokker/lokker');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/lokker');
      }
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/lokker/lokker_add');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/lokker');
      }

@@ -24,6 +24,53 @@ class Izin_tambang_model extends CI_Model
           }
      }
 
+     public function last_row_izin($auth_kary)
+     {
+          $this->db->where(['auth_karyawan' => $auth_kary]);
+          $this->db->from('vw_izin_tambang');
+          $this->db->order_by('id_izin_tambang', 'DESC');
+          $this->db->limit(1);
+          $query = $this->db->get()->result();
+
+          if (!empty($query)) {
+               return  $query;
+          } else {
+               return;
+          }
+     }
+
+     public function cek_jenisizin($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin])->result();
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $jenis_izin = $list->jenis_izin_tambang;
+               }
+
+               return $jenis_izin;
+          } else {
+               return;
+          }
+     }
+
+     public function cek_unit($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_unit', ['auth_izin_tambang' => $auth_izin])->result();
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $id_izin_tambang = $list->id_izin_tambang;
+               }
+
+               $query = $this->db->get_where('tb_izin_tambang_unit', ['id_izin_tambang' => $id_izin_tambang])->result();
+               if (!empty($query)) {
+                    return 200;
+               } else {
+                    return 201;
+               }
+          } else {
+               return 201;
+          }
+     }
 
      public function input_unit($data)
      {
@@ -35,10 +82,14 @@ class Izin_tambang_model extends CI_Model
           }
      }
 
-     function update_izin($where, $data, $table)
+     function update_izin($id_izin, $dtizin)
      {
-          $this->db->where($where);
-          $this->db->update($table, $data);
+          $this->db->where('id_izin_tambang', $id_izin);
+          if ($this->db->update('tb_izin_tambang', $dtizin)) {
+               return $this->db->affected_rows();
+          } else {
+               return false;
+          }
      }
 
      public function hapus_izin_tambang($auth_izin_tambang)
@@ -60,10 +111,66 @@ class Izin_tambang_model extends CI_Model
           }
      }
 
+     public function get_jenis_unit($jenis_unit)
+     {
+          $query = $this->db->get_where('tb_unit', ['id_unit' => $jenis_unit])->result();
+
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $unit = $list->unit;
+               }
+
+               return $unit;
+          } else {
+               return '';
+          }
+     }
+     public function get_izin_unit($izin_unit)
+     {
+          $query = $this->db->get_where('tb_tipe_akses_unit', ['id_tipe_akses_unit' => $izin_unit])->result();
+
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $tipe_akses_unit = $list->tipe_akses_unit;
+               }
+
+               return $tipe_akses_unit;
+          } else {
+               return '';
+          }
+     }
+
+     public function tabel_unit_izin($auth_izin)
+     {
+          return $this->db->get_where('vw_izin_unit', ['auth_izin_tambang' => $auth_izin])->result();
+     }
+
      public function get_izin_tambang_id($auth_izin_tambang)
      {
           $query = $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin_tambang]);
           return $query->result();
+     }
+
+     public function cek_unit_izin($auth_izin, $jenis_unit)
+     {
+          $this->db->where('auth_izin_tambang', $auth_izin);
+          $this->db->where('id_unit', $jenis_unit);
+          $this->db->from('vw_izin_unit');
+          return $this->db->get()->result();
+     }
+
+     public function get_id_izin_tambang($auth_izin_tambang)
+     {
+          $query = $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin_tambang]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $id_izin = $list->id_izin_tambang;
+               }
+
+               return $id_izin;
+          } else {
+               return;
+          }
      }
 
      public function edit_izin_tambang($izin_tambang, $ket_izin_tambang, $status)
@@ -83,6 +190,36 @@ class Izin_tambang_model extends CI_Model
           $this->db->update('tb_izin_tambang');
           if ($this->db->affected_rows() > 0) {
                return 200;
+          } else {
+               return 201;
+          }
+     }
+
+     public function hapus_unit($id_unit)
+     {
+          $this->db->delete('tb_izin_tambang_unit', ['id_izin_tambang_unit' => $id_unit]);
+          if ($this->db->affected_rows() > 0) {
+               return 200;
+          } else {
+               return 201;
+          }
+     }
+
+     public function hapus_unit_all($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin])->result();
+
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $id_izin = $list->id_izin_tambang;
+               }
+
+               $this->db->delete('tb_izin_tambang_unit', ['id_izin_tambang' => $id_izin]);
+               if ($this->db->affected_rows() > 0) {
+                    return 200;
+               } else {
+                    return 201;
+               }
           } else {
                return 201;
           }

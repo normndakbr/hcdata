@@ -63,17 +63,17 @@
                               </div>
                               <div class="row ">
                                    <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="kodePoh">Kode :</label>
+                                        <label for="kodePoh">Kode <span class="text-danger">*</span></label>
                                         <input id='kodePoh' name='kodePoh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error1 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="Poh">Point of Hire :</label>
+                                        <label for="Poh">Point of Hire <span class="text-danger">*</span></label>
                                         <input id='Poh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error2 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="ketPoh">Keterangan :</label><br>
+                                        <label for="ketPoh">Keterangan </label><br>
                                         <textarea id='ketPoh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small id="error3" class="text-danger font-italic font-weight-bold"></small><br>
                                    </div>
@@ -89,4 +89,24 @@
           </div>
      </div>
 </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <h5>Pilih "Keluar" jika ingin mengakhir pekerjaan</h5>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    <a href="<?= base_url(); ?>dash/logout" type="button" class="btn btn-primary">Keluar</a>
+               </div>
+          </div>
+     </div>
 </div>

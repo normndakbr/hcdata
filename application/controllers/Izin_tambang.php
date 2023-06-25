@@ -11,6 +11,8 @@ class Izin_tambang extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -23,7 +25,8 @@ class Izin_tambang extends My_Controller
 
      public function new()
      {
-
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -53,56 +56,236 @@ class Izin_tambang extends My_Controller
                echo json_encode($error);
                return;
           } else {
+               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+               $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
+               $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
+               $noreg = htmlspecialchars($this->input->post("noreg", true));
+               $tglexp = htmlspecialchars($this->input->post("tglexp", true));
+               $jenissim = htmlspecialchars($this->input->post("jenissim", true));
+               $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
+               $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+
                $jenis_unit = htmlspecialchars($this->input->post("jenisunit", true));
                $tipe_akses = htmlspecialchars($this->input->post("tipeakses", true));
-
-               $unit = $this->smp->get_unit($jenis_unit);
-               if ($unit === 0) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Unit tidak ditemukan"));
-                    return;
-               }
 
                $akses = $this->smp->get_akses($tipe_akses);
                if ($akses === 0) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Izin akses tidak ditemukan"));
                     return;
                }
+               if ($auth_izin == "") {
+                    $id_izin = $this->kry->get_id_izin($auth_izin);
 
-               $unit_baru = $jenis_unit . "%" . $tipe_akses;
-               $unit_baru_text = $unit . "%" . $akses;
+                    $data_izin_tambang = [
+                         'id_kary' => $id_karyawan,
+                         'jenis_izin_tambang' => $jenisizin,
+                         'no_Reg' => $noreg,
+                         'tgl_expired' => $tglexp,
+                         'id_sim' => $jenissim,
+                         'tgl_exp_sim' => $tglexpsim,
+                         'ket_izin_tambang' => '',
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                         'tgl_edit' => date('Y-m-d H:i:s'),
+                         'id_user' => $this->session->userdata('id_user'),
+                    ];
 
-               if ($this->session->has_userdata('unit_izin')) {
-                    $unit_izin = $this->session->userdata('unit_izin');
-                    $unit_izin_text = $this->session->userdata('unit_izin_text');
+                    $izin = $this->smp->input_izin_tambang($data_izin_tambang);
 
-                    if (!empty($unit_izin)) {
-                         $baris = explode("|", $unit_izin);
-
-                         foreach ($baris as $data) {
-                              $item = explode("%", $data);
-                              $jns_unit = $item[0];
-
-                              if ($jenis_unit == $jns_unit) {
-                                   echo json_encode(array("statusCode" => 201, "pesan" => "unit sudah ada"));
-                                   return;
+                    if ($izin) {
+                         $last_izin = $this->smp->last_row_izin($auth_kary);
+                         if (!empty($last_izin)) {
+                              foreach ($last_izin as $list) {
+                                   $auth_izin = $list->auth_izin_tambang;
+                                   $id_izin = $list->id_izin_tambang;
                               }
-                         }
 
-                         $unit_baru = $unit_izin . "|" . $unit_baru;
-                         $unit_baru_text = $unit_izin_text . "|" . $unit_baru_text;
-                         $this->session->set_userdata("unit_izin", $unit_baru);
-                         $this->session->set_userdata("unit_izin_text", $unit_baru_text);
+                              if ($jenisizin == "SP") {
+                                   $data_unit_izin = [
+                                        'id_izin_tambang' => $id_izin,
+                                        'id_unit' => $jenis_unit,
+                                        'id_tipe_akses_unit' =>  $tipe_akses,
+                                        'tgl_buat' => date('Y-m-d H:i:s'),
+                                        'tgl_edit' => date('Y-m-d H:i:s'),
+                                        'id_user' => $this->session->userdata('id_user'),
+                                   ];
+
+                                   $this->smp->input_unit($data_unit_izin);
+                              }
+
+                              echo json_encode(array(
+                                   "statusCode" => 200,
+                                   "pesan" => "Data SIMPER/Mine Permite berhasil disimpan",
+                                   "auth_izin" => $auth_izin
+                              ));
+                         } else {
+                              $auth_izin = "";
+                              $id_izin = "";
+
+                              echo json_encode(array(
+                                   "statusCode" => 201,
+                                   "pesan" => "Unit gagal disimpan, data izin tidak ditemukan"
+                              ));
+                         }
                     } else {
-                         $this->session->set_userdata("unit_izin", $unit_baru);
-                         $this->session->set_userdata("unit_izin_text", $unit_baru_text);
+                         echo json_encode(array("statusCode" => 201, "pesan" => "Data SIMPER/Mine Permite gagal disimpan"));
                     }
                } else {
-                    $this->session->set_userdata("unit_izin", $unit_baru);
-                    $this->session->set_userdata("unit_izin_text", $unit_baru_text);
-               }
 
-               echo json_encode(array("statusCode" => 200, "unit_izin" => $unit_baru_text, 'pesan' => 'Unit berhasil ditambahkan'));
+                    $query = $this->smp->cek_unit_izin($auth_izin, $jenis_unit);
+                    if (!empty($query)) {
+                         echo json_encode(array(
+                              "statusCode" => 201,
+                              'pesan' => 'Unit sudah ada'
+                         ));
+                         return;
+                    }
+
+                    $id_izin = $this->smp->get_id_izin_tambang($auth_izin);
+
+                    if (!empty($id_izin)) {
+                         $data_unit_izin = [
+                              'id_izin_tambang' => $id_izin,
+                              'id_unit' => $jenis_unit,
+                              'id_tipe_akses_unit' =>  $tipe_akses,
+                              'tgl_buat' => date('Y-m-d H:i:s'),
+                              'tgl_edit' => date('Y-m-d H:i:s'),
+                              'id_user' => $this->session->userdata('id_user'),
+                         ];
+
+                         $this->smp->input_unit($data_unit_izin);
+                         echo json_encode(array(
+                              "statusCode" => 200,
+                              'pesan' => 'Unit berhasil ditambahkan',
+                              "auth_izin" => $auth_izin
+                         ));
+                    } else {
+                         echo json_encode(array(
+                              "statusCode" => 200,
+                              'pesan' => 'Unit gagal ditambahkan'
+                         ));
+                         return;
+                    }
+               }
           }
+     }
+
+     public function hapus_unit()
+     {
+          $id_unit =  htmlspecialchars($this->input->post("id_unit", true));
+
+          if ($id_unit != "") {
+               $query = $this->smp->hapus_unit($id_unit);
+
+               if ($query == 200) {
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Unit berhasil dihapus"));
+               } else {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Unit gagal dihapus"));
+               }
+          } else {
+               echo json_encode(array("statusCode" => 201,  "pesan" => "Data tidak ditemukan"));
+          }
+     }
+
+     public function hapus_unit_all()
+     {
+          $auth_izin =  htmlspecialchars($this->input->post("auth_izin", true));
+
+          if ($auth_izin != "") {
+               $query = $this->smp->hapus_unit_all($auth_izin);
+
+               if ($query == 200) {
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Unit berhasil dihapus"));
+               } else {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Unit gagal dihapus"));
+               }
+          } else {
+               echo json_encode(array("statusCode" => 201,  "pesan" => "Data tidak ditemukan"));
+          }
+     }
+
+     public function cek_jenisizin()
+     {
+          $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
+          $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
+
+          if ($auth_izin != "") {
+               $query = $this->smp->cek_jenisizin($auth_izin);
+               if (!empty($query)) {
+                    if ($jenisizin != $query) {
+                         if ($query == "SP") {
+                              echo json_encode(array("statusCode" => 200,  "pesan" => "Yakin jenis izin akan diganti ke Mine Permit? semua data unit SIMPER akan dihapus"));
+                              return;
+                         }
+                    }
+               }
+          }
+     }
+
+     public function izin_tambang()
+     {
+          $auth_izin = htmlspecialchars($this->input->get('auth_izin', true));
+          $data['unit_izin'] = $this->smp->tabel_unit_izin($auth_izin);
+          $this->load->view('dashboard/karyawan/izin_tambang', $data);
+     }
+
+     public function tgl_exp_izin()
+     {
+          $tglsim = htmlspecialchars($this->input->post("tglsim", true));
+          $now = date('Y-m-d');
+
+          if ($tglsim < $now) {
+               echo json_encode(array(
+                    "statusCode" => 201,
+                    'pesan' => 'Tanggal expired SIM tidak boleh sebelum hari ini'
+               ));
+               return;
+          }
+
+          if ($tglsim == $now) {
+               echo json_encode(array(
+                    "statusCode" => 201,
+                    'pesan' => 'Tanggal expired SIM tidak boleh sama dengan hari ini'
+               ));
+               return;
+          }
+
+          $dsim = date('d', strtotime($tglsim));
+          $msim = date('m', strtotime($tglsim));
+          $ysim = date('Y', strtotime($tglsim));
+
+          $ynow = date("Y");
+          $mnow = date("m");
+          $dnow = date("d");
+
+          if ($ysim >  $ynow) {
+               $tglexpizin = (intval($ynow) + 1) . "-" . $msim . "-" . $dsim;
+          } else {
+               if ($msim > $mnow) {
+                    $tglexpizin = (intval($ynow)) . "-" . $msim . "-" . $dsim;
+               } else if ((intval($msim) - intval($mnow)) == 0) {
+                    if ($dsim > $dnow) {
+                         $tglexpizin = (intval($ynow)) . "-" . $msim . "-" . $dsim;
+                    } else {
+                         echo json_encode(array(
+                              "statusCode" => 201,
+                              'pesan' => 'Tanggal expired SIM tidak boleh sama dengan hari ini'
+                         ));
+                         return;
+                    }
+               } else {
+                    echo json_encode(array(
+                         "statusCode" => 201,
+                         'pesan' => 'Tanggal expired SIM tidak dapat dibuat'
+                    ));
+                    return;
+               }
+          }
+
+          echo json_encode(array(
+               "statusCode" => 200,
+               'pesan' => 'Tanggal expired SIM berhasil dibuat',
+               "tglexpizin" => $tglexpizin
+          ));
      }
 
      public function ajax_list()

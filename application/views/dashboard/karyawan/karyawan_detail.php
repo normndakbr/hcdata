@@ -32,7 +32,7 @@
                <div class="col-xl-12 col-md-12">
                     <div class="card latest-update-card">
                          <div class="card-header">
-                              <h5>Detail Data Karyawan - <?= $data_kary->nama_lengkap ?></h5>
+                              <h5>Detail Data Karyawan - <?= "No. KTP : " . $data_kary->no_ktp . " | " . $data_kary->nama_lengkap ?></h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,233 +55,475 @@
                          </div>
                          <div class="card-body pt-4">
                               <div class="row">
-                                   <div class="col-md-2 col-sm-12">
+                                   <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                        <a id="btnrefDetailKary" href="#!" class="btn btn-primary">Refresh</a>
+                                   </div>
+                                   <div class="col-lg-3 col-md-3 col-sm-12">
                                         <ul class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                              <li><a class="nav-link text-left has-ripple active" id="v-pills-dtPersonal-tab" data-toggle="pill" href="#v-pills-dtPersonal" role="tab" aria-controls="v-pills-dtPersonal" aria-selected="true">Data Personal<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -152.188px; left: -96.625px;"></span></a></li>
                                              <li><a class="nav-link text-left has-ripple" id="v-pills-dtKaryawan-tab" data-toggle="pill" href="#v-pills-dtKaryawan" role="tab" aria-controls="v-pills-dtKaryawan" aria-selected="false">Data Karyawan<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -162.188px; left: -102.625px;"></span></a></li>
-                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtDomisili-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-dtDomisili" aria-selected="false">Domisili<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -174.188px; left: -108.625px;"></span></a></li>
-                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtKontakDarurat-tab" data-toggle="pill" href="#" role="tab" aria-controls="v-pills-dtKontakDarurat" aria-selected="false">Kontak Darurat<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtSIMPER-tab" data-toggle="pill" href="#v-pills-dtSIMPER" role="tab" aria-controls="v-pills-dtSIMPER" aria-selected="false">SIMPER/Mine Permit<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -174.188px; left: -108.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtSertifikasi-tab" data-toggle="pill" href="#v-pills-dtSertifikasi" role="tab" aria-controls="v-pills-dtSertifikasi" aria-selected="false">Sertifikasi<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtMCU-tab" data-toggle="pill" href="#v-pills-dtMCU" role="tab" aria-controls="v-pills-dtMCU" aria-selected="false">Medical Check Up (MCU)<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtVaksin-tab" data-toggle="pill" href="#v-pills-dtVaksin" role="tab" aria-controls="v-pills-dtVaksin" aria-selected="false">Vaksin<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtFilePendukung-tab" data-toggle="pill" href="#v-pills-dtFilePendukung" role="tab" aria-controls="v-pills-dtFilePendukung" aria-selected="false">File Pendukung<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
                                         </ul>
                                    </div>
-                                   <div class="col-md-10 col-sm-12">
+                                   <div class="col-lg-9 col-md-9 col-sm-12">
                                         <div class="tab-content" id="v-pills-tabContent">
                                              <div class="tab-pane fade active show" id="v-pills-dtPersonal" role="tabpanel" aria-labelledby="v-pills-dtPersonal-tab">
                                                   <div class="card-body row">
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>No. KTP</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_ktp ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_ktp) ? $data_kary->no_ktp : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Nama Lengkap</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->nama_lengkap ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->nama_lengkap) ? $data_kary->nama_lengkap : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h6>Alamat Email</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->email_pribadi ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. Telp</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_ktp ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tempat & Tanggal Lahir</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->tmp_lahir . ", " . $data_kary->tgl_lahir ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Status Pernikahan</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->kode_stat_nikah ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Kewarganegaraan</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->warga_negara ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Alamat</h6>
+                                                                 <textarea type="text" class="form-control" style="background-color:transparent;margin-top:-10px;" disabled><?= $data_alamat ?></textarea>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Agama</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->id_agama ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->agama) ? $data_kary->agama : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Jenis Kelamin</h6>
-                                                                 <input type="text" class="form-control" value="<?= ($data_kary->jk == 'LK') ? "LAKI-LAKI" : "PEREMPUAN"; ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->jk) ? (($data_kary->jk == 'LK') ? "LAKI-LAKI" : "PEREMPUAN") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h6>Kode Bank</h6>
-                                                                 <input type="text" class="form-control" value="" style="background-color:transparent;" disabled>
+                                                                 <h6>Status Pernikahan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->kode_stat_nikah) ? $data_kary->kode_stat_nikah : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h6>No. Rekening</h6>
-                                                                 <input type="text" class="form-control" value="" style="background-color:transparent;" disabled>
+                                                                 <h6>Kewarganegaraan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->warga_negara) ? $data_kary->warga_negara : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-8 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Alamat Email</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->email_pribadi) ? $data_kary->email_pribadi : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>No. Telp</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->hp_1) ? $data_kary->hp_1 : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-8 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Tempat & Tanggal Lahir</h6>
+                                                                 <input type="text" class="form-control" value="<?= (isset($data_kary->tmp_lahir) ? $data_kary->tmp_lahir : '') . ", " . ($data_kary->tgl_lahir == "1970-01-01" ? '' : date('d-M-Y', strtotime($data_kary->tgl_lahir))) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>No. KK</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_kk) ? $data_kary->no_kk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Nama Ibu</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->nama_ibu) ? $data_kary->no_kk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>No. NPWP</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_npwp ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_npwp) ? $data_kary->no_npwp : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>No. BPJS Tenaga Kerja</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_bpjstk ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjstk) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-4 col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>No. BPJS Kesehatan</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_bpjskes ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. Equity</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_equity ?>" style="background-color:transparent;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjskes) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                   </div>
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtKaryawan" role="tabpanel" aria-labelledby="v-pills-dtKaryawan-tab">
                                                   <div class="card-body row">
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Nama Perusahaan</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->nama_perusahaan ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Nama Perusahaan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->nama_perusahaan) ? $data_kary->nama_perusahaan : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>NIK</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_nik ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>NIK</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_nik) ? $data_kary->no_nik : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-9 col-md-9 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Departemen</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->depart ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Departemen</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->depart) ? $data_kary->depart : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Section</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->section ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Posisi</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->posisi ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Jenis Karyawan</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->tipe ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Posisi</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->posisi) ? $data_kary->posisi : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Status Karyawan</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->stat_kerja ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Klasifikasi</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->klasifikasi) ? $data_kary->klasifikasi : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <?php if ($data_kary->stat_kerja == "Permanen") { ?>
+                                                       <div class="col-lg-2 col-md-2 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Tipe</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->tipe) ? $data_kary->tipe : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Grade - Level</h6>
+                                                                 <input type="text" class="form-control" value="<?= (isset($data_kary->grade) ? $data_kary->grade : '') . " - " . (isset($data_kary->level) ? $data_kary->level : '') ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Point of Hire</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->poh) ? $data_kary->poh : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Lokasi Penerimaan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->lokterima) ? $data_kary->lokterima : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Lokasi Kerja</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->lokker) ? $data_kary->lokker : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <?php if ($data_kary->stat_waktu == "F") { ?>
                                                             <div class="col-lg-4 col-md-4 col-sm-12">
                                                                  <div class="form-group">
-                                                                      <h5>Tanggal Permanen</h5>
-                                                                      <input type="text" class="form-control" value="<?= $data_kary->tgl_permanen ?>" style="background-color:transparent;" disabled>
+                                                                      <h6>Status Karyawan</h6>
+                                                                      <input type="text" class="form-control" value="<?= $data_kary->stat_perjanjian ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tanggal Permanen</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Status Residence</h6>
+                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                                  </div>
                                                             </div>
                                                        <?php } else { ?>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
                                                                  <div class="form-group">
-                                                                      <h5>Tanggal Awal</h5>
-                                                                      <input type="text" class="form-control" value="<?= $data_kary->tgl_permanen ?>" style="background-color:transparent;" disabled>
+                                                                      <h6>Status Karyawan</h6>
+                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_perjanjian) ? $data_kary->stat_perjanjian : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                                  </div>
                                                             </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
                                                                  <div class="form-group">
-                                                                      <h5>Tanggal Akhir</h5>
-                                                                      <input type="text" class="form-control" value="<?= $data_kary->tgl_permanen ?>" style="background-color:transparent;" disabled>
+                                                                      <h6>Tanggal Awal</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tanggal Akhir</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Status Residence</h6>
+                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                                  </div>
                                                             </div>
                                                        <?php } ?>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Tipe Roster</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->roster ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Email Perusahaan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->email_kantor) ? $data_kary->email_kantor : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Status Residence</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->roster == "R" ? "Residence" : "Non Residence" ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Date of Hire</h6>
+                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->doh)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h5>Point of Hire</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->poh ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Grade</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->grade ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Level</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->level ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Lokasi Kerja</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->lokker ?>" style="background-color:transparent;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h5>Lokasi Penerimaan</h5>
-                                                                 <input type="text" class="form-control" value="<?= $data_kary->lokterima ?>" style="background-color:transparent;" disabled>
+                                                                 <h6>Tgl. Aktif</h6>
+                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_aktif)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                   </div>
                                              </div>
-                                             <div class="tab-pane fade" id="v-pills-dtDomisili" role="tabpanel" aria-labelledby="v-pills-dtDomisili-tab">
-                                                  <p class="mb-0">Fugiat id quis dolor culpa eiusmod anim velit excepteur proident dolor aute qui magna. Ad proident laboris ullamco esse anim Lorem Lorem veniam quis Lorem irure occaecat velit
-                                                       nostrud magna
-                                                       nulla. Velit et et proident Lorem do ea tempor officia dolor. Reprehenderit Lorem aliquip labore est magna commodo est ea veniam consectetur.</p>
+                                             <div class="tab-pane fade" id="v-pills-dtSIMPER" role="tabpanel" aria-labelledby="v-pills-dtSIMPER-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Jenis Izin</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->jenis_izin) ? $data_izin->jenis_izin : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>No. Registrasi</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-2 col-md-2 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Tgl. Akhir</h6>
+                                                                 <input type="text" class="form-control" value="<?= $data_izin->tgl_expired == "1970-01-01" ? '' : date('d-M-Y', strtotime($data_izin->tgl_expired)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+
+                                                       <?php if ($data_izin->jenis_izin_tambang == "SP") { ?>
+                                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Jenis SIM</h6>
+                                                                      <input type="text" class="form-control" value="<?= isset($data_izin->sim) ? $data_izin->sim : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tgl. Expired SIM</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_izin->tgl_exp_sim)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Unit yang diizinkan</h6>
+                                                                      <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                           <thead>
+                                                                                <tr>
+                                                                                     <th style="text-align:center;width: 1%;">NO.</th>
+                                                                                     <th style="width: 80%;">UNIT</th>
+                                                                                     <th style="width: 19%;">AKSES</th>
+                                                                                </tr>
+                                                                           </thead>
+                                                                           <tbody>
+                                                                                <?php
+                                                                                $no = 1;
+                                                                                if (!empty($data_unit)) {
+                                                                                     foreach ($data_unit as $list) {
+                                                                                          echo '<tr>';
+                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
+                                                                                          echo '</tr>';
+                                                                                     }
+                                                                                } else {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td colspan=3 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                                ?>
+                                                                           </tbody>
+                                                                      </table>
+                                                                 </div>
+                                                            </div>
+                                                       <?php } ?>
+                                                  </div>
                                              </div>
-                                             <div class="tab-pane fade" id="v-pills-dtKontakDarurat" role="tabpanel" aria-labelledby="v-pills-dtKontakDarurat-tab">
-                                                  <p class="mb-0">Eu dolore ea ullamco dolore Lorem id cupidatat excepteur reprehenderit consectetur elit id dolor proident in cupidatat officia. Voluptate excepteur commodo labore nisi cillum
-                                                       duis
-                                                       aliqua do.
-                                                       Aliqua amet qui mollit consectetur nulla mollit velit aliqua veniam nisi id do Lorem deserunt amet. Culpa ullamco sit adipisicing labore officia magna elit nisi in aute tempor commodo
-                                                       eiusmod.
-                                                  </p>
+                                             <div class="tab-pane fade" id="v-pills-dtSertifikasi" role="tabpanel" aria-labelledby="v-pills-dtSertifikasi-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <table id="tbmSertifikasiDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                      <thead>
+                                                                           <tr>
+                                                                                <th style="text-align:center;width: 1%;">NO.</th>
+                                                                                <th style="width: 55%;">JENIS SERTIFIKASI</th>
+                                                                                <th style="width: 19%;">NO. SERTIFIKASI</th>
+                                                                                <th style="width: 10%;">TGL. SERTIFIKASI</th>
+                                                                                <th style="width: 10%;">TGL. EXPIRED</th>
+                                                                                <th style="width: 5%;">PROSES</th>
+                                                                           </tr>
+                                                                      </thead>
+                                                                      <tbody>
+                                                                           <?php
+                                                                           $no = 1;
+                                                                           if (!empty($data_sertifikasi)) {
+                                                                                foreach ($data_sertifikasi as $list) {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_sertifikasi . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 19%;">' . $list->no_sertifikasi . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_sertifikasi)) . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_berakhir_sertifikasi)) . '</td>';
+                                                                                     echo '<td style="text-align:center;">';
+                                                                                     if ($list->file_sertifikasi != "") {
+                                                                                          echo '<a href ="' . base_url('karyawan/sertifikat/') . $list->auth_sertifikat . '" target="-blank" class="btn btn-primary btn-sm" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                     } else {
+                                                                                          echo '<a class="btn btn-danger btn-sm" title="File sertifikasi tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                     }
+                                                                                     echo '</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           } else {
+                                                                                echo '<tr>';
+                                                                                echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                           ?>
+                                                                      </tbody>
+                                                                 </table>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <div class="tab-pane fade" id="v-pills-dtMCU" role="tabpanel" aria-labelledby="v-pills-dtMCU-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <table id="tbmSertifikasiDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                 <thead>
+                                                                      <tr>
+                                                                           <th style="text-align:center;width: 1%;">NO.</th>
+                                                                           <th style="width: 15%;">TGL. MCU</th>
+                                                                           <th style="width: 25%;">HASIL MCU</th>
+                                                                           <th style="width: 59%;">KETERANGAN</th>
+                                                                           <th style="width: 59%;">PROSES</th>
+                                                                      </tr>
+                                                                 </thead>
+                                                                 <tbody>
+
+                                                                      <?php
+                                                                      $no = 1;
+                                                                      if (!empty($data_mcu)) {
+                                                                           foreach ($data_mcu as $list) {
+                                                                                echo '<tr>';
+                                                                                echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 15%;">' .  date('d-M-Y', strtotime($list->tgl_mcu)) . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 25%;">' . $list->mcu_jenis . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 54%;">' . $list->ket_mcu . '</td>';
+                                                                                echo '<td style="text-align:center;">';
+
+                                                                                if ($list->url_file != "") {
+                                                                                     echo '<a href ="' . base_url('karyawan/mcu/') . $list->auth_mcu . '" target="-blank" class="btn btn-primary btn-sm" title="Tampilkan Hasil MCU"><i class="far fa-file-pdf"></i></a>';
+                                                                                } else {
+                                                                                     echo '<a class="btn btn-danger btn-sm" title="File MCU tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                }
+                                                                                echo '</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                      } else {
+                                                                           echo '<tr>';
+                                                                           echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
+                                                                           echo '</tr>';
+                                                                      }
+                                                                      ?>
+                                                                 </tbody>
+                                                            </table>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <div class="tab-pane fade" id="v-pills-dtVaksin" role="tabpanel" aria-labelledby="v-pills-dtVaksin-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <table id="tbmSertifikasiDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                 <thead>
+                                                                      <tr>
+                                                                           <th style="text-align:center;width: 1%;">NO.</th>
+                                                                           <th style="width: 30%;">VAKSIN</th>
+                                                                           <th style="width: 39%;">NAMA VAKSIN</th>
+                                                                           <th style="width: 30%;">TGL. VAKSIN</th>
+                                                                      </tr>
+                                                                 </thead>
+                                                                 <tbody>
+
+                                                                      <?php
+                                                                      $no = 1;
+                                                                      if (!empty($data_vaksin)) {
+                                                                           foreach ($data_vaksin as $list) {
+                                                                                echo '<tr>';
+                                                                                echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 30%;">' . $list->vaksin_jenis . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 39%;">' . $list->vaksin_nama . '</td>';
+                                                                                echo '<td class="align-middle" style="width: 30%;">' . date('d-M-Y', strtotime($list->tgl_vaksin)) . '</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                      } else {
+                                                                           echo '<tr>';
+                                                                           echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
+                                                                           echo '</tr>';
+                                                                      }
+                                                                      ?>
+                                                                 </tbody>
+                                                            </table>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <div class="tab-pane fade" id="v-pills-dtFilePendukung" role="tabpanel" aria-labelledby="v-pills-dtFilePendukung-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>No. KTP</h6>
+                                                                 <input type="text" class="form-control" value="<?= $data_kary->no_ktp ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-8 col-md-8 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Nama Lengkap</h6>
+                                                                 <input type="text" class="form-control" value="<?= $data_kary->nama_lengkap ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-8 col-md-8 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>File Pendukung</h6>
+                                                                 <?php
+
+                                                                 if ($data_kary->url_pendukung != "") {
+                                                                      echo '<a href ="' . base_url('karyawan/support/') . $data_kary->auth_personal . '" target="_blank" class="btn btn-primary">Tampilkan File Pendukung</a>';
+                                                                 } else {
+                                                                      echo '<a target="_blank" class="btn btn-danger">File Tidak Ada</a>';
+                                                                 }
+
+                                                                 ?>
+                                                            </div>
+                                                       </div>
+                                                  </div>
                                              </div>
                                         </div>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+                                        <a id="btnCetak" name="btnCetak" class="btn btn-primary font-weight-bold text-white">Cetak</a>
+                                        <a href="#!" id="btnSelesai" name="btnSelesai" class="btn btn-warning ml-1 font-weight-bold text-white">Selesai</a>
                                    </div>
                               </div>
                          </div>
@@ -291,4 +533,24 @@
      </div>
 </div>
 </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <h5>Pilih "Keluar" jika ingin mengakhir pekerjaan</h5>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    <a href="<?= base_url(); ?>dash/logout" type="button" class="btn btn-primary">Keluar</a>
+               </div>
+          </div>
+     </div>
 </div>

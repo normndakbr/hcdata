@@ -216,9 +216,13 @@ class Perusahaan_model extends CI_Model
           return $query->result();
      }
 
-     public function get_all()
+     public function get_all($id_m_perusahaan)
      {
-          return $this->db->get('vw_perusahaan')->result();
+          $this->db->or_where(['id_m_perusahaan' => $id_m_perusahaan, 'id_parent' => $id_m_perusahaan]);
+          $this->db->from('vw_m_perusahaan');
+          $this->db->order_by('id_m_perusahaan', 'ASC');
+
+          return $this->db->get()->result();
      }
 
      public function get_m_all()
@@ -240,7 +244,43 @@ class Perusahaan_model extends CI_Model
                     return $list->id_perusahaan;
                }
           } else {
-               return 0;
+               return;
+          }
+     }
+
+     public function get_by_auth_izin($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_perusahaan', ['auth_izin_perusahaan' => $auth_izin]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->id_izin_perusahaan;
+               }
+          } else {
+               return;
+          }
+     }
+
+     public function get_by_auth_sio($auth_sio)
+     {
+          $query = $this->db->get_where('vw_sio_perusahaan', ['auth_sio_perusahaan' => $auth_sio]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->id_sio_perusahaan;
+               }
+          } else {
+               return;
+          }
+     }
+
+     public function get_by_auth_kontrak($auth_kontrak)
+     {
+          $query = $this->db->get_where('vw_kontrak_perusahaan', ['auth_kontrak_perusahaan' => $auth_kontrak]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->id_kontrak_perusahaan;
+               }
+          } else {
+               return;
           }
      }
 
@@ -252,7 +292,19 @@ class Perusahaan_model extends CI_Model
                     return $list->id_m_perusahaan;
                }
           } else {
-               return 0;
+               return;
+          }
+     }
+
+     public function get_id_per_by_auth_m($auth_m_per)
+     {
+          $query = $this->db->get_where('vw_m_per', ['auth_m_perusahaan' => $auth_m_per]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->id_perusahaan;
+               }
+          } else {
+               return;
           }
      }
 
@@ -264,7 +316,31 @@ class Perusahaan_model extends CI_Model
                     return $list->id_parent;
                }
           } else {
-               return 0;
+               return;
+          }
+     }
+
+     public function get_kode_per_by_parent($id_parent)
+     {
+          $query = $this->db->get_where('tb_perusahaan', ['id_perusahaan' => $id_parent]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->kode_perusahaan;
+               }
+          } else {
+               return;
+          }
+     }
+
+     public function get_rk3l_by_auth_m($auth_m_per)
+     {
+          $query = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_m_per]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->url_rk3l;
+               }
+          } else {
+               return;
           }
      }
 
@@ -288,7 +364,19 @@ class Perusahaan_model extends CI_Model
                     return $list->id_perusahaan;
                }
           } else {
-               return 0;
+               return;
+          }
+     }
+
+     public function get_per_by_id($id_perusahaan)
+     {
+          $query = $this->db->get_where('tb_perusahaan', ['id_perusahaan' => $id_perusahaan]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->kode_perusahaan;
+               }
+          } else {
+               return;
           }
      }
 
@@ -302,7 +390,7 @@ class Perusahaan_model extends CI_Model
                $this->db->or_like("kode_perusahaan", $postData['search']);
                $records = $this->db->get('vw_perusahaan')->result();
                foreach ($records as $row) {
-                    $response[] = array("value" => $row->auth_perusahaan, "kode" => $row->kode_perusahaan, "label" => $row->nama_perusahaan);
+                    $response[] = array("value" => $row->auth_perusahaan, "kode" => $row->kode_perusahaan, "nama" => $row->nama_perusahaan, "label" => $row->kode_perusahaan . " / " . $row->nama_perusahaan);
                }
           }
           return $response;

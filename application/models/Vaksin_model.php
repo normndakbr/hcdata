@@ -101,9 +101,9 @@ class Vaksin_model extends CI_Model
           }
      }
 
-     public function cek_kode($id_perusahaan, $kd_vaksin)
+     public function cek_kode($kd_vaksin)
      {
-          $query = $this->db->get_where('tb_vaksin', ['kd_vaksin' => $kd_vaksin, 'id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get_where('tb_vaksin', ['kd_vaksin' => $kd_vaksin]);
           if (!empty($query->result())) {
                return true;
           } else {
@@ -111,9 +111,9 @@ class Vaksin_model extends CI_Model
           }
      }
 
-     public function cek_vaksin($id_perusahaan, $vaksin)
+     public function cek_vaksin($vaksin)
      {
-          $query = $this->db->get_where('tb_vaksin', ['vaksin' => $vaksin, 'id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get_where('tb_vaksin', ['vaksin' => $vaksin]);
           if (!empty($query->result())) {
                return true;
           } else {
@@ -175,7 +175,6 @@ class Vaksin_model extends CI_Model
           }
      }
 
-
      public function input_vaksin_kary($data)
      {
           $this->db->insert('tb_vaksin_kary', $data);
@@ -186,16 +185,14 @@ class Vaksin_model extends CI_Model
           }
      }
 
-     public function tabel_vaksin()
+     public function tabel_vaksin($id_personal)
      {
-          if ($this->session->has_userdata('idpersonal')) {
-               $id_personal = $this->session->userdata('idpersonal');
-               if (!empty($id_personal)) {
-                    $query = $this->db->get_where('vw_vaksin_kary', ['id_personal' => $id_personal]);
-                    return $query->result();
-               } else {
-                    return 0;
-               }
+          if ($id_personal !== "") {
+               $this->db->select('*');
+               $this->db->from('vw_vaksin_kary');
+               $this->db->where('id_personal', $id_personal);
+               $this->db->order_by('tgl_vaksin', 'ASC');
+               return $this->db->get()->result();
           } else {
                return 0;
           }
@@ -204,6 +201,11 @@ class Vaksin_model extends CI_Model
      public function get_vaksin_jenis_all()
      {
           return $this->db->get('tb_vaksin_jenis')->result();
+     }
+
+     public function cek_data_vaksin($id_personal)
+     {
+          return $this->db->get_where('tb_vaksin_kary', ['id_personal' => $id_personal])->result();
      }
 
      public function get_vaksin_nama_all()

@@ -22,20 +22,19 @@
                               echo "<td style='ext-align:center;width:40%;'>" . $list->vaksin_nama . "</td>";
                               echo "<td style='ext-align:center;width:10%;'>" . date("d-M-Y", strtotime($list->tgl_vaksin)) . "</td>";
                               echo "<td style='ext-align:center;width:9%;'>";
-                              echo "<button class='btn btn-primary btn-sm editvks'>Edit</button> ";
-                              echo "<button class='btn btn-danger btn-sm hapusvks'>Hapus</button> ";
+                              echo "<button id='" . $list->auth_vaksin . "' class='btn btn-danger btn-sm hapusvks'>Hapus</button> ";
                               echo "</td>";
                               echo "<tr>";
                          }
                     } else {
                          echo  "<tr>";
-                         echo "<td colspan='4' style='text-align:center;'> Tidak ada data</td>";
+                         echo "<td colspan='5' style='text-align:center;'> Tidak ada data</td>";
                          echo "</tr>";
                     }
 
                     echo '<script>$("#idvaksin").LoadingOverlay("hide");</script>';
 
-                    ?>ssss
+                    ?>
                </tbody>
           </table>
 

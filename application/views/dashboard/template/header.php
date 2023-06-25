@@ -22,7 +22,11 @@
      <link rel="stylesheet" href="<?= base_url(); ?>assets/assets/css/style.css" />
      <style>
           .swal2-container {
-               z-index: 20000 !important;
+               z-index: 2000000000000 !important;
+          }
+
+          .ui-front {
+               z-index: 99999999999 !important;
           }
 
           /* Chrome, Safari, Edge, Opera */
@@ -35,6 +39,11 @@
           /* Firefox */
           input[type=number] {
                -moz-appearance: textfield;
+          }
+
+          a.disabled {
+               pointer-events: none;
+               cursor: default;
           }
      </style>
 </head>
@@ -51,35 +60,19 @@
                     <div class="">
                          <div class="main-menu-header">
                               <img class="img-radius" src="<?= base_url(); ?>assets/assets/images/user/avatar-2.jpg" alt="User-Profile-Image" />
-                              <div class="user-details">
-                                   <div id="more-details">
-                                        Administrator <i class="fa fa-caret-down"></i>
+                              <div class="user-details mt-2">
+                                   <div id="per-detail">
+                                        <h5><?= $nama_per; ?></h5>
                                    </div>
                               </div>
                          </div>
-                         <div class="collapse" id="nav-user-link">
-                              <ul class="list-unstyled">
-                                   <li class="list-group-item">
-                                        <a href="user-profile.html"><i class="feather icon-user m-r-5"></i>Profil</a>
-                                   </li>
-                                   <li class="list-group-item">
-                                        <a href="<?= base_url('gantisandi'); ?>"><i class="feather icon-lock m-r-5"></i>Ganti Sandi</a>
-                                   </li>
-                                   <li class="list-group-item">
-                                        <a href="#" id="logout"><i class="feather icon-log-out m-r-5"></i>Logout</a>
-                                   </li>
-                              </ul>
-                         </div>
                     </div>
-                    <ul class="nav pcoded-inner-navbar">
-                         <li class="nav-item pcoded-menu-caption">
-                              <label>Navigation</label>
-                         </li>
+                    <ul class="nav pcoded-inner-navbar mt-3">
                          <li class="nav-item">
-                              <a href="<?= base_url('dash'); ?>" onclick="calldash()" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Add Data Karyawan</span></a>
+                              <a href="<?= base_url('dash'); ?>" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Tambah Karyawan</span></a>
                          </li>
                          <li class="nav-item pcoded-menu-caption">
-                              <label>Data Master</label>`
+                              <label>Menu</label>
                          </li>
                          <li class="nav-item pcoded-hasmenu">
                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Data Perusahaan</span></a>
@@ -108,6 +101,13 @@
                               </ul>
                          </li>
                          <li class="nav-item pcoded-hasmenu">
+                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-check-square"></i></span><span class="pcoded-mtext">Data SIMPER</span></a>
+                              <ul class="pcoded-submenu">
+                                   <li><a href="<?= base_url('sim'); ?>">Jenis SIM Polisi</a></li>
+                                   <li><a href="<?= base_url('unit'); ?>">Data Unit</a></li>
+                              </ul>
+                         </li>
+                         <li class="nav-item pcoded-hasmenu">
                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Data Karyawan</span></a>
                               <ul class="pcoded-submenu">
                                    <li><a href="<?= base_url('karyawan'); ?>">Karyawan</a></li>
@@ -120,8 +120,8 @@
      <header class="navbar pcoded-header navbar-expand-lg navbar-light header-blue">
           <div class="m-header">
                <a class="mobile-menu" id="mobile-collapse" href="#!"><span></span></a>
-               <a href="#!" class="b-brand">
-                    <!-- ========   change your logo hear   ============ -->
+               <a href="#!" class="mob-toggler">
+                    <i class="feather icon-more-vertical"></i>
                </a>
           </div>
           <div class="collapse navbar-collapse">
@@ -133,6 +133,29 @@
                               <button type="button" class="close" aria-label="Close">
                                    <span aria-hidden="true">&times;</span>
                               </button>
+                         </div>
+                    </li>
+               </ul>
+               <ul class="navbar-nav ml-auto">
+                    <li>
+                         <div class="dropdown drp-user">
+                              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                   <i class="feather icon-user"></i>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-right profile-notification">
+                                   <div class="pro-head">
+                                        <img src="<?= base_url(); ?>assets/assets/images/user/avatar-2.jpg" class="img-radius" alt="User-Profile-Image" />
+                                        <span><?= $nama; ?></span>
+                                   </div>
+                                   <ul class="pro-body">
+                                        <li>
+                                             <a href="<?= base_url('gantisandi'); ?>" class="dropdown-item"><i class="feather icon-lock"> </i> Ganti Sandi</a>
+                                        </li>
+                                        <li>
+                                             <a href="#" id="logout" class="dropdown-item"><i class="feather icon-log-out"></i></i> Logout</a>
+                                        </li>
+                                   </ul>
+                              </div>
                          </div>
                     </li>
                </ul>

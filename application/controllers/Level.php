@@ -11,6 +11,8 @@ class Level extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -23,6 +25,8 @@ class Level extends My_Controller
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -35,7 +39,8 @@ class Level extends My_Controller
 
      public function ajax_list()
      {
-          $list = $this->lvl->get_datatables();
+          $auth_per = $this->input->get("auth_per");
+          $list = $this->lvl->get_datatables($auth_per);
           $data = array();
           $no = $_POST['start'];
           foreach ($list as $lvl) {
@@ -65,7 +70,7 @@ class Level extends My_Controller
           $output = array(
                "draw" => $_POST['draw'],
                "recordsTotal" => $this->lvl->count_all(),
-               "recordsFiltered" => $this->lvl->count_filtered(),
+               "recordsFiltered" => $this->lvl->count_filtered($auth_per),
                "data" => $data,
           );
           //output to json format
@@ -137,9 +142,9 @@ class Level extends My_Controller
 
                $level = $this->lvl->input_level($data);
                if ($level) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "level berhasil disimpan"));
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Level berhasil disimpan"));
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "level gagal disimpan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Level gagal disimpan"));
                }
           }
      }
@@ -149,13 +154,13 @@ class Level extends My_Controller
           $auth_level = htmlspecialchars(trim($this->input->post('authlevel')));
           $query = $this->lvl->hapus_level($auth_level);
           if ($query == 200) {
-               echo json_encode(array("statusCode" => 200, "pesan" => "level berhasil dihapus"));
+               echo json_encode(array("statusCode" => 200, "pesan" => "Level berhasil dihapus"));
                return;
           } else if ($query == 201) {
-               echo json_encode(array("statusCode" => 201, "pesan" => "level gagal dihapus"));
+               echo json_encode(array("statusCode" => 201, "pesan" => "Level gagal dihapus"));
                return;
           } else {
-               echo json_encode(array("statusCode" => 202, "pesan" => "level tidak ditemukan"));
+               echo json_encode(array("statusCode" => 202, "pesan" => "Level tidak ditemukan"));
                return;
           }
      }
@@ -188,7 +193,7 @@ class Level extends My_Controller
                }
                echo json_encode($data);
           } else {
-               echo json_encode(array('statusCode' => 201, "pesan" => "level tidak ditemukan"));
+               echo json_encode(array('statusCode' => 201, "pesan" => "Level tidak ditemukan"));
           }
      }
 
@@ -226,7 +231,7 @@ class Level extends My_Controller
                }
 
                if ($this->session->userdata('id_level') == "") {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "level tidak ditemukan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Level tidak ditemukan"));
                     return;
                }
 
@@ -241,13 +246,13 @@ class Level extends My_Controller
 
                $level = $this->lvl->edit_level($kd_level, $level, $ket_level, $status);
                if ($level == 200) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "level berhasil diupdate"));
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Level berhasil diupdate"));
                } else if ($level == 201) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "level gagal diupdate"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Level gagal diupdate"));
                } else if ($level == 203) {
                     echo json_encode(array("statusCode" => 203, "pesan" => "Kode sudah digunakan"));
                } else if ($level == 204) {
-                    echo json_encode(array("statusCode" => 205, "pesan" => "level sudah digunakan"));
+                    echo json_encode(array("statusCode" => 205, "pesan" => "Level sudah digunakan"));
                }
           }
      }
@@ -255,14 +260,14 @@ class Level extends My_Controller
      public function get_all()
      {
           $query = $this->lvl->get_all();
-          $output = "<option value=''>-- Pilih level --</option>";
+          $output = "<option value=''>-- PILIH LEVEL --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {
                     $output = $output . "<option value='" . $list->auth_level . "'>" . $list->level . "</option>";
                }
                echo json_encode(array("statusCode" => 200, "lvl" => $output));
           } else {
-               $output = "<option value=''>-- level Tidak Ditemukan --</option>";
+               $output = "<option value=''>-- LEVEL TIDAK DITEMUKAN --</option>";
                echo json_encode(array("statusCode" => 201, "lvl" => $output));
           }
      }
@@ -272,14 +277,14 @@ class Level extends My_Controller
           $auth_per = $this->input->post('auth_per');
 
           $query = $this->lvl->get_by_authper($auth_per);
-          $output = "<option value=''>-- Pilih Level --</option>";
+          $output = "<option value=''>-- PILIH LEVEL --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {
                     $output = $output . "<option value='" . $list->auth_level . "'>" . $list->level . "</option>";
                }
                echo json_encode(array("statusCode" => 200, "lvl" => $output));
           } else {
-               $output = "<option value=''>-- Level Tidak Ditemukan --</option>";
+               $output = "<option value=''>-- LEVEL TIDAK DITEMUKAN --</option>";
                echo json_encode(array("statusCode" => 201, "lvl" => $output));
           }
      }
@@ -288,7 +293,7 @@ class Level extends My_Controller
      {
           if ($this->session->userdata('id_perusahaan_level') != "") {
                $id_per = $this->session->userdata('id_perusahaan_level');
-               $output = "<option value=''>-- Pilih Level --</option>";
+               $output = "<option value=''>-- PILIH LEVEL --</option>";
                $query = $this->lvl->get_by_idper($id_per);
                foreach ($query as $list) {
                     $output = $output . " <option value='" . $list->auth_level . "'>" . $list->level . "</option>";
@@ -296,7 +301,8 @@ class Level extends My_Controller
 
                echo json_encode(array("statusCode" => 200, "level" => $output, "pesan" => "Sukses"));
           } else {
-               $output = "<option value=''>-- levelemen tidak ditemukan --</option>";
+               $output = "<option value=''>-- LEVEL TIDAK DITEMUKAN
+               LEVEL TIDAK DITEMUKAN --</option>";
                echo json_encode(array("statusCode" => 200, "level" => $output, "pesan", "Level gagal ditampilkan"));
           }
      }

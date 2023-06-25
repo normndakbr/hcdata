@@ -5,8 +5,8 @@ class Lokterima_model extends CI_Model
 {
 
      var $table = 'vw_lokterima';
-     var $column_order = array(null, 'kd_lokterima', 'lokterima', 'ket_lokterima', 'stat_lokterima', 'tgl_buat', null); //set column field database for datatable orderable
-     var $column_search = array('kd_lokterima', 'lokterima', 'ket_lokterima', 'stat_lokterima', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+     var $column_order = array(null, 'kd_lokterima', 'lokterima', 'ket_lokterima', 'stat_lokterima', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
+     var $column_search = array('kd_lokterima', 'lokterima', 'ket_lokterima', 'stat_lokterima', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
      var $order = array('kd_lokterima' => 'desc'); // default order 
 
      public function __construct()
@@ -15,9 +15,18 @@ class Lokterima_model extends CI_Model
           $this->load->database();
      }
 
-     private function _get_datatables_query()
+     private function _get_datatables_query($auth_per)
      {
+          $dtper = $this->prs->get_by_authper($auth_per);
+          if (!empty($dtper)) {
+               foreach ($dtper as $list) {
+                    $id_perusahaan = $list->id_perusahaan;
+               }
+          } else {
+               $id_perusahaan = 0;
+          }
 
+          $this->db->where(['id_perusahaan' => $id_perusahaan]);
           $this->db->from($this->table);
 
           $i = 0;
@@ -50,18 +59,18 @@ class Lokterima_model extends CI_Model
           }
      }
 
-     function get_datatables()
+     function get_datatables($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           if ($_POST['length'] != -1)
                $this->db->limit($_POST['length'], $_POST['start']);
           $query = $this->db->get();
           return $query->result();
      }
 
-     function count_filtered()
+     function count_filtered($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           $query = $this->db->get();
           return $query->num_rows();
      }
@@ -182,7 +191,12 @@ class Lokterima_model extends CI_Model
 
      public function get_by_authper($auth_per)
      {
-          $query = $this->db->get_where('vw_lokterima', ['auth_perusahaan' => $auth_per]);
+          $query = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_per]);
+          foreach ($query->result() as $list) {
+               $id_perusahaan = $list->id_perusahaan;
+          }
+
+          $query = $this->db->get_where('vw_lokterima', ['id_perusahaan' => $id_perusahaan]);
           return $query->result();
      }
 

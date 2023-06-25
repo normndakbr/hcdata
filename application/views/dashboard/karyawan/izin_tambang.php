@@ -12,22 +12,21 @@
                <tbody>
                     <?php
 
-                    if ($this->session->has_userdata("unit_izin")) {
-                         $unit_izin = $this->session->userdata("unit_izin_text");
-                         if (!empty($unit_izin)) {
+                    if (!empty($unit_izin)) {
+                         if ($unit_izin != 0) {
+
                               $n = 1;
-                              $baris = explode("|", $unit_izin);
-                              foreach ($baris as $data) {
-                                   $item = explode("%", $data);
-                                   $jenis_unit = $item[0];
-                                   $tipe_akses = $item[1];
+                              foreach ($unit_izin as $list) {
+                                   $id_unit = $list->id_izin_tambang_unit;
+                                   $jenis_unit = $list->unit;
+                                   $tipe_akses = $list->tipe_akses_unit;
 
                                    echo  "<tr>";
                                    echo "<td style='text-align:center;width:1%;'>" . $n++ . "</td>";
                                    echo "<td style=width:45%;'>" . $jenis_unit . "</td>";
                                    echo "<td style=width:45%;'>" . $tipe_akses . "</td>";
                                    echo "<td style='text-align:center;width:9%;'>";
-                                   echo "<button id=" . $jenis_unit . " class='btn btn-danger btn-sm' title='Hapus Sertifikasi' value='" . $jenis_unit . "'> <i class='fa fa-trash'></i> </button>";
+                                   echo "<button id='" . $id_unit . "' class='btn btn-danger btn-sm hapus_unit' title='Hapus data unit' value='" . $jenis_unit . "'> <i class='fa fa-trash'></i> </button>";
                                    echo "</td>";
                                    echo "</tr>";
                               }
