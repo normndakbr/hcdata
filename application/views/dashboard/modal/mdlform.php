@@ -196,647 +196,6 @@
           </div>
      </div>
 </div>
-<div class="modal fade" id="detaildepartmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Departemen</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailDepartPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailDepartPerusahaan' name='detailDepartPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error1" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailDepartKode">Kode :</label><br>
-                                        <input id='detailDepartKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error3" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailDepart">Departemen :</label><br>
-                                        <input id='detailDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error2" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailDepartKet">Keterangan :</label><br>
-                                        <textarea id='detailDepartKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea>
-                                        <small id="error3" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailDepartStatus">Status :</label><br>
-                                        <input id='detailDepartStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error2" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailDepartBuat">Pembuat :</label><br>
-                                        <input id='detailDepartBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error2" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailDepartTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailDepartTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly>
-                                        <small id="error2" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editdepartmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Departemen</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_dprt animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="editDepartKode">Kode :</label><br>
-                                        <input id='editDepartKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1ed" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-8 col-sm-12">
-                                        <label for="editDepart">Departemen :</label><br>
-                                        <input id='editDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2ed" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="editDepartStatus">Status :</label><br>
-                                        <select id='editDepartStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3ed" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editDepartKet">Keterangan :</label><br>
-                                        <textarea id='editDepartKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdatedepart" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailSectionmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Section</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailSectionPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailSectionPerusahaan' name='detailSectionPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailSectionDepart">Departemen :</label><br>
-                                        <input id='detailSectionDepart' name='detailSectionDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailSectionKode">Kode :</label><br>
-                                        <input id='detailSectionKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailSection">Section :</label><br>
-                                        <input id='detailSection' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailSectionKet">Keterangan :</label><br>
-                                        <textarea id='detailSectionKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailSectionStatus">Status :</label><br>
-                                        <input id='detailSectionStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailSectionBuat">Pembuat :</label><br>
-                                        <input id='detailSectionBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailSectionTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailSectionTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editSectionmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Section</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_sec animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-129 col-md-12 col-sm-12">
-                                        <label for="editSectionDepart">Departemen :</label><br>
-                                        <select id='editSectionDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user">
-                                             <option value="">-- Departemen tidak ditemukan --</option>
-                                        </select>
-                                        <small id="error3es" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editSectionKode">Kode :</label><br>
-                                        <input id='editSectionKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="">
-                                        <small id="error1es" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editSection">Section :</label><br>
-                                        <input id='editSection' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="">
-                                        <small id="error2es" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editSectionStatus">Status :</label><br>
-                                        <select id='editSectionStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error4es" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editSectionKet">Keterangan :</label><br>
-                                        <textarea id='editSectionKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value=""></textarea>
-                                        <small id="error5es" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateSection" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailPosisimdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Posisi</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailPosisiPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailPosisiPerusahaan' name='detailPosisiPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailPosisiDepart">Departemen :</label><br>
-                                        <input id='detailPosisiDepart' name='detailPosisiDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailPosisiKode">Kode :</label><br>
-                                        <input id='detailPosisiKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailPosisi">Posisi :</label><br>
-                                        <input id='detailPosisi' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailPosisiKet">Keterangan :</label><br>
-                                        <textarea id='detailPosisiKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPosisiStatus">Status :</label><br>
-                                        <input id='detailPosisiStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailPosisiBuat">Pembuat :</label><br>
-                                        <input id='detailPosisiBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPosisiTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailPosisiTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editPosisimdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Posisi</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_posisi animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editPosisiDepart">Departemen :</label><br>
-                                        <select id='editPosisiDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white">
-                                             <option value="">-- Departemen tidak ditemukan --</option>
-                                        </select>
-                                        <small id="error3ep" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editPosisi">Posisi :</label><br>
-                                        <input id='editPosisi' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2ep" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editPosisiStatus">Status :</label><br>
-                                        <select id='editPosisiStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error4ep" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editPosisiKet">Keterangan :</label><br>
-                                        <textarea id='editPosisiKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error5ep" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdatePosisi" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailLevelmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Level</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailLevelPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailLevelPerusahaan' name='detailLevelPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailLevelKode">Kode :</label><br>
-                                        <input id='detailLevelKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailLevel">Level :</label><br>
-                                        <input id='detailLevel' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailLevelKet">Keterangan :</label><br>
-                                        <textarea id='detailLevelKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLevelStatus">Status :</label><br>
-                                        <input id='detailLevelStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailLevelBuat">Pembuat :</label><br>
-                                        <input id='detailLevelBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLevelTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailLevelTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editLevelmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Level</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_Level animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLevelKode">Kode :</label><br>
-                                        <input id='editLevelKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1el" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editLevel">Level :</label><br>
-                                        <input id='editLevel' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2el" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLevelStatus">Status :</label><br>
-                                        <select id='editLevelStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3el" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editLevelKet">Keterangan :</label><br>
-                                        <textarea id='editLevelKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error4el" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateLevel" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailGrademdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Grade</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailGradePerusahaan">Perusahaan :</label><br>
-                                        <input id='detailGradePerusahaan' name='detailGradePerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="detailGradeKode">Kode :</label><br>
-                                        <input id='detailGradeKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-1 col-md-1 col-sm-12">
-                                        <label for="detailGrade">Grade :</label><br>
-                                        <input id='detailGrade' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-8 col-md-8 col-sm-12">
-                                        <label for="detailGradeLevel">Level :</label><br>
-                                        <input id='detailGradeLevel' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailGradeKet">Keterangan :</label><br>
-                                        <textarea id='detailGradeKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailGradeStatus">Status :</label><br>
-                                        <input id='detailGradeStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailGradeBuat">Pembuat :</label><br>
-                                        <input id='detailGradeBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailGradeTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailGradeTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editGrademdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Grade</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_grade animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editGradeLevel">Level :</label><br>
-                                        <select id='editGradeLevel' class="form-control form-control-user">
-                                             <option value="">-- Pilih Level --</option>
-                                        </select>
-                                        <small id="error3eg" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-2 col-md-2 col-sm-12">
-                                        <label for="editGrade">Grade :</label><br>
-                                        <input id='editGrade' placeholder="Isi dengan angka" type="number" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="">
-                                        <small id="error2eg" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editGradeStatus">Status :</label><br>
-                                        <select id='editGradeStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error4eg" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editGradeKet">Keterangan :</label><br>
-                                        <textarea id='editGradeKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value=""></textarea>
-                                        <small id="error5eg" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateGrade" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailTipemdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Tipe</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailTipePerusahaan">Perusahaan :</label><br>
-                                        <input id='detailTipePerusahaan' name='detailTipePerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailTipeKode">Kode :</label><br>
-                                        <input id='detailTipeKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailTipe">Tipe :</label><br>
-                                        <input id='detailTipe' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailTipeKet">Keterangan :</label><br>
-                                        <textarea id='detailTipeKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailTipeStatus">Status :</label><br>
-                                        <input id='detailTipeStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailTipeBuat">Pembuat :</label><br>
-                                        <input id='detailTipeBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailTipeTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailTipeTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editTipemdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Tipe</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_tipe animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editTipeKode">Kode :</label><br>
-                                        <input id='editTipeKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1et" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editTipe">Tipe :</label><br>
-                                        <input id='editTipe' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2et" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editTipeStatus">Status :</label><br>
-                                        <select id='editTipeStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3et" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editTipeKet">Keterangan :</label><br>
-                                        <textarea id='editTipeKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error4et" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateTipe" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
 <div class="modal fade" id="detailStatJanjimdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
@@ -848,17 +207,13 @@
                     <div class="row">
                          <div class="col-lg-12">
                               <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailStatJanjiPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailStatJanjiPerusahaan' name='detailStatJanjiPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailStatJanjiKode">Kode :</label><br>
-                                        <input id='detailStatJanjiKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
                                         <label for="detailStatJanji">Status Perjanjian :</label><br>
                                         <input id='detailStatJanji' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
+                                        <label for="jenisWaktu">Status Perjanjian :</label><br>
+                                        <input id='jenisWaktu' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="detailStatJanjiKet">Keterangan :</label><br>
@@ -901,15 +256,19 @@
                          <div class="col-lg-12">
                               <div class="alert alert-danger err_psn_edit_statjanji animate__animated animate__bounce d-none"></div>
                               <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editStatJanjiKode">Kode :</label><br>
-                                        <input id='editStatJanjiKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1est" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="editStatJanji">Status Perjanjian :</label><br>
                                         <input id='editStatJanji' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
                                         <small id="error2est" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <label for="editJenisWaktu">Jenis Waktu :</label><br>
+                                        <select id='editJenisWaktu' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                             <option value="">-- PILIH JENIS WAKTU --</option>
+                                             <option value="F">TANPA BATAS WAKTU</option>
+                                             <option value="T">DENGAN BATAS WAKTU</option>
+                                        </select>
+                                        <small id="error1est" class="text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="editStatJanjiStatus">Status :</label><br>
@@ -987,6 +346,98 @@
           </div>
      </div>
 </div>
+<div class="modal fade" id="detailSimmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+          <div class="modal-content">
+               <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail SIM</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12">
+                              <div class="row">
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label for="detailSim">SIM :</label><br>
+                                        <input id='detailSim' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label for="detailSimKet">Keterangan :</label><br>
+                                        <textarea id='detailSimKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailSimStatus">Status :</label><br>
+                                        <input id='detailSimStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <label for="detailSimBuat">Pembuat :</label><br>
+                                        <input id='detailSimBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailSimTglBuat">Tanggal Buat :</label><br>
+                                        <input id='detailSimTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <hr>
+                                   </div>
+                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
+                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="detailUnitmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+          <div class="modal-content">
+               <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Unit</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12">
+                              <div class="row">
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
+                                        <label for="detailKodeUnit">Kode Unit :</label><br>
+                                        <input id='detailKodeUnit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-9 col-md-8 col-sm-12">
+                                        <label for="detailUnit">Unit :</label><br>
+                                        <input id='detailUnit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label for="detailUnitKet">Keterangan :</label><br>
+                                        <textarea id='detailUnitKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailUnitStatus">Status :</label><br>
+                                        <input id='detailUnitStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <label for="detailUnitBuat">Pembuat :</label><br>
+                                        <input id='detailUnitBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailUnitTglBuat">Tanggal Buat :</label><br>
+                                        <input id='detailUnitTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <hr>
+                                   </div>
+                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
+                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
 <div class="modal fade" id="editBankmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
@@ -1023,6 +474,101 @@
                                    </div>
                                    <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
                                         <button type="button" id="btnupdateBank" class="btn font-weight-bold btn-primary">Update</button>
+                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="editSimmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+          <div class="modal-content">
+               <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit SIM</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12">
+                              <div class="alert alert-danger err_psn_edit_sim animate__animated animate__bounce d-none"></div>
+                              <div class="row">
+                                   <div class="col-lg-9 col-md-9 col-sm-12">
+                                        <label for="editSim">SIM :</label><br>
+                                        <input id='editSim' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                        <small id="error2esim" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-3 col-sm-12">
+                                        <label for="editSimStatus">Status :</label><br>
+                                        <select id='editSimStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                             <option value="">-- Pilih Status --</option>
+                                             <option value="AKTIF">AKTIF</option>
+                                             <option value="NONAKTIF">NONAKTIF</option>
+                                        </select>
+                                        <small id="error3esim" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label for="editSimKet">Keterangan :</label><br>
+                                        <textarea id='editSimKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
+                                        <small id="error4esim" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <hr>
+                                   </div>
+                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
+                                        <button type="button" id="btnupdateSim" class="btn font-weight-bold btn-primary">Update</button>
+                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="editUnitmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+          <div class="modal-content">
+               <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Unit</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12">
+                              <div class="alert alert-danger err_psn_edit_unit animate__animated animate__bounce d-none"></div>
+                              <div class="row">
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
+                                        <label for="editKodeUnit">Kode Unit :</label><br>
+                                        <input id='editKodeUnit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                        <small id="error2eunt" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <label for="editUnit">Unit :</label><br>
+                                        <input id='editUnit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                        <small id="error2eunt" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-2 col-sm-12">
+                                        <label for="editUnitStatus">Status :</label><br>
+                                        <select id='editUnitStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
+                                             <option value="">-- Pilih Status --</option>
+                                             <option value="AKTIF">AKTIF</option>
+                                             <option value="NONAKTIF">NONAKTIF</option>
+                                        </select>
+                                        <small id="error3eunt" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label for="editUnitKet">Keterangan :</label><br>
+                                        <textarea id='editUnitKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
+                                        <small id="error4eunt" class="text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <hr>
+                                   </div>
+                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
+                                        <button type="button" id="btnupdateUnit" class="btn font-weight-bold btn-primary">Update</button>
                                         <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
                                    </div>
                               </div>
@@ -1251,304 +797,6 @@
                                    </div>
                                    <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
                                         <button type="button" id="btnupdateRoster" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailLokkermdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Lokasi Kerja</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailLokkerKode">Kode :</label><br>
-                                        <input id='detailLokkerKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailLokker">Lokasi Kerja :</label><br>
-                                        <input id='detailLokker' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailLokkerKet">Keterangan :</label><br>
-                                        <textarea id='detailLokkerKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLokkerStatus">Status :</label><br>
-                                        <input id='detailLokkerStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailLokkerBuat">Pembuat :</label><br>
-                                        <input id='detailLokkerBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLokkerTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailLokkerTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editLokkermdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Lokasi Kerja</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_lokker animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLokkerKode">Kode :</label><br>
-                                        <input id='editLokkerKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1elkr" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editLokker">Lokasi Kerja :</label><br>
-                                        <input id='editLokker' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2elkr" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLokkerStatus">Status :</label><br>
-                                        <select id='editLokkerStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3elkr" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editLokkerKet">Keterangan :</label><br>
-                                        <textarea id='editLokkerKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error4elkr" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateLokker" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailLokterimamdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Lokasi Penerimaan</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailLokterimaPerusahaan">Perusahaan :</label><br>
-                                        <input id='detailLokterimaPerusahaan' name='detailLokterimaPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailLokterimaKode">Kode :</label><br>
-                                        <input id='detailLokterimaKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailLokterima">Lokasi Penerimaan :</label><br>
-                                        <input id='detailLokterima' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailLokterimaKet">Keterangan :</label><br>
-                                        <textarea id='detailLokterimaKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLokterimaStatus">Status :</label><br>
-                                        <input id='detailLokterimaStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailLokterimaBuat">Pembuat :</label><br>
-                                        <input id='detailLokterimaBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailLokterimaTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailLokterimaTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editLokterimamdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Lokasi Penerimaan</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_lokterima animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLokterimaKode">Kode :</label><br>
-                                        <input id='editLokterimaKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1elkt" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editLokterima">Lokasi Penerimaan :</label><br>
-                                        <input id='editLokterima' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2elkt" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editLokterimaStatus">Status :</label><br>
-                                        <select id='editLokterimaStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3elkt" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editLokterimaKet">Keterangan :</label><br>
-                                        <textarea id='editLokterimaKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error4elkt" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdateLokterima" class="btn font-weight-bold btn-primary">Update</button>
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="detailPohmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail POint of Hire</h5>
-               </div>
-               1
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="detailPohKode">Kode :</label><br>
-                                        <input id='detailPohKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="detailPoh">Point of Hire :</label><br>
-                                        <input id='detailPoh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="detailPohKet">Keterangan :</label><br>
-                                        <textarea id='detailPohKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPohStatus">Status :</label><br>
-                                        <input id='detailPohStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="detailPohBuat">Pembuat :</label><br>
-                                        <input id='detailPohBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPohTglBuat">Tanggal Buat :</label><br>
-                                        <input id='detailPohTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Selesai</button>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-          </div>
-     </div>
-</div>
-<div class="modal fade" id="editPohmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-          <div class="modal-content">
-               <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Point of Hire</h5>
-               </div>
-
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_poh animate__animated animate__bounce d-none"></div>
-                              <div class="row">
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editPohKode">Kode :</label><br>
-                                        <input id='editPohKode' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error1epoh" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="editPoh">Point of Hire :</label><br>
-                                        <input id='editPoh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                        <small id="error2epoh" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-3 col-sm-12">
-                                        <label for="editPohStatus">Status :</label><br>
-                                        <select id='editPohStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
-                                             <option value="">-- Pilih Status --</option>
-                                             <option value="AKTIF">AKTIF</option>
-                                             <option value="NONAKTIF">NONAKTIF</option>
-                                        </select>
-                                        <small id="error3epoh" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editPohKet">Keterangan :</label><br>
-                                        <textarea id='editPohKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value=""></textarea>
-                                        <small id="error4epoh" class="text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
-                                   <div class="modal-footer d-flex justify-content-center" style="margin-top:10px;">
-                                        <button type="button" id="btnupdatePoh" class="btn font-weight-bold btn-primary">Update</button>
                                         <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
                                    </div>
                               </div>

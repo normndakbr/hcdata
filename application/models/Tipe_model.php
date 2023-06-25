@@ -5,9 +5,9 @@ class Tipe_model extends CI_Model
 {
 
      var $table = 'vw_tipe';
-     var $column_order = array(null, 'kd_tipe', 'tipe', 'ket_tipe', 'stat_tipe', 'tgl_buat', null); //set column field database for datatable orderable
-     var $column_search = array('kd_tipe', 'tipe', 'ket_tipe', 'stat_tipe', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
-     var $order = array('kd_tipe' => 'desc'); // default order 
+     var $column_order = array(null, 'tipe', 'ket_tipe', 'stat_tipe', 'tgl_buat', null); //set column field database for datatable orderable
+     var $column_search = array('tipe', 'ket_tipe', 'stat_tipe', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+     var $order = array('tipe' => 'desc'); // default order 
 
      public function __construct()
      {
@@ -17,7 +17,6 @@ class Tipe_model extends CI_Model
 
      private function _get_datatables_query()
      {
-
           $this->db->from($this->table);
 
           $i = 0;
@@ -101,19 +100,9 @@ class Tipe_model extends CI_Model
           }
      }
 
-     public function cek_kode($id_perusahaan, $kd_tipe)
+     public function cek_tipe($tipe)
      {
-          $query = $this->db->get_where('tb_tipe', ['kd_tipe' => $kd_tipe, 'id_perusahaan' => $id_perusahaan]);
-          if (!empty($query->result())) {
-               return true;
-          } else {
-               return false;
-          }
-     }
-
-     public function cek_tipe($id_perusahaan, $tipe)
-     {
-          $query = $this->db->get_where('tb_tipe', ['tipe' => $tipe, 'id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get_where('tb_tipe', ['tipe' => $tipe]);
           if (!empty($query->result())) {
                return true;
           } else {
@@ -146,22 +135,15 @@ class Tipe_model extends CI_Model
           return $query->result();
      }
 
-     public function edit_tipe($kd_tipe, $tipe, $ket_tipe, $status)
+     public function edit_tipe($tipe, $ket_tipe, $status)
      {
-          $id_perusahaan = $this->session->userdata('id_perusahaan');
           $id_tipe = $this->session->userdata('id_tipe');
 
-          $query = $this->db->query("SELECT * FROM tb_tipe WHERE kd_tipe='" . $kd_tipe . "' AND id_perusahaan=" . $id_perusahaan . " AND id_tipe <> " . $id_tipe);
-          if (!empty($query->result())) {
-               return 203;
-          }
-
-          $query = $this->db->query("SELECT * FROM tb_tipe WHERE tipe='" . $tipe . "' AND id_perusahaan=" . $id_perusahaan . " AND id_tipe <> " . $id_tipe);
+          $query = $this->db->query("SELECT * FROM tb_tipe WHERE tipe='" . $tipe . "' AND id_tipe <> " . $id_tipe);
           if (!empty($query->result())) {
                return 204;
           }
 
-          $this->db->set('kd_tipe', $kd_tipe);
           $this->db->set('tipe', $tipe);
           $this->db->set('ket_tipe', $ket_tipe);
           $this->db->set('stat_tipe', $status);
@@ -180,15 +162,15 @@ class Tipe_model extends CI_Model
           return $this->db->get('vw_tipe')->result();
      }
 
-     public function get_by_authper($auth_per)
+     public function get_by_authper()
      {
-          $query = $this->db->get_where('vw_tipe', ['auth_perusahaan' => $auth_per]);
+          $query = $this->db->get('vw_tipe');
           return $query->result();
      }
 
-     public function get_by_idper($id_per)
+     public function get_by_idper()
      {
-          $query = $this->db->get_where('vw_tipe', ['id_perusahaan' => $id_per]);
+          $query = $this->db->get('vw_tipe');
           return $query->result();
      }
 

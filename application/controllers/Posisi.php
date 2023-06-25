@@ -11,31 +11,34 @@ class Posisi extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/posisi/posisi');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/posisi');
      }
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/posisi/posisi_add');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/posisi');
      }
 
      public function ajax_list()
      {
-          $list = $this->pss->get_datatables();
+          $auth_per = $this->input->get("auth_per");
+          $list = $this->pss->get_datatables($auth_per);
           $data = array();
           $no = $_POST['start'];
           foreach ($list as $pss) {
@@ -65,7 +68,7 @@ class Posisi extends My_Controller
           $output = array(
                "draw" => $_POST['draw'],
                "recordsTotal" => $this->pss->count_all(),
-               "recordsFiltered" => $this->pss->count_filtered(),
+               "recordsFiltered" => $this->pss->count_filtered($auth_per),
                "data" => $data,
           );
           //output to json format

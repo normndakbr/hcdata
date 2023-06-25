@@ -4,9 +4,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Level_model extends CI_Model
 {
 
-     var $table = 'vw_level';
-     var $column_order = array(null, 'kd_level', 'level', 'ket_level', 'stat_level', 'tgl_buat', null); //set column field database for datatable orderable
-     var $column_search = array('kd_level', 'level', 'ket_level', 'stat_level', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+     var $table = 'vw_lvl';
+     var $column_order = array(null, 'kd_level', 'level', 'ket_level', 'stat_level', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
+     var $column_search = array('kd_level', 'level', 'ket_level', 'stat_level', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
      var $order = array('kd_level' => 'desc'); // default order 
 
      public function __construct()
@@ -15,9 +15,18 @@ class Level_model extends CI_Model
           $this->load->database();
      }
 
-     private function _get_datatables_query()
+     private function _get_datatables_query($auth_per)
      {
+          $dtper = $this->prs->get_by_authper($auth_per);
+          if (!empty($dtper)) {
+               foreach ($dtper as $list) {
+                    $id_perusahaan = $list->id_perusahaan;
+               }
+          } else {
+               $id_perusahaan = 0;
+          }
 
+          $this->db->where(['id_perusahaan' => $id_perusahaan]);
           $this->db->from($this->table);
 
           $i = 0;
@@ -50,18 +59,18 @@ class Level_model extends CI_Model
           }
      }
 
-     function get_datatables()
+     function get_datatables($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           if ($_POST['length'] != -1)
                $this->db->limit($_POST['length'], $_POST['start']);
           $query = $this->db->get();
           return $query->result();
      }
 
-     function count_filtered()
+     function count_filtered($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           $query = $this->db->get();
           return $query->num_rows();
      }
@@ -182,13 +191,14 @@ class Level_model extends CI_Model
 
      public function get_by_authper($auth_per)
      {
-          $query = $this->db->get_where('vw_level', ['auth_perusahaan' => $auth_per]);
-          return $query->result();
+          $this->db->where('auth_perusahaan', $auth_per);
+          $this->db->from('vw_lvl');
+          return  $this->db->get()->result();
      }
 
      public function get_by_idper($id_per)
      {
-          $query = $this->db->get_where('vw_level', ['id_perusahaan' => $id_per]);
+          $query = $this->db->get_where('vw_lvl', ['id_perusahaan' => $id_per]);
           return $query->result();
      }
 }

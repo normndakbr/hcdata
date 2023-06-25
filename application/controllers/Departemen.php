@@ -11,31 +11,34 @@ class Departemen extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/departemen/depart');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/departemen');
      }
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/departemen/depart_add');
-          $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/departemen');
      }
 
      public function ajax_list()
      {
-          $list = $this->dprt->get_datatables();
+          $auth_per = $this->input->get("auth_per");
+          $list = $this->dprt->get_datatables($auth_per);
           $data = array();
           $no = $_POST['start'];
           foreach ($list as $dprt) {
@@ -65,11 +68,17 @@ class Departemen extends My_Controller
           $output = array(
                "draw" => $_POST['draw'],
                "recordsTotal" => $this->dprt->count_all(),
-               "recordsFiltered" => $this->dprt->count_filtered(),
+               "recordsFiltered" => $this->dprt->count_filtered($auth_per),
                "data" => $data,
           );
           //output to json format
           echo json_encode($output);
+     }
+
+     public function tabel_depart($auth_perusahaan)
+     {
+          $data['depart'] = $this->dprt->tabel_depart($auth_perusahaan);
+          $this->load->view('dashboard/departemen/depart_tabel', $data);
      }
 
      public function input_depart()
@@ -106,6 +115,9 @@ class Departemen extends My_Controller
                $depart = htmlspecialchars($this->input->post("depart", true));
                $ket_depart = htmlspecialchars($this->input->post("ket"));
                $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
+
+               // echo json_encode([$auth_perusahaan]);
+               // return;
 
                if ($id_perusahaan == 0) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
@@ -270,8 +282,23 @@ class Departemen extends My_Controller
      public function get_by_authper()
      {
           $auth_per = $this->input->post('auth_per');
-
           $query = $this->dprt->get_by_authper($auth_per);
+          $output = "<option value=''>-- PILIH DEPARTEMEN --</option>";
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $output = $output . "<option value='" . $list->auth_depart . "'>" . $list->depart . "</option>";
+               }
+               echo json_encode(array("statusCode" => 200, "dprt" => $output));
+          } else {
+               $output = "<option value=''>-- DEPARTEMEN TIDAK DITEMUKAN --</option>";
+               echo json_encode(array("statusCode" => 201, "dprt" => $output));
+          }
+     }
+
+     public function get_by_auth_m_per()
+     {
+          $auth_m_per = $this->input->post('auth_m_per');
+          $query = $this->dprt->get_by_authper($auth_m_per);
           $output = "<option value=''>-- PILIH DEPARTEMEN --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {

@@ -12,24 +12,26 @@ class Dash extends My_Controller
      public function index()
      {
 
-          $newdata = array(
-               'idkaryawan',
-               'idpersonal',
-               'idalamat',
-               'idizin',
-               'unit_izin',
-               'unit_izin_text',
-               'idmcu'
-          );
+          if ($this->session->has_userdata('id_m_perusahaan')) {
+               $idmper = $this->session->userdata('id_m_perusahaan');
+               if ($idmper != "") {
+                    $data['permst'] = $this->str->getMaster($idmper, "");
+                    $data['perstr'] = $this->str->getMenu($idmper, "");
+               } else {
+                    $data['permst'] = "";
+                    $data['perstr'] = "";
+               }
+          } else {
+               $idmper = "";
+               $data['permst'] = "";
+               $data['perstr'] = "";
+          }
 
-          $this->session->unset_userdata($newdata);
-          $jml_karyawan = $this->dsmod->count_all_karyawan();
-          $jml_user = $this->dsmod->count_all_user();
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
-          $data['jml_karyawan'] = $jml_karyawan;
-          $data['jml_user'] = $jml_user;
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_add', $data);
           $this->load->view('dashboard/modal/mdlform');

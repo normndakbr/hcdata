@@ -19,26 +19,6 @@
             theme: 'bootstrap4'
         });
 
-        // $.ajax({
-        //     type: "POST",
-        //     url: "<?php base_url("perusahaan/get_all") ?>",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perUser").html(data.prs);
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_user").removeClass('d-none');
-        //         $(".err_psn_user").removeClass('alert-info');
-        //         $(".err_psn_user").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_user").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahUser").attr("disabled", true);
-        //         }
-        //     }
-        // })
-
         function resetedituser() {
             $("#editUserNama").val('');
             $("#editUserEmail").val('');

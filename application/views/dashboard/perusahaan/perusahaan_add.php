@@ -64,7 +64,7 @@
                               <div class="row">
                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <div class="form-group fill">
-                                             <label for="kodePerusahaan">Kode Perusahaan :</label>
+                                             <label for="kodePerusahaan">Kode Perusahaan <span class="text-danger">*</span></label>
                                              <input id='kodePerusahaan' name='kodePerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                              <small class="error1 text-danger font-italic font-weight-bold"></small>
                                         </div>
@@ -72,7 +72,7 @@
                                    </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
                                         <div class="form-group fill">
-                                             <label for="Perusahaan">Nama Perusahaan :</label>
+                                             <label for="Perusahaan">Nama Perusahaan <span class="text-danger">*</span></label>
                                              <input id='Perusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                              <small class="error2 text-danger font-italic font-weight-bold"></small>
                                         </div>
@@ -80,13 +80,13 @@
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="form-group fill">
-                                             <label for="alamatPerusahaan">Alamat :</label>
+                                             <label for="alamatPerusahaan">Alamat <span class="text-danger">*</span></label>
                                              <input id='alamatPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                              <small class="error3 text-danger font-italic font-weight-bold"></small>
                                         </div>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="provPerusahaan">Provinsi :</label><br>
+                                        <label for="provPerusahaan">Provinsi <span class="text-danger">*</span></label><br>
                                         <div class="input-group">
                                              <select id='provPerusahaan' name='provPerusahaan' class="form-control" required>
                                                   <option value="00">-- WAJIB DIPILIH --</option>
@@ -96,7 +96,7 @@
                                         <small class="error5 text-danger font-italic font-weight-bold"></small>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="kabPerusahaan">Kabupaten/Kota :</label><br>
+                                        <label for="kabPerusahaan">Kabupaten/Kota <span class="text-danger">*</span></label><br>
                                         <div class="input-group">
                                              <select id='kabPerusahaan' name='kabPerusahaan' class="form-control" required>
                                                   <option value="0000">-- WAJIB DIPILIH --</option>
@@ -106,7 +106,7 @@
                                         <small class="error6 text-danger font-italic font-weight-bold"></small>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
-                                        <label for="kecPerusahaan">Kecamatan :</label><br>
+                                        <label for="kecPerusahaan">Kecamatan <span class="text-danger">*</span></label><br>
                                         <div class="input-group">
                                              <select id='kecPerusahaan' name='kecPerusahaan' class="form-control" required>
                                                   <option value="000000">-- WAJIB DIPILIH --</option>
@@ -116,7 +116,7 @@
                                         <small class="error7 text-danger font-italic font-weight-bold"></small>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
-                                        <label for="kelPerusahaan">Kelurahan :</label><br>
+                                        <label for="kelPerusahaan">Kelurahan <span class="text-danger">*</span></label><br>
                                         <div class="input-group">
                                              <select id='kelPerusahaan' name='kelPerusahaan' class="form-control" required>
                                                   <option value="00000000">-- WAJIB DIPILIH --</option>
@@ -126,24 +126,14 @@
                                         <small class="error8 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="kegPerusahaan">Kegiatan :</label><br>
+                                        <label for="kegPerusahaan">Kegiatan </label><br>
                                         <textarea id='kegPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small class="error13 text-danger font-italic font-weight-bold"></small>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                        <label for="ketPerusahaan">Keterangan :</label><br>
+                                        <label for="ketPerusahaan">Keterangan </label><br>
                                         <textarea id='ketPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small class="error14 text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                        <div>
-                                             <h6 class="text-danger font-italic">Catatan : Upload file RK3L dalam format pdf, Ukuran maksimal 5 mb.</h6>
-                                        </div>
-                                        <div class="form-group">
-                                             <label for="fileSertifikasi"><b>Upload Rencana Kerja Keselamatan Dan Kesehatan Kerja Dan Lingkunghan Hidup (RK3L) </b> :</label>
-                                             <input type="file" class="form-control-file" id="fileSertifikasi">
-                                             <small class="errorFileSertifikasi text-danger font-italic font-weight-bold"></small>
-                                        </div>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <hr class="mb-2">

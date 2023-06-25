@@ -11,6 +11,8 @@ class Perusahaan extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $this->session->unset_userdata('auth_per_sub');
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
@@ -24,6 +26,8 @@ class Perusahaan extends My_Controller
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $this->session->unset_userdata('auth_per_sub');
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
@@ -505,8 +509,25 @@ class Perusahaan extends My_Controller
 
      public function get_all()
      {
-          $query = $this->prs->get_all();
+          $id_m_perusahaan = $this->session->userdata("id_m_perusahaan");
+          $query = $this->prs->get_all($id_m_perusahaan);
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $output = $output . "<option value='" . $list->auth_perusahaan . "'>" . $list->nama_perusahaan . "</option>";
+               }
+               echo json_encode(array("statusCode" => 200, "prs" => $output));
+          } else {
+               $output = "<option value=''>-- Perusahaan Tidak Ditemukan --</option>";
+               echo json_encode(array("statusCode" => 201, "prs" => $output));
+          }
+     }
+
+     public function get_all_prs()
+     {
+          $id_m_perusahaan = $this->session->userdata("id_m_perusahaan");
+          $query = $this->prs->get_all($id_m_perusahaan);
+          $output = "<option value=''>-- PILIH PERUSAHAAN --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {
                     $output = $output . "<option value='" . $list->auth_perusahaan . "'>" . $list->nama_perusahaan . "</option>";
@@ -543,6 +564,27 @@ class Perusahaan extends My_Controller
           }
      }
 
+     public function get_m_all_kary()
+     {
+          $output = "<option value=''>-- PILIH PERUSAHAAN --</option>";
+          if ($this->session->has_userdata('id_m_perusahaan')) {
+               $idmper = $this->session->userdata('id_m_perusahaan');
+               if ($idmper != "") {
+                    $permst = $this->str->getMaster($idmper, "");
+                    $persub = $this->str->getMenu($idmper, "");
+               } else {
+                    $permst = "";
+                    $persub = "";
+               }
+          } else {
+               $idmper = "";
+               $permst = "";
+               $persub = "";
+          }
+
+          echo json_encode(array("utama" => $permst, "sub" => $persub));
+     }
+
      public function getPerusahaan()
      {
           // POST data
@@ -561,5 +603,26 @@ class Perusahaan extends My_Controller
 
           $this->session->set_userdata($newData);
           echo json_encode(array("statusCode" => 200, "pesan" => "Auth perusahaan berhasil disimpan"));
+     }
+
+     public function getidperusahaan()
+     {
+          $id_perusahaan = $this->session->userdata('id_perusahaan');
+          $dtper = $this->prs->get_by_idper($id_perusahaan);
+          if (!empty($dtper)) {
+               foreach ($dtper as $list) {
+                    $auth_perusahaan = $list->auth_perusahaan;
+               }
+
+               echo json_encode([
+                    "statusCode" => 200,
+                    "prs" => $auth_perusahaan
+               ]);
+          } else {
+               echo json_encode([
+                    "statusCode" => 201,
+                    "prs" => ""
+               ]);
+          }
      }
 }

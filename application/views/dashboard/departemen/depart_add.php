@@ -73,17 +73,17 @@
                                         <hr>
                                    </div>
                                    <div class="col-lg-3 col-md-4 col-sm-12">
-                                        <label for="kodeDepart">Kode :</label>
+                                        <label for="kodeDepart">Kode <span class="text-danger">*</span></label>
                                         <input id='kodeDepart' name='kodeDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error2 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="Depart">Departemen :</label>
+                                        <label for="Depart">Departemen <span class="text-danger">*</span></label>
                                         <input id='Depart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error3 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="ketDepart">Keterangan :</label><br>
+                                        <label for="ketDepart">Keterangan </label><br>
                                         <textarea id='ketDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small id="error4" class="text-danger font-italic font-weight-bold"></small><br>
                                    </div>

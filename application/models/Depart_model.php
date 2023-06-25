@@ -4,9 +4,9 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Depart_model extends CI_Model
 {
 
-     var $table = 'vw_depart';
-     var $column_order = array(null, 'kd_depart', 'depart', 'ket_depart', 'stat_depart', 'tgl_buat', null); //set column field database for datatable orderable
-     var $column_search = array('kd_depart', 'depart', 'ket_depart', 'stat_depart', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+     var $table = 'vw_dprt';
+     var $column_order = array(null, 'kd_depart', 'depart', 'ket_depart', 'stat_depart', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
+     var $column_search = array('kd_depart', 'depart', 'ket_depart', 'stat_depart', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
      var $order = array('kd_depart' => 'desc'); // default order 
 
      public function __construct()
@@ -15,11 +15,19 @@ class Depart_model extends CI_Model
           $this->load->database();
      }
 
-     private function _get_datatables_query()
+     private function _get_datatables_query($auth_per)
      {
+          $dtper = $this->prs->get_by_authper($auth_per);
+          if (!empty($dtper)) {
+               foreach ($dtper as $list) {
+                    $id_perusahaan = $list->id_perusahaan;
+               }
+          } else {
+               $id_perusahaan = 0;
+          }
 
+          $this->db->where(['id_perusahaan' => $id_perusahaan]);
           $this->db->from($this->table);
-
           $i = 0;
 
           foreach ($this->column_search as $item) // loop column 
@@ -50,18 +58,18 @@ class Depart_model extends CI_Model
           }
      }
 
-     function get_datatables()
+     function get_datatables($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           if ($_POST['length'] != -1)
                $this->db->limit($_POST['length'], $_POST['start']);
           $query = $this->db->get();
           return $query->result();
      }
 
-     function count_filtered()
+     function count_filtered($auth_per)
      {
-          $this->_get_datatables_query();
+          $this->_get_datatables_query($auth_per);
           $query = $this->db->get();
           return $query->num_rows();
      }
@@ -89,6 +97,16 @@ class Depart_model extends CI_Model
      public function count_all_user()
      {
           return $this->db->count_all_results('vw_user');
+     }
+
+     public function tabel_depart($auth_perusahaan)
+     {
+          if ($auth_perusahaan !== "") {
+               $query = $this->db->get_where('vw_dprt', ['auth_perusahaan' => $auth_perusahaan]);
+               return $query->result();
+          } else {
+               return 0;
+          }
      }
 
      public function input_depart($data)
@@ -200,9 +218,22 @@ class Depart_model extends CI_Model
           }
      }
 
-     public function get_by_authper($auth_per)
+     public function get_by_authper($auth_m_per)
      {
-          $query_per = $this->db->get_where('vw_m_per', ['auth_m_perusahaan' => $auth_per]);
+          $query_per = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_m_per]);
+          if (!empty($query_per->result())) {
+               foreach ($query_per->result() as $list) {
+                    $id_perusahaan = $list->id_perusahaan;
+               }
+
+               $query = $this->db->get_where('vw_dprt', ['id_perusahaan' => $id_perusahaan]);
+               return $query->result();
+          }
+     }
+
+     public function get_by_auth_m_per($auth_per)
+     {
+          $query_per = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_per]);
           if (!empty($query_per->result())) {
                foreach ($query_per->result() as $list) {
                     $id_perusahaan = $list->id_perusahaan;
@@ -210,7 +241,6 @@ class Depart_model extends CI_Model
 
                $query = $this->db->get_where('vw_depart', ['id_perusahaan' => $id_perusahaan]);
                return $query->result();
-          } else {
           }
      }
 }

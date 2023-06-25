@@ -101,16 +101,13 @@ class Sertifikasi_model extends CI_Model
           }
      }
 
-     public function tabel_sertifikasi()
+     public function tabel_sertifikasi($id_personal)
      {
-          if ($this->session->has_userdata('idpersonal')) {
-               $id_personal = $this->session->userdata('idpersonal');
-               if (!empty($id_personal)) {
-                    $query = $this->db->get_where('vw_sertifikasi', ['id_personal' => $id_personal]);
-                    return $query->result();
-               } else {
-                    return 0;
-               }
+          if ($id_personal !== "") {
+               $query = $this->db->get_where('vw_sertifikasi', ['id_personal' => $id_personal]);
+               return $query->result();
+          } else {
+               return 0;
           }
      }
 
@@ -124,15 +121,16 @@ class Sertifikasi_model extends CI_Model
           }
      }
 
-     public function hapus_sertifikasi($auth_sertifikasi)
+     public function hps_sert($auth_sertifikasi)
      {
-          $cek_id = $this->db->get_where('vw_sertifikasi', ['auth_sertifikasi' => $auth_sertifikasi]);
-          if (!empty($cek_id->result())) {
-               foreach ($cek_id->result() as $list) {
+
+          $cek_id = $this->db->get_where('vw_sertifikasi', ['auth_sertifikat' => $auth_sertifikasi])->result();
+          if (!empty($cek_id)) {
+               foreach ($cek_id as $list) {
                     $id_sertifikasi = $list->id_sertifikasi;
                }
 
-               $this->db->delete('tb_sertifikasi', ['id_sertifikasi' => $id_sertifikasi]);
+               $this->db->delete('tb_sertifikasi_kary', ['id_sertifikasi' => $id_sertifikasi]);
                if ($this->db->affected_rows() > 0) {
                     return 200;
                } else {
@@ -150,7 +148,7 @@ class Sertifikasi_model extends CI_Model
 
      public function get_sertifikasi_id($auth_sertifikasi)
      {
-          $query = $this->db->get_where('vw_sertifikasi', ['auth_sertifikasi' => $auth_sertifikasi]);
+          $query = $this->db->get_where('vw_sertifikasi', ['auth_sertifikat' => $auth_sertifikasi]);
           return $query->result();
      }
 
@@ -176,6 +174,12 @@ class Sertifikasi_model extends CI_Model
           }
      }
 
+     public function update_sertifikasi($id_ser, $dtser)
+     {
+          $this->db->where('id_sertifikasi', $id_ser);
+          $this->db->update('tb_sertifikasi_kary', $dtser);
+     }
+
      public function get_all()
      {
           return $this->db->get('vw_sertifikasi')->result();
@@ -191,5 +195,19 @@ class Sertifikasi_model extends CI_Model
      {
           $query = $this->db->get_where('vw_sertifikasi', ['id_perusahaan' => $id_per]);
           return $query->result();
+     }
+
+     public function get_by_idser($auth_ser)
+     {
+          $query = $this->db->get_where('vw_sertifikasi', ['auth_sertifikat' => $auth_ser])->result();
+          if (!empty($query)) {
+               foreach ($query as $list) {
+                    $id_ser = $list->id_sertifikasi;
+               }
+
+               return  $id_ser;
+          } else {
+               return;
+          }
      }
 }

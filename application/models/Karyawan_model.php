@@ -3,10 +3,10 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Karyawan_model extends CI_Model
 {
-    var $table = 'vw_karyawan';
-    var $column_order = array(null, 'nama_lengkap', 'depart', 'section', 'posisi', 'tgl_buat', null); //set column field database for datatable orderable
-    var $column_search = array('nama_lengkap', 'depart', 'section', 'posisi', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
-    var $order = array('nama_lengkap' => 'asc'); // default order 
+    var $table = 'vw_kry';
+    var $column_order = array(null, 'nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
+    var $column_search = array('nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $order = array('depart' => 'asc'); // default order 
 
     public function __construct()
     {
@@ -14,9 +14,17 @@ class Karyawan_model extends CI_Model
         $this->load->database();
     }
 
-    private function _get_datatables_query()
+    private function _get_datatables_query($auth_m_per)
     {
+        $id_m_perusahaan = $this->prs->get_m_by_auth($auth_m_per);
+        if (empty($id_m_perusahaan)) {
+            $id_m_perusahaan = 0;
+        }
+
+        $this->db->where(['id_m_perusahaan' => $id_m_perusahaan]);
         $this->db->from($this->table);
+        $this->db->order_by('id_m_perusahaan', 'ASC');
+
         $i = 0;
 
         foreach ($this->column_search as $item) // loop column 
@@ -45,19 +53,19 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    function get_datatables()
+    function get_datatables($auth_m_per)
     {
         if ($_POST['length'] != -1) {
-            $this->_get_datatables_query();
+            $this->_get_datatables_query($auth_m_per);
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered()
+    function count_filtered($auth_m_per)
     {
-        $this->_get_datatables_query();
+        $this->_get_datatables_query($auth_m_per);
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -88,12 +96,138 @@ class Karyawan_model extends CI_Model
 
     public function get_by_auth($auth_karyawan)
     {
-        $this->db->from($this->table);
+        $this->db->from('vw_karyawan');
         $this->db->where('auth_karyawan', $auth_karyawan);
         $query = $this->db->get();
 
         return $query->row();
     }
+
+    public function get_alamat_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_alamat_karyawan');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $query = $this->db->get()->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                if ($list->rt_ktp != "") {
+                    $rt = ", RT. " . $list->rt_ktp;
+                } else {
+                    $rt = "";
+                }
+
+                if ($list->rw_ktp != "") {
+                    $rw = ", RW. " . $list->rw_ktp;
+                } else {
+                    $rw = "";
+                }
+
+                $alamat = $list->alamat_ktp . $rt . $rw . "KEL. " . $list->kel . ", KEC. " . $list->kec . ", " . $list->kab . ", " . $list->prov;
+            }
+
+            return $alamat;
+        } else {
+            return;
+        }
+    }
+
+    public function get_izin_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_izin_tambang');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
+    public function get_izin_unit_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_izin_unit');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    public function get_sertifikasi_by_auth($auth_karyawan)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_karyawan])->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_personal = $list->id_personal;
+            }
+        } else {
+            $id_personal = "";
+        }
+
+        $this->db->from('vw_sertifikasi');
+        $this->db->where('id_personal', $id_personal);
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    public function get_mcu_by_auth($auth_karyawan)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_karyawan])->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_personal = $list->id_personal;
+            }
+        } else {
+            $id_personal = "";
+        }
+
+        $this->db->from('vw_mcu');
+        $this->db->where('id_personal', $id_personal);
+        $this->db->order_by('tgl_mcu', 'DESC');
+        $query = $this->db->get();
+
+        if (!empty($query->result())) {
+            return $query->result();
+        } else {
+            return;
+        }
+    }
+
+    public function get_mcu_by_authmcu($auth_mcu)
+    {
+        $query = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
+        return $query;
+    }
+
+    public function get_vaksin_by_auth($auth_karyawan)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_karyawan])->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_personal = $list->id_personal;
+            }
+        } else {
+            $id_personal = "";
+        }
+        $this->db->from('tb_vaksin_kary');
+        $this->db->where('id_personal', $id_personal);
+        $query = $this->db->get()->result();
+
+        if (!empty($query)) {
+            $this->db->from('vw_vaksin_kary');
+            $this->db->where('id_personal', $id_personal);
+            $this->db->order_by('tgl_vaksin', 'ASC');
+            $query = $this->db->get();
+
+            return $query->result();
+        } else {
+            return;
+        }
+    }
+
+    public function get_id_vaksin_by_auth($auth_vaksin)
+    {
+        $query = $this->db->get_where('vw_vaksin', ['auth_vaksin' => $auth_vaksin])->result();
+        return $query;
+    }
+
 
     public function count_all_karyawan()
     {
@@ -119,6 +253,38 @@ class Karyawan_model extends CI_Model
     public function input_dtKaryawan($data)
     {
         $this->db->insert('tb_karyawan', $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function getKaryawan($postData)
+    {
+        $response = array();
+        $auth_m_per = $postData['auth_m_per'];
+        $id_per = $this->prs->get_idp_by_auth($auth_m_per);
+        if (isset($postData['search'])) {
+            $records = $this->db->query("SELECT * FROM vw_karyawan WHERE id_perusahaan = " . $id_per . " AND (no_ktp LIKE '%" . $postData['search'] .
+                "%' OR no_nik like '%" . $postData['search'] .
+                "%' OR nama_lengkap like '%" . $postData['search'] . "%') ORDER BY nama_lengkap ASC")->result();
+            foreach ($records as $row) {
+                $response[] = array(
+                    "value" => $row->auth_karyawan,
+                    "ktp" => $row->no_ktp,
+                    "nik" => $row->no_nik,
+                    "nama" => $row->nama_lengkap,
+                    "label" => $row->no_nik . " | " . $row->nama_lengkap
+                );
+            }
+        }
+        return $response;
+    }
+
+    public function input_dtKontrak($data)
+    {
+        $this->db->insert('tb_kontrak_karyawan', $data);
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {
@@ -185,7 +351,26 @@ class Karyawan_model extends CI_Model
     public function last_row_personal()
     {
         $this->db->select("*");
-        $this->db->from("tb_personal");
+        $this->db->from("vw_personal");
+        $this->db->limit(1);
+        $this->db->order_by('id_personal', "DESC");
+        $query = $this->db->get()->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $auth_personal = $list->auth_personal;
+            }
+
+            return $auth_personal;
+        } else {
+            return 0;
+        }
+    }
+
+    public function last_row_id_personal()
+    {
+        $this->db->select("*");
+        $this->db->from("vw_personal");
         $this->db->limit(1);
         $this->db->order_by('id_personal', "DESC");
         $query = $this->db->get()->result();
@@ -201,20 +386,16 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    public function last_row_alamat()
+    public function last_row_alamat($auth_person)
     {
-        $this->db->select("*");
-        $this->db->from("tb_alamat_ktp");
-        $this->db->limit(1);
-        $this->db->order_by('id_alamat_ktp', "DESC");
-        $query = $this->db->get()->result();
+        $query = $this->db->get_where('vw_alamat_karyawan', ['auth_personal' => $auth_person])->result();
 
         if (!empty($query)) {
             foreach ($query as $list) {
-                $id_alamat_ktp = $list->id_alamat_ktp;
+                $auth_alamat = $list->auth_alamat;
             }
 
-            return $id_alamat_ktp;
+            return $auth_alamat;
         } else {
             return 0;
         }
@@ -242,29 +423,75 @@ class Karyawan_model extends CI_Model
     public function last_row_idkary()
     {
         $this->db->select("*");
-        $this->db->from("tb_karyawan");
+        $this->db->from("vw_karyawan");
         $this->db->limit(1);
         $this->db->order_by('id_kary', "DESC");
         $query = $this->db->get()->result();
 
         if (!empty($query)) {
             foreach ($query as $list) {
-                $id_kary = $list->id_kary;
+                $id_karyawan = $list->id_kary;
             }
 
-            return $id_kary;
+            return $id_karyawan;
         } else {
-            return 0;
+            return;
         }
     }
 
-    public function last_row_idizin()
+    public function last_row_authkary($auth_person)
     {
-        $this->db->select("*");
-        $this->db->from("tb_izin_tambang");
-        $this->db->limit(1);
-        $this->db->order_by('id_izin_tambang', "DESC");
-        $query = $this->db->get()->result();
+        $query = $this->db->get_where('vw_karyawan', ['auth_personal' => $auth_person])->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $auth_karyawan = $list->auth_karyawan;
+            }
+
+            return $auth_karyawan;
+        } else {
+            return;
+        }
+    }
+
+    public function get_id_personal($auth_person)
+    {
+        $query = $this->db->get_where('vw_personal', ['auth_personal' => $auth_person])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_personal = $list->id_personal;
+            }
+
+            return $id_personal;
+        } else {
+            return;
+        }
+    }
+
+    public function get_id_personal_by_kary($auth_kary)
+    {
+        $query = $this->db->get_where('vw_kry', ['auth_karyawan' => $auth_kary])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_personal = $list->id_personal;
+            }
+
+            return $id_personal;
+        } else {
+            return;
+        }
+    }
+
+    public function get_personal_by_auth($auth_person)
+    {
+        $query = $this->db->get_where('vw_personal', ['auth_personal' => $auth_person])->result();
+        return $query;
+    }
+
+    public function get_id_izin($auth_izin)
+    {
+        $query = $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin])->result();
 
         if (!empty($query)) {
             foreach ($query as $list) {
@@ -273,17 +500,45 @@ class Karyawan_model extends CI_Model
 
             return $id_izin;
         } else {
-            return 0;
+            return;
         }
     }
 
-    public function last_row_idmcu()
+    public function get_id_alamat($auth_person)
     {
-        $this->db->select("*");
-        $this->db->from("tb_mcu");
-        $this->db->limit(1);
-        $this->db->order_by('id_mcu', "DESC");
-        $query = $this->db->get()->result();
+        $query = $this->db->get_where('vw_alamat_karyawan', ['auth_personal' => $auth_person])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_alamat_ktp = $list->id_alamat_ktp;
+            }
+
+            return $id_alamat_ktp;
+        } else {
+            return;
+        }
+    }
+
+
+    public function get_id_karyawan($auth_kary)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_kary])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_karyawan = $list->id_kary;
+            }
+
+            return $id_karyawan;
+        } else {
+            return;
+        }
+    }
+
+
+    public function get_id_mcu($auth_person)
+    {
+        $query = $this->db->get_where('vw_mcu', ['auth_personal' => $auth_person])->result();
 
         if (!empty($query)) {
             foreach ($query as $list) {
@@ -292,7 +547,89 @@ class Karyawan_model extends CI_Model
 
             return $id_mcu;
         } else {
-            return 0;
+            return;
+        }
+    }
+
+    public function get_dt_mcu($auth_mcu)
+    {
+        return $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
+    }
+
+    public function hapus_mcu($auth_mcu)
+    {
+
+        $cek_id = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
+        if (!empty($cek_id)) {
+            foreach ($cek_id as $list) {
+                $id_mcu = $list->id_mcu;
+            }
+
+            $this->db->delete('tb_mcu', ['id_mcu' => $id_mcu]);
+            if ($this->db->affected_rows() > 0) {
+                return 200;
+            } else {
+                return 201;
+            }
+        } else {
+            return 202;
+        }
+    }
+
+    public function update_filependukung($auth_person, $dtpersonal)
+    {
+
+        $cek_id = $this->db->get_where('vw_personal', ['auth_personal' => $auth_person])->result();
+        if (!empty($cek_id)) {
+            foreach ($cek_id as $list) {
+                $id_personal = $list->id_personal;
+            }
+
+
+            $this->db->where('id_personal', $id_personal);
+            $this->db->update('tb_personal', $dtpersonal);
+            return 200;
+        } else {
+            return 202;
+        }
+    }
+
+    public function hapus_vaksin($auth_vaksin)
+    {
+
+        $cek_id = $this->db->get_where('vw_vaksin_kary', ['auth_vaksin' => $auth_vaksin])->result();
+        if (!empty($cek_id)) {
+            foreach ($cek_id as $list) {
+                $id_vaksin = $list->id_vaksin;
+            }
+
+            $this->db->delete('tb_vaksin_kary', ['id_vaksin' => $id_vaksin]);
+            if ($this->db->affected_rows() > 0) {
+                return 200;
+            } else {
+                return 201;
+            }
+        } else {
+            return 202;
+        }
+    }
+
+    public function last_row_authmcu()
+    {
+        $this->db->select("*");
+        $this->db->from("vw_mcu");
+        $this->db->limit(1);
+        $this->db->order_by('id_mcu', "DESC");
+        $query = $this->db->get()->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $auth_mcu = $list->auth_mcu;
+            }
+
+            return $auth_mcu;
+        } else {
+            return;
         }
     }
 
@@ -311,7 +648,7 @@ class Karyawan_model extends CI_Model
 
             return $id_sertifikasi;
         } else {
-            return 0;
+            return;
         }
     }
 
@@ -324,6 +661,12 @@ class Karyawan_model extends CI_Model
         } else {
             return 201;
         }
+    }
+
+    public function update_simper($id_izin, $dtizin)
+    {
+        $this->db->where('id_izin_tambang', $id_izin);
+        $this->db->update('tb_izin_tambang', $dtizin);
     }
 
     public function update_dtPersonal($idpersonal, $dt_personal)
@@ -369,11 +712,11 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    public function cek_nik($no_nik, $id_m_per)
+    public function cek_nik($no_nik, $id_per)
     {
         $cekdata = array(
             'no_nik' => $no_nik,
-            'id_m_perusahaan' => $id_m_per
+            'id_perusahaan' => $id_per
         );
 
         $query = $this->db->get_where('vw_karyawan', $cekdata);
@@ -393,6 +736,17 @@ class Karyawan_model extends CI_Model
             return false;
         }
     }
+
+    public function cek_no_simper($no_reg)
+    {
+        $query = $this->db->get_where('tb_izin_tambang', ['no_reg' => $no_reg]);
+        if (!empty($query->result())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     function get_stat_janji($stat_kerja)
     {

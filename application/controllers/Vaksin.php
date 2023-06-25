@@ -11,6 +11,8 @@ class Vaksin extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -23,6 +25,8 @@ class Vaksin extends My_Controller
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -113,13 +117,13 @@ class Vaksin extends My_Controller
                     return;
                }
 
-               $cekkode = $this->tpe->cek_kode($id_perusahaan, $kd_vaksin);
+               $cekkode = $this->tpe->cek_kode($kd_vaksin);
                if ($cekkode) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Kode sudah digunakan"));
                     return;
                }
 
-               $cekvaksin = $this->tpe->cek_vaksin($id_perusahaan, $vaksin);
+               $cekvaksin = $this->tpe->cek_vaksin($vaksin);
                if ($cekvaksin) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "vaksin sudah digunakan"));
                     return;

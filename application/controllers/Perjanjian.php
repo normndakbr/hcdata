@@ -11,6 +11,8 @@ class Perjanjian extends My_Controller
 
      public function index()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -18,11 +20,13 @@ class Perjanjian extends My_Controller
           $this->load->view('dashboard/stat_perjanjian/stat_perjanjian');
           $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
-          $this->load->view('dashboard/code/all');
+          $this->load->view('dashboard/code/statjanji');
      }
 
      public function new()
      {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
@@ -30,7 +34,7 @@ class Perjanjian extends My_Controller
           $this->load->view('dashboard/stat_perjanjian/stat_perjanjian_add');
           $this->load->view('dashboard/modal/mdlform');
           $this->load->view('dashboard/template/footer', $data);
-          $this->load->view('dashboard/code/all');
+          $this->load->view('dashboard/code/statjanji');
      }
 
      public function ajax_list()
@@ -43,7 +47,6 @@ class Perjanjian extends My_Controller
                $row = array();
                $row['no'] = $no;
                $row['auth_stat_perjanjian'] = $janji->auth_stat_perjanjian;
-               $row['kd_stat_perjanjian'] = $janji->kd_stat_perjanjian;
                $row['stat_perjanjian'] = $janji->stat_perjanjian;
                $row['ket_stat_perjanjian'] = $janji->ket_stat_perjanjian;
 
@@ -53,7 +56,12 @@ class Perjanjian extends My_Controller
                     $row['stat_stat_perjanjian'] = "<div class='btn btn-danger btn-sm'> NONAKTIF </div>";
                }
 
-               $row['kode_perusahaan'] = $janji->kode_perusahaan;
+               if ($janji->stat_waktu == "F") {
+                    $row['stat_waktu'] = "TANPA BATAS WAKTU";
+               } else {
+                    $row['stat_waktu'] = "DENGAN BATAS WAKTU";
+               }
+
                $row['tgl_buat'] = date('d-M-Y', strtotime($janji->tgl_buat));
                $row['tgl_edit'] = date('d-M-Y', strtotime($janji->tgl_edit));
                $row['proses'] = '<button id="' . $janji->auth_stat_perjanjian . '" class="btn btn-primary btn-sm font-weight-bold dtlstat_perjanjian" title="Detail" value="' . $janji->stat_perjanjian . '"> <i class="fas fa-asterisk"></i> </button> 
@@ -74,17 +82,12 @@ class Perjanjian extends My_Controller
 
      public function input_stat_perjanjian()
      {
-
-          $this->form_validation->set_rules("prs", "prs", "required|trim", [
-               'required' => 'Perusahaan wajib dipilih'
-          ]);
-          $this->form_validation->set_rules("kode", "kode", "required|trim|max_length[8]", [
-               'required' => 'Kode wajib diisi',
-               'max_length' => 'Kode maksimal 8 karakter'
+          $this->form_validation->set_rules("jenis_waktu", "jenis_waktu", "required|trim", [
+               'required' => 'Jenis waktu wajib dipilih'
           ]);
           $this->form_validation->set_rules("stat_perjanjian", "stat_perjanjian", "required|trim|max_length[100]", [
-               'required' => 'stat_perjanjian wajib diisi',
-               'max_length' => 'stat_perjanjian maksimal 100 karakter'
+               'required' => 'Status perjanjian wajib diisi',
+               'max_length' => 'Status perjanjian maksimal 100 karakter'
           ]);
           $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000],[
                'max_length' => 'Keterangan maksimal 1000 karakter'
@@ -93,8 +96,7 @@ class Perjanjian extends My_Controller
           if ($this->form_validation->run() == false) {
                $error = [
                     'statusCode' => 202,
-                    'prs' => form_error("prs"),
-                    'kode' => form_error("kode"),
+                    'jenis_waktu' => form_error("jenis_waktu"),
                     'stat_perjanjian' => form_error("stat_perjanjian"),
                     'ket' => form_error("ket")
                ];
@@ -102,38 +104,24 @@ class Perjanjian extends My_Controller
                echo json_encode($error);
                return;
           } else {
-               $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-               $kd_stat_perjanjian = htmlspecialchars($this->input->post("kode", true));
+               $jenis_waktu = htmlspecialchars($this->input->post("jenis_waktu", true));
                $stat_perjanjian = htmlspecialchars($this->input->post("stat_perjanjian", true));
                $ket_stat_perjanjian = htmlspecialchars($this->input->post("ket", true));
-               $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
-               if ($id_perusahaan == 0) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
-                    return;
-               }
-
-               $cekkode = $this->janji->cek_kode($id_perusahaan, $kd_stat_perjanjian);
-               if ($cekkode) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Kode sudah digunakan"));
-                    return;
-               }
-
-               $cekstat_perjanjian = $this->janji->cek_stat_perjanjian($id_perusahaan, $stat_perjanjian);
+               $cekstat_perjanjian = $this->janji->cek_stat_perjanjian($stat_perjanjian);
                if ($cekstat_perjanjian) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Status perjanjian sudah digunakan"));
                     return;
                }
 
                $data = [
-                    'kd_stat_perjanjian' => $kd_stat_perjanjian,
                     'stat_perjanjian' => $stat_perjanjian,
                     'ket_stat_perjanjian' => $ket_stat_perjanjian,
                     'stat_stat_perjanjian' => 'T',
+                    'stat_waktu' => $jenis_waktu,
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user'),
-                    'id_perusahaan' => $id_perusahaan
+                    'id_user' => $this->session->userdata('id_user')
                ];
 
                $stat_perjanjian = $this->janji->input_stat_perjanjian($data);
@@ -173,19 +161,26 @@ class Perjanjian extends My_Controller
                          $status = "NONAKTIF";
                     }
 
+                    $stt_waktu = $list->stat_waktu;
+
+                    if ($list->stat_waktu == "F") {
+                         $stat_waktu = "TANPA BATAS WAKTU";
+                    } else {
+                         $stat_waktu = "DENGAN BATAS WAKTU";
+                    }
+
                     $data = [
                          'statusCode' => 200,
-                         'nama_perusahaan' => $list->nama_perusahaan,
-                         'kode' => $list->kd_stat_perjanjian,
                          'stat_perjanjian' => $list->stat_perjanjian,
                          'ket' => $list->ket_stat_perjanjian,
                          'status' => $status,
+                         'stt_waktu' =>  $stt_waktu,
+                         'stat_waktu' => $stat_waktu,
                          'tgl_buat' => date('d-M-Y H:i:s', strtotime($list->tgl_buat)),
                          'pembuat' => $list->nama_user
                     ];
 
                     $this->session->set_userdata('id_stat_perjanjian', $list->id_stat_perjanjian);
-                    $this->session->set_userdata('id_perusahaan', $list->id_perusahaan);
                }
                echo json_encode($data);
           } else {
@@ -195,13 +190,12 @@ class Perjanjian extends My_Controller
 
      public function edit_stat_perjanjian()
      {
-          $this->form_validation->set_rules("kode", "kode", "required|trim|max_length[8]", [
-               'required' => 'Kode wajib diisi',
-               'max_length' => 'Kode maksimal 8 karakter'
+          $this->form_validation->set_rules("stat_waktu", "stat_waktu", "required|trim", [
+               'required' => 'Jenis waktu wajib dipilih'
           ]);
           $this->form_validation->set_rules("stat_perjanjian", "stat_perjanjian", "required|trim|max_length[100]", [
-               'required' => 'stat_perjanjian wajib diisi',
-               'max_length' => 'stat_perjanjian maksimal 100 karakter'
+               'required' => 'Status perjanjian wajib diisi',
+               'max_length' => 'Status perjanjian maksimal 100 karakter'
           ]);
           $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000],[
                'max_length' => 'Keterangan maksimal 1000 karakter'
@@ -213,7 +207,7 @@ class Perjanjian extends My_Controller
           if ($this->form_validation->run() == false) {
                $error = [
                     'statusCode' => 202,
-                    'kode' => form_error("kode"),
+                    'stat_waktu' => form_error("stat_waktu"),
                     'stat_perjanjian' => form_error("stat_perjanjian"),
                     'status' => form_error("status")
                ];
@@ -221,17 +215,13 @@ class Perjanjian extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_perusahaan') == "") {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
-                    return;
-               }
 
                if ($this->session->userdata('id_stat_perjanjian') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Status perjanjian tidak ditemukan"));
                     return;
                }
 
-               $kd_stat_perjanjian = htmlspecialchars($this->input->post("kode", true));
+               $stat_waktu = htmlspecialchars($this->input->post("kode", true));
                $stat_perjanjian = htmlspecialchars($this->input->post("stat_perjanjian", true));
                $ket_stat_perjanjian = htmlspecialchars($this->input->post("ket", true));
                if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
@@ -240,13 +230,11 @@ class Perjanjian extends My_Controller
                     $status = "F";
                }
 
-               $stat_perjanjian = $this->janji->edit_stat_perjanjian($kd_stat_perjanjian, $stat_perjanjian, $ket_stat_perjanjian, $status);
+               $stat_perjanjian = $this->janji->edit_stat_perjanjian($stat_waktu, $stat_perjanjian, $ket_stat_perjanjian, $status);
                if ($stat_perjanjian == 200) {
                     echo json_encode(array("statusCode" => 200, "pesan" => "Status perjanjian berhasil diupdate"));
                } else if ($stat_perjanjian == 201) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Status perjanjian gagal diupdate"));
-               } else if ($stat_perjanjian == 203) {
-                    echo json_encode(array("statusCode" => 203, "pesan" => "Kode sudah digunakan"));
                } else if ($stat_perjanjian == 204) {
                     echo json_encode(array("statusCode" => 205, "pesan" => "Status perjanjian sudah digunakan"));
                }

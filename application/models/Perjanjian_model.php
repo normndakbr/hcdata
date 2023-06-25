@@ -5,9 +5,9 @@ class Perjanjian_model extends CI_Model
 {
 
      var $table = 'vw_stat_perjanjian';
-     var $column_order = array(null, 'kd_stat_perjanjian', 'stat_perjanjian', 'ket_stat_perjanjian', 'stat_stat_perjanjian', 'tgl_buat', null); //set column field database for datatable orderable
-     var $column_search = array('kd_stat_perjanjian', 'stat_perjanjian', 'ket_stat_perjanjian', 'stat_stat_perjanjian', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
-     var $order = array('kd_stat_perjanjian' => 'desc'); // default order 
+     var $column_order = array(null, 'stat_perjanjian', 'ket_stat_perjanjian', 'stat_stat_perjanjian', 'stat_waktu', 'tgl_buat', null); //set column field database for datatable orderable
+     var $column_search = array('stat_perjanjian', 'ket_stat_perjanjian', 'stat_stat_perjanjian', 'stat_waktu', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+     var $order = array('id_stat_perjanjian' => 'desc'); // default order 
 
      public function __construct()
      {
@@ -100,19 +100,9 @@ class Perjanjian_model extends CI_Model
           }
      }
 
-     public function cek_kode($id_perusahaan, $kd_stat_perjanjian)
+     public function cek_stat_perjanjian($stat_perjanjian)
      {
-          $query = $this->db->get_where('tb_stat_perjanjian', ['kd_stat_perjanjian' => $kd_stat_perjanjian, 'id_perusahaan' => $id_perusahaan]);
-          if (!empty($query->result())) {
-               return true;
-          } else {
-               return false;
-          }
-     }
-
-     public function cek_stat_perjanjian($id_perusahaan, $stat_perjanjian)
-     {
-          $query = $this->db->get_where('tb_stat_perjanjian', ['stat_perjanjian' => $stat_perjanjian, 'id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get_where('tb_stat_perjanjian', ['stat_perjanjian' => $stat_perjanjian]);
           if (!empty($query->result())) {
                return true;
           } else {
@@ -145,23 +135,20 @@ class Perjanjian_model extends CI_Model
           return $query->result();
      }
 
-     public function edit_stat_perjanjian($kd_stat_perjanjian, $stat_perjanjian, $ket_stat_perjanjian, $status)
+     public function edit_stat_perjanjian($jenis_waktu, $stat_perjanjian, $ket_stat_perjanjian, $status)
      {
-          $id_perusahaan = $this->session->userdata('id_perusahaan');
           $id_stat_perjanjian = $this->session->userdata('id_stat_perjanjian');
 
-          $query = $this->db->query("SELECT * FROM tb_stat_perjanjian WHERE kd_stat_perjanjian='" . $kd_stat_perjanjian . "' AND id_perusahaan=" . $id_perusahaan . " AND id_stat_perjanjian <> " . $id_stat_perjanjian);
-          if (!empty($query->result())) {
-               return 203;
-          }
+          $query = $this->db->query("SELECT * FROM tb_stat_perjanjian WHERE stat_perjanjian='" . $stat_perjanjian .
+               "' AND stat_waktu='" . $jenis_waktu .
+               "' AND id_stat_perjanjian <> " . $id_stat_perjanjian);
 
-          $query = $this->db->query("SELECT * FROM tb_stat_perjanjian WHERE stat_perjanjian='" . $stat_perjanjian . "' AND id_perusahaan=" . $id_perusahaan . " AND id_stat_perjanjian <> " . $id_stat_perjanjian);
           if (!empty($query->result())) {
                return 204;
           }
 
-          $this->db->set('kd_stat_perjanjian', $kd_stat_perjanjian);
           $this->db->set('stat_perjanjian', $stat_perjanjian);
+          $this->db->set('stat_waktu', $jenis_waktu);
           $this->db->set('ket_stat_perjanjian', $ket_stat_perjanjian);
           $this->db->set('stat_stat_perjanjian', $status);
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
@@ -177,18 +164,6 @@ class Perjanjian_model extends CI_Model
      public function get_all()
      {
           return $this->db->get('vw_stat_perjanjian')->result();
-     }
-
-     public function get_by_authper($auth_per)
-     {
-          $query = $this->db->get_where('vw_stat_perjanjian', ['auth_perusahaan' => $auth_per]);
-          return $query->result();
-     }
-
-     public function get_by_idper($id_per)
-     {
-          $query = $this->db->get_where('vw_stat_perjanjian', ['id_perusahaan' => $id_per]);
-          return $query->result();
      }
 
      public function get_stat_Waktu($stat_kary)

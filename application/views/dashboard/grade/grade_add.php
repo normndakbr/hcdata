@@ -63,14 +63,14 @@
                               </div>
                               <div class="row ">
                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="perGrade">Perusahaan :</label><br>
+                                        <label for="perGrade">Perusahaan <span class="text-danger">*</span></label><br>
                                         <select id='perGrade' name='perGrade' class="form-control form-control-user">
                                              <option value="">-- Pilih Perusahaan --</option>
                                         </select>
                                         <small class="error1 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="lvlGrade">Level :</label><br>
+                                        <label for="lvlGrade">Level <span class="text-danger">*</span></label><br>
                                         <select id='lvlGrade' name='lvlGrade' class="form-control form-control-user">
                                              <option value="">-- Pilih Level --</option>
                                         </select>
@@ -80,12 +80,12 @@
                                         <hr>
                                    </div>
                                    <div class="col-lg-2 col-md-2 col-sm-12">
-                                        <label for="Grade">Grade :</label>
-                                        <input id='Grade' type="number" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <label for="Grade">Grade <span class="text-danger">*</span></label>
+                                        <input id='Grade' type="number" autocomplete="off" spellcheck="false" placeholder="Isi dengan angka" class="form-control form-control-user" value="" required>
                                         <small class="error4 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="ketGrade">Keterangan :</label><br>
+                                        <label for="ketGrade">Keterangan </label><br>
                                         <textarea id='ketGrade' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small class="error5 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
@@ -101,4 +101,24 @@
           </div>
      </div>
 </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
+          <div class="modal-content">
+               <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Log out</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                    </button>
+               </div>
+               <div class="modal-body">
+                    <h5>Pilih "Keluar" jika ingin mengakhir pekerjaan</h5>
+               </div>
+               <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
+                    <a href="<?= base_url(); ?>dash/logout" type="button" class="btn btn-primary">Keluar</a>
+               </div>
+          </div>
+     </div>
 </div>
