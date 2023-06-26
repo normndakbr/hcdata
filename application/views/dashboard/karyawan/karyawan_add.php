@@ -52,7 +52,7 @@
                          <div class="card-body">
                               <div class="mt-3">
                                    <div class="mb-2">
-                                        <button id="addbtn" class="btnrespage btn btn-warning font-weight-bold mb-3">Reset</button>
+                                        <button id="addbtn" class="btnrespage btn btn-warning font-weight-bold mb-3 d-none">Reset</button>
                                    </div>
                               </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>

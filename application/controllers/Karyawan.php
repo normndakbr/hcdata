@@ -753,7 +753,7 @@ class Karyawan extends My_Controller
                          } else {
                               $foldername = md5($id_personal);
                               if (is_dir('./assets/berkas/karyawan/' . $foldername) == false) {
-                                   mkdir('./assets/berkas/karyawan/' . $foldername, 0777, TRUE);
+                                   mkdir('./assets/berkas/karyawan/' . $foldername, 0775, TRUE);
                               }
 
                               $data = [
