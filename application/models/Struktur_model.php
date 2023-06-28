@@ -604,7 +604,7 @@ class Struktur_model extends CI_Model
      {
 
           if ($parent !== 0) {
-               $n = $this->db->query("SELECT * from vw_m_perusahaan where id_m_perusahaan=" . $parent);
+               $n = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $parent);
                foreach ($n->result() as $h) {
                     if ($h->id_parent == 0) {
                          $nm_per = "";
@@ -616,7 +616,7 @@ class Struktur_model extends CI_Model
                $nm_per = "";
           }
 
-          $w = $this->db->query("SELECT * from vw_m_perusahaan where id_m_perusahaan=" . $parent);
+          $w = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $parent);
 
           foreach ($w->result() as $h) {
                $hasil .= "<option value='" . $h->auth_m_perusahaan . "'>" . $h->nama_m_perusahaan . $nm_per . "</option>";
@@ -653,6 +653,67 @@ class Struktur_model extends CI_Model
                }
 
                $hasil = $this->getMenu($h->id_m_perusahaan, $hasil);
+          }
+          if (($w->num_rows()) > 0) {
+               $space = substr($space, 0, strlen($space) - 7);
+          }
+
+          return $hasil;
+     }
+
+     function getMasterPrs($parent, $hasil)
+     {
+
+          if ($parent !== 0) {
+               $n = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $parent);
+               foreach ($n->result() as $h) {
+                    if ($h->id_parent == 0) {
+                         $nm_per = "";
+                    } else {
+                         $nm_per = " | " . $h->kode_perusahaan;
+                    }
+               }
+          } else {
+               $nm_per = "";
+          }
+
+          $w = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $parent);
+
+          foreach ($w->result() as $h) {
+               $hasil .= "<option value='" . $h->auth_perusahaan . "'>" . $h->nama_m_perusahaan . $nm_per . "</option>";
+          }
+
+          return $hasil;
+     }
+
+     function getMenuPrs($parent, $hasil)
+     {
+
+          static $space;
+
+          $w = $this->db->query("SELECT * from vw_m_prs where id_parent='" . $parent . "'");
+          if (($w->num_rows()) > 0) {
+               $space .= "&roarr;";
+          }
+
+          foreach ($w->result() as $h) {
+
+               if ($h->id_parent == 0) {
+                    $hasil .= "<option value='" . $h->auth_perusahaan . "'>" . $h->nama_m_perusahaan . "</option>";
+               } else {
+                    $n = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $h->id_parent);
+                    if (!empty($n->result())) {
+                         foreach ($n->result() as $n) {
+                              $nm_per = " | " . $n->kode_perusahaan;
+                         }
+                    } else {
+                         $nm_per = "";
+                    }
+
+                    $hasil .= "<option value='" . $h->auth_perusahaan . "'>" . $space . " " . $h->nama_m_perusahaan .  $nm_per . "</option>";
+               }
+
+               $hasil = $this->getMenuPrs($h->id_m_perusahaan, $hasil);
           }
           if (($w->num_rows()) > 0) {
                $space = substr($space, 0, strlen($space) - 7);

@@ -60,7 +60,7 @@
         $("#addLokasiKerja").select2({
             theme: 'bootstrap4'
         });
-        $('#addGradeKary').select2({
+        $('#addLevelKary').select2({
             theme: 'bootstrap4'
         });
         $('#addStatusResidence').select2({
@@ -141,7 +141,7 @@
             $("#addLokasiKerja").select2({
                 theme: 'bootstrap4'
             });
-            $('#addGradeKary').select2({
+            $('#addLevelKary').select2({
                 theme: 'bootstrap4'
             });
             $('#addStatusResidence').select2({
@@ -323,7 +323,7 @@
             $("#addPOHKary").removeAttr('disabled');
             $("#addKlasifikasiKary").removeAttr('disabled');
             $("#addJenisKaryawan").removeAttr('disabled');
-            $("#addGradeKary").removeAttr('disabled');
+            $("#addLevelKary").removeAttr('disabled');
             $("#addStatusResidence").removeAttr('disabled');
             $("#addStatusKaryawan").removeAttr('disabled');
             $("#addTipeKaryawan").removeAttr('disabled');
@@ -335,7 +335,7 @@
             $("#refreshPosisi").removeAttr('disabled');
             $("#refreshKlasifikasi").removeAttr('disabled');
             $("#refreshTipe").removeAttr('disabled');
-            $("#refreshGrade").removeAttr('disabled');
+            $("#refreshLevel").removeAttr('disabled');
             $("#refreshPOH").removeAttr('disabled');
             $("#refreshLokterima").removeAttr('disabled');
             $("#refreshLokker").removeAttr('disabled');
@@ -357,7 +357,7 @@
             $("#addPOHKary").attr('disabled', true);
             $("#addKlasifikasiKary").attr('disabled', true);
             $("#addJenisKaryawan").attr('disabled', true);
-            $("#addGradeKary").attr('disabled', true);
+            $("#addLevelKary").attr('disabled', true);
             $("#addStatusResidence").attr('disabled', true);
             $("#addStatusKaryawan").attr('disabled', true);
             $("#addTipeKaryawan").attr('disabled', true);
@@ -369,7 +369,7 @@
             $("#refreshPosisi").attr('disabled', true);
             $("#refreshKlasifikasi").attr('disabled', true);
             $("#refreshTipe").attr('disabled', true);
-            $("#refreshGrade").attr('disabled', true);
+            $("#refreshLevel").attr('disabled', true);
             $("#refreshPOH").attr('disabled', true);
             $("#refreshLokterima").attr('disabled', true);
             $("#refreshLokker").attr('disabled', true);
@@ -1483,31 +1483,31 @@
             });
         });
 
-        $("#refreshGrade").click(function() {
+        $("#refreshLevel").click(function() {
             let auth_per = $("#addPerKary").val();
-            $("#txtgradekary").LoadingOverlay("show");
+            $("#txtLevelkary").LoadingOverlay("show");
 
             if (auth_per != "") {
                 $.ajax({
                     type: "POST",
-                    url: site_url+"grade/get_all",
+                    url: site_url+"level/get_all",
                     data: {
                         auth_per: auth_per
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
-                        $("#addGradeKary").html(data.grd);
-                        $("#txtgradekary").LoadingOverlay("hide");
-                        $("#addGradeKary").removeAttr('disabled');
-                        $("#refreshGrade").removeAttr('disabled');
+                        $("#addLevelKary").html(data.grd);
+                        $("#txtLevelkary").LoadingOverlay("hide");
+                        $("#addLevelKary").removeAttr('disabled');
+                        $("#refreshLevel").removeAttr('disabled');
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
-                        $("#txtgradekary").LoadingOverlay("hide");
+                        $("#txtLevelkary").LoadingOverlay("hide");
                         $(".errormsg").removeClass('d-none');
                         $(".errormsg").removeClass('alert-info');
                         $(".errormsg").addClass('alert-danger');
                         if (thrownError != "") {
-                            $(".errormsg").html("Terjadi kesalahan saat load data grade, hubungi administrator");
+                            $(".errormsg").html("Terjadi kesalahan saat load data level, hubungi administrator");
                             $("#addSimpanPekerjaan").remove();
                         }
                     }
@@ -1635,7 +1635,7 @@
             $("#txtposisikary").LoadingOverlay("show");
             $("#txtlokterimakary").LoadingOverlay("show");
             $("#txtpohkary").LoadingOverlay("show");
-            $("#txtgradekary").LoadingOverlay("show");
+            $("#txtLevelkary").LoadingOverlay("show");
 
             $.ajax({
                 type: "POST",
@@ -1669,15 +1669,15 @@
 
             $.ajax({
                 type: "POST",
-                url: site_url+"grade/get_all",
+                url: site_url+"level/get_all",
                 data: {
                     auth_per: auth_per
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
-                    $("#addGradeKary").html(data.grd);
-                    $("#addGradeKary").removeAttr('disabled');
-                    $("#refreshGrade").removeAttr('disabled');
+                    $("#addLevelKary").html(data.grd);
+                    $("#addLevelKary").removeAttr('disabled');
+                    $("#refreshLevel").removeAttr('disabled');
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
@@ -1685,7 +1685,7 @@
                     $(".errormsg").removeClass('alert-info');
                     $(".errormsg").addClass('alert-danger');
                     if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat load data grade, hubungi administrator");
+                        $(".errormsg").html("Terjadi kesalahan saat load data level, hubungi administrator");
                         $("#addSimpanPekerjaan").remove();
                     }
                 }
@@ -1720,7 +1720,7 @@
             $("#txtposisikary").LoadingOverlay("hide");
             $("#txtlokterimakary").LoadingOverlay("hide");
             $("#txtpohkary").LoadingOverlay("hide");
-            $("#txtgradekary").LoadingOverlay("hide");
+            $("#txtLevelkary").LoadingOverlay("hide");
         }
 
         $("#addPerKary").change(function() {
@@ -1795,15 +1795,15 @@
             } else {
                 $('#addDepartKary').html('<option value="">-- WAJIB DIPILIH --</option>');
                 $('#addPosisiKary').html('<option value="">-- WAJIB DIPILIH --</option>');
-                $('#addGradeKary').html('<option value="">-- WAJIB DIPILIH --</option>');
+                $('#addLevelKary').html('<option value="">-- WAJIB DIPILIH --</option>');
                 $('#addLokterimaKary').html('<option value="">-- WAJIB DIPILIH --</option>');
                 $('#addDepartKary').attr('disabled', true)
                 $('#addPosisiKary').attr('disabled', true)
-                $('#addGradeKary').attr('disabled', true)
+                $('#addLevelKary').attr('disabled', true)
                 $('#addLokterimaKary').attr('disabled', true)
                 $('#refreshDepart').attr('disabled', true)
                 $('#refreshPosisi').attr('disabled', true)
-                $('#refreshGrade').attr('disabled', true)
+                $('#refreshLevel').attr('disabled', true)
                 $('#refreshLokterima').attr('disabled', true)
             }
 
@@ -2648,7 +2648,7 @@
             let id_poh = $("#addPOHKary").val();
             let id_klasifikasi = $("#addKlasifikasiKary").val();
             let id_tipe = $("#addTipeKaryawan").val();
-            let id_grade = $("#addGradeKary").val();
+            let id_level = $("#addLevelKary").val();
             let stat_tinggal = $("#addStatusResidence").val();
             let stat_kerja = $("#addStatusKaryawan").val();
             let email_kantor = $("#addEmailKantor").val();
@@ -2703,7 +2703,7 @@
                         id_poh: id_poh,
                         id_klasifikasi: id_klasifikasi,
                         id_tipe: id_tipe,
-                        id_grade: id_grade,
+                        id_level: id_level,
                         stat_tinggal: stat_tinggal,
                         stat_kerja: stat_kerja,
                         email_kantor: email_kantor,
@@ -2746,7 +2746,7 @@
                             $(".erroraddPOHKary").html(data.id_poh);
                             $(".erroraddLokterimaKary").html(data.id_lokterima);
                             $(".erroraddLokasiKerja").html(data.id_lokker);
-                            $(".erroraddGradeKary").html(data.id_grade);
+                            $(".erroraddLevelKary").html(data.id_level);
                             $(".erroraddStatusResidence").html(data.stat_tinggal);
                             $(".erroraddDOH").html(data.doh);
                             $(".erroraddTanggalAktif").html(data.tgl_aktif);
@@ -2826,7 +2826,7 @@
                                 id_poh: id_poh,
                                 id_klasifikasi: id_klasifikasi,
                                 id_tipe: id_tipe,
-                                id_grade: id_grade,
+                                id_level: id_level,
                                 stat_tinggal: stat_tinggal,
                                 stat_kerja: stat_kerja,
                                 email_kantor: email_kantor,
@@ -2869,7 +2869,7 @@
                                     $(".erroraddPOHKary").html(data.id_poh);
                                     $(".erroraddLokterimaKary").html(data.id_lokterima);
                                     $(".erroraddLokasiKerja").html(data.id_lokker);
-                                    $(".erroraddGradeKary").html(data.id_grade);
+                                    $(".erroraddLevelKary").html(data.id_level);
                                     $(".erroraddStatusResidence").html(data.stat_tinggal);
                                     $(".erroraddDOH").html(data.doh);
                                     $(".erroraddTanggalAktif").html(data.tgl_aktif);
@@ -3699,6 +3699,52 @@
             $("#mdlnewsertifikat").modal("show");
         });
 
+        $(document).on("click", ".btnHapusKary", function() {
+            let auth_kary = $(this).attr("id");
+            let nama_kary = $(this).attr("value");
+
+            swal({
+                title: "Hapus Data Karyawan",
+                text: "Yakin semua data karyawan atas nama : "+nama_kary+" akan dihapus? termasuk file yang telah diupload, data tidak dapat dikembalikan",
+                type: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#36c6d3',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batalkan'
+            }).then(function(result) {
+                if (result.value) {
+                    $.LoadingOverlay("show");
+                    $.ajax({
+                        type: "POST",
+                        url: site_url+"karyawan/hapus_karyawan",
+                        data: {
+                            auth_kary:auth_kary
+                        },
+                        success: function(data) {
+                            var data = JSON.parse(data);
+                            if(data.statusCode==200){
+                                tbmKaryawan.draw();
+                            } else {
+
+                            }
+                        },
+                        error: function(xhr, ajaxOptions, thrownError) {
+                            $.LoadingOverlay("hide");
+                            $(".errormsg").removeClass('d-none');
+                            $(".errormsg").removeClass('alert-info');
+                            $(".errormsg").addClass('alert-danger');
+                            if (thrownError != "") {
+                                $(".errormsg").html("Terjadi kesalahan saat load data jenis sertifikasi, hubungi administrator");
+                                $("#addSimpanSertifikasi").remove();
+                                $("#addResetSertifikasi").remove();
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
         $("#masaBerlakuSertifikatNew").change(function() {
             let tglsrt = $("#tanggalSertifikasiNew").val();
             let masa = $("#masaBerlakuSertifikatNew").val();
@@ -4171,18 +4217,12 @@
                         "width": "1%"
                     },
                     {
-                        "data": 'no_ktp',
-                        "className": "align-middle align-middle",
-                    },
-                    {
                         "data": 'no_nik',
-                        "className": "align-middle align-middle",
-                        "visible": false,
-                        "searching" : true
+                        "className": "align-middle ",
                     },
                     {
                         "data": 'nama_lengkap',
-                        "className": "align-middle align-middle",
+                        "className": " align-middle",
                     },
                     {
                         "data": 'depart',

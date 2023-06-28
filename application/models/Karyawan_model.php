@@ -80,9 +80,19 @@ class Karyawan_model extends CI_Model
     {
         $this->db->from('vw_alamat_karyawan');
         $this->db->where('id_kary', $id);
+        $this->db->where('stat_alamat_ktp', 'T');
         $query = $this->db->get();
 
         return $query->row();
+    }
+
+    public function get_alamat_by_id_person($id_personal)
+    {
+        $this->db->from('tb_alamat_ktp');
+        $this->db->where('id_personal', $id_personal);
+        $query = $this->db->get();
+
+        return $query->result();
     }
 
     public function get_by_id($id)
@@ -253,6 +263,40 @@ class Karyawan_model extends CI_Model
     public function input_dtKaryawan($data)
     {
         $this->db->insert('tb_karyawan', $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function hapus_karyawan($auth_kary)
+    {
+
+        $dtkary = $this->get_by_auth($auth_kary);
+        if (!empty($dtkary)) {
+            foreach ($dtkary as $list) {
+                $idkaryawan = $list->id_kary;
+                $idpersonal = $list->id_personal;
+
+                $dtalamat = $this->get_alamat_by_id_person($idpersonal);
+                foreach ($dtalamat as $lst) {
+                    $idalamat = $lst->id_alamat_ktp;
+                    if (!empty($idalamat)) {
+                        $this->db->delete('tb_alamat_ktp', ['id_alamat_kary' => $idalamat]);
+                    }
+                }
+
+                if (!empty($idkaryawan)) {
+                    $this->db->delete('tb_karyawan', ['id_kary' => $idkaryawan]);
+                }
+
+                if (!empty($idpersonal)) {
+                    $this->db->delete('tb_personal', ['id_personal' => $idpersonal]);
+                }
+            }
+        }
+
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {

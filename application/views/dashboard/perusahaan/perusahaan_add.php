@@ -125,7 +125,7 @@
                                         </div>
                                         <small class="error8 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                   <div class="col-lg-12 col-md-12 col-sm-12 d-none">
                                         <label for="kegPerusahaan">Kegiatan </label><br>
                                         <textarea id='kegPerusahaan' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
                                         <small class="error13 text-danger font-italic font-weight-bold"></small>

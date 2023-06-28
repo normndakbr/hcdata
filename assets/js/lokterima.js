@@ -8,48 +8,52 @@
             theme: 'bootstrap4'
         });
 
-        $.ajax({
-            type: "POST",
-            url: site_url+"perusahaan/get_all",
-            data: {},
-            success: function(data) {
-                var data = JSON.parse(data);
-                $("#perLokterima").html(data.prs);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                $.LoadingOverlay("hide");
-                $(".err_psn_lokterima").removeClass('d-none');
-                $(".err_psn_lokterima").removeClass('alert-info');
-                $(".err_psn_lokterima").addClass('alert-danger');
-                if (thrownError != "") {
-                    $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                    $("#btnTambahLokterima").attr("disabled", true);
-                }
-            }
+        $('#perLokterimaData').select2({
+            theme: 'bootstrap4'
         });
 
-        $.ajax({
-            type: "POST",
-            url: site_url+"perusahaan/get_all",
-            data: {},
-            success: function(data) {
-                var data = JSON.parse(data);
-                $("#perLokterimaData").html(data.prs);
-                $('#perLokterimaData').select2({
-                    theme: 'bootstrap4'
-                });
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                $.LoadingOverlay("hide");
-                $(".err_psn_lokterima").removeClass('d-none');
-                $(".err_psn_lokterima").removeClass('alert-info');
-                $(".err_psn_lokterima").addClass('alert-danger');
-                if (thrownError != "") {
-                    $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                    $("#btnTambahLokterima").attr("disabled", true);
-                }
-            }
-        })
+        // $.ajax({
+        //     type: "POST",
+        //     url: site_url+"perusahaan/get_all",
+        //     data: {},
+        //     success: function(data) {
+        //         var data = JSON.parse(data);
+        //         $("#perLokterima").html(data.prs);
+        //     },
+        //     error: function(xhr, ajaxOptions, thrownError) {
+        //         $.LoadingOverlay("hide");
+        //         $(".err_psn_lokterima").removeClass('d-none');
+        //         $(".err_psn_lokterima").removeClass('alert-info');
+        //         $(".err_psn_lokterima").addClass('alert-danger');
+        //         if (thrownError != "") {
+        //             $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
+        //             $("#btnTambahLokterima").attr("disabled", true);
+        //         }
+        //     }
+        // });
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: site_url+"perusahaan/get_all",
+        //     data: {},
+        //     success: function(data) {
+        //         var data = JSON.parse(data);
+        //         $("#perLokterimaData").html(data.prs);
+        //         $('#perLokterimaData').select2({
+        //             theme: 'bootstrap4'
+        //         });
+        //     },
+        //     error: function(xhr, ajaxOptions, thrownError) {
+        //         $.LoadingOverlay("hide");
+        //         $(".err_psn_lokterima").removeClass('d-none');
+        //         $(".err_psn_lokterima").removeClass('alert-info');
+        //         $(".err_psn_lokterima").addClass('alert-danger');
+        //         if (thrownError != "") {
+        //             $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
+        //             $("#btnTambahLokterima").attr("disabled", true);
+        //         }
+        //     }
+        // })
 
         $.ajax({
             type: "POST", 
