@@ -420,6 +420,16 @@ class Karyawan extends My_Controller
           }
      }
 
+     function get_id_level($auth_level)
+     {
+          $query = $this->lvl->get_id_level($auth_level);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
+
      function get_id_poh($auth_poh)
      {
           $query = $this->pho->get_id_poh($auth_poh);
@@ -550,9 +560,9 @@ class Karyawan extends My_Controller
                $auth_lokker = htmlspecialchars($this->input->post("id_lokker", true));
                $auth_lokterima = htmlspecialchars($this->input->post("id_lokterima", true));
                $auth_poh = htmlspecialchars($this->input->post("id_poh", true));
+               $auth_level = htmlspecialchars($this->input->post("id_level", true));
                $id_klasifikasi = htmlspecialchars($this->input->post("id_klasifikasi", true));
                $id_tipe = htmlspecialchars($this->input->post("id_tipe", true));
-               $id_grade = htmlspecialchars($this->input->post("id_grade", true));
                $doh = htmlspecialchars($this->input->post("doh", true));
                $tgl_aktif = htmlspecialchars($this->input->post("tgl_aktif", true));
                $stat_tinggal = htmlspecialchars($this->input->post("stat_tinggal", true));
@@ -668,6 +678,7 @@ class Karyawan extends My_Controller
                     $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
                     $id_depart = $this->get_id_depart($auth_depart);
                     $id_posisi = $this->get_id_posisi($auth_posisi);
+                    $id_level = $this->get_id_level($auth_level);
                     $id_lokterima = $this->get_id_lokterima($auth_lokterima);
                     $id_lokker = $this->get_id_lokker($auth_lokker);
                     $id_poh = $this->get_id_poh($auth_poh);
@@ -680,7 +691,8 @@ class Karyawan extends My_Controller
                          'tgl_aktif' => $tgl_aktif,
                          'id_depart' => $id_depart,
                          'id_posisi' => $id_posisi,
-                         'id_grade' => $id_grade,
+                         'id_grade' => 0,
+                         'id_level' => $id_level,
                          'id_lokker' => $id_lokker,
                          'id_lokterima' => $id_lokterima,
                          'id_poh' => $id_poh,
@@ -776,6 +788,7 @@ class Karyawan extends My_Controller
                               $this->kry->input_dtAlamat($data);
                               $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
                               $id_depart = $this->get_id_depart($auth_depart);
+                              $id_level = $this->get_id_level($auth_level);
                               $id_posisi = $this->get_id_posisi($auth_posisi);
                               $id_lokterima = $this->get_id_lokterima($auth_lokterima);
                               $id_lokker = $this->get_id_lokker($auth_lokker);
@@ -791,8 +804,8 @@ class Karyawan extends My_Controller
                                    'id_depart' => $id_depart,
                                    'id_section' => 0,
                                    'id_posisi' => $id_posisi,
-                                   'id_grade' => $id_grade,
-                                   'id_level' => 0,
+                                   'id_grade' => 0,
+                                   'id_level' => $id_level,
                                    'id_lokker' => $id_lokker,
                                    'id_lokterima' => $id_lokterima,
                                    'id_poh' => $id_poh,
@@ -1885,6 +1898,27 @@ class Karyawan extends My_Controller
           }
      }
 
+     function hapus_karyawan($hapus_karyawan)
+     {
+          $dtmcu = $this->kry->hapus_karyawan($hapus_karyawan);
+          if (!empty($dtmcu)) {
+               foreach ($dtmcu as $list) {
+                    $url_file = $list->url_file;
+                    $id_personal = $list->id_personal;
+               }
+               $foldername = md5($id_personal);
+               if (is_file("assets/berkas/karyawan/" . $foldername . "/" . $url_file)) {
+                    $tofile = realpath("assets/berkas/karyawan/" . $foldername . "/" . $url_file);
+                    header('Content-Type: application/pdf');
+                    readfile($tofile);
+               } else {
+                    redirect('karyawan/error404');
+               }
+          } else {
+               redirect('karyawan/error404');
+          }
+     }
+
      function sertifikat($auth_sertifikat)
      {
           $dtsertifikat = $this->srt->get_sertifikasi_id($auth_sertifikat);
@@ -1966,10 +2000,13 @@ class Karyawan extends My_Controller
                <div class="dropdown dropleft"><button id="' . $kry->auth_karyawan . '" class="btn btn-success btn-sm font-weight-bold aksikary" aria-haspopup="true" title="Aksi" data-toggle="dropdown" aria-expanded="false" value="' . $kry->nama_lengkap . '"> ... </button> 
                     <div class="dropdown-menu">
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail_karyawan/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" value="' . $kry->nama_lengkap . '">Edit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" title ="Sertifikasi" href="#!">Sertifikasi</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" title ="MCU" href="#!">MCU</a>
                     </div>
                     </div>';
+
                $data[] = $row;
           }
 

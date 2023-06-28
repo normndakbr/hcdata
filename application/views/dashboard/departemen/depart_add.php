@@ -65,7 +65,8 @@
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="perDepart">Perusahaan :</label><br>
                                         <select id='perDepart' name='perDepart' class="form-control form-control-user">
-                                             <option value="">-- Pilih Perusahaan --</option>
+                                             <option value="">-- PILIH PERUSAHAAN --</option>
+                                             <?= $permst . $perstr; ?>
                                         </select>
                                         <small class="error1 text-danger font-italic font-weight-bold"></small><br>
                                    </div>

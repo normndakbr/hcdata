@@ -29,7 +29,7 @@
                </div>
           </div>
           <div class="row">
-               <div class="col-xl-12 col-md-12">
+               <div class="col-xl-12 col-md-12" style="overflow-x:auto;">
                     <div class="card latest-update-card">
                          <div class="card-header">
                               <h5>Karyawan</h5>
@@ -78,7 +78,6 @@
                                                        <tr class="font-weight-boldtext-white">
                                                             <th style="text-align:center;">AKsi</th>
                                                             <th style="text-align:center;width:1%;">No.</th>
-                                                            <th>NO. KTP</th>
                                                             <th>NIK</th>
                                                             <th>Nama</th>
                                                             <th>Departemen</th>

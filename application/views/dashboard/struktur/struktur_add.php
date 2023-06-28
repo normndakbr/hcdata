@@ -229,7 +229,7 @@
                                                                                                     <small class="error4SIO text-danger font-italic font-weight-bold"></small><br>
                                                                                                </div>
                                                                                                <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-                                                                                                    <label for="ketSIO">Keterangan :</label>
+                                                                                                    <label for="ketSIO">Kegiatan :</label>
                                                                                                     <textarea id='ketSIO' name='ketSIO' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" disabled></textarea>
                                                                                                     <small class="error5SIO text-danger font-italic font-weight-bold"></small><br>
                                                                                                </div>

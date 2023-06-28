@@ -39,6 +39,10 @@
                                              <i class="feather icon-more-horizontal"></i>
                                         </button>
                                         <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
+                                             <li class="dropdown-item full-card">
+                                                  <a href="#!"><span><i class="feather icon-maximize"></i>
+                                                            Fullscreen</span><span style="display: none"><i class="feather icon-minimize"></i> Restore</span></a>
+                                             </li>
                                              <li class="dropdown-item minimize-card">
                                                   <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
                                              </li>
@@ -404,16 +408,16 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addGradeKary">Grade - Level <span class="text-danger">*</span></label>
-                                                                 <div id='txtgradekary' class="input-group">
-                                                                      <select id='addGradeKary' name='addGradeKary' class="form-control form-control-user" disabled>
+                                                                 <label for="addLevelKary">Level <span class="text-danger">*</span></label>
+                                                                 <div id='txtLevelkary' class="input-group">
+                                                                      <select id='addLevelKary' name='addLevelKary' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshGrade" name="refreshGrade" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshLevel" name="refreshLevel" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddGradeKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="erroraddLevelKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
@@ -962,7 +966,6 @@
                </div>
           </div>
      </div>
-</div>
 </div>
 </div>
 <div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

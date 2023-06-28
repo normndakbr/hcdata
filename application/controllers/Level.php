@@ -11,6 +11,20 @@ class Level extends My_Controller
 
      public function index()
      {
+          if ($this->session->has_userdata('id_m_perusahaan')) {
+               $idmper = $this->session->userdata('id_m_perusahaan');
+               if ($idmper != "") {
+                    $data['permst'] = $this->str->getMasterPrs($idmper, "");
+                    $data['perstr'] = $this->str->getMenuPrs($idmper, "");
+               } else {
+                    $data['permst'] = "";
+                    $data['perstr'] = "";
+               }
+          } else {
+               $idmper = "";
+               $data['permst'] = "";
+               $data['perstr'] = "";
+          }
           $id_perusahaan = $this->session->userdata("id_perusahaan");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
@@ -25,6 +39,20 @@ class Level extends My_Controller
 
      public function new()
      {
+          if ($this->session->has_userdata('id_m_perusahaan')) {
+               $idmper = $this->session->userdata('id_m_perusahaan');
+               if ($idmper != "") {
+                    $data['permst'] = $this->str->getMasterPrs($idmper, "");
+                    $data['perstr'] = $this->str->getMenuPrs($idmper, "");
+               } else {
+                    $data['permst'] = "";
+                    $data['perstr'] = "";
+               }
+          } else {
+               $idmper = "";
+               $data['permst'] = "";
+               $data['perstr'] = "";
+          }
           $id_perusahaan = $this->session->userdata("id_perusahaan");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");

@@ -218,9 +218,9 @@ class Depart_model extends CI_Model
           }
      }
 
-     public function get_by_authper($auth_m_per)
+     public function get_by_authper($auth_per)
      {
-          $query_per = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_m_per]);
+          $query_per = $this->db->get_where('vw_m_prs', ['auth_perusahaan' => $auth_per]);
           if (!empty($query_per->result())) {
                foreach ($query_per->result() as $list) {
                     $id_perusahaan = $list->id_perusahaan;

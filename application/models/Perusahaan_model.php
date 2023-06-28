@@ -219,7 +219,7 @@ class Perusahaan_model extends CI_Model
      public function get_all($id_m_perusahaan)
      {
           $this->db->or_where(['id_m_perusahaan' => $id_m_perusahaan, 'id_parent' => $id_m_perusahaan]);
-          $this->db->from('vw_m_perusahaan');
+          $this->db->from('vw_m_prs');
           $this->db->order_by('id_m_perusahaan', 'ASC');
 
           return $this->db->get()->result();

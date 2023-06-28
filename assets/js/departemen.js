@@ -5,6 +5,14 @@
             $("#logoutmdl").modal("show");
         });
 
+        $('#perDepartData').select2({
+            theme: 'bootstrap4'
+        });
+
+        $('#perDepart').select2({
+            theme: 'bootstrap4'
+        });
+
         $('#btnupdatedepart').click(function() {
             let kode = $('#editDepartKode').val();
             let depart = $('#editDepart').val();
@@ -86,51 +94,51 @@
         });
 
         $(document).ready(function() {
-            $.ajax({
-                type: "POST",
-                url: site_url+"perusahaan/get_all",
-                data: {},
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    $("#perDepart").html(data.prs);
-                    $('#perDepart').select2({
-                        theme: 'bootstrap4'
-                    });
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    $.LoadingOverlay("hide");
-                    $(".errormsg").removeClass('d-none');
-                    $(".errormsg").removeClass('alert-info');
-                    $(".errormsg").addClass('alert-danger');
-                    if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                        $("#btnTambahDepart").attr("disabled", true);
-                    }
-                }
-            })
+            // $.ajax({
+            //     type: "POST",
+            //     url: site_url+"perusahaan/get_all",
+            //     data: {},
+            //     success: function(data) {
+            //         var data = JSON.parse(data);
+            //         $("#perDepart").html(data.prs);
+            //         $('#perDepart').select2({
+            //             theme: 'bootstrap4'
+            //         });
+            //     },
+            //     error: function(xhr, ajaxOptions, thrownError) {
+            //         $.LoadingOverlay("hide");
+            //         $(".errormsg").removeClass('d-none');
+            //         $(".errormsg").removeClass('alert-info');
+            //         $(".errormsg").addClass('alert-danger');
+            //         if (thrownError != "") {
+            //             $(".errormsg").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
+            //             $("#btnTambahDepart").attr("disabled", true);
+            //         }
+            //     }
+            // })
 
-            $.ajax({
-                type: "POST",
-                url: site_url+"perusahaan/get_all",
-                data: {},
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    $("#perDepartData").html(data.prs);
-                    $('#perDepartData').select2({
-                        theme: 'bootstrap4'
-                    });
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    $.LoadingOverlay("hide");
-                    $(".err_psn_depart").removeClass('d-none');
-                    $(".err_psn_depart").removeClass('alert-info');
-                    $(".err_psn_depart").addClass('alert-danger');
-                    if (thrownError != "") {
-                        $(".err_psn_depart").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                        $("#btnTambahDepart").attr("disabled", true);
-                    }
-                }
-            })
+            // $.ajax({
+            //     type: "POST",
+            //     url: site_url+"perusahaan/get_all",
+            //     data: {},
+            //     success: function(data) {
+            //         var data = JSON.parse(data);
+            //         $("#perDepartData").html(data.prs);
+            //         $('#perDepartData').select2({
+            //             theme: 'bootstrap4'
+            //         });
+            //     },
+            //     error: function(xhr, ajaxOptions, thrownError) {
+            //         $.LoadingOverlay("hide");
+            //         $(".err_psn_depart").removeClass('d-none');
+            //         $(".err_psn_depart").removeClass('alert-info');
+            //         $(".err_psn_depart").addClass('alert-danger');
+            //         if (thrownError != "") {
+            //             $(".err_psn_depart").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
+            //             $("#btnTambahDepart").attr("disabled", true);
+            //         }
+            //     }
+            // })
 
             $.ajax({
                 type: "POST", 

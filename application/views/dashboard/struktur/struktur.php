@@ -85,12 +85,12 @@
                                                        $servername = "localhost";
                                                        $username = "root";
                                                        $password = "";
-                                                       $dbname = "db_kary";
+                                                       $dbname = "db_kary_2806";
                                                        $conn = mysqli_connect($servername, $username, $password, $dbname);
 
                                                        $idperusahaan = $_SESSION['id_m_perusahaan'];
                                                        $no = 0;
-                                                       $sql = "SELECT * from vw_m_perusahaan WHERE id_m_perusahaan=" . $idperusahaan . " ORDER BY id_m_perusahaan ASC";
+                                                       $sql = "SELECT * from vw_m_prs WHERE id_m_perusahaan=" . $idperusahaan . " ORDER BY id_m_perusahaan ASC";
                                                        $result = mysqli_query($conn, $sql);
                                                        if ($result) {
                                                             if (mysqli_num_rows($result) > 0) {
@@ -99,18 +99,86 @@
                                                                  $id = $row["id_m_perusahaan"];
                                                                  $nama_per = $row["nama_perusahaan"];
                                                                  $jenis_per = $row["jenis_perusahaan"];
-                                                                 $no_jenis_per = $row["no_jenis_perusahaan"];
-                                                                 $no_izin = $row["no_izin_perusahaan"];
-                                                                 $no_sio = $row["no_sio_perusahaan"];
-                                                                 $no_kontrak = $row["no_kontrak_perusahaan"];
-                                                                 $url_rk3l = $row["url_rk3l"];
                                                                  $kode_per = $row["kode_perusahaan"];
+                                                                 $url_rk3l = $row["url_rk3l"];
                                                                  $nama_m_per = $row["nama_m_perusahaan"];
                                                                  $tgl_buat = date('d-M-Y', strtotime($row["tgl_buat"]));
 
-                                                                 $sql = "SELECT * from vw_pjo_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY id_m_perusahaan ASC";
+                                                                 //========================= izin terbaru ==================================
+
+                                                                 $sql = "SELECT * from vw_izin_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_izin DESC limit 1";
+                                                                 $cekizin = mysqli_query($conn, $sql);
+                                                                 $jml_izin = mysqli_num_rows($cekizin);
+
+                                                                 if ($jml_izin > 0) {
+                                                                      $rw = mysqli_fetch_assoc($cekizin);
+                                                                      $now = date('Y-m-d');
+                                                                      $tgl_akhir_izin = date('Y-m-d', strtotime($rw['tgl_akhir_izin']));
+                                                                      if ($tgl_akhir_izin < $now) {
+                                                                           $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                      } else {
+                                                                           $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                      }
+                                                                 } else {
+                                                                      $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                 }
+
+                                                                 //========================= sio terbaru ==================================
+
+                                                                 $sql = "SELECT * from vw_sio_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_sio DESC limit 1";
+                                                                 $ceksio = mysqli_query($conn, $sql);
+                                                                 $jml_sio = mysqli_num_rows($ceksio);
+
+                                                                 if ($jml_sio > 0) {
+                                                                      $rw = mysqli_fetch_assoc($ceksio);
+                                                                      $now = date('Y-m-d');
+                                                                      $tgl_akhir_sio = date('Y-m-d', strtotime($rw['tgl_akhir_sio']));
+                                                                      if ($tgl_akhir_sio < $now) {
+                                                                           $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                      } else {
+                                                                           $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                      }
+                                                                 } else {
+                                                                      $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                 }
+
+                                                                 //========================= sio terbaru ==================================
+
+                                                                 $sql = "SELECT * from vw_kontrak_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_kontrak DESC limit 1";
+                                                                 $cekkontrak = mysqli_query($conn, $sql);
+                                                                 $jml_kontrak = mysqli_num_rows($cekkontrak);
+
+                                                                 if ($jml_kontrak > 0) {
+                                                                      $rw = mysqli_fetch_assoc($cekkontrak);
+                                                                      $now = date('Y-m-d');
+                                                                      $tgl_akhir_kontrak = date('Y-m-d', strtotime($rw['tgl_akhir_kontrak']));
+                                                                      if ($tgl_akhir_kontrak < $now) {
+                                                                           $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                      } else {
+                                                                           $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                      }
+                                                                 } else {
+                                                                      $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                 }
+
+                                                                 //========================= pjo terbaru ==================================
+
+                                                                 $sql = "SELECT * from vw_pjo_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_pjo DESC limit 1";
                                                                  $cekpjo = mysqli_query($conn, $sql);
                                                                  $jml_pjo = mysqli_num_rows($cekpjo);
+
+                                                                 if ($jml_pjo > 0) {
+                                                                      $rw = mysqli_fetch_assoc($cekpjo);
+                                                                      $now = date('Y-m-d');
+                                                                      $tgl_akhir_pjo = date('Y-m-d', strtotime($rw['tgl_akhir_pjo']));
+                                                                      if ($tgl_akhir_pjo < $now) {
+                                                                           $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                      } else {
+                                                                           $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                      }
+                                                                 } else {
+                                                                      $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                 }
 
                                                                  $no++;
                                                                  echo "<tr class='rataTengah'>";
@@ -132,31 +200,17 @@
                                                                  echo "<td class='align-middle' style='text-align:center;width:5%;'>" . $no . "</td>";
                                                                  echo "<td class='align-middle' title='" . $nama_per . " | " . $kode_per . "' style='color:red;width:27%;'><b>" . $nama_m_per . " | " . $kode_per . "</b></td>";
                                                                  echo "<td class='align-middle' style='width: 8px;'>" . $jenis_per . "</td>";
+
                                                                  if ($url_rk3l == null) {
                                                                       echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
                                                                  } else {
                                                                       echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
                                                                  }
-                                                                 if ($no_izin == null) {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                 } else {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                 }
-                                                                 if ($no_sio == null) {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                 } else {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                 }
-                                                                 if ($no_kontrak == null) {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                 } else {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                 }
-                                                                 if ($jml_pjo === 0) {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                 } else {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                 }
+
+                                                                 echo $stt_izin;
+                                                                 echo $stt_sio;
+                                                                 echo $stt_kontrak;
+                                                                 echo $stt_pjo;
                                                                  echo "<td class='align-middle' style='text-align:center;width:1%;'>" . $tgl_buat . "</td>";
                                                                  echo "</tr>";
                                                             }
@@ -168,15 +222,13 @@
                                                             $servername = "localhost";
                                                             $username = "root";
                                                             $password = "";
-                                                            $dbname = "db_kary";
+                                                            $dbname = "db_kary_2806";
                                                             $conn = mysqli_connect($servername, $username, $password, $dbname);
 
                                                             static $space;
-                                                            $sql = "SELECT * from vw_m_perusahaan WHERE id_parent=" . $idparent . " ORDER BY id_m_perusahaan ASC";
-
+                                                            $sql = "SELECT * from vw_m_prs WHERE id_parent=" . $idparent . " ORDER BY id_m_perusahaan ASC";
                                                             $result = mysqli_query($conn, $sql);
                                                             $no = 1;
-                                                            $mo = 1;
                                                             $id = 0;
                                                             if (mysqli_num_rows($result) > 0) {
                                                                  $space .= "&roarr;";
@@ -187,16 +239,85 @@
                                                                       $nama_per = $row["nama_perusahaan"];
                                                                       $kode_per = $row["kode_perusahaan"];
                                                                       $jenis_per = $row["jenis_perusahaan"];
-                                                                      $no_izin = $row["no_izin_perusahaan"];
-                                                                      $no_sio = $row["no_sio_perusahaan"];
-                                                                      $no_kontrak = $row["no_kontrak_perusahaan"];
-                                                                      $url_rk3l = $row["url_rk3l"];
                                                                       $nama_m_per = $row["nama_m_perusahaan"];
+                                                                      $url_rk3l = $row["url_rk3l"];
                                                                       $tgl_buat = date('d-M-Y', strtotime($row["tgl_buat"]));
 
-                                                                      $sql = "SELECT * from vw_pjo_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY id_m_perusahaan ASC";
+                                                                      //========================= izin terbaru ==================================
+
+                                                                      $sql = "SELECT * from vw_izin_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_izin DESC limit 1";
+                                                                      $cekizin = mysqli_query($conn, $sql);
+                                                                      $jml_izin = mysqli_num_rows($cekizin);
+
+                                                                      if ($jml_izin > 0) {
+                                                                           $rw = mysqli_fetch_assoc($cekizin);
+                                                                           $now = date('Y-m-d');
+                                                                           $tgl_akhir_izin = date('Y-m-d', strtotime($rw['tgl_akhir_izin']));
+                                                                           if ($tgl_akhir_izin < $now) {
+                                                                                $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                           } else {
+                                                                                $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                           }
+                                                                      } else {
+                                                                           $stt_izin = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                      }
+
+                                                                      //========================= sio terbaru ==================================
+
+                                                                      $sql = "SELECT * from vw_sio_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_sio DESC limit 1";
+                                                                      $ceksio = mysqli_query($conn, $sql);
+                                                                      $jml_sio = mysqli_num_rows($ceksio);
+
+                                                                      if ($jml_sio > 0) {
+                                                                           $rw = mysqli_fetch_assoc($ceksio);
+                                                                           $now = date('Y-m-d');
+                                                                           $tgl_akhir_sio = date('Y-m-d', strtotime($rw['tgl_akhir_sio']));
+                                                                           if ($tgl_akhir_sio < $now) {
+                                                                                $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                           } else {
+                                                                                $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                           }
+                                                                      } else {
+                                                                           $stt_sio = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                      }
+
+                                                                      //========================= sio terbaru ==================================
+
+                                                                      $sql = "SELECT * from vw_kontrak_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_kontrak DESC limit 1";
+                                                                      $cekkontrak = mysqli_query($conn, $sql);
+                                                                      $jml_kontrak = mysqli_num_rows($cekkontrak);
+
+                                                                      if ($jml_kontrak > 0) {
+                                                                           $rw = mysqli_fetch_assoc($cekkontrak);
+                                                                           $now = date('Y-m-d');
+                                                                           $tgl_akhir_kontrak = date('Y-m-d', strtotime($rw['tgl_akhir_kontrak']));
+                                                                           if ($tgl_akhir_kontrak < $now) {
+                                                                                $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                           } else {
+                                                                                $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                           }
+                                                                      } else {
+                                                                           $stt_kontrak = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                      }
+
+                                                                      //========================= pjo terbaru ==================================
+
+                                                                      $sql = "SELECT * from vw_pjo_perusahaan WHERE id_m_perusahaan=" . $id . " ORDER BY tgl_akhir_pjo DESC limit 1";
                                                                       $cekpjo = mysqli_query($conn, $sql);
                                                                       $jml_pjo = mysqli_num_rows($cekpjo);
+
+                                                                      if ($jml_pjo > 0) {
+                                                                           $rw = mysqli_fetch_assoc($cekpjo);
+                                                                           $now = date('Y-m-d');
+                                                                           $tgl_akhir_pjo = date('Y-m-d', strtotime($rw['tgl_akhir_pjo']));
+                                                                           if ($tgl_akhir_pjo < $now) {
+                                                                                $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-warning'>EXP</span></td>";
+                                                                           } else {
+                                                                                $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
+                                                                           }
+                                                                      } else {
+                                                                           $stt_pjo = "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
+                                                                      }
 
                                                                       echo "<tr >";
 
@@ -225,26 +346,10 @@
                                                                            } else {
                                                                                 echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
                                                                            }
-                                                                           if ($no_izin == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($no_sio == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($no_kontrak == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($jml_pjo === 0) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
+                                                                           echo $stt_izin;
+                                                                           echo $stt_sio;
+                                                                           echo $stt_kontrak;
+                                                                           echo $stt_pjo;
                                                                       } else {
                                                                            echo "<td class='align-middle' style='width:5%;text-align:center'>";
                                                                            echo "<div class='dropdown dropleft'>";
@@ -273,26 +378,10 @@
                                                                            } else {
                                                                                 echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
                                                                            }
-                                                                           if ($no_izin == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($no_sio == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($no_kontrak == null) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
-                                                                           if ($jml_pjo === 0) {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
-                                                                           } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
-                                                                           }
+                                                                           echo $stt_izin;
+                                                                           echo $stt_sio;
+                                                                           echo $stt_kontrak;
+                                                                           echo $stt_pjo;
                                                                       }
 
                                                                       echo "<td class='align-middle' style='text-align:center;width:1%;'>" . $tgl_buat . "</td>";

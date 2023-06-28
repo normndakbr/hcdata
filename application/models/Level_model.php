@@ -201,4 +201,18 @@ class Level_model extends CI_Model
           $query = $this->db->get_where('vw_lvl', ['id_perusahaan' => $id_per]);
           return $query->result();
      }
+
+     public function get_id_level($auth_level)
+     {
+          $query = $this->db->get_where('vw_level', ['auth_level' => $auth_level]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $id_level = $list->id_level;
+               }
+
+               return $id_level;
+          } else {
+               return 0;
+          }
+     }
 }
