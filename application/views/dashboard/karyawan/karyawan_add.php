@@ -78,10 +78,9 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noKTP"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noKTP' name='noKTP' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noKTP' name='noKTP' type="text" autocomplete=" off" spellcheck="false" class="form-control" value="" required>
                                                                  <small class="errorNoKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="0c09efa8ccb5e0114e97df31736ce2e3 d-none"></span>
-
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
@@ -103,14 +102,14 @@
                                                        </div>
                                                        <div class="col-lg-2 col-md-2 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="rtKTP">RT :</label>
+                                                                 <label for="rtKTP">RT </label>
                                                                  <input id='rtKTP' name='rtKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;">
                                                                  <small class="errorRtKTP text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-2 col-md-2 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="rwKTP">RW :</label>
+                                                                 <label for="rwKTP">RW </label>
                                                                  <input id='rwKTP' name='rwKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;">
                                                                  <small class="errorRwKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="9100fd1e98da52ac823c5fdc6d3e4ff1 d-none"></span>
@@ -231,60 +230,53 @@
                                                                  <small class="errorTanggalLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="emailPribadi">Email Pribadi :</label>
-                                                                 <input id='emailPribadi' name='emailPribadi' type="text" autocomplete="off" spellcheck="false" class="form-control" value="">
-                                                                 <small class="errorEmailPribadi text-danger font-italic font-weight-bold"></small>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="noTelp">No. Telp </label>
-                                                                 <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="">
-                                                                 <small class="errorNoTelp text-danger font-italic font-weight-bold"></small>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="noBPJSTK">No. BPJS Tenaga Kerja :</label>
+                                                                 <label for="noBPJSTK">No. BPJS Tenaga Kerja </label>
                                                                  <input id='noBPJSTK' name='noBPJSTK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                  <small class="errorNoBPJSTK text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noBPJSKES">No. BPJS Kesehatan :</label>
+                                                                 <label for="noBPJSKES">No. BPJS Kesehatan </label>
                                                                  <input id='noBPJSKES' name='noBPJSKES' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                  <small class="errorNoBPJSKES text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noNPWP">No. NPWP :</label>
+                                                                 <label for="noNPWP">No. NPWP </label>
                                                                  <input id='noNPWP' name='noNPWP' autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                  <small class="errorNoNPWP text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noKK">No. Kartu Keluarga <span class="text-danger">*</span></label>
-                                                                 <input id='noKK' name='noKK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noKK' name='noKK' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                  <small class="errorNoKK text-danger font-italic font-weight-bold"></small>
                                                                  <span class="89kjm78ujki782m4x787909h3 d-none"></span>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="namaIbu">Nama Ibu Kandung <span class="text-danger">*</span></label>
-                                                                 <input id='namaIbu' name='namaIbu' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                                                 <small class="errorNamaIbu text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="email">Email Pribadi </label>
+                                                                 <input id='email' name='email' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <small class="erroremail text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="pendidikanTerakhir">Pendidikan Terakhir :</label>
-                                                                 <div id="txtDidik" name="txtDidik" class="input-group">
+                                                                 <label for="noTelp">No. Telp </label>
+                                                                 <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <small class="errornoTelp text-danger font-italic font-weight-bold"></small>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="pendidikanTerakhir">Pendidikan Terakhir </label>
+                                                                 <div id="txtDidik" name="txtDidik" class="input-group mt-2">
                                                                       <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" required value="">
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
                                                                       </select>
@@ -394,7 +386,7 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addTipeKaryawan">Tipe <span class="text-danger">*</span></label>
+                                                                 <label for="addTipeKaryawan">Golongan <span class="text-danger">*</span></label>
                                                                  <div id='txtjeniskary' class="input-group">
                                                                       <select id='addTipeKaryawan' name='addTipeKaryawan' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
@@ -494,7 +486,7 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addEmailKantor">Email Perusahaan :</label>
+                                                                 <label for="addEmailKantor">Email Perusahaan </label>
                                                                  <input id='addEmailKantor' name='addEmailKantor' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="erroraddEmail text-danger font-italic font-weight-bold"></small>
                                                             </div>

@@ -239,7 +239,7 @@ class Depart_model extends CI_Model
                     $id_perusahaan = $list->id_perusahaan;
                }
 
-               $query = $this->db->get_where('vw_depart', ['id_perusahaan' => $id_perusahaan]);
+               $query = $this->db->get_where('vw_dprt', ['id_perusahaan' => $id_perusahaan]);
                return $query->result();
           }
      }

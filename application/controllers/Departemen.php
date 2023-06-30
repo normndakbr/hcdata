@@ -326,7 +326,7 @@ class Departemen extends My_Controller
      public function get_by_auth_m_per()
      {
           $auth_m_per = $this->input->post('auth_m_per');
-          $query = $this->dprt->get_by_authper($auth_m_per);
+          $query = $this->dprt->get_by_auth_m_per($auth_m_per);
           $output = "<option value=''>-- PILIH DEPARTEMEN --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {

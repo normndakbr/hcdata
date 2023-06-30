@@ -111,9 +111,9 @@ class Posisi_model extends CI_Model
           }
      }
 
-     public function cek_posisi($id_perusahaan, $posisi)
+     public function cek_posisi($id_perusahaan, $id_depart, $posisi)
      {
-          $query = $this->db->get_where('tb_posisi', ['posisi' => $posisi, 'id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get_where('tb_posisi', ['posisi' => $posisi, 'id_depart' => $id_depart, 'id_perusahaan' => $id_perusahaan]);
           if (!empty($query->result())) {
                return true;
           } else {

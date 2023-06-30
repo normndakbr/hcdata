@@ -137,10 +137,13 @@ class Posisi extends My_Controller
                $posisi = htmlspecialchars($this->input->post("posisi", true));
                $ket_posisi = htmlspecialchars($this->input->post("ket"));
                $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
+
+
                if ($id_perusahaan == 0) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
+
 
                $query = $this->dprt->get_depart_id($auth_depart);
                if (!empty($query)) {
@@ -154,6 +157,7 @@ class Posisi extends My_Controller
                }
 
                $cekposisi = $this->pss->cek_posisi($id_perusahaan, $id_depart, $posisi);
+
                if ($cekposisi) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Posisi sudah digunakan"));
                     return;

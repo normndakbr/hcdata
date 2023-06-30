@@ -287,7 +287,8 @@ class Level extends My_Controller
 
      public function get_all()
      {
-          $query = $this->lvl->get_all();
+          $auth_m_per = $this->input->post('auth_per');
+          $query = $this->lvl->get_all($auth_m_per);
           $output = "<option value=''>-- PILIH LEVEL --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {

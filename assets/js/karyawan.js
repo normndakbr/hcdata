@@ -5,10 +5,17 @@
 
         let auth_per_old = '';
         $("#colPersonal").collapse("show");
-        $('#noNPWP').inputmask("99.999.999.9-999.999");
+        $('#noKTP').inputmask("9999999999999999",{ "placeholder": "" });
+        $('#noKK').inputmask("9999999999999999",{ "placeholder": "" });
+        $('#noNPWP').inputmask("99.999.999.9-999.999",{ "placeholder": "" });
         $("#idizintambang").load(site_url+"izin_tambang/izin_tambang?auth_izin=" + 0);
         $("#idsertifikat").load(site_url+"karyawan/sertifikasi?auth_person=" + 0);
         $("#idvaksin").load(site_url+"karyawan/vaksin?auth_person=" + 0);
+
+        function validateEmail($email) {
+            var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+            return emailReg.test( $email );
+          }
 
         $(".suksesalrt").fadeTo(4000, 500).slideUp(500, function() {
             $(".suksesalrt").slideUp(500);
@@ -95,7 +102,9 @@
         $('#jenisSertifikasi').select2({
             theme: 'bootstrap4'
         });
-
+        $('#pendidikanTerakhir').select2({
+            theme: 'bootstrap4'
+        });
         $('#jenisSertifikasiEdit').select2({
             theme: 'bootstrap4',
             dropdownParent: $('#mdleditsertifikat')
@@ -121,7 +130,8 @@
                 theme: 'bootstrap4'
             });
             $('#addPerKary').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+                dropdownParent: $('#addkry')
             });
             $('#addDepartKary').select2({
                 theme: 'bootstrap4'
@@ -171,6 +181,9 @@
                 theme: 'bootstrap4'
             });
             $('#jenisSertifikasi').select2({
+                theme: 'bootstrap4'
+            });
+            $('#pendidikanTerakhir').select2({
                 theme: 'bootstrap4'
             });
             $('#jenisSertifikasiEdit').select2({
@@ -261,7 +274,7 @@
             $("#addagama").removeAttr('disabled');
             $("#kewarganegaraan").removeAttr('disabled');
             $("#jenisKelamin").removeAttr('disabled');
-            $("#emailPribadi").removeAttr('disabled');
+            $("#email").removeAttr('disabled');
             $("#noTelp").removeAttr('disabled');
             $("#noBPJSTK").removeAttr('disabled');
             $("#noBPJSKES").removeAttr('disabled');
@@ -294,7 +307,7 @@
             $("#addagama").attr('disabled', true);
             $("#kewarganegaraan").attr('disabled', true);
             $("#jenisKelamin").attr('disabled', true);
-            $("#emailPribadi").attr('disabled', true);
+            $("#email").attr('disabled', true);
             $("#noTelp").attr('disabled', true);
             $("#noBPJSTK").attr('disabled', true);
             $("#noBPJSKES").attr('disabled', true);
@@ -1244,43 +1257,6 @@
             });
         });
 
-        // $("#refreshPerKary").click(function() {
-        //     $("#txtperkary").LoadingOverlay("show");
-
-        //     $.ajax({
-        //         type: "POST",
-        //         url: "<?php base_url("perusahaan/get_m_all",
-        //         data: {},
-        //         success: function(data) {
-        //             var data = JSON.parse(data);
-        //             if (data.statusCode == 200) {
-        //                 $("#addPerKary").html(data.prs);
-        //                 $("#addPerKary").val('').trigger('change');
-        //                 $("#txtperkary").LoadingOverlay("hide");
-        //                 $("#addDepartKary").attr('disabled', true);
-        //                 $("#addPosisiKary").attr('disabled', true);
-        //             } else {
-        //                 $("#txtperkary").LoadingOverlay("hide");
-        //                 $(".errormsg").removeClass('d-none');
-        //                 $(".errormsg").removeClass('alert-info');
-        //                 $(".errormsg").addClass('alert-danger');
-        //                 $(".errormsg").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //                 $("#addSimpanPersonal").remove();
-        //             }
-        //         },
-        //         error: function(xhr, ajaxOptions, thrownError) {
-        //             $("#txtperkary").LoadingOverlay("hide");
-        //             $(".errormsg").removeClass('d-none');
-        //             $(".errormsg").removeClass('alert-info');
-        //             $(".errormsg").addClass('alert-danger');
-        //             if (thrownError != "") {
-        //                 $(".errormsg").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //                 $("#addSimpanPersonal").remove();
-        //             }
-        //         }
-        //     });
-        // });
-
         $("#refreshDepart").click(function() {
             let auth_m_per = $("#addPerKary").val();
 
@@ -1496,7 +1472,7 @@
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
-                        $("#addLevelKary").html(data.grd);
+                        $("#addLevelKary").html(data.lvl);
                         $("#txtLevelkary").LoadingOverlay("hide");
                         $("#addLevelKary").removeAttr('disabled');
                         $("#refreshLevel").removeAttr('disabled');
@@ -1675,7 +1651,7 @@
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
-                    $("#addLevelKary").html(data.grd);
+                    $("#addLevelKary").html(data.lvl);
                     $("#addLevelKary").removeAttr('disabled');
                     $("#refreshLevel").removeAttr('disabled');
                 },
@@ -1726,7 +1702,6 @@
         $("#addPerKary").change(function() {
             let auth_per = $("#addPerKary").val();
             let auth_cek = $(".89kjm78ujki782m4x787909h3").text();
-            let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
 
             if (auth_per != "") {
                 if (auth_per_old != "") {
@@ -1750,22 +1725,6 @@
                                 $('#addPosisiKary').attr('disabled', true);
                                 $('#refreshPosisi').attr('disabled', true);
                                 aktifKaryawan();
-                                // if (auth_cek == "") {
-                                //     $('#colPersonal').collapse("show");
-                                //     $('#colKaryawan').collapse("hide");
-                                //     $('#colIzinTambang').collapse("hide");
-                                //     $('#colSertifikasi').collapse("hide");
-                                //     $('#colMCU').collapse("hide");
-                                //     $('#colVaksin').collapse("hide");
-                                //     $('#colFilePendukung').collapse("hide");
-                                // } else {
-                                //     get_data_kary(auth_per)
-                                //     $("#addPerKary").val(auth_per).trigger('change');
-                                //     $('#addPosisiKary').html('<option value="">-- WAJIB DIPILIH --</option>');
-                                //     $('#addPosisiKary').attr('disabled', true);
-                                //     $('#refreshPosisi').attr('disabled', true);
-                                //     aktifKaryawan();
-                                // }
                                 $.LoadingOverlay("hide");
                             } else if (result.dismiss == 'cancel') {
                                 swal('Batal', 'Perusahaan batal diganti', 'info');
@@ -1790,8 +1749,6 @@
                     }
                     $.LoadingOverlay("hide");
                 }
-
-                aktifPersonal();
             } else {
                 $('#addDepartKary').html('<option value="">-- WAJIB DIPILIH --</option>');
                 $('#addPosisiKary').html('<option value="">-- WAJIB DIPILIH --</option>');
@@ -2423,13 +2380,13 @@
                 $('.errorTanggalLahir').html('<p>Tanggal lahir wajib diisi</p>');
             }
         });
-        $('#namaIbu').keyup(function(e) {
-            let tgl_lahir = $('#namaIbu').val().trim();
+        $('#addNIKKary').keyup(function(e) {
+            let nikkary = $('#addNIKKary').val().trim();
 
-            if (tgl_lahir != "") {
-                $('.errorNamaIbu').html('');
+            if (nikkary != "") {
+                $('.erroraddNIKKary').html('');
             } else {
-                $('.errorNamaIbu').html('<p>Nama ibu kandung wajib diisi</p>');
+                $('.erroraddNIKKary').html('<p>NIK wajib diisi</p>');
             }
         });
         $('#noNPWP').keyup(function(e) {
@@ -2450,9 +2407,11 @@
         });
         $('#noKTP').keyup(function(e) {
             let noktp = $('#noKTP').val().trim();
-            let jmlhrf = $('#noKTP').val().length;
 
             if (noktp != "") {
+                jmlktp = noktp.replace(/['.'|_|-]/g, '');
+                jmlhrf = jmlktp.length;
+
                 if (jmlhrf > 16) {
                     $('.errorNoKTP').html('<p>No. KTP maksimal 16 karakter</p>');
                 } else if (jmlhrf < 16) {
@@ -2464,9 +2423,11 @@
         });
         $('#noKK').keyup(function(e) {
             let noKK = $('#noKK').val().trim();
-            let jmlhrf = $('#noKK').val().length;
 
             if (noKK != "") {
+                jmlkk = noKK.replace(/['.'|_|-]/g, '');
+                jmlhrf = jmlkk.length;
+
                 if (jmlhrf > 16) {
                     $('.errorNoKK').html('<p>No. KK maksimal 16 karakter</p>');
                 } else if (jmlhrf < 16) {
@@ -2485,7 +2446,39 @@
                 $('.errorAlamatKTP').html('<p>Alamat wajib diisi</p>');
             }
         });
+        $('#noTelp').keyup(function(e) {
+            let notelp = $('#noTelp').val().trim();
 
+            if (notelp == "") {
+                $('.errornoTelp').html('');
+            }
+        });
+        $('#addEmailKantor').keyup(function(e) {
+            let EmailKantor = $('#addEmailKantor').val().trim();
+
+            if (EmailKantor == "") {
+                $('.erroraddEmail').html('');
+            } else {
+                if(!validateEmail(EmailKantor)){
+                    $('.erroraddEmail').html('<p>Format email salah</p>');
+                } else {
+                    $('.erroraddEmail').html('');
+                }
+            }
+        });
+        $('#email').keyup(function(e) {
+            let email = $('#email').val().trim();
+
+            if (email == "") {
+                $('.erroremail').html('');
+            } else {
+                if(!validateEmail(email)){
+                    $('.erroremail').html('<p>Format email salah</p>');
+                } else {
+                    $('.erroremail').html('');
+                }
+            }
+        });
         $("#addSimpanPersonal").click(function() {
             let auth_per = $("#addPerKary").val();
             let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
@@ -2507,13 +2500,12 @@
             let id_agama = $("#addagama").val();
             let warga = $("#kewarganegaraan").val();
             let jk = $("#jenisKelamin").val();
-            let email = $("#emailPribadi").val();
-            let telp = $("#noTelp").val();
             let bpjs_tk = $("#noBPJSTK").val();
             let bpjs_kes = $("#noBPJSKES").val();
             let nokk = $("#noKK").val();
-            let namaibu = $("#namaIbu").val();
             let npwp = $('#noNPWP').val();
+            let email = $('#email').val();
+            let notelp = $('#noTelp').val();
             let cek_log = md5(new Date().toLocaleString());
 
             $.ajax({
@@ -2534,17 +2526,16 @@
                     id_kel: id_kel,
                     tmp_lahir: tmp_lahir,
                     tgl_lahir: tgl_lahir,
+                    email:email,
+                    notelp:notelp,
                     stat_nikah: stat_nikah,
                     id_agama: id_agama,
                     warga: warga,
                     jk: jk,
-                    email: email,
-                    telp: telp,
                     bpjs_tk: bpjs_tk,
                     bpjs_kes: bpjs_kes,
                     npwp: npwp,
                     nokk: nokk,
-                    namaibu: namaibu,
                     auth_per: auth_per,
                     auth_person: auth_person
                 },
@@ -2574,15 +2565,14 @@
                         $(".errorTanggalLahir").html(data.tgl_lahir);
                         $(".errorStatPernikahan").html(data.stat_nikah);
                         $(".errorAddAgama").html(data.id_agama);
+                        $(".erroremail").html(data.email);
+                        $(".errornoTelp").html(data.notelp);
                         $(".errorKewarganegaraan").html(data.warga);
                         $(".errorJenisKelamin").html(data.jk);
-                        $(".errorEmailPribadi").html(data.email);
-                        $(".errorNoTelp").html(data.telp);
                         $(".errorNoBPJSTK").html(data.bpjs_tk);
                         $(".errorNoBPJSKES").html(data.bpjs_kes);
                         $(".errorNoNPWP").html(data.npwp);
                         $(".errorNoKK").html(data.nokk);
-                        $(".errorNamaIbu").html(data.namaibu);
                         swal("Error", "Tidak dapat melanjutkan, lengkapi data personal.", "error");
                         window.scrollTo(0, 0);
                     }
@@ -2630,7 +2620,7 @@
             let id_agama = $("#addagama").val();
             let warga = $("#kewarganegaraan").val();
             let jk = $("#jenisKelamin").val();
-            let email = $("#emailPribadi").val();
+            let email = $("#email").val();
             let telp = $("#noTelp").val();
             let bpjs_tk = $("#noBPJSTK").val();
             let bpjs_kes = $("#noBPJSKES").val();

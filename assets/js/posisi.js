@@ -274,7 +274,7 @@
 
             $.ajax({
                 type: "POST",
-                url: site_url+"Posisi/input_Posisi",
+                url: site_url+"Posisi/input_posisi",
                 data: {
                     prs: prs,
                     posisi: posisi,

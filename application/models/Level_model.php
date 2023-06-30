@@ -184,9 +184,10 @@ class Level_model extends CI_Model
           }
      }
 
-     public function get_all()
+     public function get_all($auth_m_per)
      {
-          return $this->db->get('vw_level')->result();
+          $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+          return $this->db->get_where('vw_lvl', ['id_perusahaan' => $id_per])->result();
      }
 
      public function get_by_authper($auth_per)
