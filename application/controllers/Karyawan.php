@@ -260,23 +260,21 @@ class Karyawan extends My_Controller
           $this->form_validation->set_rules("jk", "jk", "required|trim", [
                'required' => 'Jenis kelamin wajib dipilih',
           ]);
-          $this->form_validation->set_rules("email", "email", "trim|valid_email", [
-               'valid_email' => 'Format email salah',
-          ]);
-          $this->form_validation->set_rules("telp", "telp", "trim");
           $this->form_validation->set_rules("bpjs_tk", "bpjs_tk", "trim");
           $this->form_validation->set_rules("bpjs_kes", "bpjs_kes", "trim");
           $this->form_validation->set_rules("no_equity", "no_equity", "trim");
           $this->form_validation->set_rules("npwp", "npwp", "trim");
+          $this->form_validation->set_rules("email", "email", "trim|valid_email", [
+               'valid_email' => 'Format email anda salah',
+          ]);
+          $this->form_validation->set_rules("notelp", "notelp", "trim|numeric", [
+               'numeric' => 'No. Telp. wajib diisi dengan angka',
+          ]);
           $this->form_validation->set_rules("nokk", "nokk", "required|trim|max_length[16]|min_length[16]", [
                'required' => 'No. Kartu Keluarga wajib diisi',
                'numeric' => 'Wajib diisi dengan angka',
                'max_length' => 'No. Kartu Keluarga maksimal 16 karakter',
                'min_length' => 'No. Kartu Keluarga minimal 16 karakter'
-          ]);
-          $this->form_validation->set_rules("namaibu", "namaibu", "required|trim|max_length[100]", [
-               'required' => 'Nama ibu kandung wajib diisi',
-               'max_length' => 'Nama ibu kandung maksimal 100 karakter',
           ]);
 
           if ($this->form_validation->run() == false) {
@@ -310,14 +308,13 @@ class Karyawan extends My_Controller
                     'id_agama' => form_error("id_agama"),
                     'warga' => form_error("warga"),
                     'jk' => form_error("jk"),
-                    'email' => form_error("email"),
-                    'telp' => form_error("telp"),
                     'bpjs_tk' => form_error("bpjs_tk"),
                     'bpjs_kes' => form_error("bpjs_kes"),
                     'no_equity' => form_error("no_equity"),
-                    'npwp' => $errnpwp,
+                    'email' => form_error("email"),
+                    'notelp' => form_error("notelp"),
                     'nokk' => form_error("nokk"),
-                    'namaibu' => form_error("namaibu")
+                    'npwp' => $errnpwp
                ];
 
                echo json_encode($error);
@@ -487,7 +484,7 @@ class Karyawan extends My_Controller
           $this->form_validation->set_rules("id_tipe", "id_tipe", "required|trim", [
                'required' => 'Tipe wajib dipilih',
           ]);
-          $this->form_validation->set_rules("id_grade", "id_grade", "required|trim", [
+          $this->form_validation->set_rules("id_level", "id_level", "required|trim", [
                'required' => 'Grade wajib dipilih',
           ]);
           $this->form_validation->set_rules("stat_tinggal", "stat_tinggal", "required|trim", [
@@ -513,7 +510,7 @@ class Karyawan extends My_Controller
                     'id_poh' => form_error("id_poh"),
                     'id_klasifikasi' => form_error("id_klasifikasi"),
                     'id_tipe' => form_error("id_tipe"),
-                    'id_grade' => form_error("id_grade"),
+                    'id_level' => form_error("id_level"),
                     'stat_tinggal' => form_error("stat_tinggal"),
                     'stat_kerja' => form_error("stat_kerja"),
                     'email_kantor' => form_error("email_kantor"),
@@ -603,13 +600,14 @@ class Karyawan extends My_Controller
                          echo json_encode(array("statusCode" => 202, "pesan" => "", "pesan1" => "", "pesan2" => "Isi tanggal akhir dengan benar"));
                          return;
                     }
-
-                    $tgl_permanen = "1970-01-01";
                } else if ($query == "F") {
                     if ($tgl_permanen == "") {
                          echo json_encode(array("statusCode" => 202, "pesan" => "Tanggal permanen wajib diisi", "pesan1" => "", "pesan2" => ""));
                          return;
                     }
+
+                    $tgl_akhir_kontrak = "1970-01-01";
+                    $tgl_mulai_kontrak = $tgl_permanen;
                } else {
                     echo json_encode(array("statusCode" => 202, "pesan" => "Kesalahan saat mengambil status kerja", "pesan1" => "", "pesan2" => ""));
                     return;
@@ -626,7 +624,7 @@ class Karyawan extends My_Controller
                          }
                     }
 
-                    $dt_personal = array(
+                    $data_personal = array(
                          'no_ktp' => $noktp,
                          'no_kk' => $nokk,
                          'nama_lengkap' => $nama,
@@ -657,7 +655,7 @@ class Karyawan extends My_Controller
                     );
 
                     $idpersonal = $this->kry->get_id_personal($auth_person);
-                    $this->kry->update_dtPersonal($idpersonal, $dt_personal);
+                    $this->kry->update_dtPersonal($idpersonal, $data_personal);
 
                     $data_al = array(
                          'alamat_ktp' => $alamat,
@@ -723,6 +721,9 @@ class Karyawan extends My_Controller
                          return;
                     }
 
+                    // echo json_encode($id_per);
+                    // return;
+
                     $data_personal = [
                          'no_ktp' => $noktp,
                          'no_kk' => $nokk,
@@ -768,7 +769,7 @@ class Karyawan extends My_Controller
                                    mkdir('./assets/berkas/karyawan/' . $foldername, 0775, TRUE);
                               }
 
-                              $data = [
+                              $data_alamat = [
                                    'id_personal' => $id_personal,
                                    'alamat_ktp' => $alamat,
                                    'rt_ktp' => $rt,
@@ -785,7 +786,7 @@ class Karyawan extends My_Controller
                                    'id_user' => $this->session->userdata('id_user'),
                               ];
 
-                              $this->kry->input_dtAlamat($data);
+                              $this->kry->input_dtAlamat($data_alamat);
                               $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
                               $id_depart = $this->get_id_depart($auth_depart);
                               $id_level = $this->get_id_level($auth_level);
@@ -793,6 +794,7 @@ class Karyawan extends My_Controller
                               $id_lokterima = $this->get_id_lokterima($auth_lokterima);
                               $id_lokker = $this->get_id_lokker($auth_lokker);
                               $id_poh = $this->get_id_poh($auth_poh);
+
 
                               $data_karyawan = [
                                    'id_personal' => $id_personal,
@@ -816,8 +818,8 @@ class Karyawan extends My_Controller
                                    'id_tipe' => $id_tipe,
                                    'stat_tinggal' => $stat_tinggal,
                                    'email_kantor' => $email_kantor,
-                                   'tgl_permanen' => $tgl_permanen,
-                                   'id_stat_perjanjian' => $stat_kerja,
+                                   'tgl_permanen' => '1970-01-01',
+                                   'id_stat_perjanjian' => 0,
                                    'tgl_nonaktif' => '1970-01-01',
                                    'alasan_nonaktif' => '',
                                    'tgl_buat' =>  date('Y-m-d H:i:s'),
@@ -825,6 +827,7 @@ class Karyawan extends My_Controller
                                    'id_user' => $this->session->userdata('id_user'),
                                    'id_m_perusahaan' => $id_m_perusahaan,
                               ];
+
 
                               $karyawan = $this->kry->input_dtKaryawan($data_karyawan);
 
@@ -845,6 +848,7 @@ class Karyawan extends My_Controller
                                              'tgl_edit' =>  date('Y-m-d H:i:s'),
                                              'id_user' => $this->session->userdata('id_user')
                                         ];
+
 
                                         $this->kry->input_dtKontrak($data_kontrak);
                                    }

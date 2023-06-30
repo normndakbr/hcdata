@@ -91,43 +91,31 @@
                                                                  <textarea type="text" class="form-control" style="background-color:transparent;margin-top:-10px;" disabled><?= $data_alamat ?></textarea>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Agama</h6>
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->agama) ? $data_kary->agama : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Jenis Kelamin</h6>
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->jk) ? (($data_kary->jk == 'LK') ? "LAKI-LAKI" : "PEREMPUAN") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Status Pernikahan</h6>
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->kode_stat_nikah) ? $data_kary->kode_stat_nikah : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Kewarganegaraan</h6>
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->warga_negara) ? $data_kary->warga_negara : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-8 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Alamat Email</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->email_pribadi) ? $data_kary->email_pribadi : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. Telp</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->hp_1) ? $data_kary->hp_1 : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-8 col-sm-12">
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Tempat & Tanggal Lahir</h6>
                                                                  <input type="text" class="form-control" value="<?= (isset($data_kary->tmp_lahir) ? $data_kary->tmp_lahir : '') . ", " . ($data_kary->tgl_lahir == "1970-01-01" ? '' : date('d-M-Y', strtotime($data_kary->tgl_lahir))) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
@@ -141,26 +129,20 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h6>Nama Ibu</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->nama_ibu) ? $data_kary->no_kk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 <h6>No. BPJS Tenaga Kerja</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjstk) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>No. BPJS Kesehatan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjskes) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>No. NPWP</h6>
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->no_npwp) ? $data_kary->no_npwp : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. BPJS Tenaga Kerja</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjstk) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-12 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. BPJS Kesehatan</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->no_bpjskes) ?  $data_kary->no_bpjstk : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                   </div>
@@ -227,51 +209,6 @@
                                                                  <input type="text" class="form-control" value="<?= isset($data_kary->lokker) ? $data_kary->lokker : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <?php if ($data_kary->stat_waktu == "F") { ?>
-                                                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Status Karyawan</h6>
-                                                                      <input type="text" class="form-control" value="<?= $data_kary->stat_perjanjian ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Tanggal Permanen</h6>
-                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Status Residence</h6>
-                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                       <?php } else { ?>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Status Karyawan</h6>
-                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_perjanjian) ? $data_kary->stat_perjanjian : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Tanggal Awal</h6>
-                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Tanggal Akhir</h6>
-                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-3 col-md-3 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Status Residence</h6>
-                                                                      <input type="text" class="form-control" value="<?= isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                       <?php } ?>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Email Perusahaan</h6>
@@ -288,6 +225,30 @@
                                                             <div class="form-group">
                                                                  <h6>Tgl. Aktif</h6>
                                                                  <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_aktif)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Status Residence</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Status Karyawan</h6>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->stat_perjanjian) ? $data_kary->stat_perjanjian : '' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Tanggal Awal</h6>
+                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <h6>Tanggal Akhir</h6>
+                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
                                                   </div>
