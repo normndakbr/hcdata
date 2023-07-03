@@ -79,6 +79,30 @@ class Struktur extends My_Controller
           $this->load->view('dashboard/struktur/pjo', $data);
      }
 
+     public function iujpdetail()
+     {
+          $auth_m_per = $this->input->get('auth_m_per');
+          $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
+          $data['izin_per'] = $this->str->tabel_izin_Detail($id_m_perusahaan);
+          $this->load->view('dashboard/struktur/izindetail', $data);
+     }
+
+     public function siodetail()
+     {
+          $auth_m_per = $this->input->get('auth_m_per');
+          $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
+          $data['sio_per'] = $this->str->tabel_sio_Detail($id_m_perusahaan);
+          $this->load->view('dashboard/struktur/siodetail', $data);
+     }
+
+     public function kontrakdetail()
+     {
+          $auth_m_per = $this->input->get('auth_m_per');
+          $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
+          $data['kontrak_per'] = $this->str->tabel_kontrak_Detail($id_m_perusahaan);
+          $this->load->view('dashboard/struktur/kontrakdetail', $data);
+     }
+
      public function ajax_list()
      {
           $list = $this->str->get_datatables();
