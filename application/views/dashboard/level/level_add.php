@@ -74,12 +74,12 @@
                                    </div>
                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <label for="kodeLevel">Kode <span class="text-danger">*</span></label>
-                                        <input id='kodeLevel' name='kodeLevel' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <input style="text-transform:uppercase" id='kodeLevel' name='kodeLevel' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error2 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
                                         <label for="Level">Level <span class="text-danger">*</span></label>
-                                        <input id='Level' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <input style="text-transform:uppercase" id='Level' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error3 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">

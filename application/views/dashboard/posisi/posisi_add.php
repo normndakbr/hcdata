@@ -82,7 +82,7 @@
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="Posisi">Posisi <span class="text-danger">*</span></label>
-                                        <input id='Posisi' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <input style="text-transform:uppercase" id='Posisi' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error4 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">

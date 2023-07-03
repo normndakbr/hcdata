@@ -20,7 +20,8 @@
 
 </div>
 
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
+<script src="<?= base_url(); ?>assets/assets/js/jquery-3.5.1.js"></script>
 <script src="<?= base_url(); ?>assets/assets/js/vendor-all.min.js"></script>
 <script src="<?= base_url(); ?>assets/assets/js/plugins/bootstrap.min.js"></script>
 <script src="<?= base_url(); ?>assets/assets/js/ripple.js"></script>
