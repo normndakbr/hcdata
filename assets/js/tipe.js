@@ -61,9 +61,9 @@
                     $(".err_psn_tipe").addClass("alert-danger");
                     $(".err_psn_tipe").css("display", "block");
                     if (xhr.status == 404) {
-                        $(".err_psn_tipe").html("Tipe gagal diupdate, Link data tidak ditemukan");
+                        $(".err_psn_tipe").html("Golongan gagal diupdate, Link data tidak ditemukan");
                     } else if (xhr.status == 0) {
-                        $(".err_psn_tipe").html("Tipe gagal diupdate, Waktu koneksi habis");
+                        $(".err_psn_tipe").html("Golongan gagal diupdate, Waktu koneksi habis");
                     } else {
                         $(".err_psn_tipe").html("Terjadi kesalahan saat meng-update data, hubungi administrator");
                     }
@@ -174,9 +174,9 @@
                         $(".err_psn_tipe").addClass("alert-danger");
                         $(".err_psn_tipe").css("display", "block");
                         if (xhr.status == 404) {
-                            $(".err_psn_tipe").html("Tipe gagal disimpan, Link data tidak ditemukan");
+                            $(".err_psn_tipe").html("Golongan gagal disimpan, Link data tidak ditemukan");
                         } else if (xhr.status == 0) {
-                            $(".err_psn_tipe").html("Tipe gagal disimpan, Waktu koneksi habis");
+                            $(".err_psn_tipe").html("Golongan gagal disimpan, Waktu koneksi habis");
                         } else {
                             $(".err_psn_tipe").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
                         }
@@ -193,11 +193,11 @@
                 let namaTipe = $(this).attr('value');
 
                 if (authtipe == "") {
-                    swal("Error", "Tipe tidak ditemukan", "error");
+                    swal("Error", "Golongan tidak ditemukan", "error");
                 } else {
                     swal({
                         title: "Hapus",
-                        text: "Yakin Tipe " + namaTipe + " akan dihapus?",
+                        text: "Yakin Golongan " + namaTipe + " akan dihapus?",
                         type: 'question',
                         showCancelButton: true,
                         confirmButtonColor: '#36c6d3',
@@ -237,9 +237,9 @@
                                     $(".err_psn_tipe").addClass("alert-danger");
                                     $(".err_psn_tipe").css("display", "block");
                                     if (xhr.status == 404) {
-                                        $(".err_psn_tipe").html("Tipe gagal dihapus, , Link data tidak ditemukan");
+                                        $(".err_psn_tipe").html("Golongan gagal dihapus, , Link data tidak ditemukan");
                                     } else if (xhr.status == 0) {
-                                        $(".err_psn_tipe").html("Tipe gagal dihapus, Waktu koneksi habis");
+                                        $(".err_psn_tipe").html("Golongan gagal dihapus, Waktu koneksi habis");
                                     } else {
                                         $(".err_psn_tipe").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
                                     }
@@ -262,7 +262,7 @@
                 let namaTipe = $(this).attr('value');
 
                 if (authtipe == "") {
-                    swal("Error", "Tipe tidak ditemukan", "error");
+                    swal("Error", "Golongan tidak ditemukan", "error");
                 } else {
                     $.ajax({
                         type: "post",
@@ -292,9 +292,9 @@
                             $(".err_psn_tipe").addClass("alert-danger");
                             $(".err_psn_tipe").css("display", "block");
                             if (xhr.status == 404) {
-                                $(".err_psn_tipe").html("Tipe gagal ditampilkan, Link data tidak ditemukan");
+                                $(".err_psn_tipe").html("Golongan gagal ditampilkan, link data tidak ditemukan");
                             } else if (xhr.status == 0) {
-                                $(".err_psn_tipe").html("Tipe gagal ditampilkan, Waktu koneksi habis");
+                                $(".err_psn_tipe").html("Golongan gagal ditampilkan, waktu koneksi habis");
                             } else {
                                 $(".err_psn_tipe").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
                             }
@@ -311,7 +311,7 @@
                 let namaTipe = $(this).attr('value');
 
                 if (authtipe == "") {
-                    swal("Error", "Tipe tidak ditemukan", "error");
+                    swal("Error", "Golongan tidak ditemukan", "error");
                 } else {
                     $.ajax({
                         type: "post",
@@ -342,9 +342,9 @@
                             $(".err_psn_tipe").addClass("alert-danger");
                             $(".err_psn_tipe").css("display", "block");
                             if (xhr.status == 404) {
-                                $(".err_psn_tipe").html("Tipe gagal ditampilkan, Link data tidak ditemukan");
+                                $(".err_psn_tipe").html("Golongan gagal ditampilkan, link data tidak ditemukan");
                             } else if (xhr.status == 0) {
-                                $(".err_psn_tipe").html("Tipe gagal ditampilkan, Waktu koneksi habis");
+                                $(".err_psn_tipe").html("Golongan gagal ditampilkan, waktu koneksi habis");
                             } else {
                                 $(".err_psn_tipe").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
                             }
@@ -378,7 +378,7 @@
                         if (code != "") {
                             $(".err_psn_tipe").removeClass("d-none");
                             $(".err_psn_tipe").css("display", "block");
-                            $(".err_psn_tipe").html("terjadi kesalahan saat melakukan load data tipe, hubungi administrator");
+                            $(".err_psn_tipe").html("terjadi kesalahan saat melakukan load data golongan, hubungi administrator");
                             $("#secadd").addClass("disabled");
                         }
                     }

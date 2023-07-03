@@ -9,6 +9,7 @@
             let status = $('#editPosisiStatus').val();
             let ket = $('#editPosisiKet').val();
 
+            alert(depart);
             $.ajax({
                 type: "POST",
                 url: site_url+"posisi/edit_posisi",
@@ -19,6 +20,7 @@
                     ket: ket
                 },
                 success: function(data) {
+                    alert(data);
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
                         tbmPosisi.draw();
@@ -100,49 +102,6 @@
             theme: 'bootstrap4',
             dropdownParent: $('#editPosisimdl')
         });
-
-        // $.ajax({
-        //     type: "POST",
-        //     url: site_url+"perusahaan/get_all",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perPosisi").html(data.prs);
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_posisi").removeClass('d-none');
-        //         $(".err_psn_posisi").removeClass('alert-info');
-        //         $(".err_psn_posisi").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_posisi").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahPosisi").attr("disabled", true);
-        //         }
-        //     }
-        // })
-
-        // $.ajax({
-        //     type: "POST",
-        //     url: site_url+"perusahaan/get_all",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perPosisiData").html(data.prs);
-        //         $('#perPosisiData').select2({
-        //             theme: 'bootstrap4'
-        //         });
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_posisi").removeClass('d-none');
-        //         $(".err_psn_posisi").removeClass('alert-info');
-        //         $(".err_psn_posisi").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_posisi").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahPosisi").attr("disabled", true);
-        //         }
-        //     }
-        // })
 
         $("#perPosisiData").change(function(){
             let prs = $("#perPosisiData").val();
@@ -453,7 +412,6 @@
 
         $(document).on('click', '.edttposisi', function() {
             let authposisi = $(this).attr('id');
-            let namaposisi = $(this).attr('value');
 
             if (authposisi == "") {
                 swal("Error", "Posisi tidak ditemukan", "error");

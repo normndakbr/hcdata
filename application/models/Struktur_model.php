@@ -750,4 +750,68 @@ class Struktur_model extends CI_Model
                return;
           }
      }
+
+     public function cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp)
+     {
+          $data = [
+               'no_izin_perusahaan' => $no_iujp,
+               'tgl_mulai_izin' => $tgl_awal_iujp,
+               'tgl_akhir_izin' => $tgl_akhir_iujp
+          ];
+
+          $query = $this->db->get_where('tb_izin_perusahaan', $data)->result();
+          if (!empty($query)) {
+               return 201;
+          } else {
+               return 200;
+          }
+     }
+
+     public function cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio)
+     {
+          $data = [
+               'no_sio_perusahaan' => $no_sio,
+               'tgl_mulai_sio' => $tgl_awal_sio,
+               'tgl_akhir_sio' => $tgl_akhir_sio
+          ];
+
+          $query = $this->db->get_where('tb_sio_perusahaan', $data)->result();
+          if (!empty($query)) {
+               return 201;
+          } else {
+               return 200;
+          }
+     }
+
+     public function cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak)
+     {
+          $data = [
+               'no_kontrak_perusahaan' => $no_kontrak,
+               'tgl_mulai' => $tgl_awal_kontrak,
+               'tgl_akhir' => $tgl_akhir_kontrak
+          ];
+
+          $query = $this->db->get_where('tb_kontrak_perusahaan', $data)->result();
+          if (!empty($query)) {
+               return 201;
+          } else {
+               return 200;
+          }
+     }
+
+     public function cek_pjo($no_pjo, $tgl_awal_pjo, $tgl_akhir_pjo)
+     {
+          $data = [
+               'no_pengesahan_pjo' => $no_pjo,
+               'tgl_aktif_pjo' => $tgl_awal_pjo,
+               'tgl_akhir_pjo' => $tgl_akhir_pjo
+          ];
+
+          $query = $this->db->get_where('tb_pjo_perusahaan', $data)->result();
+          if (!empty($query)) {
+               return 201;
+          } else {
+               return 200;
+          }
+     }
 }

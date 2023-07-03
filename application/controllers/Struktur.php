@@ -497,6 +497,12 @@ class Struktur extends My_Controller
                     return;
                }
 
+               $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
+               if ($cek_izin == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan'));
+                    return;
+               }
+
                if ($id_m_per != "") {
                     if ($auth_iujp == "") {
                          if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
@@ -668,6 +674,12 @@ class Struktur extends My_Controller
                     return;
                }
 
+               $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
+               if ($cek_izin == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan'));
+                    return;
+               }
+
                if ($id_m_per != "") {
                     if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
                          mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
@@ -781,6 +793,12 @@ class Struktur extends My_Controller
 
                if ($tgl_awal_sio > $tgl_akhir_sio) {
                     echo json_encode(array('statusCode' => 202, 'tgl_akhir_sio' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                    return;
+               }
+
+               $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
+               if ($cek_sio == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan'));
                     return;
                }
 
@@ -954,6 +972,12 @@ class Struktur extends My_Controller
                     return;
                }
 
+               $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
+               if ($cek_sio == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan'));
+                    return;
+               }
+
                if ($id_m_per != "") {
                     if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
                          mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
@@ -1066,6 +1090,12 @@ class Struktur extends My_Controller
 
                if ($tgl_awal_kontrak > $tgl_akhir_kontrak) {
                     echo json_encode(array('statusCode' => 202, 'tgl_akhir_kontrak' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                    return;
+               }
+
+               $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
+               if ($cek_kontrak == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan'));
                     return;
                }
 
@@ -1241,6 +1271,12 @@ class Struktur extends My_Controller
                     return;
                }
 
+               $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
+               if ($cek_kontrak == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan'));
+                    return;
+               }
+
                if ($id_m_per != "") {
                     if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
                          mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
@@ -1375,6 +1411,12 @@ class Struktur extends My_Controller
 
                if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
                     echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                    return;
+               }
+
+               $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
+               if ($cek_pjo == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan'));
                     return;
                }
 
@@ -1600,6 +1642,12 @@ class Struktur extends My_Controller
 
                if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
                     echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                    return;
+               }
+
+               $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
+               if ($cek_pjo == 201) {
+                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan'));
                     return;
                }
 
@@ -2021,6 +2069,7 @@ class Struktur extends My_Controller
                     $url_doc_kontrak_perusahaan = $list->url_doc_kontrak_perusahaan;
                     $nama_user = $list->nama_user;
                     $tgl_buat = date('d-M-Y H:i:s', strtotime($list->tgl_buat));
+                    $tgl_edit = date('d-M-Y H:i:s', strtotime($list->tgl_edit));
                     if ($list->stat_m_perusahaan == "T") {
                          $stat_m_perusahaan = "AKTIF";
                     } else {
@@ -2091,6 +2140,7 @@ class Struktur extends My_Controller
                     'url_doc_kontrak_perusahaan' => $url_doc_kontrak_perusahaan,
                     'nama_buat' => $nama_user,
                     'tgl_buat' => $tgl_buat,
+                    'tgl_edit' => $tgl_edit,
                     'stat_m_perusahaan' => $stat_m_perusahaan,
                     'pesan' => 'Sukses'
                ];

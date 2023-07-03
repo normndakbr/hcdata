@@ -123,7 +123,7 @@
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshProv" name="refreshProv" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshProv" name="refreshProv" class="btn btn-primary btn-sm" title="Refresh Provinsi"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorProvData text-danger font-italic font-weight-bold"></small>
@@ -137,7 +137,7 @@
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKota" name="refreshKota" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKota" name="refreshKota" class="btn btn-primary btn-sm" title="Refresh Kabupaten/Kota"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKotaData text-danger font-italic font-weight-bold"></small>
@@ -151,7 +151,7 @@
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKec" name="refreshKec" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKec" name="refreshKec" class="btn btn-primary btn-sm" title="Refresh Kecamatan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKecData text-danger font-italic font-weight-bold"></small>
@@ -165,7 +165,7 @@
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKel" name="refreshKel" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKel" name="refreshKel" class="btn btn-primary btn-sm" title="Refresh Kelurahan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKelData text-danger font-italic font-weight-bold"></small>
@@ -210,7 +210,7 @@
                                                                            <option value="">-- PILIH PERNIKAHAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm" title="Refresh Status Pernikahan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorStatPernikahan text-danger font-italic font-weight-bold"></small>
@@ -277,7 +277,7 @@
                                                             <div class="form-group">
                                                                  <label for="pendidikanTerakhir">Pendidikan Terakhir </label>
                                                                  <div id="txtDidik" name="txtDidik" class="input-group mt-2">
-                                                                      <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" required value="">
+                                                                      <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required>
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
@@ -334,7 +334,7 @@
 
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addNIKKary">Nomor Induk Karyawan <span class="text-danger">*</span></label>
+                                                                 <label for="addNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
                                                                  <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="erroraddNIKKary text-danger font-italic font-weight-bold"></small>
                                                                  <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span>
@@ -349,7 +349,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshDepart" name="refreshDepart" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshDepart" name="refreshDepart" class="btn btn-primary btn-sm" title="Refresh Departemen" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorAddDepartKary text-danger font-italic font-weight-bold"></small>
@@ -364,7 +364,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshPosisi" name="refreshPosisi" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshPosisi" name="refreshPosisi" class="btn btn-primary btn-sm" title="Refresh Posisi" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorAddPosisiKary text-danger font-italic font-weight-bold"></small>
@@ -378,7 +378,8 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button on id="refreshKlasifikasi" name="refreshKlasifikasi" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button on id="refreshKlasifikasi" name="refreshKlasifikasi" class="btn btn-primary btn-sm" title="Refresh Klasifikasi" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button on id="infoKlasifikasi" name="infoKlasifikasi" class="btn btn-warning btn-sm" title="Informasi" disabled><i class="fas fa-info-circle"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorAddKlasifikasiKary text-danger font-italic font-weight-bold"></small>
@@ -392,7 +393,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshTipe" name="refreshTipe" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshTipe" name="refreshTipe" class="btn btn-primary btn-sm" title="Refresh Golongan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddTipeKaryawan text-danger font-italic font-weight-bold"></small>
@@ -406,7 +407,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLevel" name="refreshLevel" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshLevel" name="refreshLevel" class="btn btn-primary btn-sm" title="Refresh Level" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddLevelKary text-danger font-italic font-weight-bold"></small>
@@ -420,7 +421,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshPOH" name="refreshPOH" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshPOH" name="refreshPOH" class="btn btn-primary btn-sm" title="Refresh Point of Hire" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddPOHKary text-danger font-italic font-weight-bold"></small>
@@ -434,7 +435,7 @@
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLokterima" name="refreshLokterima" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshLokterima" name="refreshLokterima" class="btn btn-primary btn-sm" title="Refresh Lokasi Penerimaan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddLokterimaKary text-danger font-italic font-weight-bold"></small>
@@ -448,7 +449,7 @@
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLokker" name="refreshLokker" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshLokker" name="refreshLokker" class="btn btn-primary btn-sm" title="Refresh Lokasi Kerja" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddLokasiKerja text-danger font-italic font-weight-bold"></small>
@@ -464,7 +465,7 @@
                                                                            <option value="NR">NON RESIDENCE</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddStatusResidence text-danger font-italic font-weight-bold"></small>
@@ -499,7 +500,7 @@
                                                                            <option value="">-- WAJIB DIISI --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshstatkaryawan" name="refreshstatkaryawan" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshstatkaryawan" name="refreshstatkaryawan" title="Refresh Status Karyawan" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddStatusKaryawan text-danger font-italic font-weight-bold"></small>
@@ -1214,6 +1215,37 @@
                <div class="modal-footer">
                     <button type="button" name="btnSaveStrPer" id="btnSaveStrPer" class="btn font-weight-bold btn-primary">Simpan Data</button>
                     <button type="button" name="btnCancelStrPer" id="btnCancelStrPer" data-dismiss="modal" class="btn font-weight-bold btn-warning">Selesai</button>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="mdlinfoklasifikasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:60%;">
+          <div class="modal-content">
+               <div class="modal-header bg-c-yellow">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Informasi Klasifikasi</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row p-2">
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <p class="text-danger font-italic font-weight-bold">Pilih klasifikasi karyawan sesuai dengan keterangan berikut :</p>
+                         </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <ul>
+                                   <li><b>Manajemen</b> : Board of Director, Manager.</li>
+                                   <li><b>Profesional</b> : Advisor, Specialist dan lain-lain.</li>
+                                   <li><b>Teknisi</b> : Superintendent, Supervisor, Head/Chief, Foreman, Maintenance, Technician.</li>
+                                   <li><b>Administrasi</b> : Accounting, Scretary, HR Staff/Officer dan lain-lain</li>
+                                   <li><b>Terampil</b> : Operator</li>
+                                   <li><b>Tidak terampil</b> : Tenaga informal, Pekerja harian lepas dan lain-lain</li>
+                              </ul>
+
+                         </div>
+                    </div>
+               </div>
+               <div class="modal-footer m-3">
+                    <button name="btnbatalunitsimper" id="btnbatalunitsimper" data-dismiss="modal" class="btn font-weight-bold btn-warning">Selesai</button>
                </div>
           </div>
      </div>

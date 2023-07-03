@@ -15,12 +15,12 @@
                                    </li>
                                    <li class="breadcrumb-item">
                                         <a id="bc1" href="#">
-                                             Tipe
+                                             Golongan
                                         </a>
                                    </li>
                                    <li class="breadcrumb-item">
                                         <a id="bc2">
-                                             Tabel Tipe
+                                             Tabel Golongan
                                         </a>
                                    </li>
                               </ul>
@@ -32,7 +32,7 @@
                <div class="col-xl-12 col-md-12">
                     <div class="card latest-update-card">
                          <div class="card-header">
-                              <h5>Tipe</h5>
+                              <h5>Golongan</h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,7 +68,7 @@
                                                   <thead>
                                                        <tr class="font-weight-boldtext-white">
                                                             <th style="text-align:center;width:1%;">No.</th>
-                                                            <th>Tipe</th>
+                                                            <th>Golongan</th>
                                                             <th style="text-align:center;">Status</th>
                                                             <th style="text-align:center;">Tgl. Dibuat</th>
                                                             <th style="text-align:center;">Proses</th>

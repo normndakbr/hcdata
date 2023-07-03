@@ -228,6 +228,7 @@ class Posisi extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
+                    $this->session->set_userdata('id_depart', $list->id_depart);
                     $this->session->set_userdata('id_posisi', $list->id_posisi);
                     $this->session->set_userdata('id_perusahaan', $list->id_perusahaan);
                }
@@ -290,6 +291,8 @@ class Posisi extends My_Controller
                }
                $posisi = $this->pss->edit_posisi($posisi, $depart, $ket_posisi, $status);
                if ($posisi == 200) {
+                    $this->session->unset_userdata('id_posisi');
+                    $this->session->unset_userdata('id_depart');
                     echo json_encode(array("statusCode" => 200, "pesan" => "Posisi berhasil diupdate"));
                } else if ($posisi == 201) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Posisi gagal diupdate"));
