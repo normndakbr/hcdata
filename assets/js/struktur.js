@@ -1410,9 +1410,6 @@
                             $("#tblIUJPDetail").load(site_url+"struktur/iujpdetail?auth_m_per=" + auth_m_per);
                             $("#tblSIODetail").load(site_url+"struktur/siodetail?auth_m_per=" + auth_m_per);
                             $("#tblKontrakDetail").load(site_url+"struktur/kontrakdetail?auth_m_per=" + auth_m_per);
-                            // $("#tbmIUJPDetail").DataTable();
-                            // $("#tbmSIODetail").DataTable();
-                            // $("#tbmKontrakDetail").DataTable();
                             $('#mdlDetailStrPer').modal('show');
                         } else {
                             swal("Error", data.pesan, "error");
