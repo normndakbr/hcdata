@@ -1985,7 +1985,7 @@ class Karyawan extends My_Controller
                $row['depart'] = $kry->depart;
                $row['kode_perusahaan'] = $kry->kode_perusahaan;
 
-               $kd_per = $this->prs->get_kode_per_by_parent($kry->id_parent);
+               $kd_per = $this->prs->get_kode_per_by_parent($kry->id_m_perusahaan);
                if (!empty($kd_per)) {
                     $row['kode_m_perusahaan'] = $kry->kode_perusahaan . " | " . $kd_per;
                } else {

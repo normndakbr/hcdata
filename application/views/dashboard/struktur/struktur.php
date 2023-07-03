@@ -437,7 +437,7 @@
                          <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: -20px;">
                               <hr>
                          </div>
-                         <div class="col-lg-6 col-md-12 col-sm-12">
+                         <div class="col-lg-12 col-md-12 col-sm-12">
                               <label for="" class="text-danger font-italic font-weight-bold">Rencana Keselamatan, Kesehatan Kerja dan Lingkungan (RK3L) :</label>
                               <div class="row">
                                    <div class="col-lg-6 col-md-12 col-sm-12">
@@ -448,80 +448,20 @@
                                    </div>
                               </div>
                          </div>
-                         <div class="col-lg-6 col-md-12 col-sm-12">
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <hr>
+                         </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12">
                               <label for="" class="text-danger font-italic font-weight-bold">Izin Usaha Jasa Pertambangan (IUJP) :</label>
-                              <div class="row">
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="NoIUJP">No. IUJP :</label>
-                                             <h5 id="noIUJP">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="tglIUJP">Masa Aktif :</label>
-                                             <h5 id="tglIUJP">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="ketIUJP">Keterangan :</label>
-                                             <h6 id="ketIUJP">-</h6>
-                                        </div>
-                                   </div>
-                              </div>
+                              <div id="tblIUJPDetail" class="data"></div>
                          </div>
-                         <div class="col-lg-12 col-md-12 col-sm-12">
-                              <hr>
-                         </div>
-                         <div class="col-lg-6 col-md-12 col-sm-12 border-right">
+                         <div class="col-lg-12 col-md-12 col-sm-12 border-right">
                               <label for="" class="text-danger font-italic font-weight-bold">Surat Izin Operasional (SIO) :</label>
-                              <div class="row">
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="noSIO">No. SIO :</label>
-                                             <h5 id="noSIO">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="tglSIO">Masa Aktif :</label>
-                                             <h5 id="tglSIO">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="ketSIO">Keterangan :</label>
-                                             <h6 id="ketSIO">-</h6>
-                                        </div>
-                                   </div>
-                              </div>
-                         </div>
-                         <div class="col-lg-6 col-md-12 col-sm-12">
-                              <label for="kodeMperusahaan" class="text-danger font-italic font-weight-bold">Kontrak :</label>
-                              <div class="row">
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="noKontrak">No. Kontrak :</label>
-                                             <h5 id="noKontrak">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-6 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="tglKontrak">Masa Aktif :</label>
-                                             <h5 id="tglKontrak">-</h5>
-                                        </div>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <div class="form-group">
-                                             <label for="ketKontrak">Keterangan :</label>
-                                             <h6 id="ketKontrak">-</h6>
-                                        </div>
-                                   </div>
-                              </div>
+                              <div id="tblSIODetail" class="data"></div>
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
-                              <hr>
+                              <label for="" class="text-danger font-italic font-weight-bold">Kontrak :</label>
+                              <div id="tblKontrakDetail" class="data"></div>
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
                               <label for="" class="text-danger font-italic font-weight-bold">Penanggung Jawab Operasional (PJO) :</label>

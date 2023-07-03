@@ -472,8 +472,46 @@ class Struktur_model extends CI_Model
      public function tabel_pjo($id_m_per)
      {
           if ($id_m_per !== "") {
-               $query = $this->db->get_where('vw_pjo_perusahaan', ['id_m_perusahaan' => $id_m_per]);
-               return $query->result();
+               $this->db->from('vw_pjo_perusahaan');
+               $this->db->where('id_m_perusahaan', $id_m_per);
+               $this->db->order_by('tgl_akhir_pjo', 'DESC');
+               return $this->db->get()->result();
+          } else {
+               return 0;
+          }
+     }
+
+     public function tabel_izin_Detail($id_m_per)
+     {
+          if ($id_m_per !== "") {
+               $this->db->from('vw_izin_perusahaan');
+               $this->db->where('id_m_perusahaan', $id_m_per);
+               $this->db->order_by('tgl_akhir_izin', 'DESC');
+               return $this->db->get()->result();
+          } else {
+               return 0;
+          }
+     }
+
+     public function tabel_sio_Detail($id_m_per)
+     {
+          if ($id_m_per !== "") {
+               $this->db->from('vw_sio_perusahaan');
+               $this->db->where('id_m_perusahaan', $id_m_per);
+               $this->db->order_by('tgl_akhir_sio', 'DESC');
+               return $this->db->get()->result();
+          } else {
+               return 0;
+          }
+     }
+
+     public function tabel_kontrak_Detail($id_m_per)
+     {
+          if ($id_m_per !== "") {
+               $this->db->from('vw_kontrak_perusahaan');
+               $this->db->where('id_m_perusahaan', $id_m_per);
+               $this->db->order_by('tgl_akhir_kontrak', 'DESC');
+               return $this->db->get()->result();
           } else {
                return 0;
           }
@@ -630,7 +668,7 @@ class Struktur_model extends CI_Model
 
           static $space;
 
-          $w = $this->db->query("SELECT * from vw_m_perusahaan where id_parent='" . $parent . "'");
+          $w = $this->db->query("SELECT * from vw_m_prs where id_parent='" . $parent . "'");
           if (($w->num_rows()) > 0) {
                $space .= "&roarr;";
           }
@@ -640,7 +678,7 @@ class Struktur_model extends CI_Model
                if ($h->id_parent == 0) {
                     $hasil .= "<option value='" . $h->auth_m_perusahaan . "'>" . $h->nama_m_perusahaan . "</option>";
                } else {
-                    $n = $this->db->query("SELECT * from vw_m_perusahaan where id_m_perusahaan=" . $h->id_parent);
+                    $n = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $h->id_parent);
                     if (!empty($n->result())) {
                          foreach ($n->result() as $n) {
                               $nm_per = " | " . $n->kode_perusahaan;
@@ -751,12 +789,10 @@ class Struktur_model extends CI_Model
           }
      }
 
-     public function cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp)
+     public function cek_iujp($no_iujp)
      {
           $data = [
-               'no_izin_perusahaan' => $no_iujp,
-               'tgl_mulai_izin' => $tgl_awal_iujp,
-               'tgl_akhir_izin' => $tgl_akhir_iujp
+               'no_izin_perusahaan' => $no_iujp
           ];
 
           $query = $this->db->get_where('tb_izin_perusahaan', $data)->result();
@@ -767,12 +803,10 @@ class Struktur_model extends CI_Model
           }
      }
 
-     public function cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio)
+     public function cek_sio($no_sio)
      {
           $data = [
-               'no_sio_perusahaan' => $no_sio,
-               'tgl_mulai_sio' => $tgl_awal_sio,
-               'tgl_akhir_sio' => $tgl_akhir_sio
+               'no_sio_perusahaan' => $no_sio
           ];
 
           $query = $this->db->get_where('tb_sio_perusahaan', $data)->result();
@@ -783,12 +817,10 @@ class Struktur_model extends CI_Model
           }
      }
 
-     public function cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak)
+     public function cek_kontrak($no_kontrak)
      {
           $data = [
-               'no_kontrak_perusahaan' => $no_kontrak,
-               'tgl_mulai' => $tgl_awal_kontrak,
-               'tgl_akhir' => $tgl_akhir_kontrak
+               'no_kontrak_perusahaan' => $no_kontrak
           ];
 
           $query = $this->db->get_where('tb_kontrak_perusahaan', $data)->result();
@@ -799,12 +831,10 @@ class Struktur_model extends CI_Model
           }
      }
 
-     public function cek_pjo($no_pjo, $tgl_awal_pjo, $tgl_akhir_pjo)
+     public function cek_pjo($no_pjo)
      {
           $data = [
-               'no_pengesahan_pjo' => $no_pjo,
-               'tgl_aktif_pjo' => $tgl_awal_pjo,
-               'tgl_akhir_pjo' => $tgl_akhir_pjo
+               'no_pengesahan_pjo' => $no_pjo
           ];
 
           $query = $this->db->get_where('tb_pjo_perusahaan', $data)->result();
