@@ -97,7 +97,7 @@ class Tipe extends My_Controller
 
                $cektipe = $this->tpe->cek_tipe($tipe);
                if ($cektipe) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Tipe sudah digunakan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Golongan sudah digunakan"));
                     return;
                }
 
@@ -112,9 +112,9 @@ class Tipe extends My_Controller
 
                $tipe = $this->tpe->input_tipe($data);
                if ($tipe) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "Tipe berhasil disimpan"));
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Golongan berhasil disimpan"));
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Tipe gagal disimpan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Golongan gagal disimpan"));
                }
           }
      }
@@ -124,13 +124,13 @@ class Tipe extends My_Controller
           $auth_tipe = htmlspecialchars(trim($this->input->post('authtipe')));
           $query = $this->tpe->hapus_tipe($auth_tipe);
           if ($query == 200) {
-               echo json_encode(array("statusCode" => 200, "pesan" => "Tipe berhasil dihapus"));
+               echo json_encode(array("statusCode" => 200, "pesan" => "Golongan berhasil dihapus"));
                return;
           } else if ($query == 201) {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Tipe gagal dihapus"));
+               echo json_encode(array("statusCode" => 201, "pesan" => "Golongan gagal dihapus"));
                return;
           } else {
-               echo json_encode(array("statusCode" => 202, "pesan" => "Tipe tidak ditemukan"));
+               echo json_encode(array("statusCode" => 202, "pesan" => "Golongan tidak ditemukan"));
                return;
           }
      }
@@ -160,7 +160,7 @@ class Tipe extends My_Controller
                }
                echo json_encode($data);
           } else {
-               echo json_encode(array('statusCode' => 201, "pesan" => "Tipe tidak ditemukan"));
+               echo json_encode(array('statusCode' => 201, "pesan" => "Golongan tidak ditemukan"));
           }
      }
 
@@ -189,7 +189,7 @@ class Tipe extends My_Controller
           } else {
 
                if ($this->session->userdata('id_tipe') == "") {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Tipe tidak ditemukan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Golongan tidak ditemukan"));
                     return;
                }
 
@@ -203,11 +203,11 @@ class Tipe extends My_Controller
 
                $tipe = $this->tpe->edit_tipe($tipe, $ket_tipe, $status);
                if ($tipe == 200) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "Tipe berhasil diupdate"));
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Golongan berhasil diupdate"));
                } else if ($tipe == 201) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Tipe gagal diupdate"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Golongan gagal diupdate"));
                } else if ($tipe == 204) {
-                    echo json_encode(array("statusCode" => 205, "pesan" => "Tipe sudah digunakan"));
+                    echo json_encode(array("statusCode" => 205, "pesan" => "Golongan sudah digunakan"));
                }
           }
      }
@@ -222,7 +222,7 @@ class Tipe extends My_Controller
                }
                echo json_encode(array("statusCode" => 200, "tpe" => $output));
           } else {
-               $output = "<option value=''>-- TIPE TIDAK ADA --</option>";
+               $output = "<option value=''>-- GOLONGAN TIDAK ADA --</option>";
                echo json_encode(array("statusCode" => 201, "tpe" => $output));
           }
      }
@@ -239,7 +239,7 @@ class Tipe extends My_Controller
                }
                echo json_encode(array("statusCode" => 200, "tpe" => $output));
           } else {
-               $output = "<option value=''>-- TIPE TIDAK ADA --</option>";
+               $output = "<option value=''>-- GOLONGAN TIDAK ADA --</option>";
                echo json_encode(array("statusCode" => 201, "tpe" => $output));
           }
      }
@@ -256,8 +256,8 @@ class Tipe extends My_Controller
 
                echo json_encode(array("statusCode" => 200, "tipe" => $output, "pesan" => "Sukses"));
           } else {
-               $output = "<option value=''>-- TIPE TIDAK ADA --</option>";
-               echo json_encode(array("statusCode" => 200, "tipe" => $output, "pesan", "Tipe gagal ditampilkan"));
+               $output = "<option value=''>-- GOLONGAN TIDAK ADA --</option>";
+               echo json_encode(array("statusCode" => 200, "tipe" => $output, "pesan", "Golongan gagal ditampilkan"));
           }
      }
 }

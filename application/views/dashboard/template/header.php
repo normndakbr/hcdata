@@ -87,8 +87,7 @@
                                    <li><a href="<?= base_url('departemen'); ?>">Departemen</a></li>
                                    <li><a href="<?= base_url('posisi'); ?>">Posisi</a></li>
                                    <li><a href="<?= base_url('level'); ?>">Level</a></li>
-                                   <li><a href="<?= base_url('grade'); ?>">Grade</a></li>
-                                   <li><a href="<?= base_url('tipe'); ?>">Tipe</a></li>
+                                   <li><a href="<?= base_url('tipe'); ?>">Golongan</a></li>
                                    <li><a href="<?= base_url('perjanjian'); ?>">Status Perjanjian</a></li>
                               </ul>
                          </li>

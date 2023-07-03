@@ -1403,6 +1403,7 @@
                             $("#tglKontrak").text(data.tgl_kontrak);
                             $("#ketKontrak").text(data.ket_kontrak_perusahaan);
                             $("#statStr").text(data.stat_m_perusahaan);
+                            $("#tglEdit").text(data.tgl_edit);
                             $("#tglBuat").text(data.tgl_buat);
                             $("#namaBuat").text(data.nama_buat);
                             $("#tblPJODetail").load(site_url+"struktur/pjodetail?auth_m_per=" + auth_m_per);

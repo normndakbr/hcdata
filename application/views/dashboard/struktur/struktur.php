@@ -73,7 +73,7 @@
                                                             <th>PERUSAHAAN</th>
                                                             <th>JENIS</th>
                                                             <th>RK3L</th>
-                                                            <th>UIJP</th>
+                                                            <th>IUJP</th>
                                                             <th>SIO</th>
                                                             <th>KONTRAK</th>
                                                             <th>PJO</th>
@@ -85,7 +85,7 @@
                                                        $servername = "localhost";
                                                        $username = "root";
                                                        $password = "";
-                                                       $dbname = "db_kary_2806";
+                                                       $dbname = "db_kary";
                                                        $conn = mysqli_connect($servername, $username, $password, $dbname);
 
                                                        $idperusahaan = $_SESSION['id_m_perusahaan'];
@@ -222,7 +222,7 @@
                                                             $servername = "localhost";
                                                             $username = "root";
                                                             $password = "";
-                                                            $dbname = "db_kary_2806";
+                                                            $dbname = "db_kary";
                                                             $conn = mysqli_connect($servername, $username, $password, $dbname);
 
                                                             static $space;
@@ -459,7 +459,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                             <label for="tglIUJP">Tgl. Expired :</label>
+                                             <label for="tglIUJP">Masa Aktif :</label>
                                              <h5 id="tglIUJP">-</h5>
                                         </div>
                                    </div>
@@ -485,7 +485,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                             <label for="tglSIO">Tgl. Expired :</label>
+                                             <label for="tglSIO">Masa Aktif :</label>
                                              <h5 id="tglSIO">-</h5>
                                         </div>
                                    </div>
@@ -508,7 +508,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                             <label for="tglKontrak">Tgl. Expired :</label>
+                                             <label for="tglKontrak">Masa Aktif :</label>
                                              <h5 id="tglKontrak">-</h5>
                                         </div>
                                    </div>
@@ -529,22 +529,28 @@
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
                               <div class="row">
-                                   <div class="col-lg-4 col-md-12 col-sm-12">
+                                   <div class="col-lg-3 col-md-3 col-sm-12">
                                         <div class="form-group">
                                              <label for="statStr">Status Perusahaan :</label>
-                                             <h5 id="statStr">AKTIF</h5>
+                                             <h5 id="statStr">-</h5>
                                         </div>
                                    </div>
-                                   <div class="col-lg-4 col-md-12 col-sm-12">
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
                                         <div class="form-group">
                                              <label for="tglBuat">Tgl. Dibuat :</label>
-                                             <h5 id="tglBuat">15-Jan-2023 13:00:03</h5>
+                                             <h5 id="tglBuat">-</h5>
                                         </div>
                                    </div>
-                                   <div class="col-lg-4 col-md-12 col-sm-12">
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="tglBuat">Tgl. Diedit :</label>
+                                             <h5 id="tglEdit">-</h5>
+                                        </div>
+                                   </div>
+                                   <div class="col-lg-3 col-md-4 col-sm-12">
                                         <div class="form-group">
                                              <label for="namaBuat">Pembuat :</label>
-                                             <h5 id="namaBuat">Ihfan Noifara</h5>
+                                             <h5 id="namaBuat">-</h5>
                                         </div>
                                    </div>
                               </div>

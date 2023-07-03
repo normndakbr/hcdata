@@ -19,7 +19,7 @@
      </div>
 </div>
 <div class="modal fade" id="detailPerusahaanmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:80%;">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:90%;">
           <div class="modal-content">
                <div class="modal-header bg-primary">
                     <h5 class="modal-title text-white" id="exampleModalLabel">Detail Perusahaan</h5>
@@ -62,42 +62,27 @@
                                    </div>
                                    <div class="col-lg-3 col-md-6 col-sm-12">
                                         <label for="detailPerusahaanNpwp">No. NPWP :</label><br>
-                                        <input id='detailPerusahaanStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                        <input id='detailPerusahaanNpwp' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <a class="btn btn-primary" data-toggle="collapse" href="#collDetPerusahaan" role="button" aria-expanded="false" aria-controls="collDetPerusahaan">
-                                             Detail
-                                        </a>
-                                        <div class="collapse" id="collDetPerusahaan">
-                                             <div class="card card-body mt-3">
-                                                  <div class="row">
-                                                       <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <label for="detailPerusahaanKeg">Kegiatan :</label><br>
-                                                            <textarea id='detailPerusahaanKeg' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                                       </div>
-                                                       <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <label for="detailPerusahaanKet">Keterangan :</label><br>
-                                                            <textarea id='detailPerusahaanKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
-                                                       </div>
-                                                       <div class="col-lg-2 col-md-6 col-sm-12">
-                                                            <label for="detailPerusahaanStatus">Status :</label><br>
-                                                            <input id='detailPerusahaanStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                                       </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
-                                                            <label for="detailPerusahaanBuat">Pembuat :</label><br>
-                                                            <input id='detailPerusahaanBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-6 col-sm-12">
-                                                            <label for="detailPerusahaanTglBuat">Tanggal Buat :</label><br>
-                                                            <input id='detailPerusahaanTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-6 col-sm-12">
-                                                            <label for="detailPerusahaanTglEdit">Tanggal Edit :</label><br>
-                                                            <input id='detailPerusahaanTglEdit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                                       </div>
-                                                  </div>
-                                             </div>
-                                        </div>
+                                        <label for="detailPerusahaanKet">Keterangan :</label><br>
+                                        <textarea id='detailPerusahaanKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
+                                   </div>
+                                   <div class="col-lg-2 col-md-6 col-sm-12">
+                                        <label for="detailPerusahaanStatus">Status :</label><br>
+                                        <input id='detailPerusahaanStatus' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-4 col-md-6 col-sm-12">
+                                        <label for="detailPerusahaanBuat">Pembuat :</label><br>
+                                        <input id='detailPerusahaanBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailPerusahaanTglBuat">Tanggal Buat :</label><br>
+                                        <input id='detailPerusahaanTglBuat' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
+                                   </div>
+                                   <div class="col-lg-3 col-md-6 col-sm-12">
+                                        <label for="detailPerusahaanTglEdit">Tanggal Edit :</label><br>
+                                        <input id='detailPerusahaanTglEdit' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
                                    </div>
                               </div>
                          </div>
@@ -107,7 +92,7 @@
      </div>
 </div>
 <div class="modal fade" id="editPerusahaanmdl" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:80%;">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:90%;">
           <div class="modal-content">
                <div class="modal-header bg-primary">
                     <h5 class="modal-title text-white" id="jdleditPerusahaan">Edit Perusahaan</h5>
@@ -205,11 +190,6 @@
                                              <input id='editPerusahaanNpwp' type="text" autocomplete="off" placeholder="No. NPWP" spellcheck="false" class="form-control" value="">
                                         </div>
                                         <small id="error12eper" class="text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="editPerusahaanKeg" class="floating-label">Kegiatan </label>
-                                        <textarea id='editPerusahaanKeg' type="text" autocomplete="off" spellcheck="false" class="form-control" value=""></textarea>
-                                        <small id="error13eper" class="text-danger font-italic font-weight-bold"></small>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="editPerusahaanKet" class="floating-label">Keterangan </label>

@@ -57,7 +57,6 @@
                               <div class="mt-3">
                                    <div class="mb-4">
                                         <a href="<?= base_url('lokasipenerimaan'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
-                                        <a id="addbtn" href="<?= base_url('lokasipenerimaan/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
                                    <div class="alert alert-danger err_psn_lokterima animate__animated animate__bounce d-none"></div>
                               </div>

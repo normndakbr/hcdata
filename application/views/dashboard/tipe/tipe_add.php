@@ -15,12 +15,12 @@
                                    </li>
                                    <li class="breadcrumb-item">
                                         <a href="<?= base_url('Tipe'); ?>">
-                                             Tipe
+                                             Golongan
                                         </a>
                                    </li>
                                    <li class="breadcrumb-item">
                                         <a id="bc2">
-                                             Tambah Tipe
+                                             Tambah Golongan
                                         </a>
                                    </li>
                               </ul>
@@ -32,7 +32,7 @@
                <div class="col-xl-12 col-md-12">
                     <div class="card latest-update-card">
                          <div class="card-header">
-                              <h5>Tipe</h5>
+                              <h5>Golongan</h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -57,13 +57,12 @@
                               <div class="mt-3">
                                    <div class="mb-4">
                                         <a href="<?= base_url('tipe'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
-                                        <a id="addbtn" href="<?= base_url('tipe/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
                                    <div class="alert alert-danger err_psn_tipe animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row ">
                                    <div class="col-lg-9 col-md-8 col-sm-12">
-                                        <label for="Tipe">Tipe :</label>
+                                        <label for="Tipe">Golongan :</label>
                                         <input id='Tipe' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error3 text-danger font-italic font-weight-bold"></small><br>
                                    </div>

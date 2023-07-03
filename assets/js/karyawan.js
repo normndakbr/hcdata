@@ -7,7 +7,7 @@
         $("#colPersonal").collapse("show");
         $('#noKTP').inputmask("9999999999999999",{ "placeholder": "" });
         $('#noKK').inputmask("9999999999999999",{ "placeholder": "" });
-        $('#noNPWP').inputmask("99.999.999.9-999.999",{ "placeholder": "" });
+        $('#noNPWP').inputmask("99.999.999.9-999.999");
         $("#idizintambang").load(site_url+"izin_tambang/izin_tambang?auth_izin=" + 0);
         $("#idsertifikat").load(site_url+"karyawan/sertifikasi?auth_person=" + 0);
         $("#idvaksin").load(site_url+"karyawan/vaksin?auth_person=" + 0);
@@ -4163,6 +4163,10 @@
                     $(".errnewfilependukung").addClass("d-none");
                 });
             }
+        });
+
+        $("#infoKlasifikasi").click(function() {
+            $("#mdlinfoklasifikasi").modal("show");
         });
 
         function tbKary(prs){

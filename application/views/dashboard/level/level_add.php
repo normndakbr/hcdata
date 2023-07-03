@@ -57,7 +57,6 @@
                               <div class="mt-3">
                                    <div class="mb-4">
                                         <a href="<?= base_url('Level'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
-                                        <a href="<?= base_url('Level/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
                                    <div class="alert alert-danger err_psn_level animate__animated animate__bounce d-none"></div>
                               </div>
