@@ -20,7 +20,7 @@
                                    </li>
                                    <li class="breadcrumb-item">
                                         <a id="bc2">
-                                             Tambah Sim
+                                             Tambah SIM
                                         </a>
                                    </li>
                               </ul>
@@ -32,7 +32,7 @@
                <div class="col-xl-12 col-md-12">
                     <div class="card latest-update-card">
                          <div class="card-header">
-                              <h5>Sim</h5>
+                              <h5>SIM</h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -62,8 +62,8 @@
                               </div>
                               <div class="row ">
                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="Sim">Sim :</label>
-                                        <input id='Sim' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <label for="Sim">SIM :</label>
+                                        <input style="text-transform:uppercase" id='Sim' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
                                         <small class="error2 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
