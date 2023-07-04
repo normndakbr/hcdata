@@ -4,7 +4,7 @@
         });
 
         let auth_per_old = '';
-        $("#colPersonal").collapse("show");
+        $('#noKTPCek').inputmask("9999999999999999",{ "placeholder": "" });
         $('#noKTP').inputmask("9999999999999999",{ "placeholder": "" });
         $('#noKK').inputmask("9999999999999999",{ "placeholder": "" });
         $('#noNPWP').inputmask("99.999.999.9-999.999");
@@ -354,6 +354,7 @@
             $("#refreshLokker").removeAttr('disabled');
             $("#refreshResidence").removeAttr('disabled');
             $("#refreshstatkaryawan").removeAttr('disabled');
+            $("#infoKlasifikasi").removeAttr('disabled');
             $('#addKembaliPekerjaan').removeClass('disabled');
             $('#addSimpanPekerjaan').removeClass('disabled');
         }
@@ -388,6 +389,7 @@
             $("#refreshLokker").attr('disabled', true);
             $("#refreshResidence").attr('disabled', true);
             $("#refreshstatkaryawan").attr('disabled', true);
+            $("#infoKlasifikasi").attr('disabled', true);
             $('#addKembaliPekerjaan').addClass('disabled');
             $('#addSimpanPekerjaan').addClass('disabled');
         }
@@ -549,33 +551,237 @@
                 $("#colFilePendukung").collapse("show");
             }
         });
+        $("#btnverifikasiktp").click(function() {
+            let noktp = $("#noKTPCek").val();
+            let errnoktp = $(".errornoKTPCek").text();
+            
+            if (noktp != "") {
+                if(errnoktp == ""){
+                    swal({
+                        title: "Verifikasi No. KTP",
+                        text: "Verifikasi No. KTP : " + noktp + "?",
+                        type: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#36c6d3',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya',
+                        cancelButtonText: 'Batalkan'
+                    }).then(function(result) {
+                        if (result.value) {
+                            $.ajax({
+                                type: "POST",
+                                url: site_url+"karyawan/verifikasi_ktp",
+                                data: {
+                                    noktp: noktp
+                                },
+                                success: function(data) {
+                                    var data = JSON.parse(data);
+                                    if (data.statusCode == 200) {
+                                        $("#mdlbuatdatakary").modal("hide");
+                                        $("#noKTP").val(noktp);
+                                        $(".0c09efa8ccb5e0114e97df31736ce2e3").text(data.auth_personal);
+                                        $(".h2344234jfsd").text('');
+                                        $("#colPersonal").collapse("show");
+                                        $.ajax({
+                                            type: "POST",
+                                            url: site_url+"daerah/get_prov",
+                                            data: {},
+                                            success: function(provdata) {
+                                                var provdata = JSON.parse(provdata);
+                                                $("#provData").html(provdata.prov);
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError) {
+                                                $.LoadingOverlay("hide");
+                                                $(".errormsg").removeClass('d-none');
+                                                $(".errormsg").removeClass('alert-info');
+                                                $(".errormsg").addClass('alert-danger');
+                                                if (thrownError != "") {
+                                                    $(".errormsg").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
+                                                    $("#addSimpanPersonal").remove();
+                                                }
+                                            }
+                                        });
+                                        $(".btnlanjutpersonal").append('<button id="addBatalPersonal" class="btn btn-danger font-weight-bold">Reset Data</button> ');
+                                        $(".btnlanjutpersonal").append('<a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold ml-1">Lanjutkan</a>');
+                                        aktifPersonal();
+                                        daerah_ganti();
+                                        lanjutpersonal();
+                                        swal('Berhasil', data.pesan, 'success');
+                                    } else if (data.statusCode == 201) {
+                                        $("#pesanDet").text(data.pesan);
+                                        $("#noKTPDet").text(data.no_ktp);
+                                        $("#namaDet").text(data.nama_lengkap);
 
-        $(".btnrespage").click(function() {
-            let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
+                                        if(data.tgl_nonaktif =='01-Jan-1970'){
+                                            $(".tglnonaktif").addClass("d-none");
+                                            $(".lamanonaktif").addClass("d-none");
+                                        }  else {
+                                            $(".tglnonaktif").removeClass("d-none");
+                                            $(".lamanonaktif").removeClass("d-none");
+                                            $("#tglNonAktifDet").text(data.tgl_nonaktif);
+                                            $("#lamaNonAktifDet").text(data.lama_nonaktif);
+                                        }
+                                        
+                                        $("#PerusahaanDet").text(data.perusahaan);
 
-            if (auth_kary !== "") {
-                swal({
-                    title: "Reset Data Karyawan",
-                    text: "Data anda belum lengkap, yakin reset data karyawan?",
-                    type: 'question',
-                    showCancelButton: true,
-                    confirmButtonColor: '#36c6d3',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Ya, reset data',
-                    cancelButtonText: 'Batalkan'
-                }).then(function(result) {
-                    if (result.value) {
-                        window.location.href = site_url+"karyawan/new";
-                        $.LoadingOverlay("show");
-                        $.LoadingOverlay("hide");
-                    } else if (result.dismiss == 'cancel') {
-                        swal('Batal', 'Data karyawan batal direset', 'info');
-                    }
-                });
+                                        if(data.status =="AKTIF"){
+                                            $("#StatusDet").addClass("text-success");
+                                        } else {
+                                            $("#StatusDet").addClass("text-danger");
+                                        }
+
+                                        $("#StatusDet").text(data.status);
+                                        $("#mdldetkary").modal('show');
+                                        // swal('Error', data.pesan, 'error');
+                                    } else {
+                                        swal('Berhasil', data.pesan, 'success');
+                                        $.ajax({
+                                            type: "POST",
+                                            url: site_url+"daerah/get_prov",
+                                            async:false,
+                                            data: {},
+                                            success: function(provdata) {
+                                                var provdata = JSON.parse(provdata);
+                                                $("#provData").html(provdata.prov);
+                                                $("#provData").val(data.prov).trigger("change");
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError) {
+                                                $.LoadingOverlay("hide");
+                                                $(".errormsg").removeClass('d-none');
+                                                $(".errormsg").removeClass('alert-info');
+                                                $(".errormsg").addClass('alert-danger');
+                                                if (thrownError != "") {
+                                                    $(".errormsg").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
+                                                    $("#addSimpanPersonal").remove();
+                                                }
+                                            }
+                                        });
+                                        
+                                        $.ajax({
+                                            type: "POST",
+                                            url: site_url+"daerah/get_kab",
+                                            async:false,
+                                            data: {
+                                                id_prov :data.prov
+                                            },
+                                            success: function(kabdata) {
+                                                var kabdata = JSON.parse(kabdata);
+                                                $("#kotaData").html(kabdata.kab);
+                                                $("#kotaData").val(data.kab).trigger("change");
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError) {
+                                                $.LoadingOverlay("hide");
+                                                $(".errormsg").removeClass('d-none');
+                                                $(".errormsg").removeClass('alert-info');
+                                                $(".errormsg").addClass('alert-danger');
+                                                if (thrownError != "") {
+                                                    $(".errormsg").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
+                                                    $("#addSimpanPersonal").remove();
+                                                }
+                                            }
+                                        });
+
+                                        $.ajax({
+                                            type: "POST",
+                                            url: site_url+"daerah/get_kec",
+                                            async:false,
+                                            data: {
+                                                id_kab :data.kab
+                                            },
+                                            success: function(kecdata) {
+                                                var kecdata = JSON.parse(kecdata);
+                                                $("#kecData").html(kecdata.kec);
+                                                $("#kecData").val(data.kec).trigger("change");
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError) {
+                                                $.LoadingOverlay("hide");
+                                                $(".errormsg").removeClass('d-none');
+                                                $(".errormsg").removeClass('alert-info');
+                                                $(".errormsg").addClass('alert-danger');
+                                                if (thrownError != "") {
+                                                    $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
+                                                    $("#addSimpanPersonal").remove();
+                                                }
+                                            }
+                                        });
+
+                                        $.ajax({
+                                            type: "POST",
+                                            url: site_url+"daerah/get_kel",
+                                            async:false,
+                                            data: {
+                                                id_kec :data.kec
+                                            },
+                                            success: function(keldata) {
+                                                var keldata = JSON.parse(keldata);
+                                                $("#kelData").html(keldata.kel);
+                                                $("#kelData").val(data.kel).trigger("change");
+                                            },
+                                            error: function(xhr, ajaxOptions, thrownError) {
+                                                $.LoadingOverlay("hide");
+                                                $(".errormsg").removeClass('d-none');
+                                                $(".errormsg").removeClass('alert-info');
+                                                $(".errormsg").addClass('alert-danger');
+                                                if (thrownError != "") {
+                                                    $(".errormsg").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
+                                                    $("#addSimpanPersonal").remove();
+                                                }
+                                            }
+                                        });
+
+                                        $(".0c09efa8ccb5e0114e97df31736ce2e3").text(data.auth_personal);
+                                        $(".h2344234jfsd").text(data.auth_personal);
+                                        $("#noKTP").val(data.no_ktp);
+                                        $("#namaLengkap").val(data.nama);
+                                        $("#alamatKTP").val(data.alamat);
+                                        $("#rtKTP").val(data.rt);
+                                        $("#rwKTP").val(data.rw);
+                                        $("#kewarganegaraan").val(data.warga_negara).trigger('change');
+                                        $("#addagama").val(data.agama).trigger('change');
+                                        $("#jenisKelamin").val(data.jk).trigger('change');
+                                        $("#statPernikahan").val(data.stat_nikah).trigger('change');
+                                        $("#tempatLahir").val(data.tmp_lahir);
+                                        $("#tanggalLahir").val(data.tgl_lahir);
+                                        $("#noBPJSTK").val(data.no_bpjstk);
+                                        $("#noBPJSKES").val(data.no_bpjsks);
+                                        $("#noNPWP").val(data.no_npwp);
+                                        $("#noKK").val(data.no_kk);
+                                        $("#email").val(data.email_pribadi);
+                                        $("#noTelp").val(data.hp_1);
+                                        $("#pendidikanTerakhir").val(data.didik_terakhir).trigger('change');
+                                        $("#mdlbuatdatakary").modal("hide");
+                                        $("#colPersonal").collapse('show');
+                                        $(".btnlanjutpersonal").append('<button id="addBatalPersonal" class="btn btn-danger font-weight-bold">Reset Data</button> ');
+                                        $(".btnlanjutpersonal").append('<a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>');
+                                        lanjutpersonal();
+                                        daerah_ganti();
+                                    }
+                                },
+                                error: function(xhr, ajaxOptions, thrownError) {
+                                    $.LoadingOverlay("hide");
+                                    $(".errormsg").removeClass('d-none');
+                                    $(".errormsg").removeClass('alert-info');
+                                    $(".errormsg").addClass('alert-danger');
+                                    if (thrownError != "") {
+                                        $(".errormsg").html("Terjadi kesalahan saat load data personal, hubungi administrator");
+                                    }
+                                }
+                            });
+                        }
+                    });
+                } else {
+                    swal('Error',errnoktp,'error');
+                }
             } else {
-                window.location.href = site_url+"karyawan/new";
-                $.LoadingOverlay("show");
-                $.LoadingOverlay("hide");
+               swal('Error','No. KTP tidak boleh kosong','error');
+            }
+        });
+        $("#addBuatData").click(function() {
+            if($("#addSimpanPersonal").length > 0){
+                swal('Error','Verifikasi tidak dapat dilakukan, selesaikan isi data karyawan','error');
+            } else {
+                $("#mdlbuatdatakary").modal("show");
+                $("#noKTPCek").val('');
             }
         });
         $("#btnbatalunitsimper").click(function() {
@@ -848,186 +1054,170 @@
                 }
             }
         });
-        $.ajax({
-            type: "POST",
-            url: site_url+"daerah/get_prov",
-            data: {},
-            success: function(data) {
-                var data = JSON.parse(data);
-                $("#provData").html(data.prov);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                $.LoadingOverlay("hide");
-                $(".errormsg").removeClass('d-none');
-                $(".errormsg").removeClass('alert-info');
-                $(".errormsg").addClass('alert-danger');
-                if (thrownError != "") {
-                    $(".errormsg").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
-                    $("#addSimpanPersonal").remove();
-                }
-            }
-        });
-        $("#provData").change(function() {
-            let id_prov = $("#provData").val();
-
-            $("#txtkota").LoadingOverlay("show");
-            $("#txtkec").LoadingOverlay("show");
-            $("#txtkel").LoadingOverlay("show");
-            $.ajax({
-                type: "POST",
-                url: site_url+"daerah/get_kab",
-                data: {
-                    id_prov: id_prov
-                },
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    if (data.statusCode == 200) {
-                        $("#kotaData").html(data.kab);
-                        $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
-                        $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
-                        $("#kotaData").removeAttr('disabled');
+       
+        function daerah_ganti(){
+            $("#provData").change(function() {
+                let id_prov = $("#provData").val();
+    
+                $("#txtkota").LoadingOverlay("show");
+                $("#txtkec").LoadingOverlay("show");
+                $("#txtkel").LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: site_url+"daerah/get_kab",
+                    data: {
+                        id_prov: id_prov
+                    },
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#kotaData").html(data.kab);
+                            $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
+                            $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
+                            $("#kotaData").removeAttr('disabled');
+                            $("#txtkota").LoadingOverlay("hide");
+                            $("#txtkec").LoadingOverlay("hide");
+                            $("#txtkel").LoadingOverlay("hide");
+                        } else {
+                            $("#kotaData").html("<option value=''>-- KABUPATEN/KOTA TIDAK DITEMUKAN --</option>");
+                            $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
+                            $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
+                            $("#kotaData").attr('disabled', true);
+                            $("#kecData").attr('disabled', true);
+                            $("#kelData").attr('disabled', true);
+                            $("#txtkota").LoadingOverlay("hide");
+                            $("#txtkec").LoadingOverlay("hide");
+                            $("#txtkel").LoadingOverlay("hide");
+                        }
+    
+                        if (id_prov != "") {
+                            $(".errorProvData").html("");
+                        } else {
+                            $(".errorProvData").html("<p>Provinsi wajib diisi</p>");
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsg").removeClass('d-none');
+                        $(".errormsg").removeClass('alert-info');
+                        $(".errormsg").addClass('alert-danger');
                         $("#txtkota").LoadingOverlay("hide");
                         $("#txtkec").LoadingOverlay("hide");
                         $("#txtkel").LoadingOverlay("hide");
-                    } else {
-                        $("#kotaData").html("<option value=''>-- KABUPATEN/KOTA TIDAK DITEMUKAN --</option>");
-                        $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
-                        $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
-                        $("#kotaData").attr('disabled', true);
-                        $("#kecData").attr('disabled', true);
-                        $("#kelData").attr('disabled', true);
-                        $("#txtkota").LoadingOverlay("hide");
+                        if (thrownError != "") {
+                            $(".errormsg").html("Terjadi kesalahan saat load data kabupaten/kota, hubungi administrator");
+                            $("#addSimpanPersonal").remove();
+                        }
+                    }
+                });
+            });
+    
+            $("#kotaData").change(function() {
+                let id_kab = $("#kotaData").val();
+    
+                $("#txtkec").LoadingOverlay("show");
+                $("#txtkel").LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: site_url+"daerah/get_kec",
+                    data: {
+                        id_kab: id_kab
+                    },
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#kecData").html(data.kec);
+                            $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
+                            $("#kecData").removeAttr('disabled');
+                            $("#txtkec").LoadingOverlay("hide");
+                            $("#txtkel").LoadingOverlay("hide");
+                        } else {
+                            $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
+                            $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
+                            $("#kecData").attr('disabled', true);
+                            $("#kelData").attr('disabled', true);
+                            $("#txtkec").LoadingOverlay("hide");
+                            $("#txtkel").LoadingOverlay("hide");
+                        }
+    
+                        if (id_kab != "") {
+                            $(".errorKotaData").html("");
+                        } else {
+                            $(".errorKotaData").html("<p>Kabupaten/kota wajib dipilih</p>");
+                        }
+    
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsg").removeClass('d-none');
+                        $(".errormsg").removeClass('alert-info');
+                        $(".errormsg").addClass('alert-danger');
                         $("#txtkec").LoadingOverlay("hide");
                         $("#txtkel").LoadingOverlay("hide");
+                        if (thrownError != "") {
+                            $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
+                            $("#addSimpanPersonal").remove();
+                        }
                     }
-
-                    if (id_prov != "") {
-                        $(".errorProvData").html("");
-                    } else {
-                        $(".errorProvData").html("<p>Provinsi wajib diisi</p>");
+                });
+            });
+            $("#kecData").change(function() {
+                let id_kec = $("#kecData").val();
+    
+                $("#txtkel").LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: site_url+"daerah/get_kel",
+                    data: {
+                        id_kec: id_kec
+                    },
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#kelData").html(data.kel);
+                            $("#kelData").removeAttr('disabled');
+                            $("#txtkel").LoadingOverlay("hide");
+                        } else {
+                            $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
+                            $("#kelData").attr('disabled', true);
+                            $("#txtkel").LoadingOverlay("hide");
+                        }
+    
+                        if (id_kec != "") {
+                            $(".errorKecData").html("");
+                        } else {
+                            $(".errorKecData").html("<p>Kecamatan wajib dipilih</p>");
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsg").removeClass('d-none');
+                        $(".errormsg").removeClass('alert-info');
+                        $(".errormsg").addClass('alert-danger');
+                        $("#txtkel").LoadingOverlay("hide");
+                        if (thrownError != "") {
+                            $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
+                            $("#addSimpanPersonal").remove();
+                        }
                     }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    $.LoadingOverlay("hide");
-                    $(".errormsg").removeClass('d-none');
-                    $(".errormsg").removeClass('alert-info');
-                    $(".errormsg").addClass('alert-danger');
-                    $("#txtkota").LoadingOverlay("hide");
-                    $("#txtkec").LoadingOverlay("hide");
-                    $("#txtkel").LoadingOverlay("hide");
-                    if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat load data kabupaten/kota, hubungi administrator");
-                        $("#addSimpanPersonal").remove();
-                    }
+                });
+            });
+    
+            $("#kelData").change(function() {
+                let id_kel = $("#kelData").val();
+                if (id_kel != "") {
+                    $(".errorKelData").html("");
+                } else {
+                    $(".errorKelData").html("<p>Kelurahan wajib dipilih</p>");
                 }
             });
-        });
-
-        $("#kotaData").change(function() {
-            let id_kab = $("#kotaData").val();
-
-            $("#txtkec").LoadingOverlay("show");
-            $("#txtkel").LoadingOverlay("show");
-            $.ajax({
-                type: "POST",
-                url: site_url+"daerah/get_kec",
-                data: {
-                    id_kab: id_kab
-                },
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    if (data.statusCode == 200) {
-                        $("#kecData").html(data.kec);
-                        $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
-                        $("#kecData").removeAttr('disabled');
-                        $("#txtkec").LoadingOverlay("hide");
-                        $("#txtkel").LoadingOverlay("hide");
-                    } else {
-                        $("#kecData").html("<option value=''>-- KECAMATAN TIDAK DITEMUKAN --</option>");
-                        $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
-                        $("#kecData").attr('disabled', true);
-                        $("#kelData").attr('disabled', true);
-                        $("#txtkec").LoadingOverlay("hide");
-                        $("#txtkel").LoadingOverlay("hide");
-                    }
-
-                    if (id_kab != "") {
-                        $(".errorKotaData").html("");
-                    } else {
-                        $(".errorKotaData").html("<p>Kabupaten/kota wajib dipilih</p>");
-                    }
-
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    $.LoadingOverlay("hide");
-                    $(".errormsg").removeClass('d-none');
-                    $(".errormsg").removeClass('alert-info');
-                    $(".errormsg").addClass('alert-danger');
-                    $("#txtkec").LoadingOverlay("hide");
-                    $("#txtkel").LoadingOverlay("hide");
-                    if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
-                        $("#addSimpanPersonal").remove();
-                    }
-                }
+    
+            $("#addStatusKaryawan").change(function() {
+                $("#addTanggalPermanen").val('');
+                $("#addTanggalKontrakAwal").val('');
+                $("#addTanggalKontrakAkhir").val('');
             });
-        });
-        $("#kecData").change(function() {
-            let id_kec = $("#kecData").val();
-
-            $("#txtkel").LoadingOverlay("show");
-            $.ajax({
-                type: "POST",
-                url: site_url+"daerah/get_kel",
-                data: {
-                    id_kec: id_kec
-                },
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    if (data.statusCode == 200) {
-                        $("#kelData").html(data.kel);
-                        $("#kelData").removeAttr('disabled');
-                        $("#txtkel").LoadingOverlay("hide");
-                    } else {
-                        $("#kelData").html("<option value=''>-- KELURAHAN TIDAK DITEMUKAN --</option>");
-                        $("#kelData").attr('disabled', true);
-                        $("#txtkel").LoadingOverlay("hide");
-                    }
-
-                    if (id_kec != "") {
-                        $(".errorKecData").html("");
-                    } else {
-                        $(".errorKecData").html("<p>Kecamatan wajib dipilih</p>");
-                    }
-                },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    $.LoadingOverlay("hide");
-                    $(".errormsg").removeClass('d-none');
-                    $(".errormsg").removeClass('alert-info');
-                    $(".errormsg").addClass('alert-danger');
-                    $("#txtkel").LoadingOverlay("hide");
-                    if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
-                        $("#addSimpanPersonal").remove();
-                    }
-                }
-            });
-        });
-
-        $("#kelData").change(function() {
-            let id_kel = $("#kelData").val();
-            if (id_kel != "") {
-                $(".errorKelData").html("");
-            } else {
-                $(".errorKelData").html("<p>Kelurahan wajib dipilih</p>");
-            }
-        });
-
-        $("#addStatusKaryawan").change(function() {
-            $("#addTanggalPermanen").val('');
-            $("#addTanggalKontrakAwal").val('');
-            $("#addTanggalKontrakAkhir").val('');
-        });
+        }
 
         $("#refreshJenisSIM").click(function() {
             $("#txtizinSIM").LoadingOverlay("show");
@@ -2421,6 +2611,28 @@
                 }
             }
         });
+        $('#noKTPCek').keyup(function(e) {
+            let noKTPCek = $('#noKTPCek').val().trim();
+
+            if (noKTPCek != "") {
+                jmlktp = noKTPCek.replace(/['.'|_|-]/g, '');
+                jmlhrf = jmlktp.length;
+
+                if (jmlhrf > 16) {
+                    $('.errornoKTPCek').html('<p>No. KTP maksimal 16 karakter</p>');
+                    $('#btnverifikasiktp').attr('disabled',true);
+                } else if (jmlhrf < 16) {
+                    $('.errornoKTPCek').html('<p>No. KTP minimal 16 karakter</p>');
+                    $('#btnverifikasiktp').attr('disabled',true);
+                } else {
+                    $('.errornoKTPCek').html('');
+                    $('#btnverifikasiktp').removeAttr('disabled');    
+                }
+            } else {
+                $('.errornoKTPCek').html('<p>No. KTP tidak boleh kosong</p>');
+                $('#btnverifikasiktp').attr('disabled',true);
+            }
+        });
         $('#noKK').keyup(function(e) {
             let noKK = $('#noKK').val().trim();
 
@@ -2479,119 +2691,255 @@
                 }
             }
         });
-        $("#addSimpanPersonal").click(function() {
-            let auth_per = $("#addPerKary").val();
-            let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
-            let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
-            let no_nik_old = $(".c1492f38214db699dfd3574b2644271d").text();
-            let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
+        
+        function lanjutpersonal(){
+            $("#addSimpanPersonal").click(function() {
+                let auth_per = $("#addPerKary").val();
+                let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
+                let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
+                let no_nik_old = $(".c1492f38214db699dfd3574b2644271d").text();
+                let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
+                let auth_check = $(".h2344234jfsd").text();
+                let noktp = $("#noKTP").val();
+                let nama = $("#namaLengkap").val();
+                let alamat = $("#alamatKTP").val();
+                let rt = $("#rtKTP").val();
+                let rw = $("#rwKTP").val();
+                let id_prov = $("#provData").val();
+                let id_kab = $("#kotaData").val();
+                let id_kec = $("#kecData").val();
+                let id_kel = $("#kelData").val();
+                let tmp_lahir = $("#tempatLahir").val();
+                let tgl_lahir = $("#tanggalLahir").val();
+                let stat_nikah = $("#statPernikahan").val();
+                let id_agama = $("#addagama").val();
+                let warga = $("#kewarganegaraan").val();
+                let jk = $("#jenisKelamin").val();
+                let bpjs_tk = $("#noBPJSTK").val();
+                let bpjs_kes = $("#noBPJSKES").val();
+                let nokk = $("#noKK").val();
+                let npwp = $('#noNPWP').val();
+                let email = $('#email').val();
+                let notelp = $('#noTelp').val();
+                let cek_log = md5(new Date().toLocaleString());
+    
+                $.ajax({
+                    type: "POST",
+                    url: site_url+"karyawan/addpersonal",
+                    data: {
+                        noktp_old: noktp_old,
+                        nokk_old: nokk_old,
+                        no_nik_old: no_nik_old,
+                        noktp: noktp,
+                        nama: nama,
+                        alamat: alamat,
+                        rt: rt,
+                        rw: rw,
+                        id_prov: id_prov,
+                        id_kab: id_kab,
+                        id_kec: id_kec,
+                        id_kel: id_kel,
+                        tmp_lahir: tmp_lahir,
+                        tgl_lahir: tgl_lahir,
+                        email:email,
+                        notelp:notelp,
+                        stat_nikah: stat_nikah,
+                        id_agama: id_agama,
+                        warga: warga,
+                        jk: jk,
+                        bpjs_tk: bpjs_tk,
+                        bpjs_kes: bpjs_kes,
+                        npwp: npwp,
+                        nokk: nokk,
+                        auth_per: auth_per,
+                        auth_person: auth_person,
+                        auth_check:auth_check
+                    },
+                    success: function(data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $('#colKaryawan').collapse("show");
+                            $('#colPersonal').collapse("hide");
+                            $('#imgPersonal').removeClass("d-none");
+                            $('.noktpshow').val(noktp);
+                            $('.namalengkapshow').val(nama);
+                            $(".89kjm78ujki782m4x787909h3").text(cek_log);
+                            aktifKaryawan();
+                        } else if (data.statusCode == 201) {
+                            swal("Error", data.pesan, "error");
+                        } else {
+                            $(".errorNoKTP").html(data.noktp);
+                            $(".errorNamaLengkap").html(data.nama);
+                            $(".errorAlamatKTP").html(data.alamat);
+                            $(".errorRtKTP").html(data.rt);
+                            $(".errorRwKTP").html(data.rw);
+                            $(".errorProvData").html(data.id_prov);
+                            $(".errorKotaData").html(data.id_kab);
+                            $(".errorKecData").html(data.id_kec);
+                            $(".errorKelData").html(data.id_kel);
+                            $(".errorTempatLahir").html(data.tmp_lahir);
+                            $(".errorTanggalLahir").html(data.tgl_lahir);
+                            $(".errorStatPernikahan").html(data.stat_nikah);
+                            $(".errorAddAgama").html(data.id_agama);
+                            $(".erroremail").html(data.email);
+                            $(".errornoTelp").html(data.notelp);
+                            $(".errorKewarganegaraan").html(data.warga);
+                            $(".errorJenisKelamin").html(data.jk);
+                            $(".errorNoBPJSTK").html(data.bpjs_tk);
+                            $(".errorNoBPJSKES").html(data.bpjs_kes);
+                            $(".errorNoNPWP").html(data.npwp);
+                            $(".errorNoKK").html(data.nokk);
+                            swal("Error", "Tidak dapat melanjutkan, lengkapi data personal.", "error");
+                            window.scrollTo(0, 0);
+                        }
+                    },
+                    error: function(xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsg").removeClass('d-none');
+                        $(".errormsg").addClass('alert-danger');
+                        if (thrownError != "") {
+                            $(".errormsg").html("Terjadi kesalahan saat menyimpan data, hubungi administrator");
+                        }
+                    }
+                });
+    
+                $(".errormsg").fadeTo(3000, 500).slideUp(500, function() {
+                    $(".errormsg").slideUp(500);
+                    $(".errormsg").addClass("d-none");
+                });
+            });
+            $("#addBatalPersonal").click(function() {
+                swal({
+                    title: "Reset Data",
+                    text: "Yakin data personal akan direset, data tidak dapat dikembalikan?",
+                    type: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36c6d3',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, reset data',
+                    cancelButtonText: 'Batalkan'
+                }).then(function(result) {
+                    if (result.value) {
+                        $(".0c09efa8ccb5e0114e97df31736ce2e3").text('');
+                        $(".h2344234jfsd").text('');
+                        $("#noKTP").val('');
+                        $("#namaLengkap").val('');
+                        $("#alamatKTP").val('');
+                        $("#rtKTP").val('');
+                        $("#rwKTP").val('');
+                        $("#provData").html('<option value="">-- PROVINSI TIDAK DITEMUKAN --</option>');
+                        $("#kotaData").html('<option value="">-- KABUPATEN/KOTA TIDAK DITEMUKAN --</option>');
+                        $("#kotaData").val('').trigger("change");
+                        $("#kecData").val('').trigger("change");
+                        $("#kelData").val('').trigger("change");
+                        $("#kewarganegaraan").val('').trigger("change");
+                        $("#addagama").val('').trigger("change");
+                        $("#jenisKelamin").val('').trigger("change");
+                        $("#statPernikahan").val('').trigger("change");
+                        $("#tempatLahir").val('');
+                        $("#tanggalLahir").val('');
+                        $("#noBPJSTK").val('');
+                        $("#noBPJSKES").val('');
+                        $("#noNPWP").val('');
+                        $("#noKK").val('');
+                        $("#email").val('');
+                        $("#noTelp").val('');
+                        $("#txtDidik").val('').trigger("change");
+                        $("#colPersonal").collapse('hide');
+                        $("#addBatalPersonal").remove();
+                        $("#addSimpanPersonal").remove();
+                        $(".errorNoKTP").html('');
+                        $(".errorNamaLengkap").html('');
+                        $(".errorAlamatKTP").html('');
+                        $(".errorRtKTP").html('');
+                        $(".errorRwKTP").html('');
+                        $(".errorTempatLahir").html('');
+                        $(".errorTanggalLahir").html('');
+                        $(".errorStatPernikahan").html('');
+                        $(".errorAddAgama").html('');
+                        $(".erroremail").html('');
+                        $(".errornoTelp").html('');
+                        $(".errorKewarganegaraan").html('');
+                        $(".errorJenisKelamin").html('');
+                        $(".errorNoBPJSTK").html('');
+                        $(".errorNoBPJSKES").html('');
+                        $(".errorNoNPWP").html('');
+                        $(".errorNoKK").html('');
+                        $(".errorProvData").html('');
+                        $(".errorKotaData").html('');
+                        $(".errorKecData").html('');
+                        $(".errorKelData").html('');
+                        nonAktifPersonal();
+                        swal('Berhasil', 'Data berhasil direset', 'success');
+                    }
+                });
+            });
+        }
+
+        $("#noKTP").focusout(function(){
             let noktp = $("#noKTP").val();
-            let nama = $("#namaLengkap").val();
-            let alamat = $("#alamatKTP").val();
-            let rt = $("#rtKTP").val();
-            let rw = $("#rwKTP").val();
-            let id_prov = $("#provData").val();
-            let id_kab = $("#kotaData").val();
-            let id_kec = $("#kecData").val();
-            let id_kel = $("#kelData").val();
-            let tmp_lahir = $("#tempatLahir").val();
-            let tgl_lahir = $("#tanggalLahir").val();
-            let stat_nikah = $("#statPernikahan").val();
-            let id_agama = $("#addagama").val();
-            let warga = $("#kewarganegaraan").val();
-            let jk = $("#jenisKelamin").val();
-            let bpjs_tk = $("#noBPJSTK").val();
-            let bpjs_kes = $("#noBPJSKES").val();
-            let nokk = $("#noKK").val();
-            let npwp = $('#noNPWP').val();
-            let email = $('#email').val();
-            let notelp = $('#noTelp').val();
-            let cek_log = md5(new Date().toLocaleString());
+            let errktp = $(".errorNoKTP").text();
+
+            if(errktp != ""){
+                swal('Error',errktp,'error');
+                return false;
+            }
 
             $.ajax({
                 type: "POST",
-                url: site_url+"karyawan/addpersonal",
+                url: site_url+"karyawan/verifikasi_ktp",
                 data: {
-                    noktp_old: noktp_old,
-                    nokk_old: nokk_old,
-                    no_nik_old: no_nik_old,
-                    noktp: noktp,
-                    nama: nama,
-                    alamat: alamat,
-                    rt: rt,
-                    rw: rw,
-                    id_prov: id_prov,
-                    id_kab: id_kab,
-                    id_kec: id_kec,
-                    id_kel: id_kel,
-                    tmp_lahir: tmp_lahir,
-                    tgl_lahir: tgl_lahir,
-                    email:email,
-                    notelp:notelp,
-                    stat_nikah: stat_nikah,
-                    id_agama: id_agama,
-                    warga: warga,
-                    jk: jk,
-                    bpjs_tk: bpjs_tk,
-                    bpjs_kes: bpjs_kes,
-                    npwp: npwp,
-                    nokk: nokk,
-                    auth_per: auth_per,
-                    auth_person: auth_person
+                    noktp: noktp
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
-                        $('#colKaryawan').collapse("show");
-                        $('#colPersonal').collapse("hide");
-                        $('#imgPersonal').removeClass("d-none");
-                        $('.noktpshow').val(noktp);
-                        $('.namalengkapshow').val(nama);
-                        $(".89kjm78ujki782m4x787909h3").text(cek_log);
-                        aktifKaryawan();
+                        $("#mdlbuatdatakary").modal("hide");
+                        $("#noKTP").val(noktp);
+                        $(".0c09efa8ccb5e0114e97df31736ce2e3").text(data.auth_personal);
+                        $("#noKTP").attr('disabled',true);
+                        swal('Berhasil', data.pesan, 'success');
                     } else if (data.statusCode == 201) {
-                        swal("Error", data.pesan, "error");
+                        swal('Error', data.pesan, 'error');
                     } else {
-                        $(".errorNoKTP").html(data.noktp);
-                        $(".errorNamaLengkap").html(data.nama);
-                        $(".errorAlamatKTP").html(data.alamat);
-                        $(".errorRtKTP").html(data.rt);
-                        $(".errorRwKTP").html(data.rw);
-                        $(".errorProvData").html(data.id_prov);
-                        $(".errorKotaData").html(data.id_kab);
-                        $(".errorKecData").html(data.id_kec);
-                        $(".errorKelData").html(data.id_kel);
-                        $(".errorTempatLahir").html(data.tmp_lahir);
-                        $(".errorTanggalLahir").html(data.tgl_lahir);
-                        $(".errorStatPernikahan").html(data.stat_nikah);
-                        $(".errorAddAgama").html(data.id_agama);
-                        $(".erroremail").html(data.email);
-                        $(".errornoTelp").html(data.notelp);
-                        $(".errorKewarganegaraan").html(data.warga);
-                        $(".errorJenisKelamin").html(data.jk);
-                        $(".errorNoBPJSTK").html(data.bpjs_tk);
-                        $(".errorNoBPJSKES").html(data.bpjs_kes);
-                        $(".errorNoNPWP").html(data.npwp);
-                        $(".errorNoKK").html(data.nokk);
-                        swal("Error", "Tidak dapat melanjutkan, lengkapi data personal.", "error");
-                        window.scrollTo(0, 0);
+                        $(".0c09efa8ccb5e0114e97df31736ce2e3").text(data.auth_personal);
+                        $(".h2344234jfsd").text(data.auth_personal);
+                        $("#noKTP").val(data.no_ktp);
+                        $("#namaLengkap").val(data.nama_lengkap);
+                        $("#alamatKTP").val(data.id_alamat_ktp);
+                        $("#rtKTP").val(data.rt_ktp);
+                        $("#rwKTP").val(data.rw_ktp);
+                        $("#provData").val(data.prov_ktp);
+                        $("#kotaData").val(data.kab_ktp);
+                        $("#kecData").val(data.kec_ktp);
+                        $("#kelData").val(data.kel_ktp);
+                        $("#kewarganegaraan").val(data.warga_negara);
+                        $("#addagama").val(data.id_agama);
+                        $("#jenisKelamin").val(data.jk);
+                        $("#statPernikahan").val(data.id_stat_nikah);
+                        $("#tempatLahir").val(data.tmp_lahir);
+                        $("#tanggalLahir").val(data.tgl_lahir);
+                        $("#noBPJSTK").val(data.no_bpjstk);
+                        $("#noBPJSKES").val(data.no_bpjsks);
+                        $("#noNPWP").val(data.no_npwp);
+                        $("#noKK").val(data.no_kk);
+                        $("#email").val(data.email_pribadi);
+                        $("#noTelp").val(data.hp_1);
+                        $("#txtDidik").val(data.id_pendidikan);
+                        swal('Berhasil', data.pesan, 'success');
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
                     $(".errormsg").removeClass('d-none');
+                    $(".errormsg").removeClass('alert-info');
                     $(".errormsg").addClass('alert-danger');
                     if (thrownError != "") {
-                        $(".errormsg").html("Terjadi kesalahan saat menyimpan data, hubungi administrator");
+                        $(".errormsg").html("Terjadi kesalahan saat load data personal, hubungi administrator");
                     }
                 }
             });
-
-            $(".errormsg").fadeTo(3000, 500).slideUp(500, function() {
-                $(".errormsg").slideUp(500);
-                $(".errormsg").addClass("d-none");
-            });
-        });
+          });
 
         $("#addKembaliPekerjaan").click(function() {
             $('#colKaryawan').collapse("hide");
@@ -2647,12 +2995,14 @@
             let tgl_akhir_kontrak = $("#addTanggalKontrakAkhir").val();
             let id_m_perusahaan = $("#addPerKary").val();
             let auth_check = $(".89kjm78ujki782m4x787909h3").text();
+            let auth_ver = $(".h2344234jfsd").text();
 
             if (auth_person != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"karyawan/addkaryawan",
                     data: {
+                        auth_ver:auth_ver,
                         auth_person: auth_person,
                         auth_kary: auth_kary,
                         auth_alamat: auth_alamat,

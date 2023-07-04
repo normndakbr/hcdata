@@ -90,6 +90,7 @@ class Karyawan_model extends CI_Model
     {
         $this->db->from('tb_alamat_ktp');
         $this->db->where('id_personal', $id_personal);
+        $this->db->where('stat_alamat_ktp', 'T');
         $query = $this->db->get();
 
         return $query->result();
@@ -230,6 +231,15 @@ class Karyawan_model extends CI_Model
         } else {
             return;
         }
+    }
+
+    public function get_kontrak_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_kontrak_karyawan');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $this->db->order_by('tgl_akhir', 'DESC');
+        $this->db->limit(1);
+        return $this->db->get()->row();
     }
 
     public function get_id_vaksin_by_auth($auth_vaksin)
@@ -748,8 +758,8 @@ class Karyawan_model extends CI_Model
 
     public function cek_noKTP($noktp)
     {
-        $query = $this->db->get_where('tb_personal', ['no_ktp' => $noktp]);
-        if (!empty($query->result())) {
+        $query = $this->db->get_where('tb_personal', ['no_ktp' => $noktp])->result();
+        if (!empty($query)) {
             return true;
         } else {
             return false;
@@ -763,8 +773,8 @@ class Karyawan_model extends CI_Model
             'id_perusahaan' => $id_per
         );
 
-        $query = $this->db->get_where('vw_karyawan', $cekdata);
-        if (!empty($query->result())) {
+        $query = $this->db->get_where('vw_karyawan', $cekdata)->result();
+        if (!empty($query)) {
             return true;
         } else {
             return false;
@@ -773,8 +783,8 @@ class Karyawan_model extends CI_Model
 
     public function cek_noKK($nokk)
     {
-        $query = $this->db->get_where('tb_personal', ['no_kk' => $nokk]);
-        if (!empty($query->result())) {
+        $query = $this->db->get_where('tb_personal', ['no_kk' => $nokk])->result();
+        if (!empty($query)) {
             return true;
         } else {
             return false;
@@ -783,18 +793,63 @@ class Karyawan_model extends CI_Model
 
     public function cek_no_simper($no_reg)
     {
-        $query = $this->db->get_where('tb_izin_tambang', ['no_reg' => $no_reg]);
-        if (!empty($query->result())) {
+        $query = $this->db->get_where('tb_izin_tambang', ['no_reg' => $no_reg])->result();
+        if (!empty($query)) {
             return true;
         } else {
             return false;
         }
     }
 
+    public function verifikasi_ktp($noktp)
+    {
+        $query = $this->db->get_where('tb_personal', ['no_ktp' => $noktp])->row();
+        if (!empty($query)) {
+            $id_personal = $query->id_personal;
+
+            $this->db->from('vw_karyawan');
+            $this->db->where('id_personal', $id_personal);
+            $this->db->order_by('doh', 'DESC');
+            $this->db->limit(1);
+            $query = $this->db->get()->row();
+
+            if (!empty($query)) {
+                return $query;
+            } else {
+                return;
+            }
+        } else {
+            return;
+        }
+    }
+
+    public function get_personal_by_ktp($noktp)
+    {
+        $query = $this->db->get_where('vw_personal', ['no_ktp' => $noktp], 1)->row();
+        if (!empty($query)) {
+            return $query;
+        } else {
+            return;
+        }
+    }
+
+    public function get_karyawan_by_ktp($noktp)
+    {
+        $this->db->from('vw_karyawan');
+        $this->db->where('no_ktp', $noktp);
+        $this->db->order_by('doh', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get()->row();
+        if (!empty($query)) {
+            return $query;
+        } else {
+            return;
+        }
+    }
 
     function get_stat_janji($stat_kerja)
     {
-        $query  = $this->db->get_where('tb_stat_perjanjian', ['id_stat_perjanjian' => $stat_kerja]);
+        $query  = $this->db->get_where('tb_stat_perjanjian', ['id_stat_perjanjian' => $stat_kerja])->result();
         if (!empty($query)) {
             foreach ($query as $list) {
                 $stat_waktu = $list->stat_waktu;
@@ -808,9 +863,9 @@ class Karyawan_model extends CI_Model
 
     public function hapus_depart($auth_depart)
     {
-        $cek_id = $this->db->get_where('vw_depart', ['auth_depart' => $auth_depart]);
-        if (!empty($cek_id->result())) {
-            foreach ($cek_id->result() as $list) {
+        $cek_id = $this->db->get_where('vw_depart', ['auth_depart' => $auth_depart])->result();
+        if (!empty($cek_id)) {
+            foreach ($cek_id as $list) {
                 $id_depart = $list->id_depart;
             }
 

@@ -98,20 +98,21 @@ class Karyawan extends My_Controller
           echo json_encode($list);
      }
 
-     public function detail_karyawan($id_kary)
+     public function detail_karyawan($auth_kary)
      {
           $id_perusahaan = $this->session->userdata("id_perusahaan");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
-          $data["data_kary"] = $this->kry->get_by_auth($id_kary);
-          $data["data_alamat"] = $this->kry->get_alamat_by_auth($id_kary);
-          $data["data_izin"] = $this->kry->get_izin_by_auth($id_kary);
-          $data["data_unit"] = $this->kry->get_izin_unit_by_auth($id_kary);
-          $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
-          $data["data_mcu"] = $this->kry->get_mcu_by_auth($id_kary);
-          $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
+          $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
+          $data["data_alamat"] = $this->kry->get_alamat_by_auth($auth_kary);
+          $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
+          $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
+          $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
+          $data["data_mcu"] = $this->kry->get_mcu_by_auth($auth_kary);
+          $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($auth_kary);
+          $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_detail', $data);
           $this->load->view('dashboard/modal/karyawan');
@@ -323,6 +324,7 @@ class Karyawan extends My_Controller
                $noktp = htmlspecialchars($this->input->post("noktp", true));
                $nokk = htmlspecialchars($this->input->post("nokk", true));
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
+               $auth_check = htmlspecialchars($this->input->post("auth_check", true));
                $noktp_old = htmlspecialchars($this->input->post("noktp_old", true));
                $nokk_old = htmlspecialchars($this->input->post("nokk_old", true));
                $tgl_lahir = htmlspecialchars($this->input->post("tgl_lahir", true));
@@ -341,22 +343,24 @@ class Karyawan extends My_Controller
                }
 
                if ($auth_person !== "") {
-                    $no_ktp =  $noktp_old;
-                    $no_kk = $nokk_old;
+                    if ($auth_check == "") {
+                         $no_ktp =  $noktp_old;
+                         $no_kk = $nokk_old;
 
-                    if ($no_ktp != $noktp) {
-                         $query = $this->kry->cek_noKTP($noktp);
-                         if ($query) {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "No. KTP sudah digunakan"));
-                              return;
+                         if ($no_ktp != $noktp) {
+                              $query = $this->kry->cek_noKTP($noktp);
+                              if ($query) {
+                                   echo json_encode(array("statusCode" => 201, "pesan" => "No. KTP sudah digunakan"));
+                                   return;
+                              }
                          }
-                    }
 
-                    if ($no_kk != $nokk) {
-                         $query = $this->kry->cek_noKK($nokk);
-                         if ($query) {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
-                              return;
+                         if ($no_kk != $nokk) {
+                              $query = $this->kry->cek_noKK($nokk);
+                              if ($query) {
+                                   echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
+                                   return;
+                              }
                          }
                     }
                } else {
@@ -522,6 +526,7 @@ class Karyawan extends My_Controller
                return;
           } else {
                //personal
+               $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
                $auth_check = htmlspecialchars($this->input->post("auth_check", true));
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
                $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
@@ -614,105 +619,187 @@ class Karyawan extends My_Controller
                }
 
                if ($auth_person !== "") {
-                    $nonik = $no_nik_old;
-                    if ($nonik != $no_nik) {
-                         $id_per = $this->prs->get_id_per_by_auth_m($id_m_perusahaan);
-                         $query = $this->kry->cek_nik($no_nik, $id_per);
-                         if ($query) {
-                              echo json_encode(array("statusCode" => 202, "no_nik" => "NIK sudah digunakan", "pesan1" => "", "pesan2" => ""));
-                              die;
+                    if ($auth_ver == "") {
+                         $nonik = $no_nik_old;
+                         if ($nonik != $no_nik) {
+                              $id_per = $this->prs->get_id_per_by_auth_m($id_m_perusahaan);
+                              $query = $this->kry->cek_nik($no_nik, $id_per);
+                              if ($query) {
+                                   echo json_encode(array("statusCode" => 202, "no_nik" => "NIK sudah digunakan", "pesan1" => "", "pesan2" => ""));
+                                   die;
+                              }
+                         }
+
+                         $data_personal = array(
+                              'no_ktp' => $noktp,
+                              'no_kk' => $nokk,
+                              'nama_lengkap' => $nama,
+                              'nama_alias' => '',
+                              'jk' => $jk,
+                              'tmp_lahir' => $tmp_lahir,
+                              'tgl_lahir' => $tgl_lahir,
+                              'id_stat_nikah' => $stat_nikah,
+                              'id_agama' => $id_agama,
+                              'warga_negara' => $warga,
+                              'email_pribadi' => $email,
+                              'hp_1' => $telp,
+                              'hp_2' => 0,
+                              'nama_ibu' => $namaibu,
+                              'stat_ibu' => '',
+                              'nama_ayah' => '',
+                              'stat_ayah' => '',
+                              'no_bpjstk' => $bpjs_tk,
+                              'no_bpjskes' => $bpjs_kes,
+                              'no_bpjspensiun' => '',
+                              'no_equity' => '',
+                              'no_npwp' => $npwp,
+                              'id_pendidikan' => $id_pendidikan,
+                              'nama_sekolah' => '',
+                              'fakultas' => '',
+                              'jurusan' => '',
+                              'url_pendukung' => ''
+                         );
+
+                         $idpersonal = $this->kry->get_id_personal($auth_person);
+                         $this->kry->update_dtPersonal($idpersonal, $data_personal);
+
+                         $data_al = array(
+                              'alamat_ktp' => $alamat,
+                              'rt_ktp' => $rt,
+                              'rw_ktp' => $rw,
+                              'kel_ktp' => $id_kel,
+                              'kec_ktp' => $id_kec,
+                              'kab_ktp' => $id_kab,
+                              'prov_ktp' => $id_prov,
+                              'kode_pos_ktp' => 0,
+                              'ket_alamat_ktp' => '',
+                              'stat_alamat_ktp' => 'T'
+                         );
+
+                         $idalamat = $this->kry->get_id_alamat($auth_person);
+                         $this->kry->update_dtAlamat($idalamat, $data_al);
+
+                         $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
+                         $id_depart = $this->get_id_depart($auth_depart);
+                         $id_posisi = $this->get_id_posisi($auth_posisi);
+                         $id_level = $this->get_id_level($auth_level);
+                         $id_lokterima = $this->get_id_lokterima($auth_lokterima);
+                         $id_lokker = $this->get_id_lokker($auth_lokker);
+                         $id_poh = $this->get_id_poh($auth_poh);
+
+                         $data_kry = array(
+                              'id_perkerjaan' => 0,
+                              'no_acr' => 0,
+                              'no_nik' => $no_nik,
+                              'doh' => $doh,
+                              'tgl_aktif' => $tgl_aktif,
+                              'id_depart' => $id_depart,
+                              'id_posisi' => $id_posisi,
+                              'id_grade' => 0,
+                              'id_level' => $id_level,
+                              'id_lokker' => $id_lokker,
+                              'id_lokterima' => $id_lokterima,
+                              'id_poh' => $id_poh,
+                              'id_klasifikasi' => $id_klasifikasi,
+                              'id_tipe' => $id_tipe,
+                              'stat_tinggal' => $stat_tinggal,
+                              'email_kantor' => $email_kantor,
+                              'tgl_permanen' => $tgl_permanen,
+                              'id_stat_perjanjian' => $stat_kerja,
+                              'id_m_perusahaan' => $id_m_perusahaan
+                         );
+
+                         $idkaryawan = $this->kry->get_id_karyawan($auth_kary);
+                         $this->kry->update_dtkary($idkaryawan, $data_kry);
+
+                         echo json_encode(array(
+                              "statusCode" => 200,
+                              "pesan" => "Data karyawan berhasil diupdate",
+                              "no_ktp" => $noktp,
+                              "no_kk" => $nokk,
+                              "nik" => $no_nik
+                         ));
+                    } else {
+                         $id_personal = $this->kry->get_id_personal($auth_person);
+                         $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
+                         $id_depart = $this->get_id_depart($auth_depart);
+                         $id_level = $this->get_id_level($auth_level);
+                         $id_posisi = $this->get_id_posisi($auth_posisi);
+                         $id_lokterima = $this->get_id_lokterima($auth_lokterima);
+                         $id_lokker = $this->get_id_lokker($auth_lokker);
+                         $id_poh = $this->get_id_poh($auth_poh);
+
+                         $data_karyawan = [
+                              'id_personal' => $id_personal,
+                              'id_perkerjaan' => 0,
+                              'no_acr' => 0,
+                              'no_nik' => $no_nik,
+                              'doh' => $doh,
+                              'tgl_aktif' => $tgl_aktif,
+                              'id_depart' => $id_depart,
+                              'id_section' => 0,
+                              'id_posisi' => $id_posisi,
+                              'id_grade' => 0,
+                              'id_level' => $id_level,
+                              'id_lokker' => $id_lokker,
+                              'id_lokterima' => $id_lokterima,
+                              'id_poh' => $id_poh,
+                              'id_roster' => 0,
+                              'id_klasifikasi' => $id_klasifikasi,
+                              'paybase' => 0,
+                              'statpajak' => 0,
+                              'id_tipe' => $id_tipe,
+                              'stat_tinggal' => $stat_tinggal,
+                              'email_kantor' => $email_kantor,
+                              'tgl_permanen' => '1970-01-01',
+                              'id_stat_perjanjian' => 0,
+                              'tgl_nonaktif' => '1970-01-01',
+                              'alasan_nonaktif' => '',
+                              'tgl_buat' =>  date('Y-m-d H:i:s'),
+                              'tgl_edit' =>  date('Y-m-d H:i:s'),
+                              'id_user' => $this->session->userdata('id_user'),
+                              'id_m_perusahaan' => $id_m_perusahaan,
+                         ];
+
+
+                         $karyawan = $this->kry->input_dtKaryawan($data_karyawan);
+
+                         if ($karyawan) {
+                              $auth_person = $this->kry->last_row_personal();
+                              $auth_kary = $this->kry->last_row_authkary($auth_person);
+                              $auth_alamat = $this->kry->last_row_alamat($auth_person);
+                              $id_kary = $this->kry->last_row_idkary($auth_kary);
+
+                              if (!empty($id_kary)) {
+                                   $data_kontrak = [
+                                        'id_kary' => $id_kary,
+                                        'id_stat_perjanjian' => $stat_kerja,
+                                        'tgl_mulai' => $tgl_mulai_kontrak,
+                                        'tgl_akhir' =>  $tgl_akhir_kontrak,
+                                        'ket_kontrak' => '',
+                                        'tgl_buat' =>  date('Y-m-d H:i:s'),
+                                        'tgl_edit' =>  date('Y-m-d H:i:s'),
+                                        'id_user' => $this->session->userdata('id_user')
+                                   ];
+
+
+                                   $this->kry->input_dtKontrak($data_kontrak);
+                              }
+
+                              echo json_encode(array(
+                                   "statusCode" => 200,
+                                   "pesan" => "Data karyawan berhasil disimpan",
+                                   "auth_person" => $auth_person,
+                                   "auth_kary" => $auth_kary,
+                                   "auth_alamat" => $auth_alamat,
+                                   "no_ktp" => $noktp,
+                                   "no_kk" => $nokk,
+                                   "nik" => $no_nik
+                              ));
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan gagal disimpan"));
                          }
                     }
-
-                    $data_personal = array(
-                         'no_ktp' => $noktp,
-                         'no_kk' => $nokk,
-                         'nama_lengkap' => $nama,
-                         'nama_alias' => '',
-                         'jk' => $jk,
-                         'tmp_lahir' => $tmp_lahir,
-                         'tgl_lahir' => $tgl_lahir,
-                         'id_stat_nikah' => $stat_nikah,
-                         'id_agama' => $id_agama,
-                         'warga_negara' => $warga,
-                         'email_pribadi' => $email,
-                         'hp_1' => $telp,
-                         'hp_2' => 0,
-                         'nama_ibu' => $namaibu,
-                         'stat_ibu' => '',
-                         'nama_ayah' => '',
-                         'stat_ayah' => '',
-                         'no_bpjstk' => $bpjs_tk,
-                         'no_bpjskes' => $bpjs_kes,
-                         'no_bpjspensiun' => '',
-                         'no_equity' => '',
-                         'no_npwp' => $npwp,
-                         'id_pendidikan' => $id_pendidikan,
-                         'nama_sekolah' => '',
-                         'fakultas' => '',
-                         'jurusan' => '',
-                         'url_pendukung' => ''
-                    );
-
-                    $idpersonal = $this->kry->get_id_personal($auth_person);
-                    $this->kry->update_dtPersonal($idpersonal, $data_personal);
-
-                    $data_al = array(
-                         'alamat_ktp' => $alamat,
-                         'rt_ktp' => $rt,
-                         'rw_ktp' => $rw,
-                         'kel_ktp' => $id_kel,
-                         'kec_ktp' => $id_kec,
-                         'kab_ktp' => $id_kab,
-                         'prov_ktp' => $id_prov,
-                         'kode_pos_ktp' => 0,
-                         'ket_alamat_ktp' => '',
-                         'stat_alamat_ktp' => 'T'
-                    );
-
-                    $idalamat = $this->kry->get_id_alamat($auth_person);
-                    $this->kry->update_dtAlamat($idalamat, $data_al);
-
-                    $id_m_perusahaan = $this->prs->get_m_by_auth($id_m_perusahaan);
-                    $id_depart = $this->get_id_depart($auth_depart);
-                    $id_posisi = $this->get_id_posisi($auth_posisi);
-                    $id_level = $this->get_id_level($auth_level);
-                    $id_lokterima = $this->get_id_lokterima($auth_lokterima);
-                    $id_lokker = $this->get_id_lokker($auth_lokker);
-                    $id_poh = $this->get_id_poh($auth_poh);
-
-                    $data_kry = array(
-                         'id_perkerjaan' => 0,
-                         'no_acr' => 0,
-                         'no_nik' => $no_nik,
-                         'doh' => $doh,
-                         'tgl_aktif' => $tgl_aktif,
-                         'id_depart' => $id_depart,
-                         'id_posisi' => $id_posisi,
-                         'id_grade' => 0,
-                         'id_level' => $id_level,
-                         'id_lokker' => $id_lokker,
-                         'id_lokterima' => $id_lokterima,
-                         'id_poh' => $id_poh,
-                         'id_klasifikasi' => $id_klasifikasi,
-                         'id_tipe' => $id_tipe,
-                         'stat_tinggal' => $stat_tinggal,
-                         'email_kantor' => $email_kantor,
-                         'tgl_permanen' => $tgl_permanen,
-                         'id_stat_perjanjian' => $stat_kerja,
-                         'id_m_perusahaan' => $id_m_perusahaan
-                    );
-
-                    $idkaryawan = $this->kry->get_id_karyawan($auth_kary);
-                    $this->kry->update_dtkary($idkaryawan, $data_kry);
-
-                    echo json_encode(array(
-                         "statusCode" => 200,
-                         "pesan" => "Data karyawan berhasil diupdate",
-                         "no_ktp" => $noktp,
-                         "no_kk" => $nokk,
-                         "nik" => $no_nik
-                    ));
                } else {
                     $id_per = $this->prs->get_id_per_by_auth_m($id_m_perusahaan);
                     $query = $this->kry->cek_nik($no_nik, $id_per);
@@ -720,9 +807,6 @@ class Karyawan extends My_Controller
                          echo json_encode(array("statusCode" => 202, "no_nik" => "NIK sudah digunakan", "pesan1" => "", "pesan2" => ""));
                          return;
                     }
-
-                    // echo json_encode($id_per);
-                    // return;
 
                     $data_personal = [
                          'no_ktp' => $noktp,
@@ -938,12 +1022,6 @@ class Karyawan extends My_Controller
                     return;
                }
 
-               $cek_noreg = $this->kry->cek_no_simper($noreg);
-               if ($cek_noreg) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Minre Permit sudah digunakan"));
-                    return;
-               }
-
                if ($jenisizin == "SP") {
                     if ($auth_izin != "") {
                          $query = $this->smp->cek_unit($auth_izin);
@@ -972,6 +1050,12 @@ class Karyawan extends My_Controller
                } else if ($jenisizin == "MP") {
                     $jenissim = 0;
                     $tglexpsim = "1970-01-01";
+
+                    $cek_noreg = $this->kry->cek_no_simper($noreg);
+                    if ($cek_noreg) {
+                         echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Minre Permit sudah digunakan"));
+                         return;
+                    }
 
                     if ($auth_izin !== "") {
                          $id_izin = $this->kry->get_id_izin($auth_izin);
@@ -1965,6 +2049,154 @@ class Karyawan extends My_Controller
           }
      }
 
+     public function verifikasi_ktp()
+     {
+          $this->form_validation->set_rules("noktp", "noktp", "required|trim|max_length[20]", [
+               'required' => 'No. KTP wajib diisi',
+               'max_length' => 'No. KTP maksimal 16 karakter'
+          ]);
+
+          if ($this->form_validation->run() == false) {
+               $error = [
+                    'statusCode' => 201,
+                    'noktp' => form_error("noktp")
+               ];
+
+               echo json_encode($error);
+               return;
+          } else {
+               $noktp = htmlspecialchars($this->input->post("noktp", true));
+               $dtperson = $this->kry->verifikasi_ktp($noktp);
+
+               // echo json_encode($dtperson);
+               // return;
+
+               if (empty($dtperson)) {
+                    echo json_encode(array(
+                         "statusCode" => 200,
+                         "pesan" => "Data personal dengan No. KTP : " . $noktp . ", belum ada, silahkan lengkapi data selanjutnya",
+                         "auth_personal" => ""
+                    ));
+                    return;
+               } else {
+                    if ($dtperson->tgl_nonaktif == null) {
+                         echo json_encode(array(
+                              "statusCode" => 200,
+                              "pesan" => "Data personal dengan No. KTP : " . $noktp . ", belum ada, silahkan lengkapi data selanjutnya",
+                              "auth_personal" => ""
+                         ));
+                         return;
+                    }
+                    if ($dtperson->tgl_nonaktif == "1970-01-01") {
+                         $dtkary = $this->kry->get_karyawan_by_ktp($noktp);
+                         if (!empty($dtkary)) {
+                              $data = [
+                                   "statusCode" => 201,
+                                   "pesan" => 'Proses tidak dapat dilanjutkan, Data karyawan :',
+                                   "no_ktp" => $dtkary->no_ktp,
+                                   "nama_lengkap" => $dtkary->nama_lengkap,
+                                   "tgl_nonaktif" => date('d-M-Y', strtotime($dtkary->tgl_nonaktif)),
+                                   "lama_nonaktif" => "0 Hari",
+                                   "perusahaan" => $dtkary->nama_perusahaan,
+                                   "status" => 'AKTIF'
+                              ];
+                         } else {
+                              $data = [
+                                   "statusCode" => 200,
+                                   "pesan" => "Data Karyawan dengan No. KTP : " . $noktp . ", belum ada, silahkan lengkapi data selanjutnya",
+                                   "auth_personal" => ""
+                              ];
+                         }
+
+                         echo json_encode($data);
+                         return;
+                    } else {
+                         $tgl_nonaktif = strtotime(date('Y-m-d', strtotime($dtperson->tgl_nonaktif)));
+                         $tgl_Sekarang = strtotime(date('Y-m-d'));
+                         $jarak = $tgl_Sekarang - $tgl_nonaktif;
+                         $hari = $jarak / 60 / 60 / 24;
+
+                         if ($hari > 90) {
+                              $dtpersonal = $this->kry->get_personal_by_ktp($noktp);
+                              if (!empty($dtpersonal)) {
+                                   $dtalamat = $this->kry->get_alamat_by_id_person($dtpersonal->id_personal);
+                                   if (!empty($dtalamat)) {
+                                        foreach ($dtalamat as $ls) {
+                                             $alamat = $ls->alamat_ktp;
+                                             $prov = $ls->prov_ktp;
+                                             $kab = $ls->kab_ktp;
+                                             $kec = $ls->kec_ktp;
+                                             $kel = $ls->kel_ktp;
+                                             $rt = $ls->rt_ktp;
+                                             $rw = $ls->rw_ktp;
+                                        }
+                                   } else {
+                                        $alamat = '';
+                                        $prov = '';
+                                        $kab = '';
+                                        $kec = '';
+                                        $kel = '';
+                                        $rt = '';
+                                        $rw = '';
+                                   }
+                                   $data = [
+                                        "statusCode" => 202,
+                                        "pesan" => 'Data berhasil ditemukan',
+                                        "auth_personal" => $dtpersonal->auth_personal,
+                                        "no_ktp" => $dtpersonal->no_ktp,
+                                        "nama" => $dtpersonal->nama_lengkap,
+                                        "alamat" => $alamat,
+                                        "rt" => $rt,
+                                        "rw" => $rw,
+                                        "kel" => $kel,
+                                        "kec" => $kec,
+                                        "kab" => $kab,
+                                        "prov" => $prov,
+                                        "warga_negara" => $dtpersonal->warga_negara,
+                                        "agama" => $dtpersonal->id_agama,
+                                        "jk" => $dtpersonal->jk,
+                                        "stat_nikah" => $dtpersonal->id_stat_nikah,
+                                        "tmp_lahir" => $dtpersonal->tmp_lahir,
+                                        "tgl_lahir" => $dtpersonal->tgl_lahir,
+                                        "bpjs_tk" => $dtpersonal->no_bpjstk,
+                                        "bpjs_ks" => $dtpersonal->no_bpjstk,
+                                        "npwp" => $dtpersonal->no_npwp,
+                                        "no_kk" => $dtpersonal->no_kk,
+                                        "email_pribadi" => $dtpersonal->email_pribadi,
+                                        "no_telp" => $dtpersonal->hp_1,
+                                        "didik_terakhir" => $dtpersonal->id_pendidikan
+                                   ];
+                              } else {
+                                   $data = [
+                                        "statusCode" => 201,
+                                        "auth_personal" => 'Data personal tidak ditemukan',
+                                   ];
+                              }
+
+                              echo json_encode($data);
+                              return;
+                         } else {
+                              $dtkary = $this->kry->get_karyawan_by_ktp($noktp);
+                              if (!empty($dtkary)) {
+                                   $data = [
+                                        "statusCode" => 201,
+                                        "pesan" => 'Proses tidak dapat dilanjutkan, Data karyawan :',
+                                        "no_ktp" => $dtkary->no_ktp,
+                                        "nama_lengkap" => $dtkary->nama_lengkap,
+                                        "tgl_nonaktif" => date('d-M-Y', strtotime($dtkary->tgl_nonaktif)),
+                                        "lama_nonaktif" => $hari . " Hari",
+                                        "perusahaan" => $dtkary->nama_perusahaan,
+                                        "status" => 'NONAKTIF'
+                                   ];
+                              }
+
+                              echo json_encode($data);
+                              return;
+                         }
+                    }
+               }
+          }
+     }
 
      // fetch data karyawan
      public function ajax_list()

@@ -76,6 +76,7 @@ class Lokasipenerimaan extends My_Controller
                $row['auth_lokterima'] = $lkt->auth_lokterima;
                $row['kd_lokterima'] = $lkt->kd_lokterima;
                $row['lokterima'] = $lkt->lokterima;
+               $row['jenis_lokasi'] = $lkt->jenis_lokasi;
                $row['ket_lokterima'] = $lkt->ket_lokterima;
 
                if ($lkt->stat_lokterima == "T") {
@@ -117,6 +118,10 @@ class Lokasipenerimaan extends My_Controller
                'required' => 'Lokasi penerimaan wajib diisi',
                'max_length' => 'Lokasi penerimaan maksimal 100 karakter'
           ]);
+          $this->form_validation->set_rules("jenislokasi", "jenislokasi", "required|trim|max_length[20]", [
+               'required' => 'Jenis lokasi wajib diisi',
+               'max_length' => 'Jenis lokasi maksimal 20 karakter'
+          ]);
           $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000],[
                'max_length' => 'Keterangan maksimal 1000 karakter'
           ]");
@@ -127,6 +132,7 @@ class Lokasipenerimaan extends My_Controller
                     'prs' => form_error("prs"),
                     'kode' => form_error("kode"),
                     'lokterima' => form_error("lokterima"),
+                    'jenislokasi' => form_error("jenislokasi"),
                     'ket' => form_error("ket")
                ];
 
@@ -136,6 +142,7 @@ class Lokasipenerimaan extends My_Controller
                $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
                $kd_lokterima = htmlspecialchars($this->input->post("kode", true));
                $lokterima = htmlspecialchars($this->input->post("lokterima", true));
+               $jenislokasi = htmlspecialchars($this->input->post("jenislokasi", true));
                $ket_lokterima = htmlspecialchars($this->input->post("ket", true));
                $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
@@ -159,6 +166,7 @@ class Lokasipenerimaan extends My_Controller
                $data = [
                     'kd_lokterima' => $kd_lokterima,
                     'lokterima' => $lokterima,
+                    'jenis_lokasi' => $jenislokasi,
                     'ket_lokterima' => $ket_lokterima,
                     'stat_lokterima' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),

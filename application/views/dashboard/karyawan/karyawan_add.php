@@ -39,10 +39,6 @@
                                              <i class="feather icon-more-horizontal"></i>
                                         </button>
                                         <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                             <li class="dropdown-item full-card">
-                                                  <a href="#!"><span><i class="feather icon-maximize"></i>
-                                                            Fullscreen</span><span style="display: none"><i class="feather icon-minimize"></i> Restore</span></a>
-                                             </li>
                                              <li class="dropdown-item minimize-card">
                                                   <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
                                              </li>
@@ -55,12 +51,12 @@
                          </div>
                          <div class="card-body">
                               <div class="mt-3">
-                                   <div class="mb-2">
-                                        <button id="addbtn" class="btnrespage btn btn-warning font-weight-bold mb-3 d-none">Reset</button>
+                                   <div class="mb-2 ">
+                                        <button id="addBuatData" class="btn btn-success font-weight-bold mb-3"><i class="fas fa-plus"></i> Buat Data</button>
                                    </div>
                               </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
-                              <h5>Isi data berikut dengan lengkap dan benar : </h5>
+                              <h5>Isi data berikut dengan benar : </h5>
                               <div class="row pt-2">
                                    <div id="clPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
                                         <button id="clPersonal-click" class="btn btn-primary w-100" style="text-align:left;">
@@ -78,7 +74,7 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noKTP"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noKTP' name='noKTP' type="text" autocomplete=" off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noKTP' name='noKTP' type="text" autocomplete=" off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="0c09efa8ccb5e0114e97df31736ce2e3 d-none"></span>
                                                             </div>
@@ -86,7 +82,7 @@
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namaLengkap">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namaLengkap' name='namaLengkap' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='namaLengkap' name='namaLengkap' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNamaLengkap text-danger font-italic font-weight-bold"></small>
                                                                  <span class="9d56835ae6e4d20993874daf592f6aca d-none"></span>
 
@@ -95,7 +91,7 @@
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="alamatKTP">Alamat <span class="text-danger">*</span></label>
-                                                                 <input id='alamatKTP' name='alamatKTP' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='alamatKTP' name='alamatKTP' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorAlamatKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="150b3427b97bb43ac2fb3e5c687e384c d-none"></span>
                                                             </div>
@@ -103,14 +99,14 @@
                                                        <div class="col-lg-2 col-md-2 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="rtKTP">RT </label>
-                                                                 <input id='rtKTP' name='rtKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;">
+                                                                 <input id='rtKTP' name='rtKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;" disabled>
                                                                  <small class="errorRtKTP text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-2 col-md-2 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="rwKTP">RW </label>
-                                                                 <input id='rwKTP' name='rwKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;">
+                                                                 <input id='rwKTP' name='rwKTP' type="number" placeholder="000" autocomplete="off" spellcheck="false" class="form-control" value="" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==4) return false;" disabled>
                                                                  <small class="errorRwKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="9100fd1e98da52ac823c5fdc6d3e4ff1 d-none"></span>
                                                             </div>
@@ -119,11 +115,11 @@
                                                             <div class="form-group">
                                                                  <label for="provData">Provinsi <span class="text-danger">*</span></label>
                                                                  <div id="txtprov" class="input-group">
-                                                                      <select id='provData' name='provData' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                      <select id='provData' name='provData' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshProv" name="refreshProv" class="btn btn-primary btn-sm" title="Refresh Provinsi"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshProv" name="refreshProv" class="btn btn-primary btn-sm" title="Refresh Provinsi" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorProvData text-danger font-italic font-weight-bold"></small>
@@ -133,11 +129,11 @@
                                                             <div class="form-group">
                                                                  <label for="kotaData">Kabupaten / Kota <span class="text-danger">*</span></label>
                                                                  <div id="txtkota" class="input-group">
-                                                                      <select id='kotaData' name='kotaData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                      <select id='kotaData' name='kotaData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKota" name="refreshKota" class="btn btn-primary btn-sm" title="Refresh Kabupaten/Kota"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKota" name="refreshKota" class="btn btn-primary btn-sm" title="Refresh Kabupaten/Kota" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKotaData text-danger font-italic font-weight-bold"></small>
@@ -147,11 +143,11 @@
                                                             <div class="form-group">
                                                                  <label for="kecData">Kecamatan <span class="text-danger">*</span></label>
                                                                  <div id="txtkec" class="input-group">
-                                                                      <select id='kecData' name='kecData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                      <select id='kecData' name='kecData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKec" name="refreshKec" class="btn btn-primary btn-sm" title="Refresh Kecamatan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKec" name="refreshKec" class="btn btn-primary btn-sm" title="Refresh Kecamatan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKecData text-danger font-italic font-weight-bold"></small>
@@ -161,11 +157,11 @@
                                                             <div class="form-group">
                                                                  <label for="kelData">Kelurahan <span class="text-danger">*</span></label>
                                                                  <div id="txtkel" class="input-group">
-                                                                      <select id='kelData' name='kelData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                      <select id='kelData' name='kelData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKel" name="refreshKel" class="btn btn-primary btn-sm" title="Refresh Kelurahan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshKel" name="refreshKel" class="btn btn-primary btn-sm" title="Refresh Kelurahan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorKelData text-danger font-italic font-weight-bold"></small>
@@ -174,7 +170,7 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="kewarganegaraan">Warga Negara <span class="text-danger">*</span></label>
-                                                                 <select id="kewarganegaraan" class="mb-3 form-control">
+                                                                 <select id="kewarganegaraan" class="mb-3 form-control" disabled>
                                                                       <option value="">-- PILIH WARGA NEGARA --</option>
                                                                       <option value="WNI">WNI</option>
                                                                       <option value="WNA">WNA</option>
@@ -185,7 +181,7 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addagama">Agama <span class="text-danger">*</span></label>
-                                                                 <select id="addagama" class="mb-3 form-control">
+                                                                 <select id="addagama" class="mb-3 form-control" disabled>
                                                                       <option value="">-- WAJIB DIPILIH --</option>
                                                                  </select>
                                                                  <small class="errorAddAgama text-danger font-italic font-weight-bold"></small>
@@ -194,7 +190,7 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="jenisKelamin">Jenis Kelamin <span class="text-danger">*</span></label>
-                                                                 <select id="jenisKelamin" class="mb-3 form-control">
+                                                                 <select id="jenisKelamin" class="mb-3 form-control" disabled>
                                                                       <option value="">-- PILIH JENIS KELAMIN --</option>
                                                                       <option value="LK">LAKI - LAKI</option>
                                                                       <option value="P">PEREMPUAN</option>
@@ -206,11 +202,11 @@
                                                             <div class="form-group">
                                                                  <label for="statPernikahan">Status Pernikahan <span class="text-danger">*</span></label>
                                                                  <div id="txtnikah" class="input-group">
-                                                                      <select id="statPernikahan" class="mb-3 form-control">
+                                                                      <select id="statPernikahan" class="mb-3 form-control" disabled>
                                                                            <option value="">-- PILIH PERNIKAHAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm" title="Refresh Status Pernikahan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm" title="Refresh Status Pernikahan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorStatPernikahan text-danger font-italic font-weight-bold"></small>
@@ -219,42 +215,42 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="tempatLahir">Tempat Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='tempatLahir' name='tempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='tempatLahir' name='tempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorTempatLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='tanggalLahir' name='tanggalLahir' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='tanggalLahir' name='tanggalLahir' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorTanggalLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noBPJSTK">No. BPJS Tenaga Kerja </label>
-                                                                 <input id='noBPJSTK' name='noBPJSTK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noBPJSTK' name='noBPJSTK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoBPJSTK text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noBPJSKES">No. BPJS Kesehatan </label>
-                                                                 <input id='noBPJSKES' name='noBPJSKES' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noBPJSKES' name='noBPJSKES' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoBPJSKES text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noNPWP">No. NPWP </label>
-                                                                 <input id='noNPWP' name='noNPWP' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noNPWP' name='noNPWP' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoNPWP text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noKK">No. Kartu Keluarga <span class="text-danger">*</span></label>
-                                                                 <input id='noKK' name='noKK' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noKK' name='noKK' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoKK text-danger font-italic font-weight-bold"></small>
                                                                  <span class="89kjm78ujki782m4x787909h3 d-none"></span>
                                                             </div>
@@ -262,14 +258,14 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="email">Email Pribadi </label>
-                                                                 <input id='email' name='email' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='email' name='email' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="erroremail text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noTelp">No. Telp </label>
-                                                                 <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                                                 <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errornoTelp text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
@@ -277,18 +273,16 @@
                                                             <div class="form-group">
                                                                  <label for="pendidikanTerakhir">Pendidikan Terakhir </label>
                                                                  <div id="txtDidik" name="txtDidik" class="input-group mt-2">
-                                                                      <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required>
+                                                                      <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required disabled>
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshDidik" name="refreshDidik" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshDidik" name="refreshDidik" class="btn btn-primary btn-sm" title="Refresh Pendidikan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                            <a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>
-                                                       </div>
+                                                       <div class="btnlanjutpersonal col-lg-12 col-md-12 col-sm-12 text-right mt-2"></div>
                                                   </div>
                                              </div>
                                         </div>
@@ -976,6 +970,102 @@
                <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Batal</button>
                     <a href="<?= base_url(); ?>dash/logout" type="button" class="btn btn-primary">Keluar</a>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="mdlbuatdatakary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
+          <div class="modal-content">
+               <div class="modal-header bg-c-blue">
+                    <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-id-card"></i> Verifikasi No. KTP</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <div class="form-group">
+                                   <label for="noKTPCek">Ketikkan No. KTP</label>
+                                   <input id='noKTPCek' name='noKTPCek' autocomplete="off" spellcheck="false" class="noKTPCek form-control bg-white" value="">
+                                   <small class="errornoKTPCek text-danger font-italic font-weight-bold"></small><br>
+                                   <span class="yy43234 ujfso78sn2 h2344234jfsd d-none"></span>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="modal-footer m-3">
+                    <button type="button" name="btnverifikasiktp" id="btnverifikasiktp" class="btn font-weight-bold btn-primary" disabled>Verifikasi Data</button>
+                    <button name="btnbatalverktp" id="btnbatalverktp" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+               </div>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="mdldetkary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:40%;">
+          <div class="modal-content">
+               <div class="modal-header bg-c-blue">
+                    <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-id-card"></i> Verifikasi Data</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+                              <div class="form-group">
+                                   <h5 id="pesanDet" class="text-danger"></h5>
+                              </div>
+                         </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12" style="margin-top: -5px;">
+                              <hr>
+                         </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <div class="row">
+                                   <div class="col-lg-4 col-md-4col-sm-12">
+                                        <div class="form-group">
+                                             <label for="noKTPCek">No. KTP</label>
+                                             <h5 id="noKTPDet"></h5>
+                                        </div>
+                                   </div>
+                                   <div class="col-lg-8 col-md-8 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="namaDet">Nama Lengkap</label>
+                                             <h5 id="namaDet"></h5>
+                                        </div>
+                                   </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="PerusahaanDet">Perusahaan</label>
+                                             <h5 id="PerusahaanDet"></h5>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <div class="row">
+                                   <div class="col-lg-4 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="StatusDet">Status</label>
+                                             <h5 id="StatusDet"></h5>
+                                        </div>
+                                   </div>
+                                   <div class="tglnonaktif col-lg-4 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="tglNonAktifDet">Tanggal NonAktif</label>
+                                             <h5 id="tglNonAktifDet"></h5>
+                                        </div>
+                                   </div>
+                                   <div class="lamanonaktif col-lg-4 col-md-4 col-sm-12">
+                                        <div class="form-group">
+                                             <label for="lamaNonAktifDet">Lama NonAKtif</label>
+                                             <h5 id="lamaNonAktifDet"></h5>
+                                        </div>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="modal-footer m-3">
+                    <button name="btnselesaiverktp" id="btnselesaiverktp" data-dismiss="modal" class="btn font-weight-bold btn-primary">Selesai</button>
                </div>
           </div>
      </div>

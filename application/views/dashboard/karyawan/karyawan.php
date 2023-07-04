@@ -39,10 +39,6 @@
                                              <i class="feather icon-more-horizontal"></i>
                                         </button>
                                         <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
-                                             <li class="dropdown-item full-card">
-                                                  <a href="#!"><span><i class="feather icon-maximize"></i>
-                                                            Fullscreen</span><span style="display: none"><i class="feather icon-minimize"></i> Restore</span></a>
-                                             </li>
                                              <li class="dropdown-item minimize-card">
                                                   <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
                                              </li>
