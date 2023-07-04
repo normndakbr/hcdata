@@ -120,6 +120,27 @@ class Karyawan extends My_Controller
           $this->load->view('dashboard/code/karydetail');
      }
 
+     public function edit_karyawan($id_kary)
+     {
+          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+          $data['nama'] = $this->session->userdata("nama");
+          $data['email'] = $this->session->userdata("email");
+          $data['menu'] = $this->session->userdata("id_menu");
+          $data["data_kary"] = $this->kry->get_by_auth($id_kary);
+          $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($id_kary);
+          $data["data_izin"] = $this->kry->get_izin_by_auth($id_kary);
+          $data["data_unit"] = $this->kry->get_izin_unit_by_auth($id_kary);
+          $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
+          $data["data_mcu"] = $this->kry->get_mcu_by_auth($id_kary);
+          $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
+          $this->load->view('dashboard/template/header', $data);
+          $this->load->view('dashboard/karyawan/karyawan_edit', $data);
+          $this->load->view('dashboard/modal/karyawan');
+          $this->load->view('dashboard/template/footer', $data);
+          $this->load->view('dashboard/code/karydetail');
+     }
+
      public function hapus_mcu()
      {
           $auth_mcu = htmlspecialchars(trim($this->input->post('auth_mcu', true)));
@@ -2237,7 +2258,7 @@ class Karyawan extends My_Controller
                     <div class="dropdown-menu">
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail_karyawan/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" value="' . $kry->nama_lengkap . '">Edit</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" title ="Sertifikasi" href="#!">Sertifikasi</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" title ="MCU" href="#!">MCU</a>
                     </div>
