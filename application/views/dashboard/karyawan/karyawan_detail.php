@@ -50,7 +50,7 @@
                                                   <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
                                              </li> -->
                                              <li class="dropdown-item reload-card">
-                                                  <a id="btnrefDetailKary" href="#!"><i class="feather icon-refresh-cw"></i> Muat Ulang</a>
+                                                  <a id="btnrefDetailKary" href="#!"><i class="feather icon-refresh-cw"></i>Reload</a>
                                              </li>
                                         </ul>
                                    </div>
@@ -239,21 +239,30 @@
                                                        <div class="col-lg-3 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Status Karyawan</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_kary->stat_perjanjian) ? $data_kary->stat_perjanjian : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_kontrak->stat_perjanjian) ? $data_kontrak->stat_perjanjian : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tanggal Awal</h6>
-                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                       <?php if ($data_kontrak->stat_waktu == "T") { ?>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tanggal Awal</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
                                                             </div>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tanggal Akhir</h6>
-                                                                 <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kary->tgl_permanen)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tanggal Akhir</h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
                                                             </div>
-                                                       </div>
+                                                       <?php } else { ?>
+                                                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <h6>Tanggal <?php echo $data_kontrak->stat_perjanjian ?></h6>
+                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 </div>
+                                                            </div>
+                                                       <?php }  ?>
                                                   </div>
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtSIMPER" role="tabpanel" aria-labelledby="v-pills-dtSIMPER-tab">
@@ -273,11 +282,11 @@
                                                        <div class="col-lg-2 col-md-2 col-sm-12">
                                                             <div class="form-group">
                                                                  <h6>Tgl. Akhir</h6>
-                                                                 <input type="text" class="form-control" value="<?= $data_izin->tgl_expired == "1970-01-01" ? '' : date('d-M-Y', strtotime($data_izin->tgl_expired)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
+                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->tgl_expired) ? date('d-M-Y', strtotime($data_izin->tgl_expired)) : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
 
-                                                       <?php if ($data_izin->jenis_izin_tambang == "SP") { ?>
+                                                       <?php if (isset($data_izin->jenis_izin_tambang) == "SP") { ?>
                                                             <div class="col-lg-4 col-md-4 col-sm-12">
                                                                  <div class="form-group">
                                                                       <h6>Jenis SIM</h6>

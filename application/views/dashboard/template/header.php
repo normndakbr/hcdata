@@ -68,8 +68,11 @@
                          </div>
                     </div>
                     <ul class="nav pcoded-inner-navbar mt-3">
+                         <li class="nav-item pcoded-menu-caption">
+                              <label>Shortcut</label>
+                         </li>
                          <li class="nav-item">
-                              <a href="<?= base_url('dash'); ?>" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Tambah Karyawan</span></a>
+                              <a href="<?= base_url('dash'); ?>" target="_blank" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Tambah Karyawan</span></a>
                          </li>
                          <li class="nav-item pcoded-menu-caption">
                               <label>Menu</label>

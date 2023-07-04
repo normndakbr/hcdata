@@ -12,49 +12,6 @@
             theme: 'bootstrap4'
         });
 
-        // $.ajax({
-        //     type: "POST",
-        //     url: site_url+"perusahaan/get_all",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perLokterima").html(data.prs);
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_lokterima").removeClass('d-none');
-        //         $(".err_psn_lokterima").removeClass('alert-info');
-        //         $(".err_psn_lokterima").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahLokterima").attr("disabled", true);
-        //         }
-        //     }
-        // });
-
-        // $.ajax({
-        //     type: "POST",
-        //     url: site_url+"perusahaan/get_all",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perLokterimaData").html(data.prs);
-        //         $('#perLokterimaData').select2({
-        //             theme: 'bootstrap4'
-        //         });
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_lokterima").removeClass('d-none');
-        //         $(".err_psn_lokterima").removeClass('alert-info');
-        //         $(".err_psn_lokterima").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_lokterima").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahLokterima").attr("disabled", true);
-        //         }
-        //     }
-        // })
-
         $.ajax({
             type: "POST", 
             url: site_url+"perusahaan/getidperusahaan",
@@ -127,6 +84,11 @@
                         "data": 'lokterima',
                         "className": "text-nowrap align-middle",
                         "width": "50%"
+                    },
+                    {
+                        "data": 'jenis_lokasi',
+                        "className": "text-nowrap align-middle",
+                        "width": "20%"
                     },
                     {
                         "data": 'stat_lokterima',
@@ -255,6 +217,7 @@
             var prs = $("#perLokterima").val();
             var kode = $("#kodeLokterima").val();
             var lokterima = $("#Lokterima").val();
+            var jenislokasi = $("#JenisLokasi").val();
             var ket = $("#ketLokterima").val();
 
             $.ajax({
@@ -264,6 +227,7 @@
                     prs: prs,
                     kode: kode,
                     lokterima: lokterima,
+                    jenislokasi:jenislokasi,
                     ket: ket
                 },
                 timeout: 20000,
@@ -285,6 +249,7 @@
                         $(".error2").html(data.kode);
                         $(".error3").html(data.lokterima);
                         $(".error4").html(data.ket);
+                        $(".error5").html(data.jenislokasi);
                     }
 
                     $(".err_psn_lokterima").fadeTo(3000, 500).slideUp(500, function() {
@@ -536,7 +501,12 @@
                 {
                     "data": 'lokterima',
                     "className": "text-nowrap align-middle",
-                    "width": "50%"
+                    "width": "30%"
+                },
+                {
+                    "data": 'jenis_lokasi',
+                    "className": "text-nowrap align-middle",
+                    "width": "20%"
                 },
                 {
                     "data": 'stat_lokterima',

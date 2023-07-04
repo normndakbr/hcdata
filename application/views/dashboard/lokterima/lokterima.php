@@ -78,6 +78,7 @@
                                                             <th style="text-align:center;width:1%;">No.</th>
                                                             <th>Kode</th>
                                                             <th>Lokasi Penerimaan</th>
+                                                            <th>Jenis Lokasi</th>
                                                             <th style="text-align:center;">Status</th>
                                                             <th style="text-align:center;">Perusahaan</th>
                                                             <th style="text-align:center;">Tgl. Dibuat</th>
