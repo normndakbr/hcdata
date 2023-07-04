@@ -134,13 +134,21 @@ class Karyawan_model extends CI_Model
                     $rw = "";
                 }
 
-                $alamat = $list->alamat_ktp . $rt . $rw . "KEL. " . $list->kel . ", KEC. " . $list->kec . ", " . $list->kab . ", " . $list->prov;
+                $alamat = $list->alamat_ktp . $rt . $rw . " KEL. " . $list->kel . ", KEC. " . $list->kec . ", " . $list->kab . " - " . $list->prov;
             }
 
             return $alamat;
         } else {
             return;
         }
+    }
+
+    public function get_edit_alamat_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_alamat_karyawan');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $query = $this->db->get();
+        return $query->row();
     }
 
     public function get_izin_by_auth($auth_karyawan)
@@ -739,6 +747,11 @@ class Karyawan_model extends CI_Model
     {
         $this->db->where('id_kary', $idkaryawan);
         $this->db->update('tb_karyawan', $data_kry);
+    }
+
+    public function get_pendidikan()
+    {
+        return $this->db->get('tb_pendidikan')->result();
     }
 
     public function get_agama()
