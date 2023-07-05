@@ -243,4 +243,19 @@ class Depart_model extends CI_Model
                return $query->result();
           }
      }
+
+     public function get_auth_depart($id_depart)
+     {
+          $auth_depart = "";
+          $query = $this->db->get_where('vw_depart', ['id_depart' => $id_depart]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_depart = $list->auth_depart;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_depart" => $auth_depart));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
