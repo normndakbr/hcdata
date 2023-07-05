@@ -338,4 +338,15 @@ class Departemen extends My_Controller
                echo json_encode(array("statusCode" => 201, "dprt" => $output));
           }
      }
+
+     public function get_auth_depart_by_id()
+     {
+          $id_depart = $this->input->post('id_depart');
+          $query = $this->dprt->get_auth_depart($id_depart);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }
