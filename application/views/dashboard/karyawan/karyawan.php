@@ -72,7 +72,7 @@
                                              <table id="tbmKaryawan" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                                                   <thead>
                                                        <tr class="font-weight-boldtext-white">
-                                                            <th style="text-align:center;">AKsi</th>
+                                                            <th style="text-align:center;">Aksi</th>
                                                             <th style="text-align:center;width:1%;">No.</th>
                                                             <th>NIK</th>
                                                             <th>Nama</th>
