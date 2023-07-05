@@ -302,6 +302,7 @@ class Karyawan_model extends CI_Model
         if (!empty($dtkary)) {
             $idkaryawan = $dtkary->id_kary;
             $idpersonal = $dtkary->id_personal;
+            $foldername = md5($idpersonal);
 
             if (!empty($idkaryawan)) {
                 $this->db->delete('tb_karyawan', ['id_kary' => $idkaryawan]);
@@ -322,11 +323,67 @@ class Karyawan_model extends CI_Model
 
             if (!empty($idpersonal)) {
                 $this->db->delete('tb_alamat_ktp', ['id_personal' => $idpersonal]);
-                $this->db->delete('tb_mcu', ['id_personal' => $idpersonal]);
-                $this->db->delete('tb_sim_karyawan', ['id_personal' => $idpersonal]);
                 $this->db->delete('tb_vaksin_kary', ['id_personal' => $idpersonal]);
-                $this->db->delete('tb_sertifikasi_kary', ['id_personal' => $idpersonal]);
-                $this->db->delete('tb_personal', ['id_personal' => $idpersonal]);
+
+                //=-========== mcu ==================
+                $this->db->from('tb_mcu');
+                $this->db->where('id_personal', $idpersonal);
+                $query = $this->db->get()->result();
+                if (!empty($query)) {
+                    foreach ($query as $lst) {
+                        $nama_file = $lst->url_file;
+                        if (is_file("assets/berkas/karyawan/" . $foldername . "/" . $nama_file)) {
+                            unlink("assets/berkas/karyawan/" . $foldername . "/" . $nama_file);
+                        }
+                    }
+
+                    $this->db->delete('tb_mcu', ['id_personal' => $idpersonal]);
+                }
+
+                ///=-========== simpol ==================
+                $this->db->from('tb_sim_karyawan');
+                $this->db->where('id_personal', $idpersonal);
+                $query = $this->db->get()->result();
+                if (!empty($query)) {
+                    foreach ($query as $lst) {
+                        $nama_file = $lst->url_file;
+                        if (is_file("assets/berkas/karyawan/" . $foldername . "/" . $nama_file)) {
+                            unlink("assets/berkas/karyawan/" . $foldername . "/" . $nama_file);
+                        }
+                    }
+
+                    $this->db->delete('tb_sim_karyawan', ['id_personal' => $idpersonal]);
+                }
+
+                ///=-========== sertifikasi ==================
+                $this->db->from('tb_sertifikasi_kary');
+                $this->db->where('id_personal', $idpersonal);
+                $query = $this->db->get()->result();
+                if (!empty($query)) {
+                    foreach ($query as $lst) {
+                        $nama_file = $lst->file_sertifikasi;
+                        if (is_file("assets/berkas/karyawan/" . $foldername . "/" . $nama_file)) {
+                            unlink("assets/berkas/karyawan/" . $foldername . "/" . $nama_file);
+                        }
+                    }
+
+                    $this->db->delete('tb_sertifikasi_kary', ['id_personal' => $idpersonal]);
+                }
+
+                ///=-========== personal ==================
+                $this->db->from('tb_personal');
+                $this->db->where('id_personal', $idpersonal);
+                $query = $this->db->get()->result();
+                if (!empty($query)) {
+                    foreach ($query as $lst) {
+                        $nama_file = $lst->url_pendukung;
+                        if (is_file("assets/berkas/karyawan/" . $foldername . "/" . $nama_file)) {
+                            unlink("assets/berkas/karyawan/" . $foldername . "/" . $nama_file);
+                        }
+                    }
+
+                    $this->db->delete('tb_personal', ['id_personal' => $idpersonal]);
+                }
 
                 if ($this->db->affected_rows() > 0) {
                     return 200;
