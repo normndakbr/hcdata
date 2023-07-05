@@ -9,7 +9,6 @@
             let status = $('#editPosisiStatus').val();
             let ket = $('#editPosisiKet').val();
 
-            alert(depart);
             $.ajax({
                 type: "POST",
                 url: site_url+"posisi/edit_posisi",
@@ -20,7 +19,6 @@
                     ket: ket
                 },
                 success: function(data) {
-                    alert(data);
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
                         tbmPosisi.draw();

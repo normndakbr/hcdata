@@ -22,6 +22,7 @@ class Karyawan_model extends CI_Model
         }
 
         $this->db->where(['id_m_perusahaan' => $id_m_perusahaan]);
+        $this->db->where(['tgl_nonaktif' => '1970-01-01']);
         $this->db->from($this->table);
         $this->db->order_by('id_m_perusahaan', 'ASC');
 
@@ -256,6 +257,11 @@ class Karyawan_model extends CI_Model
         return $query;
     }
 
+    public function get_id_kontrak_by_auth($auth_kontrak_kary)
+    {
+        $query = $this->db->get_where('vw_kontrak_karyawan', ['auth_kontrak_kary' => $auth_kontrak_kary])->result();
+        return $query;
+    }
 
     public function count_all_karyawan()
     {
@@ -292,33 +298,44 @@ class Karyawan_model extends CI_Model
     {
 
         $dtkary = $this->get_by_auth($auth_kary);
-        if (!empty($dtkary)) {
-            foreach ($dtkary as $list) {
-                $idkaryawan = $list->id_kary;
-                $idpersonal = $list->id_personal;
 
-                $dtalamat = $this->get_alamat_by_id_person($idpersonal);
-                foreach ($dtalamat as $lst) {
-                    $idalamat = $lst->id_alamat_ktp;
-                    if (!empty($idalamat)) {
-                        $this->db->delete('tb_alamat_ktp', ['id_alamat_kary' => $idalamat]);
+        if (!empty($dtkary)) {
+            $idkaryawan = $dtkary->id_kary;
+            $idpersonal = $dtkary->id_personal;
+
+            if (!empty($idkaryawan)) {
+                $this->db->delete('tb_karyawan', ['id_kary' => $idkaryawan]);
+
+                $this->db->from('tb_izin_tambang');
+                $this->db->where('id_kary', $idkaryawan);
+                $query = $this->db->get()->result();
+                if (!empty($query)) {
+                    foreach ($query as $lst) {
+                        $this->db->delete('tb_izin_tambang_unit', ['id_izin_tambang' => $lst->id_izin_tambang]);
                     }
                 }
 
-                if (!empty($idkaryawan)) {
-                    $this->db->delete('tb_karyawan', ['id_kary' => $idkaryawan]);
-                }
+                $this->db->delete('tb_kontrak_karyawan', ['id_kary' => $idkaryawan]);
+                $this->db->delete('tb_izin_tambang', ['id_kary' => $idkaryawan]);
+            }
 
-                if (!empty($idpersonal)) {
-                    $this->db->delete('tb_personal', ['id_personal' => $idpersonal]);
+
+            if (!empty($idpersonal)) {
+                $this->db->delete('tb_alamat_ktp', ['id_personal' => $idpersonal]);
+                $this->db->delete('tb_mcu', ['id_personal' => $idpersonal]);
+                $this->db->delete('tb_sim_karyawan', ['id_personal' => $idpersonal]);
+                $this->db->delete('tb_vaksin_kary', ['id_personal' => $idpersonal]);
+                $this->db->delete('tb_sertifikasi_kary', ['id_personal' => $idpersonal]);
+                $this->db->delete('tb_personal', ['id_personal' => $idpersonal]);
+
+                if ($this->db->affected_rows() > 0) {
+                    return 200;
+                } else {
+                    return 201;
                 }
             }
-        }
-
-        if ($this->db->affected_rows() > 0) {
-            return true;
         } else {
-            return false;
+            return 202;
         }
     }
 
@@ -424,6 +441,22 @@ class Karyawan_model extends CI_Model
             }
 
             return $auth_personal;
+        } else {
+            return 0;
+        }
+    }
+
+    public function last_row_kontrak($auth_kary)
+    {
+        $this->db->select("*");
+        $this->db->from("vw_kontrak_karyawan");
+        $this->db->where("auth_karyawan", $auth_kary);
+        $this->db->limit(1);
+        $this->db->order_by('tgl_buat', "DESC");
+        $query = $this->db->get()->row();
+
+        if (!empty($query)) {
+            return $query->auth_kontrak_kary;
         } else {
             return 0;
         }
@@ -725,6 +758,12 @@ class Karyawan_model extends CI_Model
         }
     }
 
+    public function update_sim($id_sim_kary, $dtsimper)
+    {
+        $this->db->where('id_sim_kary', $id_sim_kary);
+        $this->db->update('tb_sim_karyawan', $dtsimper);
+    }
+
     public function update_simper($id_izin, $dtizin)
     {
         $this->db->where('id_izin_tambang', $id_izin);
@@ -747,6 +786,12 @@ class Karyawan_model extends CI_Model
     {
         $this->db->where('id_kary', $idkaryawan);
         $this->db->update('tb_karyawan', $data_kry);
+    }
+
+    public function update_dtkontrak($id_kontrak, $data_kontrak)
+    {
+        $this->db->where('id_kontrak_kary', $id_kontrak);
+        $this->db->update('tb_kontrak_karyawan', $data_kontrak);
     }
 
     public function get_pendidikan()
