@@ -200,4 +200,19 @@ class Posisi_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_posisi($id_posisi)
+     {
+          $auth_posisi = "";
+          $query = $this->db->get_where('vw_posisi', ['id_posisi' => $id_posisi]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_posisi = $list->auth_posisi;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_posisi" => $auth_posisi));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
