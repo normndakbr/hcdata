@@ -52,8 +52,9 @@
                          <div class="card-body">
                               <div class="mt-3">
                                    <div class="mb-2">
-                                        <a href="<?= base_url('karyawan'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
-                                        <a id="addTambahKary" href="<?= base_url('karyawan/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
+                                        <a href="<?= base_url('karyawan'); ?>" class="btn btn-warning font-weight-bold"><i class="fas fa-eraser"></i> Reset</a>
+                                        <a href="#!" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh</a>
+                                        <a id="addTambahKary" href="<?= base_url('karyawan/new'); ?>" target="_blank" class=" btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
                                    <div class="alert alert-danger err_psn_kary animate__animated animate__bounce d-none"></div>
                               </div>

@@ -498,6 +498,7 @@
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroraddStatusKaryawan text-danger font-italic font-weight-bold"></small>
+                                                                 <span class="hhj234234 hj6234n asdas9asd gg12342341 d-none"></span>
                                                             </div>
                                                        </div>
                                                        <div id="addFieldPermanen" class="col-lg-4 col-md-4 col-sm-12 d-none">
@@ -576,12 +577,12 @@
                                                                  <small class="erroraddNoReg text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div id="txtsim" class="col-lg-6 col-md-6 col-sm-12 mb-3 d-none">
+                                                       <div id="txtsim" class="col-lg-12 col-md-12 col-sm-12 mb-3 d-none">
                                                             <div class="row">
                                                                  <div class="col-lg-6 col-md-6 col-sm-12">
                                                                       <div class="form-group">
                                                                            <label for="addJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
-                                                                           <div id="txtizinSIM" class="input-group">
+                                                                           <div id="txtizinSIM" class="input-group mt-2">
                                                                                 <select id='addJenisSIM' name='addJenisSIM' class="form-control form-control-user" disabled>
                                                                                      <option value="">-- SIM TIDAK ADA --</option>
                                                                                 </select>
@@ -598,6 +599,17 @@
                                                                            <label for="addTglExpSIM">Tanggal Expired SIM <span class="text-danger">*</span></label>
                                                                            <input id='addTglExpSIM' name='addTglExpSIM' type="date" class="form-control form-control-user">
                                                                            <small class="erroraddTglExpSIM text-danger font-italic font-weight-bold"></small>
+                                                                      </div>
+                                                                 </div>
+                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                                      <div>
+                                                                           <h6 class="text-danger font-italic">Catatan : Upload SIM Polisi dalam format pdf, ukuran file SIM Polisi maksimal 50 kb.</h6>
+                                                                      </div>
+                                                                      <div class="form-group">
+                                                                           <label for="filesimpolisi"><b>Upload SIM Polisi</b> <span class="text-danger">*</span></label>
+                                                                           <input type="file" class="form-control-file" id="filesimpolisi" disabled>
+                                                                           <small class="errorFilesimpolisi text-danger font-italic font-weight-bold"></small>
+                                                                           <span class="h52k342 j8234234b n234b5b7 kl234nn d-none"></span>
                                                                       </div>
                                                                  </div>
                                                             </div>
@@ -622,7 +634,7 @@
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
                                                             <a id="addKembaliIzinUnit" data-scroll href="#clKaryawan" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                            <a id="addSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Lanjutkan</a>
+                                                            <a id="addSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Simpan & Lanjutkan</a>
                                                        </div>
                                                   </div>
                                              </div>
@@ -1001,7 +1013,7 @@
      </div>
 </div>
 <div class="modal fade" id="mdldetkary" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:40%;">
+     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:60%;">
           <div class="modal-content">
                <div class="modal-header bg-c-blue">
                     <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-id-card"></i> Verifikasi Data</h5>
@@ -1059,6 +1071,21 @@
                                              <label for="lamaNonAktifDet">Lama NonAKtif</label>
                                              <h5 id="lamaNonAktifDet"></h5>
                                         </div>
+                                   </div>
+                                   <div class="pelanggaran col-lg-12 col-md-12 col-sm-12">
+                                        <hr>
+                                        <h5 class="text-center text-danger">Data Pelanggaran/Incident/Accident : </h5>
+                                        <table id="tbmViolation" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                             <thead>
+                                                  <tr>
+                                                       <td style="width:1%;text-align:center;">NO.</td>
+                                                       <td style="width:20%;font-style:bold;">HUKUMAN</td>
+                                                       <td style="width:79%;font-style:bold;">KETERANGAN</td>
+                                                  </tr>
+                                             </thead>
+                                             <tbody>
+                                             </tbody>
+                                        </table>
                                    </div>
                               </div>
                          </div>

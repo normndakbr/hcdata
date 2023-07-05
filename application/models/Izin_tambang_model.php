@@ -14,6 +14,16 @@ class Izin_tambang_model extends CI_Model
           }
      }
 
+     public function input_sim_polisi($data)
+     {
+          $this->db->insert('tb_sim_karyawan', $data);
+          if ($this->db->affected_rows() > 0) {
+               return true;
+          } else {
+               return false;
+          }
+     }
+
      public function cek_izin_tambang($izin_tambang)
      {
           $query = $this->db->get_where('tb_izin_tambang', ['izin_tambang' => $izin_tambang]);
@@ -34,6 +44,21 @@ class Izin_tambang_model extends CI_Model
 
           if (!empty($query)) {
                return  $query;
+          } else {
+               return;
+          }
+     }
+
+     public function last_row_simpol($auth_personal)
+     {
+          $this->db->where(['auth_personal' => $auth_personal]);
+          $this->db->from('vw_sim_karyawan');
+          $this->db->order_by('id_sim_kary', 'DESC');
+          $this->db->limit(1);
+          $query = $this->db->get()->row();
+
+          if (!empty($query)) {
+               return  $query->auth_sim_kary;
           } else {
                return;
           }
@@ -168,6 +193,20 @@ class Izin_tambang_model extends CI_Model
                }
 
                return $id_izin;
+          } else {
+               return;
+          }
+     }
+
+     public function get_id_simpol($auth_simpol)
+     {
+          $query = $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_simpol]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $id_sim_kary = $list->id_sim_kary;
+               }
+
+               return $id_sim_kary;
           } else {
                return;
           }
