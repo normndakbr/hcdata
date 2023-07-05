@@ -60,6 +60,7 @@
                                    </div>
                               </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
+                              <!-- Data Personal -->
                               <input id="valueProvinsi" class="d-none" value="<?= $data_alamat->prov_ktp ?>"></input>
                               <input id="valueKabupaten" class="d-none" value="<?= $data_alamat->kab_ktp ?>"></input>
                               <input id="valueKecamatan" class="d-none" value="<?= $data_alamat->kec_ktp ?>"></input>
@@ -69,6 +70,10 @@
                               <input id="valueAgama" class="d-none" value="<?= $data_kary->id_agama ?>"></input>
                               <input id="valueStatNikah" class="d-none" value="<?= $data_kary->id_stat_nikah ?>"></input>
                               <input id="valueStatPendidikan" class="d-none" value="<?= $data_kary->id_pendidikan ?>"></input>
+                              <!-- Data Karyawan -->
+                              <input id="valuePerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
+                              <input id="valueDepart" class="d-none" value="<?= $data_kary->id_depart ?>"></input>
+                              <input id="valuePosisi" class="d-none" value="<?= $data_kary->id_posisi ?>"></input>
 
                               <div class="row pt-2">
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
@@ -331,14 +336,14 @@
                                                             <hr>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <label for="addPerKary" class="font-weight-bold font-italic">Pilih Perusahaan <span class="text-danger"> *</span></label>
+                                                            <label for="editPerKary" class="font-weight-bold font-italic">Pilih Perusahaan <span class="text-danger"> *</span></label>
                                                             <div id='txtperkary' class="input-group">
-                                                                 <select id='addPerKary' name='addPerKary' class="form-control form-control-user" disabled>
+                                                                 <select id='editPerKary' name='editPerKary' class="form-control form-control-user" disabled>
                                                                       <option value="">-- WAJIB DIPILIH --</option>
                                                                       <?= $permst . $perstr; ?>
                                                                  </select>
                                                             </div>
-                                                            <small class="errorAddPerKary text-danger font-italic font-weight-bold"></small><br>
+                                                            <small class="errorEditPerKary text-danger font-italic font-weight-bold"></small><br>
                                                        </div>
 
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -352,23 +357,23 @@
                                                        </div>
                                                        <div class="col-lg-5 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addDepartKary">Departemen <span class="text-danger">*</span></label>
-                                                                 <div id='txtdepartkary' class="input-group">
-                                                                      <select id='addDepartKary' name='addDepartKary' class="form-control form-control-user" disabled>
+                                                                 <label for="editDepartKary">Departemen <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditDepartKary' class="input-group">
+                                                                      <select id='editDepartKary' name='editDepartKary' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshDepart" name="refreshDepart" class="btn btn-primary btn-sm" title="Refresh Departemen" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="errorAddDepartKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditDepartKary text-danger font-italic font-weight-bold"></small>
                                                                  <span class="c1492f38214db699dfd3574b2644271d d-none"></span>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-7 col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addPosisiKary">Posisi <span class="text-danger">*</span></label>
-                                                                 <div id='txtposisikary' class="input-group">
+                                                                 <div id='txtEditPosisiKary' class="input-group">
                                                                       <select id='addPosisiKary' name='addPosisiKary' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
