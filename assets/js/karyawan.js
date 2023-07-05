@@ -29,6 +29,13 @@
             tbKary(prs);
         });
 
+        $("#addRefreshKary").click(function(){
+            let prs = $("#perJenisData").val();
+            $("#tbmKaryawan").LoadingOverlay("show");
+            $('#tbmKaryawan').DataTable().destroy();
+            tbKary(prs);
+        });
+
         tbKary();
         $('#perJenisData').select2({
             theme: 'bootstrap4'
@@ -4082,7 +4089,6 @@
                             auth_kary:auth_kary
                         },
                         success: function(data) {
-                            alert(data);
                             var data = JSON.parse(data);
                             if(data.statusCode==200){
                                 tbmKaryawan.draw();

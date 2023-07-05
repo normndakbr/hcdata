@@ -167,13 +167,11 @@ class Izin_tambang extends My_Controller
                                    'id_sim' => $jenissim,
                                    'tgl_exp' => $tglexpsim,
                                    'ket_sim_kary' => '',
+                                   'url_file' => $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
                                    'id_user' => $this->session->userdata('id_user'),
                               ];
-
-                              // echo json_encode($auth_person);
-                              // return;
 
                               $this->smp->input_sim_polisi($data_sim_polisi);
                               $last_izin = $this->smp->last_row_izin($auth_kary);
