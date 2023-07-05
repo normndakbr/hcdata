@@ -372,23 +372,23 @@
                                                        </div>
                                                        <div class="col-lg-7 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addPosisiKary">Posisi <span class="text-danger">*</span></label>
+                                                                 <label for="editPosisiKary">Posisi <span class="text-danger">*</span></label>
                                                                  <div id='txtEditPosisiKary' class="input-group">
-                                                                      <select id='addPosisiKary' name='addPosisiKary' class="form-control form-control-user" disabled>
+                                                                      <select id='editPosisiKary' name='editPosisiKary' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshPosisi" name="refreshPosisi" class="btn btn-primary btn-sm" title="Refresh Posisi" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="errorAddPosisiKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditPosisiKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addKlasifikasiKary">Klasifikasi <span class="text-danger">*</span></label>
+                                                                 <label for=editKlasifikasiKary">Klasifikasi <span class="text-danger">*</span></label>
                                                                  <div id='txtklasifikasikary' class="input-group">
-                                                                      <select id='addKlasifikasiKary' name='addKlasifikasiKary' class="form-control form-control-user" disabled>
+                                                                      <select id=editKlasifikasiKary' name=editKlasifikasiKary' class="form-control form-control-user" disabled>
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
@@ -396,7 +396,7 @@
                                                                            <button on id="infoKlasifikasi" name="infoKlasifikasi" class="btn btn-warning btn-sm" title="Informasi" disabled><i class="fas fa-info-circle"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="errorAddKlasifikasiKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="erroEditKlasifikasiKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
