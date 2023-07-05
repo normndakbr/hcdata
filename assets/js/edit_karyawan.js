@@ -118,4 +118,25 @@ $(document).ready(function () {
         }
     });
 
+    $.ajax({
+        type: "POST",
+        url: site_url + "klasifikasi/get_all",
+        data: {},
+        success: function (data) {
+            var data = JSON.parse(data);
+            $("#addKlasifikasiKary").html(data.kls);
+            $("#txtklasifikasikary").LoadingOverlay("hide");
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $("#txtklasifikasikary").LoadingOverlay("hide");
+            $(".errormsg").removeClass('d-none');
+            $(".errormsg").removeClass('alert-info');
+            $(".errormsg").addClass('alert-danger');
+            if (thrownError != "") {
+                $(".errormsg").html("Terjadi kesalahan saat load data klasifikasi, hubungi administrator");
+                $("#addSimpanPekerjaan").remove();
+            }
+        }
+    });
+
 });
