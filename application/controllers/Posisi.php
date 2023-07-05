@@ -335,4 +335,15 @@ class Posisi extends My_Controller
                echo json_encode(array("statusCode" => 201, "posisi" => $output));
           }
      }
+
+     public function get_auth_posisi_by_id()
+     {
+          $id_posisi = $this->input->post('id_posisi');
+          $query = $this->pss->get_auth_posisi($id_posisi);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }
