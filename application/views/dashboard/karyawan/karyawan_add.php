@@ -455,8 +455,8 @@
                                                                  <div id='txtstatresidence' class="input-group">
                                                                       <select id='addStatusResidence' name='addStatusResidence' class="form-control form-control-user" disabled>
                                                                            <option value="" default>-- WAJIB DIPILIH --</option>
-                                                                           <option value="R" default>RESIDENCE</option>
-                                                                           <option value="NR">NON RESIDENCE</option>
+                                                                           <option value="1" default>RESIDENCE</option>
+                                                                           <option value="2">NON RESIDENCE</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence" disabled><i class="fas fa-sync-alt"></i></button>
