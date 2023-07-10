@@ -216,4 +216,19 @@ class Level_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_level($id_level)
+     {
+          $auth_level = "";
+          $query = $this->db->get_where('vw_lvl', ['id_level' => $id_level]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_level = $list->auth_level;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_level" => $auth_level));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }

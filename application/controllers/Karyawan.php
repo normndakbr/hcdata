@@ -148,6 +148,7 @@ class Karyawan extends My_Controller
           $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
           $data["data_mcu"] = $this->kry->get_mcu_by_auth($id_kary);
           $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
+          $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($id_kary);
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_edit', $data);
           $this->load->view('dashboard/modal/karyawan');

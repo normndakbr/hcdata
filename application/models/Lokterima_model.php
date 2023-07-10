@@ -219,4 +219,19 @@ class Lokterima_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_lokterima($id_lokterima)
+     {
+          $auth_lokterima = "";
+          $query = $this->db->get_where('vw_lokterima', ['id_lokterima' => $id_lokterima]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_lokterima = $list->auth_lokterima;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_lokterima" => $auth_lokterima));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }

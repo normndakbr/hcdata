@@ -249,4 +249,15 @@ class Lokasikerja extends My_Controller
                echo json_encode(array("statusCode" => 201, "lkr" => $output));
           }
      }
+
+     public function get_auth_lokker_by_id()
+     {
+          $id_lokker = $this->input->post('id_lokker');
+          $query = $this->lkr->get_auth_lokker($id_lokker);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }

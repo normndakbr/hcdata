@@ -260,4 +260,15 @@ class Tipe extends My_Controller
                echo json_encode(array("statusCode" => 200, "tipe" => $output, "pesan", "Golongan gagal ditampilkan"));
           }
      }
+
+     public function get_auth_tipe_by_id()
+     {
+          $id_tipe = $this->input->post('id_tipe');
+          $query = $this->tpe->get_auth_tipe($id_tipe);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }

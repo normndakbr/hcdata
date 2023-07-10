@@ -340,4 +340,15 @@ class Lokasipenerimaan extends My_Controller
                echo json_encode(array("statusCode" => 200, "lokterima" => $output, "pesan", "Lokasi penerimaan gagal ditampilkan"));
           }
      }
+
+     public function get_auth_lokterima_by_id()
+     {
+          $id_lokterima = $this->input->post('id_lokterima');
+          $query = $this->lkt->get_auth_lokterima($id_lokterima);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }
