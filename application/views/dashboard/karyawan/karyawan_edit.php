@@ -74,6 +74,12 @@
                               <input id="valuePerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
                               <input id="valueDepart" class="d-none" value="<?= $data_kary->id_depart ?>"></input>
                               <input id="valuePosisi" class="d-none" value="<?= $data_kary->id_posisi ?>"></input>
+                              <input id="valueKlasifikasi" class="d-none" value="<?= $data_kary->id_klasifikasi ?>"></input>
+                              <input id="valueTipe" class="d-none" value="<?= $data_kary->id_tipe ?>"></input>
+                              <input id="valueLevel" class="d-none" value="<?= $data_kary->id_level ?>"></input>
+                              <input id="valuePOH" class="d-none" value="<?= $data_kary->id_poh ?>"></input>
+                              <input id="valueLokterima" class="d-none" value="<?= $data_kary->id_lokterima ?>"></input>
+                              <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
 
                               <div class="row pt-2">
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
@@ -103,7 +109,6 @@
                                                                  <input id='editnamaLengkap' name='editnamaLengkap' autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->nama_lengkap ?>" required>
                                                                  <small class="errorEditNamaLengkap text-danger font-italic font-weight-bold"></small>
                                                                  <span class="9d56835ae6e4d20993874daf592f6aca d-none"></span>
-
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
@@ -386,87 +391,87 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for=editKlasifikasiKary">Klasifikasi <span class="text-danger">*</span></label>
-                                                                 <div id='txtklasifikasikary' class="input-group">
-                                                                      <select id=editKlasifikasiKary' name=editKlasifikasiKary' class="form-control form-control-user" disabled>
+                                                                 <label for="editKlasifikasiKary">Klasifikasi <span class="text-danger">*</span></label>
+                                                                 <div id="txtEditKlasifikasiKary" class="input-group">
+                                                                      <select id="editKlasifikasiKary" name="editKlasifikasiKary" class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button on id="refreshKlasifikasi" name="refreshKlasifikasi" class="btn btn-primary btn-sm" title="Refresh Klasifikasi" disabled><i class="fas fa-sync-alt"></i></button>
-                                                                           <button on id="infoKlasifikasi" name="infoKlasifikasi" class="btn btn-warning btn-sm" title="Informasi" disabled><i class="fas fa-info-circle"></i></button>
+                                                                           <button on id="refreshEditKlasifikasi" name="refreshEditKlasifikasi" class="btn btn-primary btn-sm" title="Refresh Klasifikasi" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button on id="infoEditKlasifikasi" name="infoEditKlasifikasi" class="btn btn-warning btn-sm" title="Informasi" disabled><i class="fas fa-info-circle"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroEditKlasifikasiKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditKlasifikasiKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addTipeKaryawan">Golongan <span class="text-danger">*</span></label>
-                                                                 <div id='txtjeniskary' class="input-group">
-                                                                      <select id='addTipeKaryawan' name='addTipeKaryawan' class="form-control form-control-user" disabled>
+                                                                 <div id='txtEditJeniskary' class="input-group">
+                                                                      <select id='editTipeKary' name='editTipeKary' class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshTipe" name="refreshTipe" class="btn btn-primary btn-sm" title="Refresh Golongan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddTipeKaryawan text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditTipeKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addLevelKary">Level <span class="text-danger">*</span></label>
-                                                                 <div id='txtLevelkary' class="input-group">
-                                                                      <select id='addLevelKary' name='addLevelKary' class="form-control form-control-user" disabled>
+                                                                 <label for="editLevelKary">Level <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditLevelKary' class="input-group">
+                                                                      <select id='editLevelKary' name='editLevelKary' class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshLevel" name="refreshLevel" class="btn btn-primary btn-sm" title="Refresh Level" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddLevelKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditLevelKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addPOHKary">Point of Hire <span class="text-danger">*</span></label>
-                                                                 <div id='txtPOHKary' class="input-group">
-                                                                      <select id='addPOHKary' name='addPOHKary' class="form-control form-control-user" disabled>
+                                                                 <label for="editPOHKary">Point of Hire <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditPOHKary' class="input-group">
+                                                                      <select id='editPOHKary' name='editPOHKary' class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshPOH" name="refreshPOH" class="btn btn-primary btn-sm" title="Refresh Point of Hire" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddPOHKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="erroreEditPOHKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addLokterimaKary">Lokasi Penerimaan <span class="text-danger">*</span></label>
-                                                                 <div id='txtlokterimakary' class="input-group">
-                                                                      <select id='addLokterimaKary' name='addLokterimaKary' class="form-control form-control-user" disabled>
+                                                                 <label for="editLokterimaKary">Lokasi Penerimaan <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditLokterimaKary' class="input-group">
+                                                                      <select id='editLokterimaKary' name='editLokterimaKary' class="form-control form-control-user">
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshLokterima" name="refreshLokterima" class="btn btn-primary btn-sm" title="Refresh Lokasi Penerimaan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddLokterimaKary text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditLokterimaKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addLokasiKerja">Lokasi Kerja <span class="text-danger">*</span></label>
-                                                                 <div id='txtlokkerkary' class="input-group">
-                                                                      <select id='addLokasiKerja' name='addLokasiKerja' class="form-control form-control-user" disabled>
+                                                                 <label for="editLokkerKary">Lokasi Kerja <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditLokkerKary' class="input-group">
+                                                                      <select id='editLokkerKary' name='editLokkerKary' class="form-control form-control-user">
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshLokker" name="refreshLokker" class="btn btn-primary btn-sm" title="Refresh Lokasi Kerja" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddLokasiKerja text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditLokkerKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
