@@ -299,4 +299,15 @@ class Poh extends My_Controller
                echo json_encode(array("statusCode" => 201, "pho" => $output));
           }
      }
+
+     public function get_auth_poh_by_id()
+     {
+          $id_poh = $this->input->post('id_poh');
+          $query = $this->pho->get_auth_poh($id_poh);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }
