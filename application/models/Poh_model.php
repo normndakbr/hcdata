@@ -192,4 +192,19 @@ class Poh_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_poh($id_poh)
+     {
+          $auth_poh = "";
+          $query = $this->db->get_where('vw_poh', ['id_poh' => $id_poh]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_poh = $list->auth_poh;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_poh" => $auth_poh));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
