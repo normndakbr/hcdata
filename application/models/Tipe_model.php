@@ -187,4 +187,19 @@ class Tipe_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_tipe($id_tipe)
+     {
+          $auth_tipe = "";
+          $query = $this->db->get_where('vw_tipe', ['id_tipe' => $id_tipe]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_tipe = $list->auth_tipe;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_tipe" => $auth_tipe));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
