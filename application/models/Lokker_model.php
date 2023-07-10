@@ -192,4 +192,19 @@ class Lokker_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_auth_lokker($id_lokker)
+     {
+          $auth_lokker = "";
+          $query = $this->db->get_where('vw_lokker', ['id_lokker' => $id_lokker]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $auth_lokker = $list->auth_lokker;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "auth_lokker" => $auth_lokker));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
