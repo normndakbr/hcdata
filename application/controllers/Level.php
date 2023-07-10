@@ -335,4 +335,14 @@ class Level extends My_Controller
                echo json_encode(array("statusCode" => 200, "level" => $output, "pesan", "Level gagal ditampilkan"));
           }
      }
+     public function get_auth_level_by_id()
+     {
+          $id_level = $this->input->post('id_level');
+          $query = $this->lvl->get_auth_level($id_level);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }
