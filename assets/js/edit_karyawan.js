@@ -14,6 +14,8 @@ $(document).ready(function () {
     let idPOH = $("#valuePOH").val();
     let idLokterima = $("#valueLokterima").val();
     let idLokker = $("#valueLokker").val();
+    let valueStatTinggal = $("#valueStatTinggal").val();
+    let idStatPerjanjian = $("#valueStatPerjanjian").val();
 
     $("#editPerKary").val(idMasterPerusahaan).trigger('change');
 
@@ -316,7 +318,6 @@ $(document).ready(function () {
             id_poh: idLokterima
         },
         success: function (res) {
-            console.log(res);
             var data = JSON.parse(res);
             $("#editLokkerKary").html(data.lkr);
             $("#txteEditLokkerKary").LoadingOverlay("hide");
@@ -327,7 +328,7 @@ $(document).ready(function () {
             $(".errormsg").removeClass('alert-info');
             $(".errormsg").addClass('alert-danger');
             if (thrownError != "") {
-                $(".errormsg").html("Terjadi kesalahan saat load data Lokasi Penerimaan, hubungi administrator");
+                $(".errormsg").html("Terjadi kesalahan saat load data Lokasi Kerja, hubungi administrator");
             }
         }
     });
@@ -340,7 +341,6 @@ $(document).ready(function () {
             id_lokker: idLokker
         },
         success: function (res) {
-            console.log(res);
             let data = JSON.parse(res);
             auth_lokker = data.auth_lokker;
             $("#editLokkerKary").val(auth_lokker).trigger('change');
@@ -348,6 +348,39 @@ $(document).ready(function () {
         error: function (xhr, ajaxOptions, thrownError) {
             console.log("Error!! " + idlokter);
             console.log(thrownError);
+        }
+    });
+
+    $("#editStatusResidence").val(valueStatTinggal).trigger('change');
+
+    // get stat kerja
+    $.ajax({
+        type: "POST",
+        url: site_url + "perjanjian/get_all",
+        data: {},
+        success: function (res) {
+            var data = JSON.parse(res);
+            $("#editStatusKerjaKary").html(data.janji);
+            $("#txtEditLokkerKary").LoadingOverlay("hide");
+            $("#editStatusKerjaKary").val(idStatPerjanjian).trigger('change');
+            if (idStatPerjanjian == 1) {
+                $("#editFieldPermanen").removeClass("d-none");
+                $("#editFieldKontrakAwal").addClass("d-none");
+                $("#editFieldKontrakAkhir").addClass("d-none");
+            } else if (idStatPerjanjian == 2) {
+                $("#editFieldPermanen").addClass("d-none");
+                $("#editFieldKontrakAwal").removeClass("d-none");
+                $("#editFieldKontrakAkhir").removeClass("d-none");
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $("#txtEditLokkerKary").LoadingOverlay("hide");
+            $(".errormsg").removeClass('d-none');
+            $(".errormsg").removeClass('alert-info');
+            $(".errormsg").addClass('alert-danger');
+            if (thrownError != "") {
+                $(".errormsg").html("Terjadi kesalahan saat load data Status Perjanjian, hubungi administrator");
+            }
         }
     });
 });
