@@ -80,6 +80,8 @@
                               <input id="valuePOH" class="d-none" value="<?= $data_kary->id_poh ?>"></input>
                               <input id="valueLokterima" class="d-none" value="<?= $data_kary->id_lokterima ?>"></input>
                               <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
+                              <input id="valueStatTinggal" class="d-none" value="<?= $data_kary->stat_tinggal ?>"></input>
+                              <input id="valueStatPerjanjian" class="d-none" value="<?= $data_kontrak->id_stat_perjanjian ?>"></input>
 
                               <div class="row pt-2">
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
@@ -476,9 +478,9 @@
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addStatusResidence">Status Residence <span class="text-danger">*</span></label>
-                                                                 <div id='txtstatresidence' class="input-group">
-                                                                      <select id='addStatusResidence' name='addStatusResidence' class="form-control form-control-user" disabled>
+                                                                 <label for="editStatusResidence">Status Residence <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditStatResidence' class="input-group">
+                                                                      <select id='editStatusResidence' name='editStatusResidence' class="form-control form-control-user">
                                                                            <option value="" default>-- WAJIB DIPILIH --</option>
                                                                            <option value="R" default>RESIDENCE</option>
                                                                            <option value="NR">NON RESIDENCE</option>
@@ -487,7 +489,7 @@
                                                                            <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddStatusResidence text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditStatusResidence text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
@@ -513,37 +515,37 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addStatusKaryawan">Status Karyawan <span class="text-danger">*</span></label>
-                                                                 <div id='txtstatkary' class="input-group">
-                                                                      <select id='addStatusKaryawan' name='addStatusKaryawan' class="form-control form-control-user" disabled>
+                                                                 <label for="editStatusKerjaKary">Status Karyawan <span class="text-danger">*</span></label>
+                                                                 <div id='txtEditStatKerjaKary' class="input-group">
+                                                                      <select id='editStatusKerjaKary' name='editStatusKerjaKary' class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIISI --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshstatkaryawan" name="refreshstatkaryawan" title="Refresh Status Karyawan" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
-                                                                 <small class="erroraddStatusKaryawan text-danger font-italic font-weight-bold"></small>
+                                                                 <small class="errorEditStatusKerjaKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div id="addFieldPermanen" class="col-lg-4 col-md-4 col-sm-12 d-none">
+                                                       <div id="editFieldPermanen" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
-                                                                 <label for="addTanggalPermanen">Tanggal Permanen <span class="text-danger">*</span></label>
-                                                                 <input id='addTanggalPermanen' name='addTanggalPermanen' type="date" class="form-control" value="" style="background-color:transparent;" disabled>
-                                                                 <small class="erroraddTanggalPermanen text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
+                                                                 <label for="editTanggalPermanen">Tanggal Permanen <span class="text-danger">*</span></label>
+                                                                 <input id='editTanggalPermanen' name='editTanggalPermanen' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;" disabled>
+                                                                 <small class="errorEditTanggalPermanen text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
-                                                       <div id="addFieldKontrakAwal" class="col-lg-4 col-md-4 col-sm-12 d-none">
+                                                       <div id="editFieldKontrakAwal" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
-                                                                 <label for="addTanggalKontrakAwal">Tanggal Awal <span class="text-danger">*</span></label>
-                                                                 <input id='addTanggalKontrakAwal' name='addTanggalKontrakAwal' type="date" class="form-control" value="" style="background-color:transparent;" disabled>
-                                                                 <small class="erroraddTanggalKontrakAwal text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
+                                                                 <label for="editTanggalKontrakAwal">Tanggal Awal <span class="text-danger">*</span></label>
+                                                                 <input id='editTanggalKontrakAwal' name='editTanggalKontrakAwal' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;" disabled>
+                                                                 <small class="errorEditTanggalKontrakAwal text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
-                                                       <div id="addFieldKontrakAkhir" class="col-lg-4 col-md-4 col-sm-12 d-none">
+                                                       <div id="editFieldKontrakAkhir" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
-                                                                 <label for="addTanggalKontrakAkhir">Tanggal Berakhir <span class="text-danger">*</span></label>
-                                                                 <input id='addTanggalKontrakAkhir' name='addTanggalKontrakAkhir' type="date" class="form-control" value="" style="background-color:transparent;" disabled>
-                                                                 <small class="erroraddTanggalKontrakAkhir text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
+                                                                 <label for="editTanggalKontrakAkhir">Tanggal Berakhir <span class="text-danger">*</span></label>
+                                                                 <input id='editTanggalKontrakAkhir' name='editTanggalKontrakAkhir' type="date" class="form-control" value="<?= $data_kontrak->tgl_akhir ?>" style="background-color:transparent;" disabled>
+                                                                 <small class="errorEditTanggalKontrakAkhir text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
