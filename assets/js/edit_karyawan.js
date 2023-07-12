@@ -383,4 +383,8 @@ $(document).ready(function () {
             }
         }
     });
+
+    $("#editPerKary").change(function () {
+        console.log("Halo :)");
+    });
 });
