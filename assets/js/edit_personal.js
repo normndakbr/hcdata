@@ -20,77 +20,10 @@ $(document).ready(function () {
         success: function (data) {
             var data = JSON.parse(data);
             $("#editProvData").html(data.prov);
-
-            $("#editProvData").val(idProvinsi).trigger('change');
-            flagProv = !flagProv;
-            // $.ajax({
-            //     type: "POST",
-            //     url: site_url + "daerah/get_kab",
-            //     data: {
-            //         id_prov: idProvinsi
-            //     },
-            //     success: function (data) {
-            //         var data = JSON.parse(data);
-            //         $("#editKotaData").html(data.kab);
-            //         if (idKabupaten != "") {
-            //             $("#editKotaData").val(idKabupaten).trigger('change');
-            //         }
-            //         // $.ajax({
-            //         //     type: "POST",
-            //         //     url: site_url + "daerah/get_kec",
-            //         //     data: {
-            //         //         id_kab: idKabupaten
-            //         //     },
-            //         //     success: function (data) {
-            //         //         var data = JSON.parse(data);
-            //         //         $("#editKecData").html(data.kec);
-            //         //         $("#editKecData").val(idKecamatan).trigger('change');
-            //         //         $.ajax({
-            //         //             type: "POST",
-            //         //             url: site_url + "daerah/get_kel",
-            //         //             data: {
-            //         //                 id_kec: idKecamatan
-            //         //             },
-            //         //             success: function (data) {
-            //         //                 var data = JSON.parse(data);
-            //         //                 $("#editKelData").html(data.kel);
-            //         //                 $("#editKelData").val(idKelurahan).trigger('change');
-            //         //             },
-            //         //             error: function (xhr, ajaxOptions, thrownError) {
-            //         //                 $.LoadingOverlay("hide");
-            //         //                 $(".errormsg").removeClass('d-none');
-            //         //                 $(".errormsg").removeClass('alert-info');
-            //         //                 $(".errormsg").addClass('alert-danger');
-            //         //                 if (thrownError != "") {
-            //         //                     $(".errormsg").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
-            //         //                     $("#addSimpanPersonal").remove();
-            //         //                 }
-            //         //             }
-            //         //         });
-            //         //     },
-            //         //     error: function (xhr, ajaxOptions, thrownError) {
-            //         //         $.LoadingOverlay("hide");
-            //         //         $(".errormsg").removeClass('d-none');
-            //         //         $(".errormsg").removeClass('alert-info');
-            //         //         $(".errormsg").addClass('alert-danger');
-            //         //         if (thrownError != "") {
-            //         //             $(".errormsg").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
-            //         //             $("#addSimpanPersonal").remove();
-            //         //         }
-            //         //     }
-            //         // });
-            //     },
-            //     error: function (xhr, ajaxOptions, thrownError) {
-            //         $.LoadingOverlay("hide");
-            //         $(".errormsg").removeClass('d-none');
-            //         $(".errormsg").removeClass('alert-info');
-            //         $(".errormsg").addClass('alert-danger');
-            //         if (thrownError != "") {
-            //             $(".errormsg").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
-            //             $("#addSimpanPersonal").remove();
-            //         }
-            //     }
-            // });
+            if (idProvinsi != "" && flagProv) {
+                $("#editProvData").val(idProvinsi).trigger('change');
+                flagProv = !flagProv;
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             $.LoadingOverlay("hide");
@@ -103,7 +36,9 @@ $(document).ready(function () {
             }
         }
     });
+
     $("#editKewarganegaraan").val(wargaNegara).trigger('change');
+
     $.ajax({
         type: "GET",
         data: {},
@@ -124,7 +59,9 @@ $(document).ready(function () {
             }
         }
     });
+
     $("#editJenisKelamin").val(jenisKelamin).trigger('change');
+
     $.ajax({
         type: "GET",
         data: {},
@@ -145,6 +82,7 @@ $(document).ready(function () {
             }
         }
     });
+
     $.ajax({
         type: "POST",
         url: site_url + "pendidikan/get_all",
@@ -223,7 +161,6 @@ $(document).ready(function () {
     });
 
     function refresh_provinsi() {
-        console.log("refresh_provinsi jalan!");
         $("#txtEditProv").LoadingOverlay("show");
         $("#txtEditKota").LoadingOverlay("show");
         $("#txtEditKec").LoadingOverlay("show");
@@ -267,7 +204,6 @@ $(document).ready(function () {
     }
 
     function change_provinsi(idProv) {
-        console.log("change_provinsi jalan!");
         $("#txtEditKota").LoadingOverlay("show");
         $("#txtEditKec").LoadingOverlay("show");
         $("#txtEditKel").LoadingOverlay("show");
@@ -328,7 +264,6 @@ $(document).ready(function () {
     }
 
     function refresh_kabupaten() {
-        console.log("refresh_kabupaten jalan!");
         if (idProvinsi != "") {
             $("#txtEditKota").LoadingOverlay("show");
             $("#txtEditKec").LoadingOverlay("show");
@@ -368,7 +303,6 @@ $(document).ready(function () {
     }
 
     function change_kabupaten(idKab) {
-        console.log("change_kabupaten jalan!");
         $("#txtEditKec").LoadingOverlay("show");
         $("#txtEditKel").LoadingOverlay("show");
 
@@ -416,7 +350,6 @@ $(document).ready(function () {
     }
 
     function refresh_kecamatan() {
-        console.log("refresh_kecamatan jalan!");
         if (idKabupaten != "") {
             $("#txtEditKec").LoadingOverlay("show");
             $("#txtEditKel").LoadingOverlay("show");
@@ -452,14 +385,13 @@ $(document).ready(function () {
     }
 
     function change_kecamatan(idKec) {
-        console.log("change_kecamatan jalan!");
         $("#txtEditKel").LoadingOverlay("show");
 
         $.ajax({
             type: "POST",
             url: site_url + "daerah/get_kel",
             data: {
-                id_kec: idKecamatan
+                id_kec: idKec
             },
             success: function (res) {
                 var data = JSON.parse(res);
@@ -524,6 +456,31 @@ $(document).ready(function () {
         }
     }
 
+    function refresh_stat_nikah() {
+        $("#txtEditNikah").LoadingOverlay("show");
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/get_stat_nikah",
+            data: {},
+            success: function (data) {
+                var data = JSON.parse(data);
+                $("#editStatPernikahan").html(data.statnikah);
+                $("#txtEditNikah").LoadingOverlay("hide");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $("#txtnikah").LoadingOverlay("hide");
+                $(".errormsg").removeClass('d-none');
+                $(".errormsg").removeClass('alert-info');
+                $(".errormsg").addClass('alert-danger');
+                if (thrownError != "") {
+                    $(".errormsg").html("Terjadi kesalahan saat load data status pernikahan, hubungi administrator");
+                    $("#addSimpanPersonal").remove();
+                }
+            }
+        });
+    }
+
     $("#refreshEditProv").click(function () {
         refresh_provinsi();
     });
@@ -551,10 +508,11 @@ $(document).ready(function () {
         change_kecamatan(idKecamatan);
     });
 
-
     $("#refreshEditKel").click(function () {
         refresh_kelurahan();
     });
 
-
+    $("#refreshEditStatNikah").click(function () {
+        refresh_stat_nikah();
+    });
 });

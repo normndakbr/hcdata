@@ -226,12 +226,12 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editStatPernikahan">Status Pernikahan <span class="text-danger">*</span></label>
-                                                                 <div id="txtnikah" class="input-group">
-                                                                      <select id="editStatPernikahan" class="mb-3 form-control">
+                                                                 <div id="txtEditNikah" class="input-group">
+                                                                      <select id="editStatPernikahan" class="form-control">
                                                                            <option value="">-- PILIH PERNIKAHAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm" title="Refresh Status Pernikahan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditStatNikah" name="refreshStatNikah" class="btn btn-primary btn-sm" title="Refresh Status Pernikahan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditStatPernikahan text-danger font-italic font-weight-bold"></small>
