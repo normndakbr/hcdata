@@ -91,7 +91,7 @@
                                              </a>
                                              <img id="imgPersonal" src="<?= base_url('assets/images/checked.png') ?>" alt="" height="25px" width="25px" class="d-none" style="margin-left:10px;margin-top:-3px;">
                                         </button>
-                                        <div class="collapse mt-2" id="colEditPersonal">
+                                        <div class="collapse mt-2 show" id="colEditPersonal">
                                              <div class="card card-body">
                                                   <div class="card-body row mt-3">
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -139,12 +139,12 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editProvData">Provinsi <span class="text-danger">*</span></label>
-                                                                 <div id="txtprov" class="input-group">
+                                                                 <div id="txtEditProv" class="input-group">
                                                                       <select id='editProvData' name='editProvData' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshProv" name="refreshProv" class="btn btn-primary btn-sm" title="Refresh Provinsi"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditProv" name="refreshEditProv" class="btn btn-primary btn-sm" title="Refresh Provinsi"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditProvData text-danger font-italic font-weight-bold"></small>
@@ -153,12 +153,12 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editKotaData">Kabupaten / Kota <span class="text-danger">*</span></label>
-                                                                 <div id="txtkota" class="input-group">
+                                                                 <div id="txtEditKota" class="input-group">
                                                                       <select id='editKotaData' name='editKotaData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKota" name="refreshKota" class="btn btn-primary btn-sm" title="Refresh Kabupaten/Kota"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditKota" name="refreshEditKota" class="btn btn-primary btn-sm" title="Refresh Kabupaten/Kota"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditKotaData text-danger font-italic font-weight-bold"></small>
@@ -167,12 +167,12 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editKecData">Kecamatan <span class="text-danger">*</span></label>
-                                                                 <div id="txtkec" class="input-group">
+                                                                 <div id="txtEditKec" class="input-group">
                                                                       <select id='editKecData' name='editKecData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKec" name="refreshKec" class="btn btn-primary btn-sm" title="Refresh Kecamatan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditKec" name="refreshEditKec" class="btn btn-primary btn-sm" title="Refresh Kecamatan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditKecData text-danger font-italic font-weight-bold"></small>
@@ -181,12 +181,12 @@
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editKelData">Kelurahan <span class="text-danger">*</span></label>
-                                                                 <div id="txtkel" class="input-group">
+                                                                 <div id="txtEditKel" class="input-group">
                                                                       <select id='editKelData' name='editKelData' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
                                                                            <option value="">-- TIDAK ADA DATA --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshKel" name="refreshKel" class="btn btn-primary btn-sm" title="Refresh Kelurahan"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditKel" name="refreshEditKel" class="btn btn-primary btn-sm" title="Refresh Kelurahan"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditKelData text-danger font-italic font-weight-bold"></small>
@@ -345,7 +345,7 @@
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <label for="editPerKary" class="font-weight-bold font-italic">Pilih Perusahaan <span class="text-danger"> *</span></label>
                                                             <div id='txtperkary' class="input-group">
-                                                                 <select id='editPerKary' name='editPerKary' class="form-control form-control-user" disabled>
+                                                                 <select id='editPerKary' name='editPerKary' class="form-control form-control-user">
                                                                       <option value="">-- WAJIB DIPILIH --</option>
                                                                       <?= $permst . $perstr; ?>
                                                                  </select>
@@ -356,7 +356,7 @@
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
-                                                                 <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_nik ?>" required disabled>
+                                                                 <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_nik ?>" required>
                                                                  <small class="erroraddNIKKary text-danger font-italic font-weight-bold"></small>
                                                                  <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span>
 
@@ -572,13 +572,13 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="" disabled>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="" disabled>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -671,13 +671,13 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="" disabled>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="" disabled>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -778,13 +778,13 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="" disabled>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="" disabled>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -858,13 +858,13 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="" disabled>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="" disabled>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
@@ -874,7 +874,7 @@
                                                             <div id="jnsVaksin" class="form-group">
                                                                  <label for="jenisVaksin">Jenis Vaksin <span class="text-danger">*</span></label>
                                                                  <select id='jenisVaksin' name='jenisVaksin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
-                                                                      <option value="" -- PILIH JENIS VAKSIN --</option>
+                                                                      <option value="-- PILIH JENIS VAKSIN --"></option>
                                                                  </select>
                                                                  <small class="errorJenisVaksin text-danger font-italic font-weight-bold"></small>
                                                             </div>
@@ -924,13 +924,13 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="" disabled>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="" disabled>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
