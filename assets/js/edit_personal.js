@@ -481,6 +481,32 @@ $(document).ready(function () {
         });
     }
 
+    function refresh_stat_pendidikan() {
+        $("#txtEditDidik").LoadingOverlay("show");
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "pendidikan/get_all",
+            data: {},
+            success: function (data) {
+                var data = JSON.parse(data);
+                $("#editPendidikanTerakhir").html(data.pdk);
+                $("#txtEditDidik").LoadingOverlay("hide");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $.LoadingOverlay("hide");
+                $(".errormsg").removeClass('d-none');
+                $(".errormsg").removeClass('alert-info');
+                $(".errormsg").addClass('alert-danger');
+                $("#txtEditDidik").LoadingOverlay("hide");
+                if (thrownError != "") {
+                    $(".errormsg").html("Terjadi kesalahan saat load data pendidikan terakhir, hubungi administrator");
+                    $("#addSimpanPersonal").remove();
+                }
+            }
+        });
+    }
+
     $("#refreshEditProv").click(function () {
         refresh_provinsi();
     });
@@ -514,5 +540,9 @@ $(document).ready(function () {
 
     $("#refreshEditStatNikah").click(function () {
         refresh_stat_nikah();
+    });
+
+    $("#refreshEditDidik").click(function () {
+        refresh_stat_pendidikan();
     });
 });

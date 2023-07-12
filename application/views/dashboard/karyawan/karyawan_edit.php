@@ -297,17 +297,17 @@
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editPendidikanTerakhir">Pendidikan Terakhir </label>
-                                                                 <div id="txtDidik" name="txtDidik" class="input-group mt-2">
+                                                                 <div id="txtEditDidik" name="txtEditDidik" class="input-group">
                                                                       <select id='editPendidikanTerakhir' name='editPendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required>
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshDidik" name="refreshDidik" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditDidik" name="refreshDidik" class="btn btn-primary btn-sm"><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12 text-right mt-2">
                                                             <a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>
                                                        </div>
                                                   </div>
