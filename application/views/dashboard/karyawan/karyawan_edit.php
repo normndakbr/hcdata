@@ -308,7 +308,7 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right mt-2">
-                                                            <a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>
+                                                            <a id="editSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>
                                                        </div>
                                                   </div>
                                              </div>
@@ -359,7 +359,6 @@
                                                                  <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_nik ?>" required>
                                                                  <small class="erroraddNIKKary text-danger font-italic font-weight-bold"></small>
                                                                  <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span>
-
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-5 col-md-12 col-sm-12">

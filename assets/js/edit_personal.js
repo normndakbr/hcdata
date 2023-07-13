@@ -32,7 +32,7 @@ $(document).ready(function () {
             $(".errormsg").addClass('alert-danger');
             if (thrownError != "") {
                 $(".errormsg").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
-                $("#addSimpanPersonal").remove();
+                $("#editSimpanPersonal").remove();
             }
         }
     });
@@ -55,7 +55,7 @@ $(document).ready(function () {
             $(".errormsg").addClass('alert-danger');
             if (thrownError != "") {
                 $(".errormsg").html("Terjadi kesalahan saat load data agama, hubungi administrator");
-                $("#addSimpanPersonal").remove();
+                $("#editSimpanPersonal").remove();
             }
         }
     });
@@ -78,7 +78,7 @@ $(document).ready(function () {
             $(".errormsg").addClass('alert-danger');
             if (thrownError != "") {
                 $(".errormsg").html("Terjadi kesalahan saat load data status pernikahan, hubungi administrator");
-                $("#addSimpanPersonal").remove();
+                $("#editSimpanPersonal").remove();
             }
         }
     });
@@ -99,7 +99,7 @@ $(document).ready(function () {
             $(".errormsg").addClass('alert-danger');
             if (thrownError != "") {
                 $(".errormsg").html("Terjadi kesalahan saat load data pendidikan terakhir, hubungi administrator");
-                $("#addSimpanPersonal").remove();
+                $("#editSimpanPersonal").remove();
             }
         }
     });
@@ -425,7 +425,6 @@ $(document).ready(function () {
     }
 
     function refresh_kelurahan() {
-        console.log("refresh_kelurahan jalan!");
         if (idKecamatan != "") {
             $("#txtEditKel").LoadingOverlay("show");
             $.ajax({
@@ -475,7 +474,7 @@ $(document).ready(function () {
                 $(".errormsg").addClass('alert-danger');
                 if (thrownError != "") {
                     $(".errormsg").html("Terjadi kesalahan saat load data status pernikahan, hubungi administrator");
-                    $("#addSimpanPersonal").remove();
+                    $("#editSimpanPersonal").remove();
                 }
             }
         });
@@ -501,7 +500,7 @@ $(document).ready(function () {
                 $("#txtEditDidik").LoadingOverlay("hide");
                 if (thrownError != "") {
                     $(".errormsg").html("Terjadi kesalahan saat load data pendidikan terakhir, hubungi administrator");
-                    $("#addSimpanPersonal").remove();
+                    $("#editSimpanPersonal").remove();
                 }
             }
         });
