@@ -316,7 +316,6 @@ $(document).ready(function () {
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     $("#editKecData").html(data.kec);
-                    console.log("Here");
                     if (idKecamatan != "" && flagKec) {
                         $("#editKecData").val(idKecamatan).trigger('change');
                         flagKec = !flagKec;
