@@ -308,7 +308,7 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right mt-2">
-                                                            <a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Lanjutkan</a>
+                                                            <a id="editSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold">Simpan Data</a>
                                                        </div>
                                                   </div>
                                              </div>
@@ -530,21 +530,21 @@
                                                        <div id="editFieldPermanen" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalPermanen">Tanggal Permanen <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalPermanen' name='editTanggalPermanen' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;" disabled>
+                                                                 <input id='editTanggalPermanen' name='editTanggalPermanen' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalPermanen text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
                                                        <div id="editFieldKontrakAwal" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalKontrakAwal">Tanggal Awal <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalKontrakAwal' name='editTanggalKontrakAwal' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;" disabled>
+                                                                 <input id='editTanggalKontrakAwal' name='editTanggalKontrakAwal' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalKontrakAwal text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
                                                        <div id="editFieldKontrakAkhir" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalKontrakAkhir">Tanggal Berakhir <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalKontrakAkhir' name='editTanggalKontrakAkhir' type="date" class="form-control" value="<?= $data_kontrak->tgl_akhir ?>" style="background-color:transparent;" disabled>
+                                                                 <input id='editTanggalKontrakAkhir' name='editTanggalKontrakAkhir' type="date" class="form-control" value="<?= $data_kontrak->tgl_akhir ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalKontrakAkhir text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
