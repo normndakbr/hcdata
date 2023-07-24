@@ -13,38 +13,62 @@ class Login_model extends CI_Model
 
      public function get_login($email, $sandi)
      {
-          $this->db->select("*");
-          $this->db->from("vw_user");
-          $this->db->where("email_user", $email);
-          $query = $this->db->get();
-          $user = $query->row();
+          $attemp_temp = $this->session->userdata('attemps_temp');
+          $back_time = $this->session->userdata('back_time');
 
-          if (isset($user)) {
-               if ($user->stat_user == "N") {
-                    return json_encode(array("statusCode" => 201, "pesan" => "Email tidak aktif"));
-               } else {
-                    $tglnow = date("Y-m-d");
-                    if ($tglnow > $user->tgl_exp) {
-                         return json_encode(array("statusCode" => 201, "pesan" => "Email telah expired"));
+          if ($attemp_temp == 5) {
+               return json_encode(array("statusCode" => 201, "pesan" => "Batas salah sandi hanya 5x, silahkan login kembali pada pukul " . date('d-M-Y H:i:s', strtotime($back_time))));
+          } else {
+               $this->db->select("*");
+               $this->db->from("vw_user");
+               $this->db->where("email_user", $email);
+               $query = $this->db->get();
+               $user = $query->row();
+
+               if (isset($user)) {
+                    if ($user->stat_user == "N") {
+                         return json_encode(array("statusCode" => 201, "pesan" => "Email tidak aktif"));
                     } else {
-                         if ($sandi == $user->sesi) {
-                              return json_encode(array(
-                                   "statusCode" => 200,
-                                   "id_user" => $user->id_user,
-                                   "email_user" => $user->email_user,
-                                   "nama_user" => $user->nama_user,
-                                   "auth_user" => md5($user->id_user . date('Y-m-d')),
-                                   "id_menu" => $user->id_menu,
-                                   "id_m_perusahaan" => $user->id_m_perusahaan,
-                                   "id_perusahaan" => $user->id_perusahaan
-                              ));
+                         $tglnow = date("Y-m-d");
+                         if ($tglnow > $user->tgl_exp) {
+                              return json_encode(array("statusCode" => 201, "pesan" => "Email telah expired"));
                          } else {
-                              return json_encode(array("statusCode" => 201, "pesan" => "Sandi anda salah"));
+                              if ($sandi == $user->sesi) {
+                                   return json_encode(array(
+                                        "statusCode" => 200,
+                                        "id_user" => $user->id_user,
+                                        "email_user" => $user->email_user,
+                                        "nama_user" => $user->nama_user,
+                                        "auth_user" => md5($user->id_user . date('Y-m-d')),
+                                        "id_menu" => $user->id_menu,
+                                        "id_m_perusahaan" => $user->id_m_perusahaan,
+                                        "id_perusahaan" => $user->id_perusahaan
+                                   ));
+                              } else {
+                                   $attemp_temp = $this->session->userdata('attemps_temp');
+
+                                   if ($attemp_temp == 4) {
+                                        $attemp_temp++;
+                                        $now = date('Y-m-d H:i:s');
+                                        $sekarang = strtotime($now);
+                                        $jamlogback = date('Y-m-d H:i:s', strtotime("+10 minutes", $sekarang));
+                                        $ip = $_SERVER['REMOTE_ADDR'];
+                                        $this->session->set_userdata('attemps_temp', $attemp_temp);
+                                        $this->session->set_userdata('back_time', $jamlogback);
+                                        $this->session->set_userdata('ip_block', $ip);
+                                        return json_encode(array("statusCode" => 201, "pesan" => "Sandi salah, silahkan login kembali pada pukul : " . date('d-M-Y H:i:s', strtotime($jamlogback))));
+                                   } else {
+                                        $attemp_temp++;
+                                        $sisa = 5 - intval($attemp_temp);
+                                        $this->session->set_userdata('attemps_temp', $attemp_temp);
+                                        return json_encode(array("statusCode" => 201, "pesan" => "Sandi anda salah, kesempatan tinggal " . $sisa . "x"));
+                                   }
+                              }
                          }
                     }
+               } else {
+                    return json_encode(array("statusCode" => 201, "pesan" => "Email tidak terdaftar"));
                }
-          } else {
-               return json_encode(array("statusCode" => 201, "pesan" => "Email tidak terdaftar"));
           }
      }
 

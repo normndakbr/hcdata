@@ -1,3 +1,6 @@
+<footer class="main-footer bg-white text-right fixed-bottom" style="height:50px;">
+     <p><strong>Copyright &copy; 2009-2023 PT Indexim Coalindo</strong>All rights reserved.</p>
+</footer>
 <div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog">
           <div class="modal-content">
@@ -17,7 +20,6 @@
           </div>
      </div>
 </div>
-
 </div>
 
 <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script> -->
