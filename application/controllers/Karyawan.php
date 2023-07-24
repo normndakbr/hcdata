@@ -2481,16 +2481,12 @@ class Karyawan extends My_Controller
                echo json_encode($error);
                return;
           } else {
+               // data personal
                $id_personal = $this->input->post("id_personal", true);
                $no_ktp_old = htmlspecialchars($this->input->post("no_ktp_old", true));
                $no_kk_old = htmlspecialchars($this->input->post("no_kk_old", true));
                $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
                $no_kk = htmlspecialchars($this->input->post("no_kk", true));
-               // $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
-               // $auth_check = htmlspecialchars($this->input->post("auth_check", true));
-               // $auth_person = htmlspecialchars($this->input->post("auth_person", true));
-               // $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-               // $auth_alamat = htmlspecialchars($this->input->post("auth_alamat", true));
                $nama_lengkap = htmlspecialchars($this->input->post("nama_lengkap", true));
                $jk = htmlspecialchars($this->input->post("jk", true));
                $tmp_lahir = htmlspecialchars($this->input->post("tmp_lahir", true));
@@ -2507,6 +2503,16 @@ class Karyawan extends My_Controller
                $tgl_buat = htmlspecialchars($this->input->post("tgl_buat", true));
                $tgl_edit = htmlspecialchars($this->input->post("tgl_edit", true));
                $id_user = htmlspecialchars($this->input->post("id_user", true));
+
+               // data alamat
+               $id_alamat_ktp = htmlspecialchars($this->input->post("id_alamat_ktp", true));
+               $alamat_ktp = htmlspecialchars($this->input->post("alamat_ktp", true));
+               $rt_ktp = htmlspecialchars($this->input->post("rt_ktp", true));
+               $rw_ktp = htmlspecialchars($this->input->post("rw_ktp", true));
+               $prov_ktp = htmlspecialchars($this->input->post("prov_ktp", true));
+               $kab_ktp = htmlspecialchars($this->input->post("kab_ktp", true));
+               $kec_ktp = htmlspecialchars($this->input->post("kec_ktp", true));
+               $kel_ktp = htmlspecialchars($this->input->post("kel_ktp", true));
 
                // verif tgl.lahir
                $ynow = date("Y");
@@ -2553,6 +2559,23 @@ class Karyawan extends My_Controller
                     'id_user' => $id_user,
                );
 
+               $data_alamat_ktp = array(
+                    'id_alamat_ktp' => $id_alamat_ktp,
+                    'alamat_ktp' => $alamat_ktp,
+                    'rt_ktp' => $rt_ktp,
+                    'rw_ktp' => $rw_ktp,
+                    'kel_ktp' => $kel_ktp,
+                    'kec_ktp' => $kec_ktp,
+                    'kab_ktp' => $kab_ktp,
+                    'prov_ktp' => $prov_ktp,
+                    'kode_pos_ktp' => "",
+                    'ket_alamat_ktp' => "",
+                    'stat_alamat_ktp' => "",
+                    'tgl_buat' => $tgl_buat,
+                    'tgl_edit' => $tgl_edit,
+                    'id_user' => $id_user,
+               );
+
                if ($no_ktp != $no_ktp_old) {
                     // verif no. KTP
                     $query = $this->kry->cek_noKTP($no_ktp);
@@ -2568,10 +2591,17 @@ class Karyawan extends My_Controller
                          return;
                     }
                } else {
-                    $this->kry->update_dtPersonal($id_personal, $data_personal);
-               }
+                    $save_dtPersonal = $this->kry->update_dtPersonal($id_personal, $data_personal);
+                    $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
 
-               echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
+                    if ($save_dtPersonal && $save_dtAlamatKtp) {
+                         echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
+                    } else if (!$save_dtPersonal) {
+                         echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data personal."));
+                    } else if (!$save_dtAlamatKtp) {
+                         echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data alamat."));
+                    }
+               }
           }
      }
 }

@@ -829,14 +829,26 @@ class Karyawan_model extends CI_Model
 
     public function update_dtPersonal($idpersonal, $dt_personal)
     {
-        $this->db->where('id_personal', $idpersonal);
-        $this->db->update('tb_personal', $dt_personal);
+        $query1 = $this->db->where('id_personal', $idpersonal);
+        $query2 = $this->db->update('tb_personal', $dt_personal);
+
+        if ($query1 && $query2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function update_dtAlamat($id_alamat, $data_al)
     {
-        $this->db->where('id_alamat_ktp', $id_alamat);
-        $this->db->update('tb_alamat_ktp', $data_al);
+        $query1 = $this->db->where('id_alamat_ktp', $id_alamat);
+        $query2 = $this->db->update('tb_alamat_ktp', $data_al);
+
+        if ($query1 && $query2) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public function update_dtkary($idkaryawan, $data_kry)
