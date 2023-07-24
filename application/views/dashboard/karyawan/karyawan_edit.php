@@ -75,6 +75,7 @@
                               <input id="valueStatPendidikan" class="d-none" value="<?= $data_kary->id_pendidikan ?>"></input>
 
                               <!-- Data Alamat -->
+                              <input id="valueIdAlamatKTP" class="d-none" value="<?= $data_alamat->id_alamat_ktp ?>"></input>
                               <input id="alamat_ktp" class="d-none" value="<?= $data_alamat->alamat_ktp ?>"></input>
                               <input id="valueProvinsi" class="d-none" value="<?= $data_alamat->prov_ktp ?>"></input>
                               <input id="valueKabupaten" class="d-none" value="<?= $data_alamat->kab_ktp ?>"></input>
