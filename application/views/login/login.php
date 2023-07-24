@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-     <title>eEmployee - Login</title>
+     <title>ARC - Support</title>
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -25,31 +25,42 @@
 <body>
      <div class="auth-wrapper">
           <div class="auth-content" style="width:450px">
+               <div class="row">
+                    <div class="col-lg-12 text-center">
+                         <h3 class="mb-3 f-w-400 text-white font-weight-bold">Access Role Control</h3>
+                         <h4 class="mb-3 f-w-400 text-white font-weight-bold" style="margin-top: -10px;">Support System</h4>
+                    </div>
+               </div>
                <div class="card" style="border-radius: 2%;">
                     <form action="<?= base_url('login/auth'); ?>" method="post">
-                         <div class="row">
-                              <div class="col-md-12">
-                                   <div class="card-body">
-                                        <div class="align-items-center text-center" style="margin-top: -35px;">
-                                             <img src="<?= base_url('assets/assets/images/auth/idc.jpg'); ?>" alt="PT Indexim Coalindo" class="w-75 mt-1">
-                                             <h4 class="text-black font-weight-bolder mt-2">PT INDEXIM COALINDO</h4>
-                                             <?= $this->session->userdata('pesan'); ?>
-                                             <?= $this->session->unset_userdata('pesan'); ?>
-                                        </div>
-                                        <div class="form-group mb-3 mt-3">
-                                             <label class="floating-label font-weight-bold" for="temail">Email</label>
-                                             <input type="text" class="form-control" id="temail" name="temail" placeholder="" value='<?= set_value('temail'); ?>'>
-                                             <?= form_error('temail', '<small class="text-danger font-italic font-weight-bold">', ' </small>') ?>
-                                        </div>
-                                        <div class="form-group mb-4">
-                                             <label class="floating-label font-weight-bold" for="tsandi">Sandi</label>
-                                             <input type="password" class="form-control" id="tsandi" name="tsandi" placeholder="">
-                                             <?= form_error('tsandi', '<small class="text-danger font-italic font-weight-bold">', ' </small>') ?>
-                                        </div>
-                                        <div class="align-items-center text-center">
-                                             <button type='submit' class="btn btn-block btn-primary mb-4 font-weight-bold" style="border-radius:7px;">LOGIN</button>
-                                        </div>
-                                   </div>
+                         <div class="card-body">
+                              <div class="align-items-center text-center" style="margin-top: -35px;">
+                                   <img src="<?= base_url('assets/assets/images/auth/idc.jpg'); ?>" alt="PT Indexim Coalindo" class="w-75 mt-1">
+                                   <h4 class="text-black font-weight-bolder mt-2">PT INDEXIM COALINDO</h4>
+                                   <?= $this->session->userdata('pesan'); ?>
+                                   <?= $this->session->unset_userdata('pesan'); ?>
+                              </div>
+                              <div class="form-group mb-3 mt-3">
+                                   <label class="floating-label font-weight-bold" for="temail">Email</label>
+                                   <input type="text" class="form-control" id="temail" name="temail" placeholder="" value='<?= set_value('temail'); ?>'>
+                                   <?= form_error('temail', '<small class="text-danger font-italic font-weight-bold">', ' </small>') ?>
+                              </div>
+                              <div class="form-group mb-4">
+                                   <label class="floating-label font-weight-bold" for="tsandi">Sandi</label>
+                                   <input type="password" class="form-control" id="tsandi" name="tsandi" placeholder="">
+                                   <?= form_error('tsandi', '<small class="text-danger font-italic font-weight-bold">', ' </small>') ?>
+                              </div>
+                              <div class="form-group mb-2 text-center">
+                                   <p id="captImg" class="captcha-img d-inline-block"><?php echo $captcha; ?></p>
+                                   <button id="refCap" class="btn btn-primary font-weight-bold" style="border-radius:5px;"><i class="fas fa-sync-alt"></i></button>
+                              </div>
+                              <div class="form-group mb-4 text-center" style="margin-top: -15px;">
+                                   <label class="font-weight-bold" for="captcha">Ketikan kode diatas : </label>
+                                   <input type="text" class="form-control text-center" id="captcha" name="captcha" style="margin-top: -15px;">
+                                   <?= form_error('captcha', '<small class="text-danger font-italic font-weight-bold">', ' </small>') ?>
+                              </div>
+                              <div class="text-center">
+                                   <button type='submit' class="btn btn-block btn-primary font-weight-bold" style="border-radius:5px;">LOGIN</button>
                               </div>
                          </div>
                     </form>
@@ -66,12 +77,28 @@
      <script src="<?= base_url(); ?>assets/assets/js/ripple.js"></script>
      <script src="<?= base_url(); ?>assets/assets/js/pcoded.min.js"></script>
      <script>
+          let site_url = "http://localhost:8080/hcdata/";
+     </script>
+     <script>
           if (window.history.replaceState) {
                window.history.replaceState(null, null, '<?= base_url(); ?>');
           }
 
-          $(".pesan ").fadeTo(3000, 500).slideUp(500, function() {
+          $(".pesan ").fadeTo(5000, 500).slideUp(500, function() {
                $(".pesan ").slideUp(500);
+          });
+
+          $('#refCap').click(function(event) {
+               event.preventDefault();
+
+               $.ajax({
+                    url: site_url + 'login/refCaptcha',
+                    dataType: "text",
+                    cache: false,
+                    success: function(data) {
+                         $('.captcha-img').html(data);
+                    }
+               });
           });
      </script>
 
