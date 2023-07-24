@@ -476,7 +476,6 @@ class Karyawan extends My_Controller
                return $query;
           }
      }
-
      function get_id_tipe($auth_tipe)
      {
           $query = $this->tpe->get_id_tipe($auth_tipe);
@@ -2398,5 +2397,181 @@ class Karyawan extends My_Controller
 
           //output to json format
           echo json_encode($output);
+     }
+
+     public function edit_personal()
+     {
+          $this->form_validation->set_rules("no_ktp", "no_ktp", "required|trim|numeric|max_length[16]|min_length[16]", [
+               'required' => 'No. KTP wajib diisi',
+               'numeric' => 'Wajib diisi dengan angka',
+               'max_length' => 'No. KTP maksimal 16 karakter',
+               'min_length' => 'No. KTP minimal 16 karakter'
+          ]);
+          $this->form_validation->set_rules("no_kk", "no_kk", "required|trim|max_length[16]|min_length[16]", [
+               'required' => 'No. Kartu Keluarga wajib diisi',
+               'numeric' => 'Wajib diisi dengan angka',
+               'max_length' => 'No. Kartu Keluarga maksimal 16 karakter',
+               'min_length' => 'No. Kartu Keluarga minimal 16 karakter'
+          ]);
+          $this->form_validation->set_rules("nama_lengkap", "nama_lengkap", "required|trim", [
+               'required' => 'Nama wajib dipilih'
+          ]);
+          $this->form_validation->set_rules("jk", "jk", "required|trim", [
+               'required' => 'Jenis kelamin wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("tmp_lahir", "tmp_lahir", "required|trim|max_length[100]", [
+               'required' => 'Tempat lahir wajib diisi',
+               'max_length' => 'Tempat Lahir maksimal 100 karakter'
+          ]);
+          $this->form_validation->set_rules("tgl_lahir", "tgl_lahir", "required|trim", [
+               'required' => 'Tanggal lahir wajib diisi',
+          ]);
+          $this->form_validation->set_rules("id_stat_nikah", "id_stat_nikah", "required|trim", [
+               'required' => 'Status pernikahan wajib diisi',
+          ]);
+          $this->form_validation->set_rules("id_agama", "id_agama", "required|trim", [
+               'required' => 'Agama wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("warga_negara", "warga_negara", "required|trim", [
+               'required' => 'Warga negara wajib diisi',
+          ]);
+          $this->form_validation->set_rules("email_pribadi", "email_pribadi", "trim|valid_email", [
+               'valid_email' => 'Format email anda salah',
+          ]);
+          $this->form_validation->set_rules("hp_1", "hp_1", "trim|numeric", [
+               'numeric' => 'No. Telp. wajib diisi dengan angka',
+          ]);
+          $this->form_validation->set_rules("no_bpjstk", "no_bpjstk", "trim");
+          $this->form_validation->set_rules("no_bpjskes", "no_bpjskes", "trim");
+          $this->form_validation->set_rules("no_npwp", "no_npwp", "trim");
+
+          if ($this->form_validation->run() == false) {
+               $no_npwp = htmlspecialchars($this->input->post("no_npwp", true));
+               $no_npwp_num = str_replace([".", "-", "_"], "", $no_npwp);
+               $jml_no_npwp = strlen($no_npwp_num);
+               if ($no_npwp != "") {
+                    if ($jml_no_npwp < 15) {
+                         $errno_npwp = "<p>No. NPWP tidak boleh kurang dari 15 karakter</p>";
+                    } else {
+                         $errno_npwp = "";
+                    }
+               } else {
+                    $errno_npwp = "";
+               }
+
+               $error = [
+                    'statusCode' => 202,
+                    'no_ktp' => form_error("no_ktp"),
+                    'no_kk' => form_error("no_kk"),
+                    'nama_lengkap' => form_error("nama_lengkap"),
+                    'jk' => form_error("jk"),
+                    'tmp_lahir' => form_error("tmp_lahir"),
+                    'tgl_lahir' => form_error("tgl_lahir"),
+                    'id_stat_nikah' => form_error("id_stat_nikah"),
+                    'id_agama' => form_error("id_agama"),
+                    'warga_negara' => form_error("warga_negara"),
+                    'email_pribadi' => form_error("email_pribadi"),
+                    'hp_1' => form_error("hp_1"),
+                    'no_bpjstk' => form_error("no_bpjstk"),
+                    'no_bpjskes' => form_error("no_bpjskes"),
+                    'no_npwp' => form_error("no_npwp"),
+                    'npwp' => $errno_npwp
+               ];
+
+               echo json_encode($error);
+               return;
+          } else {
+               $id_personal = $this->input->post("id_personal", true);
+               $no_ktp_old = htmlspecialchars($this->input->post("no_ktp_old", true));
+               $no_kk_old = htmlspecialchars($this->input->post("no_kk_old", true));
+               $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
+               $no_kk = htmlspecialchars($this->input->post("no_kk", true));
+               // $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
+               // $auth_check = htmlspecialchars($this->input->post("auth_check", true));
+               // $auth_person = htmlspecialchars($this->input->post("auth_person", true));
+               // $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+               // $auth_alamat = htmlspecialchars($this->input->post("auth_alamat", true));
+               $nama_lengkap = htmlspecialchars($this->input->post("nama_lengkap", true));
+               $jk = htmlspecialchars($this->input->post("jk", true));
+               $tmp_lahir = htmlspecialchars($this->input->post("tmp_lahir", true));
+               $tgl_lahir = htmlspecialchars($this->input->post("tgl_lahir", true));
+               $id_stat_nikah = htmlspecialchars($this->input->post("id_stat_nikah", true));
+               $id_agama = htmlspecialchars($this->input->post("id_agama", true));
+               $warga_negara = htmlspecialchars($this->input->post("warga_negara", true));
+               $email_pribadi = htmlspecialchars($this->input->post("email_pribadi", true));
+               $hp_1 = htmlspecialchars($this->input->post("hp_1", true));
+               $no_bpjstk = htmlspecialchars($this->input->post("no_bpjstk", true));
+               $no_bpjskes = htmlspecialchars($this->input->post("no_bpjskes", true));
+               $no_npwp = htmlspecialchars($this->input->post("no_npwp", true));
+               $id_pendidikan = htmlspecialchars($this->input->post("id_pendidikan", true));
+               $tgl_buat = htmlspecialchars($this->input->post("tgl_buat", true));
+               $tgl_edit = htmlspecialchars($this->input->post("tgl_edit", true));
+               $id_user = htmlspecialchars($this->input->post("id_user", true));
+
+               // verif tgl.lahir
+               $ynow = date("Y");
+               $ylahir = date("Y", strtotime($tgl_lahir));
+               $usia = intval($ynow) - intval($ylahir);
+               if ($usia <= 15) {
+                    echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "Usia kurang dari 15 tahun, isi tanggal lahir anda dengan benar"));
+                    return;
+               } else if ($usia >= 75) {
+                    echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "Isi tanggal lahir anda dengan benar"));
+                    return;
+               }
+
+               $data_personal = array(
+                    'no_ktp' => $no_ktp,
+                    'no_kk' => $no_kk,
+                    'nama_lengkap' => $nama_lengkap,
+                    'nama_alias' => '',
+                    'jk' => $jk,
+                    'tmp_lahir' => $tmp_lahir,
+                    'tgl_lahir' => $tgl_lahir,
+                    'id_stat_nikah' => $id_stat_nikah,
+                    'id_agama' => $id_agama,
+                    'warga_negara' => $warga_negara,
+                    'email_pribadi' => $email_pribadi,
+                    'hp_1' => $hp_1,
+                    'hp_2' => 0,
+                    'nama_ibu' => '',
+                    'stat_ibu' => '',
+                    'nama_ayah' => '',
+                    'stat_ayah' => '',
+                    'no_bpjstk' => $no_bpjstk,
+                    'no_bpjskes' => $no_bpjskes,
+                    'no_bpjspensiun' => '',
+                    'no_equity' => '',
+                    'no_npwp' => $no_npwp,
+                    'id_pendidikan' => $id_pendidikan,
+                    'nama_sekolah' => '',
+                    'fakultas' => '',
+                    'jurusan' => '',
+                    'url_pendukung' => '',
+                    'tgl_buat' => $tgl_buat,
+                    'tgl_edit' => $tgl_edit,
+                    'id_user' => $id_user,
+               );
+
+               if ($no_ktp != $no_ktp_old) {
+                    // verif no. KTP
+                    $query = $this->kry->cek_noKTP($no_ktp);
+                    if ($query) {
+                         echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. KTP sudah digunakan"));
+                         return;
+                    }
+               } else if ($no_kk != $no_kk_old) {
+                    // verif no. KK
+                    $query = $this->kry->cek_noKK($no_kk);
+                    if ($query) {
+                         echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. Kartu Keluarga sudah digunakan"));
+                         return;
+                    }
+               } else {
+                    $this->kry->update_dtPersonal($id_personal, $data_personal);
+               }
+
+               echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
+          }
      }
 }

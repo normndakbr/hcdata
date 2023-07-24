@@ -546,9 +546,172 @@ $(document).ready(function () {
     });
 
     $("#editSimpanPersonal").click(function () {
-        if ($("#colEditPersonal").hasClass("show")) {
-            $("#colEditPersonal").collapse("hide");
-            $("#colEditKaryawan").collapse("show");
-        }
+        // let auth_per = $("#editPerKary").val();
+        // tb_personal
+        let no_ktp_old = $("#valueNoKTPOld").val();
+        let no_kk_old = $("#valueNoKKOld").val();
+        let id_personal = $("#editIdPersonal").val();
+        let new_no_ktp = $("#editNoKTP").val();
+        let new_no_kk = $("#editNoKK").val();
+        let new_nama_lengkap = $("#editNamaLengkap").val();
+        let new_jk = $("#editJenisKelamin").val();
+        let new_tmp_lahir = $("#editTempatLahir").val();
+        let new_tgl_lahir = $("#editTanggalLahir").val();
+        let new_id_stat_nikah = $("#editStatPernikahan").val();
+        let new_id_agama = $("#editAgama").val();
+        let new_warga_negara = $("#editKewarganegaraan").val();
+        let new_email_pribadi = $('#editEmail').val();
+        let new_hp1 = $('#editNoTelp').val();
+        let new_no_bpjstk = $("#editNoBPJSTK").val();
+        let new_no_bpjskes = $("#editNoBPJSKES").val();
+        let new_no_npwp = $('#editNoNPWP').val();
+        let new_id_pendidikan = $('#editPendidikanTerakhir').val();
+        let tgl_buat = $("#editTglBuat").val();
+        let new_tgl_edit = $("#editTglEdit").val();
+        let id_user = $("#idUser").val();
+
+        // tb_alamat_ktp
+        let alamat = $("#editAlamatKTP").val();
+        let rt = $("#editRtKTP").val();
+        let rw = $("#editRwKTP").val();
+        let id_prov = $("#editProvData").val();
+        let id_kab = $("#editKotaData").val();
+        let id_kec = $("#editKecData").val();
+        let id_kel = $("#editKelData").val();
+
+        // console.log("auth per = " + auth_per);
+        // console.log("id_personal = " + id_personal);
+        // console.log("no_ktp = " + new_no_ktp);
+        // console.log("no_kk = " + new_no_kk);
+        // console.log("nama_lengkap = " + new_nama_lengkap);
+        // console.log("jk  = " + new_jk);
+        // console.log("tmp_lahir = " + new_tmp_lahir);
+        // console.log("tgl_lahir = " + new_tgl_lahir);
+        // console.log("id_stat_nikah = " + new_id_stat_nikah);
+        // console.log("id_agama = " + new_id_agama);
+        // console.log("warga_negara = " + new_warga_negara);
+        // console.log("email_pribadi = " + new_email_pribadi);
+        // console.log("hp_1 = " + new_hp1);
+        // console.log("no_bpjstk = " + new_no_bpjstk);
+        // console.log("no_bpjskes = " + new_no_bpjskes);
+        // console.log("no_npwp = " + new_no_npwp);
+        // console.log("id_pendidikan = " + new_id_pendidikan);
+        // console.log("tgl_buat = " + tgl_buat);
+        // console.log("tgl_edit = " + new_tgl_edit);
+        // console.log("id_user = " + id_user);
+        // console.log("id_alamat_ktp = " + id_alamat_ktp);
+        // console.log("alamat_ktp = " + alamat);
+        // console.log("rt_ktp = " + rt);
+        // console.log("rw_ktp = " + rw);
+        // console.log("kel_ktp = " + id_kel);
+        // console.log("kec_ktp = " + id_kec);
+        // console.log("kab_ktp = " + id_kab);
+        // console.log("prov_ktp = " + id_prov);
+        // console.log("Cek Log = " + cek_log);
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/edit_personal",
+            data: {
+                no_ktp_old: no_ktp_old,
+                no_kk_old: no_kk_old,
+                id_personal: id_personal,
+                no_ktp: new_no_ktp,
+                no_kk: new_no_kk,
+                nama_lengkap: new_nama_lengkap,
+                nama_alias: "",
+                jk: new_jk,
+                tmp_lahir: new_tmp_lahir,
+                tgl_lahir: new_tgl_lahir,
+                id_stat_nikah: new_id_stat_nikah,
+                id_agama: new_id_agama,
+                warga_negara: new_warga_negara,
+                email_pribadi: new_email_pribadi,
+                hp_1: new_hp1,
+                hp_2: "",
+                nama_ibu: "",
+                stat_ibu: "",
+                nama_ayah: "",
+                stat_ayah: "",
+                no_bpjstk: new_no_bpjstk,
+                no_bpjskes: new_no_bpjskes,
+                no_bpjspensiun: "",
+                no_equity: "",
+                no_npwp: new_no_npwp,
+                id_pendidikan: new_id_pendidikan,
+                nama_sekolah: "",
+                fakultas: "",
+                jurusan: "",
+                url_pendukung: "",
+                tgl_buat: tgl_buat,
+                tgl_edit: new_tgl_edit,
+                id_user: id_user,
+            },
+            success: function (res) {
+                $.LoadingOverlay("show");
+                console.log(res);
+                var data = JSON.parse(res);
+                if (data.statusCode == 204) {
+                    swal("Sukses", data.pesan, "success");
+                    $.LoadingOverlay("hide");
+                } else if (data.statusCode == 403) {
+                    swal("Gagal", data.pesan, "error");
+                    window.scrollTo(0, 0);
+                    $.LoadingOverlay("hide");
+                }
+                //     // $('#colKaryawan').collapse("show");
+                //     // $('#colPersonal').collapse("hide");
+                //     // $('#imgPersonal').removeClass("d-none");
+                //     $('.noktpshow').val(noktp);
+                //     $('.namalengkapshow').val(nama);
+                //     $(".89kjm78ujki782m4x787909h3").text(cek_log);
+                //     aktifKaryawan();
+                // } else if (data.statusCode == 201) {
+                //     swal("Error", data.pesan, "error");
+                // } else {
+                //     $(".errorNoKTP").html(data.noktp);
+                //     $(".errorNamaLengkap").html(data.nama);
+                //     $(".errorAlamatKTP").html(data.alamat);
+                //     $(".errorRtKTP").html(data.rt);
+                //     $(".errorRwKTP").html(data.rw);
+                //     $(".errorProvData").html(data.id_prov);
+                //     $(".errorKotaData").html(data.id_kab);
+                //     $(".errorKecData").html(data.id_kec);
+                //     $(".errorKelData").html(data.id_kel);
+                //     $(".errorTempatLahir").html(data.tmp_lahir);
+                //     $(".errorTanggalLahir").html(data.tgl_lahir);
+                //     $(".errorStatPernikahan").html(data.stat_nikah);
+                //     $(".errorAddAgama").html(data.id_agama);
+                //     $(".erroremail").html(data.email);
+                //     $(".errornoTelp").html(data.notelp);
+                //     $(".errorKewarganegaraan").html(data.warga);
+                //     $(".errorJenisKelamin").html(data.jk);
+                //     $(".errorNoBPJSTK").html(data.bpjs_tk);
+                //     $(".errorNoBPJSKES").html(data.bpjs_kes);
+                //     $(".errorNoNPWP").html(data.npwp);
+                //     $(".errorNoKK").html(data.nokk);
+                //     swal("Error", "Tidak dapat melanjutkan, lengkapi data personal.", "error");
+                //     window.scrollTo(0, 0);
+                // }
+                $.LoadingOverlay("hide");
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $.LoadingOverlay("hide");
+                console.log(xhr);
+                console.log(ajaxOptions);
+                $(".errormsg").removeClass('d-none');
+                $(".errormsg").addClass('alert-danger');
+                if (thrownError != "") {
+                    console.log(thrownError);
+                    $(".errormsg").html("Terjadi kesalahan saat menyimpan data personal, hubungi administrator");
+                }
+                swal("Error", "Terjadi kesalahan saat menyimpan data personal.", "error");
+            }
+        });
+
+        // $(".errormsg").fadeTo(3000, 500).slideUp(500, function () {
+        //     $(".errormsg").slideUp(500);
+        //     $(".errormsg").addClass("d-none");
+        // });
     });
 });

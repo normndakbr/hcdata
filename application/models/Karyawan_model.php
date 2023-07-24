@@ -1046,4 +1046,28 @@ class Karyawan_model extends CI_Model
         $query = $this->db->get_where('vw_karyawan', ['auth_perusahaan' => $auth_per]);
         return $query->result();
     }
+
+    public function cek_update_noKK($nokk)
+    {
+        $query = $this->db->get_where('tb_personal', ['no_kk' => $nokk]);
+        // print_r($query->result());
+        if ($query->num_rows() > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function cek_update_noKTP($noktp)
+    {
+        $query = $this->db->get_where('tb_personal', ['no_ktp' => $noktp]);
+        // print_r($query->result());
+        // print_r(count($query->result()));
+        // print_r($query->num_rows());
+        if ($query->num_rows() > 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

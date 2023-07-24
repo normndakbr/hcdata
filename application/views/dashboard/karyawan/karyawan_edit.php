@@ -60,16 +60,27 @@
                                    </div>
                               </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
+                              <input id="editTglBuat" class="d-none" value="<?= $data_kary->tgl_buat ?>"></input>
+                              <input id="editTglEdit" class="d-none" value="<?= date("Y-m-d H:i:s"); ?>"></input>
+                              <input id="idUser" class="d-none" value="<?= $this->session->userdata("id_menu") ?>"></input>
+
                               <!-- Data Personal -->
-                              <input id="valueProvinsi" class="d-none" value="<?= $data_alamat->prov_ktp ?>"></input>
-                              <input id="valueKabupaten" class="d-none" value="<?= $data_alamat->kab_ktp ?>"></input>
-                              <input id="valueKecamatan" class="d-none" value="<?= $data_alamat->kec_ktp ?>"></input>
-                              <input id="valueKelurahan" class="d-none" value="<?= $data_alamat->kel_ktp ?>"></input>
+                              <input id="editIdPersonal" class="d-none" value="<?= $data_kary->id_personal ?>"></input>
+                              <input id="valueNoKTPOld" class="d-none" value="<?= $data_kary->no_ktp ?>"></input>
+                              <input id="valueNoKKOld" class="d-none" value="<?= $data_kary->no_kk ?>"></input>
                               <input id="valueJenisKelamin" class="d-none" value="<?= $data_kary->jk ?>"></input>
                               <input id="valueWargaNegara" class="d-none" value="<?= $data_kary->warga_negara ?>"></input>
                               <input id="valueAgama" class="d-none" value="<?= $data_kary->id_agama ?>"></input>
                               <input id="valueStatNikah" class="d-none" value="<?= $data_kary->id_stat_nikah ?>"></input>
                               <input id="valueStatPendidikan" class="d-none" value="<?= $data_kary->id_pendidikan ?>"></input>
+
+                              <!-- Data Alamat -->
+                              <input id="alamat_ktp" class="d-none" value="<?= $data_alamat->alamat_ktp ?>"></input>
+                              <input id="valueProvinsi" class="d-none" value="<?= $data_alamat->prov_ktp ?>"></input>
+                              <input id="valueKabupaten" class="d-none" value="<?= $data_alamat->kab_ktp ?>"></input>
+                              <input id="valueKecamatan" class="d-none" value="<?= $data_alamat->kec_ktp ?>"></input>
+                              <input id="valueKelurahan" class="d-none" value="<?= $data_alamat->kel_ktp ?>"></input>
+
                               <!-- Data Karyawan -->
                               <input id="valuePerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
                               <input id="valueDepart" class="d-none" value="<?= $data_kary->id_depart ?>"></input>
@@ -108,7 +119,7 @@
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editNamaLengkap">Nama Lengkap <span class="text-danger">*</span></label>
-                                                                 <input id='editnamaLengkap' name='editnamaLengkap' autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->nama_lengkap ?>" required>
+                                                                 <input id='editNamaLengkap' name='editNamaLengkap' autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->nama_lengkap ?>" required>
                                                                  <small class="errorEditNamaLengkap text-danger font-italic font-weight-bold"></small>
                                                                  <span class="9d56835ae6e4d20993874daf592f6aca d-none"></span>
                                                             </div>
@@ -239,59 +250,59 @@
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="tempatLahir">Tempat Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='tempatLahir' name='tempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->tmp_lahir ?>" required>
-                                                                 <small class="errorTempatLahir text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editTempatLahir">Tempat Lahir <span class="text-danger">*</span></label>
+                                                                 <input id='editTempatLahir' name='editTempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->tmp_lahir ?>" required>
+                                                                 <small class="errorEditTempatLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="tanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='tanggalLahir' name='tanggalLahir' type="date" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->tgl_lahir ?>" required>
-                                                                 <small class="errorTanggalLahir text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editTanggalLahir">Tanggal Lahir <span class="text-danger">*</span></label>
+                                                                 <input id='editTanggalLahir' name='editTanggalLahir' type="date" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->tgl_lahir ?>" required>
+                                                                 <small class="errorEditTanggalLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noBPJSTK">No. BPJS Tenaga Kerja </label>
-                                                                 <input id='noBPJSTK' name='noBPJSTK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_bpjstk ?>" required>
-                                                                 <small class="errorNoBPJSTK text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editNoBPJSTK">No. BPJS Tenaga Kerja </label>
+                                                                 <input id='editNoBPJSTK' name='editNoBPJSTK' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_bpjstk ?>" required>
+                                                                 <small class="errorEditNoBPJSTK text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noBPJSKES">No. BPJS Kesehatan </label>
-                                                                 <input id='noBPJSKES' name='noBPJSKES' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_bpjskes ?>" required>
-                                                                 <small class="errorNoBPJSKES text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editNoBPJSKES">No. BPJS Kesehatan </label>
+                                                                 <input id='editNoBPJSKES' name='editNoBPJSKES' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_bpjskes ?>" required>
+                                                                 <small class="erroreditNoBPJSKES text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noNPWP">No. NPWP </label>
-                                                                 <input id='noNPWP' name='noNPWP' autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_npwp ?>" required>
-                                                                 <small class="errorNoNPWP text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editNoNPWP">No. NPWP </label>
+                                                                 <input id='editNoNPWP' name='editNoNPWP' autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_npwp ?>" required>
+                                                                 <small class="errorEditNoNPWP text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noKK">No. Kartu Keluarga <span class="text-danger">*</span></label>
-                                                                 <input id='noKK' name='noKK' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_kk ?>" required>
-                                                                 <small class="errorNoKK text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editNoKK">No. Kartu Keluarga <span class="text-danger">*</span></label>
+                                                                 <input id='editNoKK' name='editNoKK' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_kk ?>" required>
+                                                                 <small class="errorEditNoKK text-danger font-italic font-weight-bold"></small>
                                                                  <span class="89kjm78ujki782m4x787909h3 d-none"></span>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="email">Email Pribadi </label>
-                                                                 <input id='email' name='email' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->email_pribadi ?>" required>
-                                                                 <small class="erroremail text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editEmail">Email Pribadi </label>
+                                                                 <input id='editEmail' name='editEmail' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->email_pribadi ?>" required>
+                                                                 <small class="errorEditEmail text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="noTelp">No. Telp </label>
-                                                                 <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->hp_1 ?>" required>
-                                                                 <small class="errornoTelp text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editNoTelp">No. Telp </label>
+                                                                 <input id='editNoTelp' name='editNoTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->hp_1 ?>" required>
+                                                                 <small class="errorEditNoTelp text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-3 col-md-4 col-sm-12">
@@ -370,7 +381,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshDepart" name="refreshDepart" class="btn btn-primary btn-sm" title="Refresh Departemen" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditDepart" name="refreshEditDepart" class="btn btn-primary btn-sm" title="Refresh Departemen" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditDepartKary text-danger font-italic font-weight-bold"></small>
@@ -385,7 +396,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshPosisi" name="refreshPosisi" class="btn btn-primary btn-sm" title="Refresh Posisi" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditPosisi" name="refreshEditPosisi" class="btn btn-primary btn-sm" title="Refresh Posisi" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditPosisiKary text-danger font-italic font-weight-bold"></small>
@@ -414,7 +425,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshTipe" name="refreshTipe" class="btn btn-primary btn-sm" title="Refresh Golongan" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditTipe" name="refreshEditTipe" class="btn btn-primary btn-sm" title="Refresh Golongan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditTipeKary text-danger font-italic font-weight-bold"></small>
@@ -428,7 +439,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLevel" name="refreshLevel" class="btn btn-primary btn-sm" title="Refresh Level" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditLevel" name="refreshEditLevel" class="btn btn-primary btn-sm" title="Refresh Level" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditLevelKary text-danger font-italic font-weight-bold"></small>
@@ -442,7 +453,7 @@
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshPOH" name="refreshPOH" class="btn btn-primary btn-sm" title="Refresh Point of Hire" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditPOH" name="refreshEditPOH" class="btn btn-primary btn-sm" title="Refresh Point of Hire" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="erroreEditPOHKary text-danger font-italic font-weight-bold"></small>
@@ -456,7 +467,7 @@
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLokterima" name="refreshLokterima" class="btn btn-primary btn-sm" title="Refresh Lokasi Penerimaan" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditLokterima" name="refreshEditLokterima" class="btn btn-primary btn-sm" title="Refresh Lokasi Penerimaan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditLokterimaKary text-danger font-italic font-weight-bold"></small>
@@ -470,7 +481,7 @@
                                                                            <option value="0">-- WAJIB DIPILIH --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshLokker" name="refreshLokker" class="btn btn-primary btn-sm" title="Refresh Lokasi Kerja" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditLokker" name="refreshEditLokker" class="btn btn-primary btn-sm" title="Refresh Lokasi Kerja" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditLokkerKary text-danger font-italic font-weight-bold"></small>
@@ -485,9 +496,9 @@
                                                                            <option value="R" default>RESIDENCE</option>
                                                                            <option value="NR">NON RESIDENCE</option>
                                                                       </select>
-                                                                      <div class="input-group-prepend">
+                                                                      <!-- <div class="input-group-prepend">
                                                                            <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence"><i class="fas fa-sync-alt"></i></button>
-                                                                      </div>
+                                                                      </div> -->
                                                                  </div>
                                                                  <small class="errorEditStatusResidence text-danger font-italic font-weight-bold"></small>
                                                             </div>
@@ -521,7 +532,7 @@
                                                                            <option value="">-- WAJIB DIISI --</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
-                                                                           <button id="refreshstatkaryawan" name="refreshstatkaryawan" title="Refresh Status Karyawan" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                           <button id="refreshEditStatKaryawan" name="refreshEditStatKaryawan" title="Refresh Status Karyawan" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
                                                                  <small class="errorEditStatusKerjaKary text-danger font-italic font-weight-bold"></small>
@@ -549,8 +560,8 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                            <a id="addKembaliPekerjaan" data-scroll href="#clPersonal" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                            <a id="addSimpanPekerjaan" data-scroll href="#clIzinTambang" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Simpan & Lanjutkan</a>
+                                                            <a id="editKembaliPekerjaan" data-scroll href="#clPersonal" class="btn btn-warning font-weight-bold disabled">Kembali</a>
+                                                            <a id="editSimpanPekerjaan" data-scroll href="#clIzinTambang" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Simpan & Lanjutkan</a>
                                                        </div>
                                                   </div>
                                              </div>
