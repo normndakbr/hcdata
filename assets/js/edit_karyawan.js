@@ -778,9 +778,9 @@ $(document).ready(function () {
         let auth_check = $(".89kjm78ujki782m4x787909h3").text();
         let auth_ver = $(".h2344234jfsd").text();
         let auth_person = $("#valueAuthPersonal").val();
-        let auth_kary = $("#valueAuthKaryawan").text();
-        let auth_alamat = $(".150b3427b97bb43ac2fb3e5c687e384c").text();
-        let auth_ktr = $(".asdas9asd").text();
+        let auth_kary = $("#valueAuthKaryawan").val();
+        let id_kary = $("#valueIDKaryawan").val();
+        let auth_ktr = $("#valueKontrakKary").val();
         let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
         let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
 
@@ -807,110 +807,95 @@ $(document).ready(function () {
         let tgl_mulai_kontrak = $("#editTanggalKontrakAwal").val();
         let tgl_akhir_kontrak = $("#editTanggalKontrakAkhir").val();
 
-        console.log("stat_kerja = " + stat_kerja);
+        console.log(auth_ktr);
 
-        // swal({
-        //     title: "Simpan Data",
-        //     text: "Yakin data karyawan akan disimpan?",
-        //     type: 'question',
-        //     showCancelButton: true,
-        //     confirmButtonColor: '#36c6d3',
-        //     cancelButtonColor: '#d33',
-        //     confirmButtonText: 'Ya, simpan',
-        //     cancelButtonText: 'Batalkan'
-        // }).then(function (result) {
-        //     if (result.value) {
-        //         $.LoadingOverlay("show");
-        $.ajax({
-            type: "POST",
-            url: site_url + "karyawan/update_karyawan",
-            data: {
-                auth_person: auth_person,
-                auth_kary: auth_kary,
-                no_ktp: no_ktp,
-                no_kk: no_kk,
-                no_nik: no_nik,
-                auth_depart: auth_depart,
-                auth_posisi: auth_posisi,
-                auth_lokker: auth_lokker,
-                auth_lokterima: auth_lokterima,
-                auth_poh: auth_poh,
-                auth_tipe: auth_tipe,
-                auth_level: auth_level,
-                id_klasifikasi: id_klasifikasi,
-                doh: doh,
-                tgl_aktif: tgl_aktif,
-                stat_tinggal: stat_tinggal,
-                stat_kerja: stat_kerja,
-                email_kantor: email_kantor,
-                tgl_permanen: tgl_permanen,
-                tgl_mulai_kontrak: tgl_mulai_kontrak,
-                tgl_akhir_kontrak: tgl_akhir_kontrak,
-                id_m_perusahaan: auth_m_perusahaan,
-            },
-            success: function (res) {
-                console.log(res);
-                var data = JSON.parse(res);
-                console.log(data);
-                if (data.statusCode == 200) {
-                    //     $('.0c09efa8ccb5e0114e97df31736ce2e3').text(data.auth_person);
-                    //     $('.a6b73b5c154d3540919ddf46edf3b84e').text(data.auth_kary);
-                    //     $('.150b3427b97bb43ac2fb3e5c687e384c').text(data.auth_alamat);
-                    //     $(".9d56835ae6e4d20993874daf592f6aca").text(data.no_ktp);
-                    //     $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text(data.no_kk);
-                    //     $(".c1492f38214db699dfd3574b2644271d").text(data.nik);
-                    //     $(".asdas9asd").text(data.auth_kontrak);
-                    //     $('#colPersonal').collapse("hide");
-                    //     $('#colKaryawan').collapse("hide");
-                    //     $('#colIzinTambang').collapse("show");
-                    //     $("#idizintambang").load(site_url + "karyawan/izin_tambang");
-                    //     $('#imgKaryawan').removeClass("d-none");
-                    //     $('#noktpshow').val(noktp);
-                    //     $('#namalengkapshow').val(nama);
-                    //     aktifSIMPER();
-                    //     $('#filesimpolisi').removeAttr('disabled');
-                    //     swal("Berhasil", "Data karyawan berhasil disimpan, lengkapi data selanjutnya", "success");
-                    //     $.LoadingOverlay("hide");
-                    // } else if (data.statusCode == 201) {
-                    //     $(".errmsgKary").removeClass('d-none');
-                    //     $(".errmsgKary").removeClass('alert-primary');
-                    //     $(".errmsgKary").addClass('alert-danger');
-                    //     $(".errmsgKary").html(data.pesan);
-                    //     $.LoadingOverlay("hide");
-                } else {
-                    $(".errorEditNIKKary").html(data.no_nik);
-                    $(".errorEditDepartKary").html(data.depart);
-                    $(".errorEditPosisiKary").html(data.posisi);
-                    $(".errorEditKlasifikasiKary").html(data.id_klasifikasi);
-                    $(".errorEditPOHKary").html(data.id_poh);
-                    $(".errorEditLokterimaKary").html(data.id_lokterima);
-                    $(".errorEditLokasiKerja").html(data.id_lokker);
-                    $(".errorEditLevelKary").html(data.id_level);
-                    $(".errorEditStatusResidence").html(data.stat_tinggal);
-                    $(".errorEditDOH").html(data.doh);
-                    $(".errorEditTanggalAktif").html(data.tgl_aktif);
-                    $(".errorEditTipeKaryawan").html(data.id_tipe);
-                    $(".errorEditJenisKaryawan").html(data.stat_kerja);
-                    $(".errorEditEmail").html(data.email_kantor);
-                    $(".errorEditTanggalPermanen").html(data.pesan);
-                    $(".errorEditTanggalKontrakAwal").html(data.pesan1);
-                    $(".errorEditTanggalKontrakAkhir").html(data.pesan2);
+        swal({
+            title: "Simpan Data",
+            text: "Yakin data karyawan akan disimpan?",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#36c6d3',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan',
+            cancelButtonText: 'Batalkan'
+        }).then(function (result) {
+            if (result.value) {
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: site_url + "karyawan/update_karyawan",
+                    data: {
+                        id_karyawan: id_kary,
+                        auth_person: auth_person,
+                        auth_kary: auth_kary,
+                        auth_ktr: auth_ktr,
+                        no_ktp: no_ktp,
+                        no_kk: no_kk,
+                        no_nik: no_nik,
+                        auth_depart: auth_depart,
+                        auth_posisi: auth_posisi,
+                        auth_lokker: auth_lokker,
+                        auth_lokterima: auth_lokterima,
+                        auth_poh: auth_poh,
+                        auth_tipe: auth_tipe,
+                        auth_level: auth_level,
+                        id_klasifikasi: id_klasifikasi,
+                        doh: doh,
+                        tgl_aktif: tgl_aktif,
+                        stat_tinggal: stat_tinggal,
+                        stat_kerja: stat_kerja,
+                        email_kantor: email_kantor,
+                        tgl_permanen: tgl_permanen,
+                        tgl_mulai_kontrak: tgl_mulai_kontrak,
+                        tgl_akhir_kontrak: tgl_akhir_kontrak,
+                        auth_m_perusahaan: auth_m_perusahaan,
+                    },
+                    success: function (res) {
+                        console.log(res);
+                        var data = JSON.parse(res);
+                        if (data.statusCode == 204) {
+                            swal("Berhasil", data.pesan, data.status);
+                            $.LoadingOverlay("hide");
+                            // } else if (data.statusCode == 201) {
+                            //     $(".errmsgKary").removeClass('d-none');
+                            //     $(".errmsgKary").removeClass('alert-primary');
+                            //     $(".errmsgKary").addClass('alert-danger');
+                            //     $(".errmsgKary").html(data.pesan);
+                            //     $.LoadingOverlay("hide");
+                        } else {
+                            $(".errorEditNIKKary").html(data.no_nik);
+                            $(".errorEditDepartKary").html(data.depart);
+                            $(".errorEditPosisiKary").html(data.posisi);
+                            $(".errorEditKlasifikasiKary").html(data.id_klasifikasi);
+                            $(".errorEditPOHKary").html(data.id_poh);
+                            $(".errorEditLokterimaKary").html(data.id_lokterima);
+                            $(".errorEditLokasiKerja").html(data.id_lokker);
+                            $(".errorEditLevelKary").html(data.id_level);
+                            $(".errorEditStatusResidence").html(data.stat_tinggal);
+                            $(".errorEditDOH").html(data.doh);
+                            $(".errorEditTanggalAktif").html(data.tgl_aktif);
+                            $(".errorEditTipeKaryawan").html(data.id_tipe);
+                            $(".errorEditJenisKaryawan").html(data.stat_kerja);
+                            $(".errorEditEmail").html(data.email_kantor);
+                            $(".errorEditTanggalPermanen").html(data.pesan);
+                            $(".errorEditTanggalKontrakAwal").html(data.pesan1);
+                            $(".errorEditTanggalKontrakAkhir").html(data.pesan2);
 
-                    swal("Error", "Tidak dapat melanjutkan, lengkapi data karyawan.", "error");
-                    $.LoadingOverlay("hide");
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log(thrownError);
-                $.LoadingOverlay("hide");
-                $(".errmsgKary").removeClass('d-none');
-                $(".errmsgKary").addClass('alert-danger');
-                if (thrownError != "") {
-                    $(".errmsgKary").html("Terjadi kesalahan saat menyimpan data karyawan, hubungi administrator");
-                }
+                            swal("Error", data.pesan, data.status);
+                            $.LoadingOverlay("hide");
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError);
+                        $.LoadingOverlay("hide");
+                        $(".errmsgKary").removeClass('d-none');
+                        $(".errmsgKary").addClass('alert-danger');
+                        if (thrownError != "") {
+                            $(".errmsgKary").html("Terjadi kesalahan saat memperbarui data karyawan, hubungi administrator");
+                        }
+                    }
+                });
             }
         });
-        //     }
-        // });
     });
 });

@@ -65,6 +65,7 @@
                               <input id="currentNoKTP" class="d-none" value=""></input>
                               <input id="currentNoKK" class="d-none" value=""></input>
                               <input id="idUser" class="d-none" value="<?= $this->session->userdata("id_menu") ?>"></input>
+                              <input id="valueIDKaryawan" class="d-none" value="<?= $data_kary->id_kary ?>"></input>
 
                               <!-- Auth -->
                               <input id="valueAuthPersonal" class="d-none" value="<?= $data_kary->auth_personal ?>"></input>
@@ -102,6 +103,7 @@
                               <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
                               <input id="valueStatTinggal" class="d-none" value="<?= $data_kary->stat_tinggal ?>"></input>
                               <input id="valueStatPerjanjian" class="d-none" value="<?= $data_kontrak->id_stat_perjanjian ?>"></input>
+                              <input id="valueKontrakKary" class="d-none" value="<?= $data_kontrak->auth_kontrak_kary ?>"></input>
 
                               <div class="row pt-2">
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">

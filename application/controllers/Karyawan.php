@@ -2680,30 +2680,26 @@ class Karyawan extends My_Controller
                echo json_encode($error);
                return;
           } else {
-               //personal
-               // Kalau ada perusahaan lain membuat data karyawan baru dari orang yang sudah resign. 
-               // Kalau data karyawan sudah ada, dan sudah resign auth_ver tidak kosong
                $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
-
                // $auth_check = htmlspecialchars($this->input->post("auth_check", true));
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
                $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+               $id_karyawan = htmlspecialchars($this->input->post("id_karyawan", true));
 
-
-               //karyawan
+               //data karyawan
                $auth_ktr = htmlspecialchars($this->input->post("auth_ktr", true));
                $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
                $no_kk = htmlspecialchars($this->input->post("no_kk", true));
                $no_nik = htmlspecialchars($this->input->post("no_nik", true));
                $no_nik_old = htmlspecialchars($this->input->post("no_nik_old", true));
-               $auth_depart = htmlspecialchars($this->input->post("depart", true));
-               $auth_posisi = htmlspecialchars($this->input->post("posisi", true));
-               $auth_lokker = htmlspecialchars($this->input->post("id_lokker", true));
-               $auth_lokterima = htmlspecialchars($this->input->post("id_lokterima", true));
-               $auth_poh = htmlspecialchars($this->input->post("id_poh", true));
-               $auth_level = htmlspecialchars($this->input->post("id_level", true));
+               $auth_depart = htmlspecialchars($this->input->post("auth_depart", true));
+               $auth_posisi = htmlspecialchars($this->input->post("auth_posisi", true));
+               $auth_lokker = htmlspecialchars($this->input->post("auth_lokker", true));
+               $auth_lokterima = htmlspecialchars($this->input->post("auth_lokterima", true));
+               $auth_poh = htmlspecialchars($this->input->post("auth_poh", true));
+               $auth_tipe = htmlspecialchars($this->input->post("auth_tipe", true));
+               $auth_level = htmlspecialchars($this->input->post("auth_level", true));
                $id_klasifikasi = htmlspecialchars($this->input->post("id_klasifikasi", true));
-               $id_tipe = htmlspecialchars($this->input->post("id_tipe", true));
                $doh = htmlspecialchars($this->input->post("doh", true));
                $tgl_aktif = htmlspecialchars($this->input->post("tgl_aktif", true));
                $stat_tinggal = htmlspecialchars($this->input->post("stat_tinggal", true));
@@ -2715,53 +2711,100 @@ class Karyawan extends My_Controller
                $tgl_buat = htmlspecialchars($this->input->post("tgl_buat", true));
                $tgl_edit = htmlspecialchars($this->input->post("tgl_edit", true));
                $id_user = htmlspecialchars($this->input->post("id_user", true));
-               $id_m_perusahaan = htmlspecialchars($this->input->post("id_m_perusahaan", true));
+               $auth_m_perusahaan = htmlspecialchars($this->input->post("auth_m_perusahaan", true));
 
-               // if ($auth_check == "") {
-               //      echo json_encode(array("statusCode" => 202, "pesan" => "Data karyawan tidak ditemukan"));
-               //      die;
-               // }
-
-               if ($id_m_perusahaan == "") {
-                    echo json_encode(array("statusCode" => 202, "pesan" => "Data perusahaan tidak ditemukan"));
+               if ($auth_m_perusahaan == "") {
+                    echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Data perusahaan tidak ditemukan"));
                     die;
                }
 
                $query = $this->get_stat_kerja($stat_kerja);
                if ($query == "T") {
                     if ($tgl_mulai_kontrak == "" && $tgl_akhir_kontrak == "") {
-                         echo json_encode(array("statusCode" => 202, "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => "Tanggal akhir wajib diisi"));
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => "Tanggal akhir wajib diisi"));
+                         return;
+                    } else if ($tgl_mulai_kontrak == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => ""));
+                         return;
+                    } else if ($tgl_akhir_kontrak == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "", "pesan2" => "Tanggal akhir wajib diisi"));
+                         return;
+                    } else if ($tgl_mulai_kontrak > $tgl_akhir_kontrak) {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "", "pesan2" => "Isi tanggal akhir dengan benar"));
                          return;
                     }
-                    if ($tgl_mulai_kontrak == "") {
-                         echo json_encode(array("statusCode" => 202, "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => ""));
-                         return;
-                    }
-                    if ($tgl_akhir_kontrak == "") {
-                         echo json_encode(array("statusCode" => 202, "pesan" => "", "pesan1" => "", "pesan2" => "Tanggal akhir wajib diisi"));
-                         return;
-                    }
-
-                    if ($tgl_mulai_kontrak > $tgl_akhir_kontrak) {
-                         echo json_encode(array("statusCode" => 202, "pesan" => "", "pesan1" => "", "pesan2" => "Isi tanggal akhir dengan benar"));
-                         return;
-                    }
-
                     $tgl_permanen = "1970-01-01";
                } else if ($query == "F") {
                     if ($tgl_permanen == "") {
-                         echo json_encode(array("statusCode" => 202, "pesan" => "Tanggal permanen wajib diisi", "pesan1" => "", "pesan2" => ""));
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Tanggal permanen wajib diisi", "pesan1" => "", "pesan2" => ""));
                          return;
                     }
-
                     $tgl_akhir_kontrak = "1970-01-01";
                     $tgl_mulai_kontrak = $tgl_permanen;
                } else {
-                    echo json_encode(array("statusCode" => 202, "pesan" => "Kesalahan saat mengambil status kerja", "pesan1" => "", "pesan2" => ""));
+                    echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Kesalahan saat mengambil status kerja", "pesan1" => "", "pesan2" => ""));
                     return;
                }
 
-               echo json_encode(array("statusCode" => 200, "pesan" => "TEST DONE"));
+               $id_m_perusahaan = $this->prs->get_m_by_auth($auth_m_perusahaan);
+               $id_depart = $this->get_id_depart($auth_depart);
+               $id_posisi = $this->get_id_posisi($auth_posisi);
+               $id_level = $this->get_id_level($auth_level);
+               $id_lokterima = $this->get_id_lokterima($auth_lokterima);
+               $id_lokker = $this->get_id_lokker($auth_lokker);
+               $id_poh = $this->get_id_poh($auth_poh);
+               $id_tipe = $this->get_id_poh($auth_tipe);
+
+               $data_kry = array(
+                    'id_perkerjaan' => 0,
+                    'no_acr' => 0,
+                    'no_nik' => $no_nik,
+                    'doh' => $doh,
+                    'tgl_aktif' => $tgl_aktif,
+                    'id_depart' => $id_depart,
+                    'id_posisi' => $id_posisi,
+                    'id_grade' => 0,
+                    'id_level' => $id_level,
+                    'id_lokker' => $id_lokker,
+                    'id_lokterima' => $id_lokterima,
+                    'id_poh' => $id_poh,
+                    'id_klasifikasi' => $id_klasifikasi,
+                    'id_tipe' => $id_tipe,
+                    'stat_tinggal' => $stat_tinggal,
+                    'email_kantor' => $email_kantor,
+                    'tgl_permanen' => $tgl_permanen,
+                    'id_stat_perjanjian' => $stat_kerja,
+                    'id_m_perusahaan' => $id_m_perusahaan
+               );
+
+               $this->kry->update_dtkary($id_karyawan, $data_kry);
+
+               if ($auth_ktr != "") {
+                    $dtkontrak = $this->kry->get_id_kontrak_by_auth($auth_ktr);
+                    if (!empty($dtkontrak)) {
+                         foreach ($dtkontrak as $lst) {
+                              $id_kontrak = $lst->id_kontrak_kary;
+                         }
+                    } else {
+                         $id_kontrak = "";
+                    }
+                    if ($id_kontrak != "") {
+                         $data_kontrak = [
+                              'id_kary' =>  $id_karyawan,
+                              'id_stat_perjanjian' => $stat_kerja,
+                              'tgl_mulai' => $tgl_mulai_kontrak,
+                              'tgl_akhir' =>  $tgl_akhir_kontrak,
+                              'ket_kontrak' => ''
+                         ];
+                         $this->kry->update_dtkontrak($id_kontrak, $data_kontrak);
+                    }
+               }
+
+               echo json_encode(array(
+                    "statusCode" => 204,
+                    "status" => "success",
+                    "pesan" => "Data karyawan berhasil diperbarui"
+               ));
           }
      }
 }
