@@ -651,78 +651,6 @@ $(document).ready(function () {
         });
     }
 
-    // i wanted to meet you, at least once :)
-    // we can't be together forever, so we better make the time we do have something to remember.
-    // function lanjutpersonal() {
-    
-    // $("#addBatalPersonal").click(function () {
-    //     swal({
-    //         title: "Reset Data",
-    //         text: "Yakin data personal akan direset, data tidak dapat dikembalikan?",
-    //         type: 'question',
-    //         showCancelButton: true,
-    //         confirmButtonColor: '#36c6d3',
-    //         cancelButtonColor: '#d33',
-    //         confirmButtonText: 'Ya, reset data',
-    //         cancelButtonText: 'Batalkan'
-    //     }).then(function (result) {
-    //         if (result.value) {
-    //             $(".0c09efa8ccb5e0114e97df31736ce2e3").text('');
-    //             $(".h2344234jfsd").text('');
-    //             $("#noKTP").val('');
-    //             $("#namaLengkap").val('');
-    //             $("#alamatKTP").val('');
-    //             $("#rtKTP").val('');
-    //             $("#rwKTP").val('');
-    //             $("#provData").html('<option value="">-- PROVINSI TIDAK DITEMUKAN --</option>');
-    //             $("#kotaData").html('<option value="">-- KABUPATEN/KOTA TIDAK DITEMUKAN --</option>');
-    //             $("#kotaData").val('').trigger("change");
-    //             $("#kecData").val('').trigger("change");
-    //             $("#kelData").val('').trigger("change");
-    //             $("#kewarganegaraan").val('').trigger("change");
-    //             $("#addagama").val('').trigger("change");
-    //             $("#jenisKelamin").val('').trigger("change");
-    //             $("#statPernikahan").val('').trigger("change");
-    //             $("#tempatLahir").val('');
-    //             $("#tanggalLahir").val('');
-    //             $("#noBPJSTK").val('');
-    //             $("#noBPJSKES").val('');
-    //             $("#noNPWP").val('');
-    //             $("#noKK").val('');
-    //             $("#email").val('');
-    //             $("#noTelp").val('');
-    //             $("#txtDidik").val('').trigger("change");
-    //             $("#colPersonal").collapse('hide');
-    //             $("#addBatalPersonal").remove();
-    //             $("#addSimpanPersonal").remove();
-    //             $(".errorNoKTP").html('');
-    //             $(".errorNamaLengkap").html('');
-    //             $(".errorAlamatKTP").html('');
-    //             $(".errorRtKTP").html('');
-    //             $(".errorRwKTP").html('');
-    //             $(".errorTempatLahir").html('');
-    //             $(".errorTanggalLahir").html('');
-    //             $(".errorStatPernikahan").html('');
-    //             $(".errorAddAgama").html('');
-    //             $(".erroremail").html('');
-    //             $(".errornoTelp").html('');
-    //             $(".errorKewarganegaraan").html('');
-    //             $(".errorJenisKelamin").html('');
-    //             $(".errorNoBPJSTK").html('');
-    //             $(".errorNoBPJSKES").html('');
-    //             $(".errorNoNPWP").html('');
-    //             $(".errorNoKK").html('');
-    //             $(".errorProvData").html('');
-    //             $(".errorKotaData").html('');
-    //             $(".errorKecData").html('');
-    //             $(".errorKelData").html('');
-    //             nonAktifPersonal();
-    //             swal('Berhasil', 'Data berhasil direset', 'success');
-    //         }
-    //     });
-    // });
-    // }
-
     $("#editStatusKerjaKary").change(function () {
         let temp = $("#editStatusKerjaKary").val();
         if (temp == 1) {
@@ -845,4 +773,129 @@ $(document).ready(function () {
         fetch_statPerjanjian();
     });
 
+    $("#editSimpanPekerjaan").click(function () {
+        // auth
+        let auth_check = $(".89kjm78ujki782m4x787909h3").text();
+        let auth_ver = $(".h2344234jfsd").text();
+        let auth_person = $("#valueAuthPersonal").val();
+        let auth_kary = $("#valueAuthKaryawan").val();
+        let id_kary = $("#valueIDKaryawan").val();
+        let auth_ktr = $("#valueKontrakKary").val();
+        let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
+        let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
+
+        // data karyawan
+        let no_ktp = $("#editNoKTP").val();
+        let no_kk = $("#editNoKK").val();
+        let no_nik = $("#editNIKKary").val();
+        let no_nik_old = $(".c1492f38214db699dfd3574b2644271d").text();
+        let doh = $("#editDOH").val();
+        let tgl_aktif = $("#editTanggalAktif").val();
+        let auth_depart = $("#editDepartKary").val();
+        let auth_posisi = $("#editPosisiKary").val();
+        let auth_level = $("#editLevelKary").val();
+        let auth_lokker = $("#editLokkerKary").val();
+        let auth_lokterima = $("#editLokterimaKary").val();
+        let auth_poh = $("#editPOHKary").val();
+        let id_klasifikasi = $("#editKlasifikasiKary").val();
+        let auth_tipe = $("#editTipeKary").val();
+        let stat_tinggal = $("#editStatusResidence").val();
+        let email_kantor = $("#editEmailKantor").val();
+        let tgl_permanen = $("#editTanggalPermanen").val();
+        let auth_m_perusahaan = $("#editPerKary").val();
+        let stat_kerja = $("#editStatusKerjaKary").val();
+        let tgl_mulai_kontrak = $("#editTanggalKontrakAwal").val();
+        let tgl_akhir_kontrak = $("#editTanggalKontrakAkhir").val();
+
+        console.log(auth_ktr);
+
+        swal({
+            title: "Simpan Data",
+            text: "Yakin data karyawan akan disimpan?",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#36c6d3',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, simpan',
+            cancelButtonText: 'Batalkan'
+        }).then(function (result) {
+            if (result.value) {
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: "POST",
+                    url: site_url + "karyawan/update_karyawan",
+                    data: {
+                        id_karyawan: id_kary,
+                        auth_person: auth_person,
+                        auth_kary: auth_kary,
+                        auth_ktr: auth_ktr,
+                        no_ktp: no_ktp,
+                        no_kk: no_kk,
+                        no_nik: no_nik,
+                        auth_depart: auth_depart,
+                        auth_posisi: auth_posisi,
+                        auth_lokker: auth_lokker,
+                        auth_lokterima: auth_lokterima,
+                        auth_poh: auth_poh,
+                        auth_tipe: auth_tipe,
+                        auth_level: auth_level,
+                        id_klasifikasi: id_klasifikasi,
+                        doh: doh,
+                        tgl_aktif: tgl_aktif,
+                        stat_tinggal: stat_tinggal,
+                        stat_kerja: stat_kerja,
+                        email_kantor: email_kantor,
+                        tgl_permanen: tgl_permanen,
+                        tgl_mulai_kontrak: tgl_mulai_kontrak,
+                        tgl_akhir_kontrak: tgl_akhir_kontrak,
+                        auth_m_perusahaan: auth_m_perusahaan,
+                    },
+                    success: function (res) {
+                        console.log(res);
+                        var data = JSON.parse(res);
+                        if (data.statusCode == 204) {
+                            swal("Berhasil", data.pesan, data.status);
+                            $.LoadingOverlay("hide");
+                            // } else if (data.statusCode == 201) {
+                            //     $(".errmsgKary").removeClass('d-none');
+                            //     $(".errmsgKary").removeClass('alert-primary');
+                            //     $(".errmsgKary").addClass('alert-danger');
+                            //     $(".errmsgKary").html(data.pesan);
+                            //     $.LoadingOverlay("hide");
+                        } else {
+                            $(".errorEditNIKKary").html(data.no_nik);
+                            $(".errorEditDepartKary").html(data.depart);
+                            $(".errorEditPosisiKary").html(data.posisi);
+                            $(".errorEditKlasifikasiKary").html(data.id_klasifikasi);
+                            $(".errorEditPOHKary").html(data.id_poh);
+                            $(".errorEditLokterimaKary").html(data.id_lokterima);
+                            $(".errorEditLokasiKerja").html(data.id_lokker);
+                            $(".errorEditLevelKary").html(data.id_level);
+                            $(".errorEditStatusResidence").html(data.stat_tinggal);
+                            $(".errorEditDOH").html(data.doh);
+                            $(".errorEditTanggalAktif").html(data.tgl_aktif);
+                            $(".errorEditTipeKaryawan").html(data.id_tipe);
+                            $(".errorEditJenisKaryawan").html(data.stat_kerja);
+                            $(".errorEditEmail").html(data.email_kantor);
+                            $(".errorEditTanggalPermanen").html(data.pesan);
+                            $(".errorEditTanggalKontrakAwal").html(data.pesan1);
+                            $(".errorEditTanggalKontrakAkhir").html(data.pesan2);
+
+                            swal("Error", data.pesan, data.status);
+                            $.LoadingOverlay("hide");
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        console.log(thrownError);
+                        $.LoadingOverlay("hide");
+                        $(".errmsgKary").removeClass('d-none');
+                        $(".errmsgKary").addClass('alert-danger');
+                        if (thrownError != "") {
+                            $(".errmsgKary").html("Terjadi kesalahan saat memperbarui data karyawan, hubungi administrator");
+                        }
+                    }
+                });
+            }
+        });
+    });
 });

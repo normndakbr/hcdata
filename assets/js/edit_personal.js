@@ -643,11 +643,14 @@ $(document).ready(function () {
                         stat_alamat_ktp: "",
                     },
                     success: function (res) {
-                        console.log(res);
                         $.LoadingOverlay("show");
                         var data = JSON.parse(res);
                         if (data.statusCode == 204) {
                             swal("Sukses", data.pesan, "success");
+                            $(".noktpshow").val(new_no_ktp);
+                            $(".namalengkapshow").val(new_nama_lengkap);
+                            $("#currentNoKTP").val(new_no_ktp);
+                            $("#currentNoKK").val(new_no_kk);
                             $.LoadingOverlay("hide");
                         } else if (data.statusCode == 403) {
                             swal("Gagal", data.pesan, "error");

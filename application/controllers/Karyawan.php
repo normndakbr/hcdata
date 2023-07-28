@@ -2399,7 +2399,7 @@ class Karyawan extends My_Controller
           echo json_encode($output);
      }
 
-     public function edit_personal()
+     public function update_personal()
      {
           $this->form_validation->set_rules("no_ktp", "no_ktp", "required|trim|numeric|max_length[16]|min_length[16]", [
                'required' => 'No. KTP wajib diisi',
@@ -2590,18 +2590,221 @@ class Karyawan extends My_Controller
                          echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. Kartu Keluarga sudah digunakan"));
                          return;
                     }
-               } else {
-                    $save_dtPersonal = $this->kry->update_dtPersonal($id_personal, $data_personal);
-                    $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
+               }
 
-                    if ($save_dtPersonal && $save_dtAlamatKtp) {
-                         echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
-                    } else if (!$save_dtPersonal) {
-                         echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data personal."));
-                    } else if (!$save_dtAlamatKtp) {
-                         echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data alamat."));
+               $save_dtPersonal = $this->kry->update_dtPersonal($id_personal, $data_personal);
+               $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
+
+               if ($save_dtPersonal && $save_dtAlamatKtp) {
+                    echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
+               } else if (!$save_dtPersonal) {
+                    echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data personal."));
+               } else if (!$save_dtAlamatKtp) {
+                    echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data alamat."));
+               }
+          }
+     }
+
+     public function update_karyawan()
+     {
+          $this->form_validation->set_rules("no_nik", "no_nik", "required|trim|numeric|max_length[25]", [
+               'required' => 'NRP wajib diisi',
+               'numeric' => 'Wajib diisi dengan angka',
+               'max_length' => 'NRP maksimal 25 karakter'
+          ]);
+          $this->form_validation->set_rules("auth_depart", "auth_depart", "required|trim", [
+               'required' => 'Departemen wajib dipilih'
+          ]);
+          $this->form_validation->set_rules("auth_posisi", "auth_posisi", "required|trim", [
+               'required' => 'Posisi wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("auth_lokker", "auth_lokker", "required|trim", [
+               'required' => 'Lokasi kerja wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("auth_lokterima", "auth_lokterima", "required|trim", [
+               'required' => 'Lokasi penerimaan wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("auth_poh", "auth_poh", "required|trim", [
+               'required' => 'Point of Hire wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("auth_tipe", "auth_tipe", "required|trim", [
+               'required' => 'Tipe wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("auth_level", "auth_level", "required|trim", [
+               'required' => 'Grade wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("doh", "doh", "required|trim", [
+               'required' => 'Date of Hire wajib diisi',
+          ]);
+          $this->form_validation->set_rules("tgl_aktif", "tgl_aktif", "required|trim", [
+               'required' => 'Tanggal aktif wajib diisi',
+          ]);
+          $this->form_validation->set_rules("id_klasifikasi", "id_klasifikasi", "required|trim", [
+               'required' => 'Klasifikasi wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("stat_tinggal", "stat_tinggal", "required|trim", [
+               'required' => 'Warga negara wajib diisi',
+          ]);
+          $this->form_validation->set_rules("email_kantor", "email_kantor", "trim|valid_email", [
+               'valid_email' => 'Format email salah'
+          ]);
+
+          // 1 - 2 - 3 - 13
+          // $stat_kerja = htmlspecialchars($this->input->post("stat_kerja", true));
+
+          $this->form_validation->set_rules("stat_kerja", "stat_kerja", "required|trim", [
+               'required' => 'Status karyawan wajib dipilih',
+          ]);
+
+          if ($this->form_validation->run() == false) {
+               $error = [
+                    'statusCode' => 202,
+                    'no_nik' => form_error("no_nik"),
+                    'depart' => form_error("auth_depart"),
+                    'posisi' => form_error("auth_posisi"),
+                    'id_lokker' => form_error("auth_lokker"),
+                    'id_lokterima' => form_error("auth_lokterima"),
+                    'id_tipe' => form_error("auth_tipe"),
+                    'id_level' => form_error("auth_level"),
+                    'doh' => form_error("doh"),
+                    'tgl_aktif' => form_error("tgl_aktif"),
+                    'id_poh' => form_error("auth_poh"),
+                    'id_klasifikasi' => form_error("id_klasifikasi"),
+                    'stat_tinggal' => form_error("stat_tinggal"),
+                    'stat_kerja' => form_error("stat_kerja"),
+                    'email_kantor' => form_error("email_kantor"),
+                    'tgl_mulai_kontrak' => form_error("tgl_mulai_kontrak"),
+                    'tgl_akhir_kontrak' => form_error("tgl_akhir_kontrak")
+               ];
+
+               echo json_encode($error);
+               return;
+          } else {
+               $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
+               // $auth_check = htmlspecialchars($this->input->post("auth_check", true));
+               $auth_person = htmlspecialchars($this->input->post("auth_person", true));
+               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+               $id_karyawan = htmlspecialchars($this->input->post("id_karyawan", true));
+
+               //data karyawan
+               $auth_ktr = htmlspecialchars($this->input->post("auth_ktr", true));
+               $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
+               $no_kk = htmlspecialchars($this->input->post("no_kk", true));
+               $no_nik = htmlspecialchars($this->input->post("no_nik", true));
+               $no_nik_old = htmlspecialchars($this->input->post("no_nik_old", true));
+               $auth_depart = htmlspecialchars($this->input->post("auth_depart", true));
+               $auth_posisi = htmlspecialchars($this->input->post("auth_posisi", true));
+               $auth_lokker = htmlspecialchars($this->input->post("auth_lokker", true));
+               $auth_lokterima = htmlspecialchars($this->input->post("auth_lokterima", true));
+               $auth_poh = htmlspecialchars($this->input->post("auth_poh", true));
+               $auth_tipe = htmlspecialchars($this->input->post("auth_tipe", true));
+               $auth_level = htmlspecialchars($this->input->post("auth_level", true));
+               $id_klasifikasi = htmlspecialchars($this->input->post("id_klasifikasi", true));
+               $doh = htmlspecialchars($this->input->post("doh", true));
+               $tgl_aktif = htmlspecialchars($this->input->post("tgl_aktif", true));
+               $stat_tinggal = htmlspecialchars($this->input->post("stat_tinggal", true));
+               $stat_kerja = htmlspecialchars($this->input->post("stat_kerja", true));
+               $email_kantor = htmlspecialchars($this->input->post("email_kantor", true));
+               $tgl_permanen = htmlspecialchars($this->input->post("tgl_permanen", true));
+               $tgl_mulai_kontrak = htmlspecialchars($this->input->post("tgl_mulai_kontrak", true));
+               $tgl_akhir_kontrak = htmlspecialchars($this->input->post("tgl_akhir_kontrak", true));
+               $tgl_buat = htmlspecialchars($this->input->post("tgl_buat", true));
+               $tgl_edit = htmlspecialchars($this->input->post("tgl_edit", true));
+               $id_user = htmlspecialchars($this->input->post("id_user", true));
+               $auth_m_perusahaan = htmlspecialchars($this->input->post("auth_m_perusahaan", true));
+
+               if ($auth_m_perusahaan == "") {
+                    echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Data perusahaan tidak ditemukan"));
+                    die;
+               }
+
+               $query = $this->get_stat_kerja($stat_kerja);
+               if ($query == "T") {
+                    if ($tgl_mulai_kontrak == "" && $tgl_akhir_kontrak == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => "Tanggal akhir wajib diisi"));
+                         return;
+                    } else if ($tgl_mulai_kontrak == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "Tanggal mulai wajib diisi", "pesan2" => ""));
+                         return;
+                    } else if ($tgl_akhir_kontrak == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "", "pesan2" => "Tanggal akhir wajib diisi"));
+                         return;
+                    } else if ($tgl_mulai_kontrak > $tgl_akhir_kontrak) {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "", "pesan1" => "", "pesan2" => "Isi tanggal akhir dengan benar"));
+                         return;
+                    }
+                    $tgl_permanen = "1970-01-01";
+               } else if ($query == "F") {
+                    if ($tgl_permanen == "") {
+                         echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Tanggal permanen wajib diisi", "pesan1" => "", "pesan2" => ""));
+                         return;
+                    }
+                    $tgl_akhir_kontrak = "1970-01-01";
+                    $tgl_mulai_kontrak = $tgl_permanen;
+               } else {
+                    echo json_encode(array("statusCode" => 422, "status" => "error", "pesan" => "Kesalahan saat mengambil status kerja", "pesan1" => "", "pesan2" => ""));
+                    return;
+               }
+
+               $id_m_perusahaan = $this->prs->get_m_by_auth($auth_m_perusahaan);
+               $id_depart = $this->get_id_depart($auth_depart);
+               $id_posisi = $this->get_id_posisi($auth_posisi);
+               $id_level = $this->get_id_level($auth_level);
+               $id_lokterima = $this->get_id_lokterima($auth_lokterima);
+               $id_lokker = $this->get_id_lokker($auth_lokker);
+               $id_poh = $this->get_id_poh($auth_poh);
+               $id_tipe = $this->get_id_poh($auth_tipe);
+
+               $data_kry = array(
+                    'id_perkerjaan' => 0,
+                    'no_acr' => 0,
+                    'no_nik' => $no_nik,
+                    'doh' => $doh,
+                    'tgl_aktif' => $tgl_aktif,
+                    'id_depart' => $id_depart,
+                    'id_posisi' => $id_posisi,
+                    'id_grade' => 0,
+                    'id_level' => $id_level,
+                    'id_lokker' => $id_lokker,
+                    'id_lokterima' => $id_lokterima,
+                    'id_poh' => $id_poh,
+                    'id_klasifikasi' => $id_klasifikasi,
+                    'id_tipe' => $id_tipe,
+                    'stat_tinggal' => $stat_tinggal,
+                    'email_kantor' => $email_kantor,
+                    'tgl_permanen' => $tgl_permanen,
+                    'id_stat_perjanjian' => $stat_kerja,
+                    'id_m_perusahaan' => $id_m_perusahaan
+               );
+
+               $this->kry->update_dtkary($id_karyawan, $data_kry);
+
+               if ($auth_ktr != "") {
+                    $dtkontrak = $this->kry->get_id_kontrak_by_auth($auth_ktr);
+                    if (!empty($dtkontrak)) {
+                         foreach ($dtkontrak as $lst) {
+                              $id_kontrak = $lst->id_kontrak_kary;
+                         }
+                    } else {
+                         $id_kontrak = "";
+                    }
+                    if ($id_kontrak != "") {
+                         $data_kontrak = [
+                              'id_kary' =>  $id_karyawan,
+                              'id_stat_perjanjian' => $stat_kerja,
+                              'tgl_mulai' => $tgl_mulai_kontrak,
+                              'tgl_akhir' =>  $tgl_akhir_kontrak,
+                              'ket_kontrak' => ''
+                         ];
+                         $this->kry->update_dtkontrak($id_kontrak, $data_kontrak);
                     }
                }
+
+               echo json_encode(array(
+                    "statusCode" => 204,
+                    "status" => "success",
+                    "pesan" => "Data karyawan berhasil diperbarui"
+               ));
           }
      }
 }

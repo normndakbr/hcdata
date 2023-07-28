@@ -62,7 +62,16 @@
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
                               <input id="editTglBuat" class="d-none" value="<?= $data_kary->tgl_buat ?>"></input>
                               <input id="editTglEdit" class="d-none" value="<?= date("Y-m-d H:i:s"); ?>"></input>
+                              <input id="currentNoKTP" class="d-none" value=""></input>
+                              <input id="currentNoKK" class="d-none" value=""></input>
                               <input id="idUser" class="d-none" value="<?= $this->session->userdata("id_menu") ?>"></input>
+                              <input id="valueIDKaryawan" class="d-none" value="<?= $data_kary->id_kary ?>"></input>
+
+                              <!-- Auth -->
+                              <input id="valueAuthPersonal" class="d-none" value="<?= $data_kary->auth_personal ?>"></input>
+                              <input id="valueAuthKaryawan" class="d-none" value="<?= $data_kary->auth_karyawan ?>"></input>
+                              <input id="valueAuthPerusahaan" class="d-none" value="<?= $data_kary->auth_perusahaan ?>"></input>
+                              <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
 
                               <!-- Data Personal -->
                               <input id="editIdPersonal" class="d-none" value="<?= $data_kary->id_personal ?>"></input>
@@ -94,6 +103,7 @@
                               <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
                               <input id="valueStatTinggal" class="d-none" value="<?= $data_kary->stat_tinggal ?>"></input>
                               <input id="valueStatPerjanjian" class="d-none" value="<?= $data_kontrak->id_stat_perjanjian ?>"></input>
+                              <input id="valueKontrakKary" class="d-none" value="<?= $data_kontrak->auth_kontrak_kary ?>"></input>
 
                               <div class="row pt-2">
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
@@ -367,11 +377,10 @@
 
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
-                                                                 <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->no_nik ?>" required>
-                                                                 <small class="erroraddNIKKary text-danger font-italic font-weight-bold"></small>
-                                                                 <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span>
-
+                                                                 <label for="editNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
+                                                                 <input id="editNIKKary" name="editNIK" type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="<?= $data_kary->no_nik ?>">
+                                                                 <small class="errorEditNIKKary text-danger font-italic font-weight-bold"></small>
+                                                                 <!-- <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span> -->
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-5 col-md-12 col-sm-12">
@@ -506,23 +515,23 @@
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addDOH">Date of Hire <span class="text-danger">*</span></label>
-                                                                 <input id='addDOH' name='addDOH' type='date' class="form-control form-control-user" value="<?= $data_kary->doh ?>">
-                                                                 <small class="erroraddDOH text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editDOH">Date of Hire <span class="text-danger">*</span></label>
+                                                                 <input id='editDOH' name='editDOH' type='date' class="form-control form-control-user" value="<?= $data_kary->doh ?>">
+                                                                 <small class="errorEditDOH text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addTanggalAktif">Tanggal Aktif <span class="text-danger">*</span></label>
-                                                                 <input id='addTanggalAktif' name='addTanggalAktif' type='date' class="form-control form-control-user" value="<?= $data_kary->tgl_aktif ?>">
-                                                                 <small class="erroraddTanggalAktif text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editTanggalAktif">Tanggal Aktif <span class="text-danger">*</span></label>
+                                                                 <input id='editTanggalAktif' name='editTanggalAktif' type='date' class="form-control form-control-user" value="<?= $data_kary->tgl_aktif ?>">
+                                                                 <small class="errorEditTanggalAktif text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-6 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addEmailKantor">Email Perusahaan </label>
-                                                                 <input id='addEmailKantor' name='addEmailKantor' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->email_kantor ?>" required>
-                                                                 <small class="erroraddEmail text-danger font-italic font-weight-bold"></small>
+                                                                 <label for="editEmailKantor">Email Perusahaan </label>
+                                                                 <input id='editEmailKantor' name='editEmailKantor' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->email_kantor ?>" required>
+                                                                 <small class="errorEditEmailKantor text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
@@ -561,8 +570,7 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                            <a id="editKembaliPekerjaan" data-scroll href="#clPersonal" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                            <a id="editSimpanPekerjaan" data-scroll href="#clIzinTambang" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Simpan & Lanjutkan</a>
+                                                            <a id="editSimpanPekerjaan" class="btn btn-primary font-weight-bold" style="margin-left:30px;">Simpan Data</a>
                                                        </div>
                                                   </div>
                                              </div>
