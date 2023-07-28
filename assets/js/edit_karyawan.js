@@ -775,20 +775,15 @@ $(document).ready(function () {
 
     $("#editSimpanPekerjaan").click(function () {
         // auth
-        let auth_check = $(".89kjm78ujki782m4x787909h3").text();
-        let auth_ver = $(".h2344234jfsd").text();
         let auth_person = $("#valueAuthPersonal").val();
         let auth_kary = $("#valueAuthKaryawan").val();
         let id_kary = $("#valueIDKaryawan").val();
         let auth_ktr = $("#valueKontrakKary").val();
-        let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
-        let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
 
         // data karyawan
         let no_ktp = $("#editNoKTP").val();
         let no_kk = $("#editNoKK").val();
         let no_nik = $("#editNIKKary").val();
-        let no_nik_old = $(".c1492f38214db699dfd3574b2644271d").text();
         let doh = $("#editDOH").val();
         let tgl_aktif = $("#editTanggalAktif").val();
         let auth_depart = $("#editDepartKary").val();
@@ -806,8 +801,7 @@ $(document).ready(function () {
         let stat_kerja = $("#editStatusKerjaKary").val();
         let tgl_mulai_kontrak = $("#editTanggalKontrakAwal").val();
         let tgl_akhir_kontrak = $("#editTanggalKontrakAkhir").val();
-
-        console.log(auth_ktr);
+        let tgl_edit = $("#editTglEdit").val();
 
         swal({
             title: "Simpan Data",
@@ -849,6 +843,7 @@ $(document).ready(function () {
                         tgl_mulai_kontrak: tgl_mulai_kontrak,
                         tgl_akhir_kontrak: tgl_akhir_kontrak,
                         auth_m_perusahaan: auth_m_perusahaan,
+                        tgl_edit: tgl_edit,
                     },
                     success: function (res) {
                         console.log(res);

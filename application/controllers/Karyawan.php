@@ -2681,7 +2681,6 @@ class Karyawan extends My_Controller
                return;
           } else {
                $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
-               // $auth_check = htmlspecialchars($this->input->post("auth_check", true));
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
                $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
                $id_karyawan = htmlspecialchars($this->input->post("id_karyawan", true));
@@ -2691,7 +2690,6 @@ class Karyawan extends My_Controller
                $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
                $no_kk = htmlspecialchars($this->input->post("no_kk", true));
                $no_nik = htmlspecialchars($this->input->post("no_nik", true));
-               $no_nik_old = htmlspecialchars($this->input->post("no_nik_old", true));
                $auth_depart = htmlspecialchars($this->input->post("auth_depart", true));
                $auth_posisi = htmlspecialchars($this->input->post("auth_posisi", true));
                $auth_lokker = htmlspecialchars($this->input->post("auth_lokker", true));
@@ -2774,7 +2772,8 @@ class Karyawan extends My_Controller
                     'email_kantor' => $email_kantor,
                     'tgl_permanen' => $tgl_permanen,
                     'id_stat_perjanjian' => $stat_kerja,
-                    'id_m_perusahaan' => $id_m_perusahaan
+                    'id_m_perusahaan' => $id_m_perusahaan,
+                    'tgl_edit' => $tgl_edit,
                );
 
                $this->kry->update_dtkary($id_karyawan, $data_kry);
