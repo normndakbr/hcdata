@@ -136,19 +136,25 @@ class Karyawan extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
+
           $id_perusahaan = $this->session->userdata("id_perusahaan");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama");
           $data['email'] = $this->session->userdata("email");
           $data['menu'] = $this->session->userdata("id_menu");
+          $data['menu'] = $this->session->userdata("id_menu");
           $data["data_kary"] = $this->kry->get_by_auth($id_kary);
+          // echo $data["data_kary"]->auth_personal;
           $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($id_kary);
           $data["data_izin"] = $this->kry->get_izin_by_auth($id_kary);
+          $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
+          // print_r($data["data_sim_kary"]);
           $data["data_unit"] = $this->kry->get_izin_unit_by_auth($id_kary);
           $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
           $data["data_mcu"] = $this->kry->get_mcu_by_auth($id_kary);
           $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
           $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($id_kary);
+
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_edit', $data);
           $this->load->view('dashboard/modal/karyawan');
@@ -2680,15 +2686,12 @@ class Karyawan extends My_Controller
                echo json_encode($error);
                return;
           } else {
-               $auth_ver = htmlspecialchars($this->input->post("auth_ver", true));
-               $auth_person = htmlspecialchars($this->input->post("auth_person", true));
-               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
                $id_karyawan = htmlspecialchars($this->input->post("id_karyawan", true));
 
                //data karyawan
-               $auth_ktr = htmlspecialchars($this->input->post("auth_ktr", true));
                $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
                $no_kk = htmlspecialchars($this->input->post("no_kk", true));
+               $auth_ktr = htmlspecialchars($this->input->post("auth_ktr", true));
                $no_nik = htmlspecialchars($this->input->post("no_nik", true));
                $auth_depart = htmlspecialchars($this->input->post("auth_depart", true));
                $auth_posisi = htmlspecialchars($this->input->post("auth_posisi", true));
