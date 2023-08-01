@@ -592,91 +592,92 @@
                                              <img id="imgIzinTambang" src="<?= base_url('assets/images/checked.png') ?>" alt="" height="25px" width="25px" class="d-none" style="margin-left:10px;margin-top:-3px;">
                                         </button>
                                         <div class="collapse mt-2" id="colEditIzinTambang">
-                                             <div class="card card-body" <div class="card-body row mt-3">
-                                                  <div class="col-lg-12 col-md-12 col-sm-12">
-                                                       <div class="alert alert-danger errormsgizin animate__animated animate__bounce d-none"></div>
-                                                  </div>
-                                                  <div class="col-lg-4 col-md-4 col-sm-12">
-                                                       <div class="form-group">
-                                                            <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
-                                                            <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
+                                             <div class="card card-body">
+                                                  <div class="card-body row mt-3">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <div class="alert alert-danger errormsgizin animate__animated animate__bounce d-none"></div>
                                                        </div>
-                                                  </div>
-                                                  <div class="col-lg-8 col-md-8 col-sm-12">
-                                                       <div class="form-group">
-                                                            <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
-                                                            <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="noktpshow"> No. KTP <span class="text-danger">*</span></label>
+                                                                 <input id='noktpshow' name='noktpshow' type="number" autocomplete="off" spellcheck="false" class="noktpshow form-control bg-white" value="<?= $data_kary->no_ktp ?>" disabled>
+                                                            </div>
                                                        </div>
-                                                  </div>
-                                                  <div class="col-lg-12 col-md-12 col-sm-12">
-                                                       <hr>
-                                                  </div>
-                                                  <div class="col-lg-3 col-md-3 col-sm-12">
-                                                       <div class="form-group">
-                                                            <label for="editJenisIzin">Jenis Izin <span class="text-danger">*</span></label>
-                                                            <select id="editJenisIzin" name="editJenisIzin" class="form-control form-control-user">
-                                                                 <option value="">-- WAJIB DIPILIH --</option>
-                                                                 <option value="SP">SIMPER</option>
-                                                                 <option value="MP">MINE PERMIT</option>
-                                                            </select>
-                                                            <small class="errorEditJenisIzin text-danger font-italic font-weight-bold"></small>
-                                                            <span class="ecb14fe704e08d9df8e343030bbbafcb d-none"></span>
+                                                       <div class="col-lg-8 col-md-8 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="namalengkapshow">Nama Lengkap <span class="text-danger">*</span></label>
+                                                                 <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
+                                                            </div>
                                                        </div>
-                                                  </div>
-                                                  <div class="col-lg-9 col-md-9 col-sm-12">
-                                                       <div class="form-group">
-                                                            <label for="editNoReg">No. Register <span class="text-danger">*</span></label>
-                                                            <input id='editNoReg' name='editNoReg' type="text" class="form-control form-control-user" value="<?= $data_izin->no_reg ?>">
-                                                            <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <hr>
                                                        </div>
-                                                  </div>
-                                                  <div id="txtEditSIM" class="col-lg-6 col-md-6 col-sm-12 mb-3 d-none">
-                                                       <div class="row">
-                                                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <label for="editJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
-                                                                      <div id="txtEditIzinSIM" class="input-group">
-                                                                           <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
-                                                                                <option value="">-- SIM TIDAK ADA --</option>
-                                                                           </select>
-                                                                           <div class="input-group-prepend">
-                                                                                <button id="refreshEditJenisSIM" name="refreshJenisSIM" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="editJenisIzin">Jenis Izin <span class="text-danger">*</span></label>
+                                                                 <select id="editJenisIzin" name="editJenisIzin" class="form-control form-control-user">
+                                                                      <option value="">-- WAJIB DIPILIH --</option>
+                                                                      <option value="SP">SIMPER</option>
+                                                                      <option value="MP">MINE PERMIT</option>
+                                                                 </select>
+                                                                 <small class="errorEditJenisIzin text-danger font-italic font-weight-bold"></small>
+                                                                 <span class="ecb14fe704e08d9df8e343030bbbafcb d-none"></span>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-9 col-md-9 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="editNoReg">No. Register <span class="text-danger">*</span></label>
+                                                                 <input id='editNoReg' name='editNoReg' type="text" class="form-control form-control-user" value="<?= $data_izin->no_reg ?>">
+                                                                 <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
+                                                            </div>
+                                                       </div>
+                                                       <div id="txtEditSIM" class="col-lg-6 col-md-6 col-sm-12 mb-3 d-none">
+                                                            <div class="row">
+                                                                 <div class="col-lg-6 col-md-6 col-sm-12">
+                                                                      <div class="form-group">
+                                                                           <label for="editJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
+                                                                           <div id="txtEditIzinSIM" class="input-group">
+                                                                                <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
+                                                                                     <option value="">-- SIM TIDAK ADA --</option>
+                                                                                </select>
+                                                                                <div class="input-group-prepend">
+                                                                                     <button id="refreshEditJenisSIM" name="refreshJenisSIM" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                                </div>
                                                                            </div>
+                                                                           <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
                                                                       </div>
-
-                                                                      <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
+                                                                 </div>
+                                                                 <div class="col-lg-6 col-md-6 col-sm-12">
+                                                                      <div class="form-group">
+                                                                           <label for="addTglExpSIM">Tanggal Expired SIM <span class="text-danger">*</span></label>
+                                                                           <input id='addTglExpSIM' name='addTglExpSIM' type="date" class="form-control form-control-user" value="<?= !$data_sim_kary ? "" : $data_sim_kary->tgl_exp ?>">
+                                                                           <small class="erroraddTglExpSIM text-danger font-italic font-weight-bold"></small>
+                                                                      </div>
                                                                  </div>
                                                             </div>
-                                                            <div class="col-lg-6 col-md-6 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <label for="addTglExpSIM">Tanggal Expired SIM <span class="text-danger">*</span></label>
-                                                                      <input id='addTglExpSIM' name='addTglExpSIM' type="date" class="form-control form-control-user" value="<?= !$data_sim_kary ? "" : $data_sim_kary->tgl_exp ?>">
-                                                                      <small class="erroraddTglExpSIM text-danger font-italic font-weight-bold"></small>
+                                                       </div>
+                                                       <div class="col-lg-3 col-md-3 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="editTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
+                                                                 <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= $data_izin->tgl_expired ?>">
+                                                                 <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
+                                                            </div>
+                                                       </div>
+                                                       <div id="txtEditunit" class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                                            <div class="row">
+                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                                                      <hr>
+                                                                 </div>
+                                                                 <div class="collapse col-lg-12 col-md-12 col-sm-12 mb-3 simperunit">
+                                                                      <a id="editUnitSIMPER" href="#!" class="btn btn-primary font-weight-bold mb-4">Tambah Unit</a>
+                                                                      <div id="idizintambang" class="data"></div>
                                                                  </div>
                                                             </div>
                                                        </div>
-                                                  </div>
-                                                  <div class="col-lg-3 col-md-3 col-sm-12">
-                                                       <div class="form-group">
-                                                            <label for="editTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
-                                                            <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= $data_izin->tgl_expired ?>">
-                                                            <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
+                                                       <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+                                                            <a id="editKembaliIzinUnit" data-scroll href="#clKaryawan" class="btn btn-warning font-weight-bold disabled">Kembali</a>
+                                                            <a id="editSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Lanjutkan</a>
                                                        </div>
-                                                  </div>
-                                                  <div id="txtunit" class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                       <div class="row">
-                                                            <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                                 <hr>
-                                                            </div>
-                                                            <div class="collapse col-lg-12 col-md-12 col-sm-12 mb-3 simperunit">
-                                                                 <a id="editUnitSIMPER" href="#!" class="btn btn-primary font-weight-bold mb-4">Tambah Unit</a>
-                                                                 <div id="idizintambang" class="data"></div>
-                                                            </div>
-                                                       </div>
-                                                  </div>
-                                                  <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                       <a id="editKembaliIzinUnit" data-scroll href="#clKaryawan" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                       <a id="editSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Lanjutkan</a>
                                                   </div>
                                              </div>
                                         </div>
@@ -1006,6 +1007,7 @@
                </div>
           </div>
      </div>
+</div>
 </div>
 </div>
 <div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
