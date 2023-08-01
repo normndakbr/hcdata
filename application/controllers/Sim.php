@@ -262,4 +262,15 @@ class Sim extends My_Controller
                echo json_encode(array("statusCode" => 200, "sim" => $output, "pesan", "Sim gagal ditampilkan"));
           }
      }
+
+     public function get_auth_sim_by_id()
+     {
+          $id_sim = $this->input->post('id_sim');
+          $query = $this->smm->get_auth_sim($id_sim);
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }

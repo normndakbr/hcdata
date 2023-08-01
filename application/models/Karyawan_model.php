@@ -161,6 +161,16 @@ class Karyawan_model extends CI_Model
         return $query->row();
     }
 
+    public function get_sim_by_auth($auth_personal)
+    {
+
+        $this->db->from('vw_sim_karyawan');
+        $this->db->where('auth_personal', $auth_personal);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
     public function get_izin_unit_by_auth($auth_karyawan)
     {
         $this->db->from('vw_izin_unit');
@@ -670,7 +680,6 @@ class Karyawan_model extends CI_Model
             return;
         }
     }
-
 
     public function get_id_karyawan($auth_kary)
     {
