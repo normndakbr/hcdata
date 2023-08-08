@@ -144,6 +144,16 @@ class Perusahaan_model extends CI_Model
           }
      }
 
+     public function hapus_izin_perusahaan($id_izin)
+     {
+          $this->db->delete('tb_izin_perusahaan', ['id_izin_perusahaan' => $id_izin]);
+          if ($this->db->affected_rows() > 0) {
+               return 200;
+          } else {
+               return 201;
+          }
+     }
+
      public function get_perusahaan_id($auth_perusahaan)
      {
           $query = $this->db->get_where('vw_perusahaan', ['auth_perusahaan' => $auth_perusahaan]);
@@ -227,12 +237,12 @@ class Perusahaan_model extends CI_Model
 
      public function get_m_all()
      {
-          $id_m_perusahaan = $this->session->userdata('id_m_perusahaan');
+          $id_m_perusahaan = $this->session->userdata('id_m_perusahaan_hcdata');
           return $this->db->get_where('vw_m_per', ['id_parent' => $id_m_perusahaan])->result();
      }
      public function get_con_per()
      {
-          $id_m_perusahaan = $this->session->userdata('id_m_perusahaan');
+          $id_m_perusahaan = $this->session->userdata('id_m_perusahaan_hcdata');
           return $this->db->get_where('vw_m_per', ['id_m_perusahaan' => $id_m_perusahaan])->result();
      }
 
@@ -254,6 +264,18 @@ class Perusahaan_model extends CI_Model
           if (!empty($query->result())) {
                foreach ($query->result() as $list) {
                     return $list->id_izin_perusahaan;
+               }
+          } else {
+               return;
+          }
+     }
+
+     public function get_auth_m_by_auth_izin($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_perusahaan', ['auth_izin_perusahaan' => $auth_izin]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->auth_m_perusahaan;
                }
           } else {
                return;
@@ -343,6 +365,18 @@ class Perusahaan_model extends CI_Model
           if (!empty($query->result())) {
                foreach ($query->result() as $list) {
                     return $list->url_rk3l;
+               }
+          } else {
+               return;
+          }
+     }
+
+     public function get_izin_by_auth_m($auth_izin)
+     {
+          $query = $this->db->get_where('vw_izin_perusahaan', ['auth_izin_perusahaan' => $auth_izin]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    return $list->url_izin_perusahaan;
                }
           } else {
                return;

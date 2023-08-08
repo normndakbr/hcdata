@@ -11,9 +11,9 @@ class Bank extends My_Controller
 
      public function index()
      {
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/bank/bank');
           $this->load->view('dashboard/modal/mdlform');
@@ -23,9 +23,9 @@ class Bank extends My_Controller
 
      public function new()
      {
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/bank/bank_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -105,7 +105,7 @@ class Bank extends My_Controller
                     'stat_bank' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user')
+                    'id_user' => $this->session->userdata('id_user_hcdata')
                ];
 
                $bank = $this->bnk->input_bank($data);

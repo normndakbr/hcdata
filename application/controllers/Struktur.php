@@ -19,11 +19,11 @@ class Struktur extends My_Controller
                $this->session->set_flashdata('psn', '<div class="alert alert-primary suksesupdtstr animate__animated animate__bounce mb-2" role="alert"> Perusahaan berhasil dihapus</div>');
           }
 
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/struktur/struktur');
           $this->load->view('dashboard/modal/mdlform');
@@ -37,8 +37,8 @@ class Struktur extends My_Controller
                $this->session->set_flashdata('psn', '<div class="alert alert-primary suksesalrt animate__animated animate__bounce mb-2" role="alert"> Struktur perusahaan berhasil dibuat </div>');
           }
 
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMaster($idmper, "");
                     $data['perstr'] = $this->str->getMenu($idmper, "");
@@ -51,11 +51,11 @@ class Struktur extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/struktur/struktur_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -305,7 +305,7 @@ class Struktur extends My_Controller
                     'url_rk3l' => '',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user')
+                    'id_user' => $this->session->userdata('id_user_hcdata')
                ];
 
                $str_per = $this->str->input_struktur($dtper);
@@ -370,7 +370,7 @@ class Struktur extends My_Controller
                if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
                     $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 500;
+                    $config['max_size'] = 600;
                     $config['file_name'] = $nama_file;
 
                     $this->load->library('upload', $config);
@@ -379,7 +379,7 @@ class Struktur extends My_Controller
                          $err = $this->upload->display_errors();
 
                          if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                              $error = "<p>Ukuran file maksimal 500 kb.</p>";
+                              $error = "<p>Ukuran file maksimal 600 kb.</p>";
                          } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                               $error = "<p>Format file nya dalam bentuk pdf</p>";
                          } else {
@@ -455,6 +455,47 @@ class Struktur extends My_Controller
                          }
                     } else {
                          echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
+                    }
+               }
+          }
+     }
+
+     public function resetiujp()
+     {
+          $this->form_validation->set_rules("auth_izin", "auth_izin", "required|trim", [
+               'required' => 'Perizinan tidak ditemukan'
+          ]);
+
+          if ($this->form_validation->run() == false) {
+
+               $error = [
+                    'statusCode' => 202,
+                    'auth_izin' => form_error("auth_izin")
+               ];
+
+               echo json_encode($error);
+          } else {
+               $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
+               $auth_m_per = $this->prs->get_auth_m_by_auth_izin($auth_izin);
+               $id_izin = $this->prs->get_by_auth_izin($auth_izin);
+               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+               $namafolder = md5($id_per);
+               $url_iujp = $this->prs->get_izin_by_auth_m($auth_izin);
+
+               if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
+                    if ($url_iujp !== "") {
+                         unlink('./assets/berkas/perusahaan/' . $namafolder . "/" . $url_iujp);
+                    }
+
+                    if ($id_izin != "") {
+                         $hps_izin = $this->prs->hapus_izin_perusahaan($id_izin);
+                         if ($hps_izin) {
+                              echo json_encode(array('statusCode' => 200, 'pesan' => 'Data IUJP/Perizinan berhasil Hapus'));
+                         } else {
+                              echo json_encode(array('statusCode' => 201, 'pesan' => 'Data IUJP/Perizinan gagal Hapus'));
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perizinan"));
                     }
                }
           }
@@ -563,7 +604,7 @@ class Struktur extends My_Controller
                                         'ket_izin_perusahaan' => $ket_iujp,
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $str_per = $this->str->input_iujp($dtiujp);
@@ -739,7 +780,7 @@ class Struktur extends My_Controller
                                    'ket_izin_perusahaan' => $ket_iujp,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $str_per = $this->str->input_iujp($dtiujp);
@@ -862,7 +903,7 @@ class Struktur extends My_Controller
                                         'ket_sio' => $ket_sio,
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $str_per = $this->str->input_sio($dtsio);
@@ -1037,7 +1078,7 @@ class Struktur extends My_Controller
                                    'ket_sio' => $ket_sio,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $str_per = $this->str->input_sio($dtsio);
@@ -1160,7 +1201,7 @@ class Struktur extends My_Controller
                                         'url_doc_kontrak_perusahaan' => $nama_file,
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $str_per = $this->str->input_kontrak($dtkontrak);
@@ -1337,7 +1378,7 @@ class Struktur extends My_Controller
                                    'url_doc_kontrak_perusahaan' => $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $str_per = $this->str->input_kontrak($dtkontrak);
@@ -1513,7 +1554,7 @@ class Struktur extends My_Controller
                                         'jurusan' => '',
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $this->kry->input_dtPersonal($dtpersonal);
@@ -1547,7 +1588,7 @@ class Struktur extends My_Controller
                                         'alasan_nonaktif' => '',
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user'),
+                                        'id_user' => $this->session->userdata('id_user_hcdata'),
                                         'id_m_perusahaan' => $id_m_per
                                    ];
 
@@ -1569,7 +1610,7 @@ class Struktur extends My_Controller
                                    'ket_pjo' =>  $ket_pjo,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
                               $inputpjo = $this->str->input_pjo($dtpjo);
@@ -1744,7 +1785,7 @@ class Struktur extends My_Controller
                                         'jurusan' => '',
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $this->kry->input_dtPersonal($dtpersonal);
@@ -1778,7 +1819,7 @@ class Struktur extends My_Controller
                                         'alasan_nonaktif' => '',
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user'),
+                                        'id_user' => $this->session->userdata('id_user_hcdata'),
                                         'id_m_perusahaan' => $id_m_per
                                    ];
 
@@ -1800,7 +1841,7 @@ class Struktur extends My_Controller
                                    'ket_pjo' =>  $ket_pjo,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
                               $inputpjo = $this->str->input_pjo($dtpjo);
@@ -1839,6 +1880,13 @@ class Struktur extends My_Controller
      {
           $auth_m_per = htmlspecialchars(trim($this->input->post('auth_m_per')));
           $id_m_per = $this->str->get_by_m_authper($auth_m_per);
+          $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+
+          if ($id_per != "") {
+               $namafolder = md5($id_per);
+          } else {
+               $namafolder = "";
+          }
 
           $query = $this->str->hapus_str_per($id_m_per);
           if ($query == 200) {
@@ -1896,8 +1944,8 @@ class Struktur extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_struktur', $list->id_struktur);
-                    $this->session->set_userdata('id_perusahaan', $list->id_perusahaan);
+                    $this->session->set_userdata('id_struktur_sim_hcdt', $list->id_struktur);
+                    $this->session->set_userdata('id_perusahaan_struktur_hcdt', $list->id_perusahaan);
                }
                echo json_encode($data);
           } else {
@@ -1933,12 +1981,12 @@ class Struktur extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_perusahaan') == "") {
+               if ($this->session->userdata('id_perusahaan_struktur_hcdt') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
 
-               if ($this->session->userdata('id_struktur') == "") {
+               if ($this->session->userdata('id_struktur_sim_hcdt') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "struktur tidak ditemukan"));
                     return;
                }

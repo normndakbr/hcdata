@@ -11,8 +11,8 @@ class Departemen extends My_Controller
 
      public function index()
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMasterPrs($idmper, "");
                     $data['perstr'] = $this->str->getMenuPrs($idmper, "");
@@ -25,11 +25,11 @@ class Departemen extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/departemen/depart');
           $this->load->view('dashboard/template/footer', $data);
@@ -38,8 +38,8 @@ class Departemen extends My_Controller
 
      public function new()
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMasterPrs($idmper, "");
                     $data['perstr'] = $this->str->getMenuPrs($idmper, "");
@@ -52,11 +52,11 @@ class Departemen extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/departemen/depart_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -65,8 +65,11 @@ class Departemen extends My_Controller
 
      public function ajax_list()
      {
-          $auth_per = $this->input->get("auth_per");
-          $list = $this->dprt->get_datatables($auth_per);
+          $auth_per = htmlspecialchars($this->input->get("auth_per"));
+          $csrf_name = $this->security->get_csrf_token_name();
+          $csrf_hash = $this->security->get_csrf_hash();
+          $list = $this->dprt->get_datatables($auth_per, $csrf_name, $csrf_hash);
+
           $data = array();
           $no = $_POST['start'];
           foreach ($list as $dprt) {
@@ -96,10 +99,13 @@ class Departemen extends My_Controller
           $output = array(
                "draw" => $_POST['draw'],
                "recordsTotal" => $this->dprt->count_all(),
-               "recordsFiltered" => $this->dprt->count_filtered($auth_per),
+               "recordsFiltered" => $this->dprt->count_filtered($auth_per, $csrf_name, $csrf_hash),
                "data" => $data,
+
           );
-          //output to json format
+
+          $output[$csrf_name] = $csrf_hash;
+
           echo json_encode($output);
      }
 
@@ -139,9 +145,9 @@ class Departemen extends My_Controller
                return;
           } else {
                $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-               $kd_depart = htmlspecialchars($this->input->post("kode", true));
-               $depart = htmlspecialchars($this->input->post("depart", true));
-               $ket_depart = htmlspecialchars($this->input->post("ket"));
+               $kd_depart = strip_tags($this->input->post("kode", true));
+               $depart = strip_tags($this->input->post("depart", true));
+               $ket_depart = strip_tags($this->input->post("ket"));
                $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
                // echo json_encode([$auth_perusahaan]);
@@ -171,7 +177,7 @@ class Departemen extends My_Controller
                     'stat_depart' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user'),
+                    'id_user' => $this->session->userdata('id_user_hcdata'),
                     'id_perusahaan' => $id_perusahaan
                ];
 
@@ -223,8 +229,8 @@ class Departemen extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_depart', $list->id_depart);
-                    $this->session->set_userdata('id_perusahaan', $list->id_perusahaan);
+                    $this->session->set_userdata('id_depart_hcdata', $list->id_depart);
+                    $this->session->set_userdata('id_perusahaan_depart', $list->id_perusahaan);
                }
                echo json_encode($data);
           } else {
@@ -260,20 +266,20 @@ class Departemen extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_perusahaan') == "") {
+               if ($this->session->userdata('id_perusahaan_depart') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
 
-               if ($this->session->userdata('id_depart') == "") {
+               if ($this->session->userdata('id_depart_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Departemen tidak ditemukan"));
                     return;
                }
 
-               $kd_depart = htmlspecialchars($this->input->post("kode", true));
-               $depart = htmlspecialchars($this->input->post("depart", true));
-               $ket_depart = htmlspecialchars($this->input->post("ket", true));
-               if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
+               $kd_depart = strip_tags($this->input->post("kode", true));
+               $depart = strip_tags($this->input->post("depart", true));
+               $ket_depart = strip_tags($this->input->post("ket", true));
+               if (strip_tags($this->input->post("status", true)) == "AKTIF") {
                     $status = "T";
                } else {
                     $status = "F";

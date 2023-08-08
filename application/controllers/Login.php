@@ -17,11 +17,33 @@ class Login extends My_Controller
      }
      public function index()
      {
-          $dtcap = array(
-               'captcha' => $this->create_captcha(),
-          );
 
-          $this->load->view('login/login', $dtcap);
+          $ip = $_SERVER['REMOTE_ADDR'];
+          $cek_ip = $this->lgn->cek_ip($ip);
+
+          if (!empty($cek_ip)) {
+               foreach ($cek_ip as $lstip) {
+                    $waktu = $lstip->back_log;
+               }
+
+               $now = date("Y-m-d H:i:s");
+
+               if ($waktu < $now) {
+                    $dtcap = array(
+                         'captcha' => $this->create_captcha(),
+                    );
+
+                    $this->load->view('login/login', $dtcap);
+               } else {
+                    redirect(base_url('blokir'));
+               }
+          } else {
+               $dtcap = array(
+                    'captcha' => $this->create_captcha(),
+               );
+
+               $this->load->view('login/login', $dtcap);
+          }
      }
 
      public function reset()
@@ -78,51 +100,25 @@ class Login extends My_Controller
           echo $captcha['image'];
      }
 
-     // public function rst()
-     // {
-     //      $this->session->unset_userdata('attemps_temp');
-     //      $this->session->unset_userdata('back_time');
-
-     //      $dtcap = array(
-     //           'captcha' => $this->create_captcha(),
-     //      );
-
-     //      $this->load->view('login/login', $dtcap);
-     // }
-
      public function auth()
      {
-          $attemp_temp = $this->session->userdata('attemps_temp');
-          $back_time = $this->session->userdata('back_time');
-          $ip_block = $this->session->userdata('ip_block');
           $ip = $_SERVER['REMOTE_ADDR'];
+          $cek_ip = $this->lgn->cek_ip($ip);
 
-          if ($ip_block === $ip) {
-               $dtcap = array(
-                    'captcha' => $this->create_captcha(),
-               );
-
-               $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert">IP Address : ' . $ip . ' tidak diperkenankan meng-akses apps ini sampai pukul : ' . date('d-M-Y H:i:s', strtotime($back_time)) . ' </div>');
-               $this->load->view('login/login', $dtcap);
-          } else {
-               if ($attemp_temp == 5) {
-                    $now = date('Y-m-d H:i:s');
-                    if ($now >= $back_time) {
-                         $this->session->unset_userdata('attemps_temp');
-                         $this->session->unset_userdata('back_time');
-                         $this->session->unset_userdata('ip_block');
-                         $this->log_user();
-                    } else {
-                         $dtcap = array(
-                              'captcha' => $this->create_captcha(),
-                         );
-
-                         $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert">Tidak dapat login, Silahkan login kembali pada pukul : ' . date('d-M-Y H:i:s', strtotime($back_time)) . ' </div>');
-                         $this->load->view('login/login', $dtcap);
-                    }
-               } else {
-                    $this->log_user();
+          if (!empty($cek_ip)) {
+               foreach ($cek_ip as $lstip) {
+                    $waktu = $lstip->back_log;
                }
+
+               $now = date("Y-m-d H:i:s");
+
+               if ($waktu < $now) {
+                    $this->log_user();
+               } else {
+                    redirect(base_url('blokir'));
+               }
+          } else {
+               $this->log_user();
           }
      }
 
@@ -145,10 +141,27 @@ class Login extends My_Controller
 
                $this->load->view('login/login', $dtcap);
           } else {
-               $email = htmlspecialchars(trim($this->input->post('temail', true)));
-               $captcha_save = htmlspecialchars($this->session->userdata('captchaword'), true);
-               $captcha = htmlspecialchars(trim($this->input->post('captcha', true)));
+               $token = strip_tags(trim($this->input->post('token', true)));
+               $valid_token = $this->session->csrf_token;
+               $email = strip_tags(trim($this->input->post('temail', true)));
+               $captcha_save = strip_tags($this->session->userdata('captchaword'), true);
+               $captcha = strip_tags(trim($this->input->post('captcha', true)));
                $sandi = md5(trim($this->input->post('tsandi')));
+
+               if ($token !== $valid_token) {
+                    $data_err = [
+                         'email_error' => $email,
+                         'ip_error' => $_SERVER['REMOTE_ADDR'],
+                         'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                         'msg_error' => 'Token tidak valid : ' . $token . " - valid token : " . $valid_token,
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                    ];
+
+                    $err = $this->lgn->get_err_log($data_err);
+
+                    redirect(base_url('errauth'));
+                    die;
+               }
 
                if ($captcha_save != "") {
                     if ($captcha_save === $captcha) {
@@ -158,30 +171,65 @@ class Login extends My_Controller
                               $data = json_decode($cek);
                               if ($data->{'statusCode'} == 200) {
                                    $session_data = array(
-                                        'id_user'   => $data->{'id_user'},
-                                        'email'  => $data->{'email_user'},
-                                        'nama'  => $data->{'nama_user'},
-                                        'auth_user' => $data->{'auth_user'},
-                                        'id_menu' => $data->{'id_menu'},
-                                        'id_m_perusahaan' => $data->{'id_m_perusahaan'},
-                                        'id_perusahaan' => $data->{'id_perusahaan'}
+                                        'id_user_hcdata'   => $data->{'id_user'},
+                                        'email_hcdata'  => $data->{'email_user'},
+                                        'nama_hcdata'  => $data->{'nama_user'},
+                                        'auth_user_hcdata' => $data->{'auth_user'},
+                                        'id_menu_hcdata' => $data->{'id_menu'},
+                                        'akses_apps_hcdata' => $data->{'akses_apps'},
+                                        'id_m_perusahaan_hcdata' => $data->{'id_m_perusahaan'},
+                                        'id_perusahaan_hcdata' => $data->{'id_perusahaan'},
+                                        'csrf_token_hcdata' => bin2hex(random_bytes(32)),
+                                        'ip_address' => $_SERVER['REMOTE_ADDR'],
                                    );
 
                                    $this->session->set_userdata($session_data);
 
                                    redirect('dash');
-                              } else {
+                              } else if ($data->{'statusCode'} == 201) {
                                    $dtcap = array(
                                         'captcha' => $this->create_captcha(),
                                    );
 
+                                   $data_err = [
+                                        'email_error' => $email,
+                                        'ip_error' => $_SERVER['REMOTE_ADDR'],
+                                        'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                                        'msg_error' => $data->{'pesan'},
+                                        'tgl_buat' => date('Y-m-d H:i:s'),
+                                   ];
+
+                                   $err = $this->lgn->get_err_log($data_err);
+
                                    $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert"> ' . $data->{'pesan'} . '</div>');
                                    $this->load->view('login/login', $dtcap);
+                              } else {
+                                   $data_err = [
+                                        'email_error' => $email,
+                                        'ip_error' => $_SERVER['REMOTE_ADDR'],
+                                        'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                                        'msg_error' => 'Ip Address diblokir karena salah sandi sebanyak 5x',
+                                        'tgl_buat' => date('Y-m-d H:i:s'),
+                                   ];
+
+                                   $err = $this->lgn->get_err_log($data_err);
+
+                                   redirect(base_url('blokir'));
                               }
                          } else {
                               $dtcap = array(
                                    'captcha' => $this->create_captcha(),
                               );
+
+                              $data_err = [
+                                   'email_error' => $email,
+                                   'ip_error' => $_SERVER['REMOTE_ADDR'],
+                                   'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                                   'msg_error' => 'Email tidak ditemukan',
+                                   'tgl_buat' => date('Y-m-d H:i:s'),
+                              ];
+
+                              $err = $this->lgn->get_err_log($data_err);
 
                               $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert"> Email tidak ditemukan</div>');
                               $this->load->view('login/login', $dtcap);
@@ -191,6 +239,16 @@ class Login extends My_Controller
                               'captcha' => $this->create_captcha(),
                          );
 
+                         $data_err = [
+                              'email_error' => $email,
+                              'ip_error' => $_SERVER['REMOTE_ADDR'],
+                              'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                              'msg_error' => 'Kode Captcha Salah',
+                              'tgl_buat' => date('Y-m-d H:i:s'),
+                         ];
+
+                         $err = $this->lgn->get_err_log($data_err);
+
                          $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert">Kode salah</div>');
                          $this->load->view('login/login', $dtcap);
                     }
@@ -198,6 +256,16 @@ class Login extends My_Controller
                     $dtcap = array(
                          'captcha' => $this->create_captcha(),
                     );
+
+                    $data_err = [
+                         'email_error' => $email,
+                         'ip_error' => $_SERVER['REMOTE_ADDR'],
+                         'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                         'msg_error' => 'Refresh Captcha Salah',
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                    ];
+
+                    $err = $this->lgn->get_err_log($data_err);
 
                     $this->session->set_flashdata('pesan', '<div class="pesan alert alert-danger animate__animated animate__bounce" role="alert">Refresh Kode</div>');
                     $this->load->view('login/login', $dtcap);
@@ -220,7 +288,7 @@ class Login extends My_Controller
 
                echo json_encode($error);
           } else {
-               $email = htmlspecialchars(trim($this->input->post('email', true)));
+               $email = strip_tags(trim($this->input->post('email', true)));
                $cek = $this->lgn->reset_sandi($email);
                if ($cek != "") {
                     $data = json_decode($cek);

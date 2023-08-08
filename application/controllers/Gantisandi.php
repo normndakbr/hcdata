@@ -12,13 +12,11 @@ class Gantisandi extends My_Controller
      public function index()
      {
 
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
-          $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/ganti_snd/ganti_sandi');
           $this->load->view('dashboard/modal/gantisandi');
@@ -42,13 +40,11 @@ class Gantisandi extends My_Controller
           ]);
 
           if ($this->form_validation->run() == false) {
-               $id_perusahaan = $this->session->userdata("id_perusahaan");
+               $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
                $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-               $data['nama'] = $this->session->userdata("nama");
-               $data['email'] = $this->session->userdata("email");
-               $data['menu'] = $this->session->userdata("id_menu");
-               $id_perusahaan = $this->session->userdata("id_perusahaan");
-               $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+               $data['nama'] = $this->session->userdata("nama_hcdata");
+               $data['email'] = $this->session->userdata("email_hcdata");
+               $data['menu'] = $this->session->userdata("id_menu_hcdata");
                $this->load->view('dashboard/template/header', $data);
                $this->load->view('dashboard/ganti_snd/ganti_sandi');
                $this->load->view('dashboard/modal/gantisandi');
@@ -69,11 +65,11 @@ class Gantisandi extends My_Controller
                     $this->session->set_flashdata('msg', '<div class="err_psn_sandi alert alert-danger animate__animated animate__bounce"> User tidak ditemukan </div>');
                }
 
-               $data['nama'] = $this->session->userdata("nama");
-               $data['email'] = $this->session->userdata("email");
-               $data['menu'] = $this->session->userdata("id_menu");
-               $id_perusahaan = $this->session->userdata("id_perusahaan");
+               $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
                $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+               $data['nama'] = $this->session->userdata("nama_hcdata");
+               $data['email'] = $this->session->userdata("email_hcdata");
+               $data['menu'] = $this->session->userdata("id_menu_hcdata");
                $this->load->view('dashboard/template/header', $data);
                $this->load->view('dashboard/ganti_snd/ganti_sandi');
                $this->load->view('dashboard/modal/gantisandi');

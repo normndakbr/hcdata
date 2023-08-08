@@ -1,4 +1,13 @@
     $(document).ready(function() {
+        var csrfName = $('.txt_csrfname').attr('name');
+        var csrfHash = $('.txt_csrfname').val();
+
+        var csfrData = {};
+        csfrData[csrfName] = csrfHash;
+        $.ajaxSetup({
+            data: csfrData
+        });
+        
         $("#logout").click(function() {
             $("#logoutmdl").modal("show");
         });
@@ -6,29 +15,6 @@
         $('#perLevelData').select2({
             theme: 'bootstrap4'
         });
-
-        //    $.ajax({
-        //     type: "POST",
-        //     url: site_url+"perusahaan/get_all",
-        //     data: {},
-        //     success: function(data) {
-        //         var data = JSON.parse(data);
-        //         $("#perLevelData").html(data.prs);
-        //         $('#perLevelData').select2({
-        //             theme: 'bootstrap4'
-        //         });
-        //     },
-        //     error: function(xhr, ajaxOptions, thrownError) {
-        //         $.LoadingOverlay("hide");
-        //         $(".err_psn_depart").removeClass('d-none');
-        //         $(".err_psn_depart").removeClass('alert-info');
-        //         $(".err_psn_depart").addClass('alert-danger');
-        //         if (thrownError != "") {
-        //             $(".err_psn_depart").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-        //             $("#btnTambahLevel").attr("disabled", true);
-        //         }
-        //     }
-        // })
 
         $.ajax({
             type: "POST", 
@@ -540,7 +526,7 @@
                 {
                     "data": 'level',
                     "className": "text-nowrap",
-                    "width": "25%"
+                    "width": "70%"
                 },
                 {
                     "data": 'stat_level',
@@ -555,7 +541,7 @@
                 {
                     "data": 'tgl_buat',
                     "className": "text-center text-nowrap",
-                    "width": "8%"
+                    "width": "6%"
                 },
                 {
                     "data": 'proses',

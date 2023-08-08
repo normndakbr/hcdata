@@ -11,8 +11,8 @@ class Lokasipenerimaan extends My_Controller
 
      public function index()
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMasterPrs($idmper, "");
                     $data['perstr'] = $this->str->getMenuPrs($idmper, "");
@@ -25,11 +25,11 @@ class Lokasipenerimaan extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/lokterima/lokterima');
           $this->load->view('dashboard/template/footer', $data);
@@ -38,8 +38,8 @@ class Lokasipenerimaan extends My_Controller
 
      public function new()
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMasterPrs($idmper, "");
                     $data['perstr'] = $this->str->getMenuPrs($idmper, "");
@@ -52,11 +52,11 @@ class Lokasipenerimaan extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/lokterima/lokterima_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -171,7 +171,7 @@ class Lokasipenerimaan extends My_Controller
                     'stat_lokterima' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user'),
+                    'id_user' => $this->session->userdata('id_user_hcdata'),
                     'id_perusahaan' => $id_perusahaan
                ];
 
@@ -223,7 +223,7 @@ class Lokasipenerimaan extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_lokterima', $list->id_lokterima);
+                    $this->session->set_userdata('id_lokterima_hcdata', $list->id_lokterima);
                     $this->session->set_userdata('id_perusahaan_lokterima', $list->id_perusahaan);
                }
                echo json_encode($data);
@@ -260,12 +260,12 @@ class Lokasipenerimaan extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_perusahaan') == "") {
+               if ($this->session->userdata('id_perusahaan_lokterima') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
-
-               if ($this->session->userdata('id_lokterima') == "") {
+s
+               if ($this->session->userdata('id_lokterima_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Lokasi penerimaan tidak ditemukan"));
                     return;
                }

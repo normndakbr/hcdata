@@ -11,11 +11,11 @@ class Izin_tambang extends My_Controller
 
      public function index()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/izin_tambang/izin_tambang');
           $this->load->view('dashboard/modal/mdlform');
@@ -25,11 +25,11 @@ class Izin_tambang extends My_Controller
 
      public function new()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/izin_tambang/izin_tambang_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -155,7 +155,7 @@ class Izin_tambang extends My_Controller
                                    'ket_izin_tambang' => '',
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
 
@@ -170,7 +170,7 @@ class Izin_tambang extends My_Controller
                                    'url_file' => $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
                               $this->smp->input_sim_polisi($data_sim_polisi);
@@ -189,7 +189,7 @@ class Izin_tambang extends My_Controller
                                              'id_tipe_akses_unit' =>  $tipe_akses,
                                              'tgl_buat' => date('Y-m-d H:i:s'),
                                              'tgl_edit' => date('Y-m-d H:i:s'),
-                                             'id_user' => $this->session->userdata('id_user'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata'),
                                         ];
 
                                         $this->smp->input_unit($data_unit_izin);
@@ -231,7 +231,7 @@ class Izin_tambang extends My_Controller
                               'id_tipe_akses_unit' =>  $tipe_akses,
                               'tgl_buat' => date('Y-m-d H:i:s'),
                               'tgl_edit' => date('Y-m-d H:i:s'),
-                              'id_user' => $this->session->userdata('id_user'),
+                              'id_user' => $this->session->userdata('id_user_hcdata'),
                          ];
 
                          $this->smp->input_unit($data_unit_izin);
@@ -436,7 +436,7 @@ class Izin_tambang extends My_Controller
                     'stat_izin_tambang' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user')
+                    'id_user' => $this->session->userdata('id_user_hcdata')
                ];
 
                $izin_tambang = $this->smp->input_izin_tambang($data);
@@ -485,7 +485,7 @@ class Izin_tambang extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_izin_tambang', $list->id_izin_tambang);
+                    $this->session->set_userdata('id_izin_tambang_hcdata', $list->id_izin_tambang);
                }
                echo json_encode($data);
           } else {
@@ -517,7 +517,7 @@ class Izin_tambang extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_izin_tambang') == "") {
+               if ($this->session->userdata('id_izin_tambang_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "izin_tambang tidak ditemukan"));
                     return;
                }

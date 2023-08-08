@@ -1,4 +1,13 @@
     $(document).ready(function() {
+        var csrfName = $('.txt_csrfname').attr('name');
+        var csrfHash = $('.txt_csrfname').val();
+
+        var csfrData = {};
+        csfrData[csrfName] = csrfHash;
+        $.ajaxSetup({
+            data: csfrData
+        });
+        
         $("#logout").click(function() {
             $("#logoutmdl").modal("show");
         });

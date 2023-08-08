@@ -11,11 +11,11 @@ class Poh extends My_Controller
 
      public function index()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/poh/poh');
           $this->load->view('dashboard/template/footer', $data);
@@ -24,11 +24,11 @@ class Poh extends My_Controller
 
      public function new()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/poh/poh_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -121,7 +121,7 @@ class Poh extends My_Controller
                     'stat_poh' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user')
+                    'id_user' => $this->session->userdata('id_user_hcdata')
                ];
 
                $poh = $this->pho->input_poh($data);
@@ -171,7 +171,7 @@ class Poh extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_poh', $list->id_poh);
+                    $this->session->set_userdata('id_poh_hcdata', $list->id_poh);
                }
                echo json_encode($data);
           } else {
@@ -207,7 +207,7 @@ class Poh extends My_Controller
                echo json_encode($error);
                die;
           } else {
-               if ($this->session->userdata('id_poh') == "") {
+               if ($this->session->userdata('id_poh_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Point of hire tidak ditemukan"));
                     return;
                }

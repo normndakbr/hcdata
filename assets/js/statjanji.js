@@ -131,7 +131,6 @@
                          },
                          timeout: 20000,
                          success: function(data) {
-                              alert(data);
                               var data = JSON.parse(data);
                               if (data.statusCode == 200) {
                                    $(".err_psn_statjanji").removeClass('d-none');
