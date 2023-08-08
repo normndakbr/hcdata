@@ -15,7 +15,7 @@ class Depart_model extends CI_Model
           $this->load->database();
      }
 
-     private function _get_datatables_query($auth_per)
+     private function _get_datatables_query($auth_per, $csrf_name, $csrf_hash)
      {
           $dtper = $this->prs->get_by_authper($auth_per);
           if (!empty($dtper)) {
@@ -58,18 +58,18 @@ class Depart_model extends CI_Model
           }
      }
 
-     function get_datatables($auth_per)
+     function get_datatables($auth_per, $csrf_name, $csrf_hash)
      {
-          $this->_get_datatables_query($auth_per);
+          $this->_get_datatables_query($auth_per, $csrf_name, $csrf_hash);
           if ($_POST['length'] != -1)
                $this->db->limit($_POST['length'], $_POST['start']);
           $query = $this->db->get();
           return $query->result();
      }
 
-     function count_filtered($auth_per)
+     function count_filtered($auth_per, $csrf_name, $csrf_hash)
      {
-          $this->_get_datatables_query($auth_per);
+          $this->_get_datatables_query($auth_per, $csrf_name, $csrf_hash);
           $query = $this->db->get();
           return $query->num_rows();
      }

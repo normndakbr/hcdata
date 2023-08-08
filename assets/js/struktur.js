@@ -598,9 +598,10 @@
                                     swal("Berhasil", "RK3L berhasil di-upload", "success");
                                     $("#filerk3l").attr('disabled', true);
                                     $("#btnUploadFileRK3L").attr('disabled', true);
-                                    $("#addBukaFile").removeAttr('disabled');
-                                    $("#addBukaFile").attr("href",data.link);
                                     $("#addResetFileRK3L").removeAttr('disabled');
+                                    $("#addBukaFile").attr("href",data.link);
+                                    $("#addBukaFile").removeClass('disabled');
+                                    $(".error6rk3l").text('');
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
                                     swal("Error", data.pesan, "error");
@@ -686,10 +687,12 @@
                                 if (data.statusCode == 200) {
                                     $('#imgRK3L').addClass('d-none');
                                     swal("Berhasil", "RK3L berhasil di-reset", "success");
-                                    $("#addBukaFile").attr('disabled', true);
+                                    $("#addBukaFile").addClass('disabled');
+                                    $("#addBukaFile").attr('href','');
                                     $("#addResetFileRK3L").attr('disabled', true);
                                     $("#filerk3l").removeAttr('disabled');
                                     $("#btnUploadFileRK3L").removeAttr('disabled');
+                                    $(".error6rk3l").text('');
                                     $("#filerk3l").val('');
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
@@ -819,7 +822,7 @@
                                     $('#perSubSIO').val(persub);
                                     $(".o8s9l3l8n34m7834m22n4w3a").text(data.auth_izin);
                                     $("#addBukaFileIUJP").attr("href", data.link);
-                                    $("#addBukaFileIUJP").removeAttr('disabled');
+                                    $("#addBukaFileIUJP").removeClass('disabled');
                                     $("#addResetFileIUJP").removeAttr('disabled');
                                     $(".error2iujp").html('');
                                     $(".error3iujp").html('');
@@ -862,6 +865,94 @@
                 $(".error6iujp").html(err_fileiujp);
                 $.LoadingOverlay("hide");
             }
+        });
+
+        $('#addResetFileIUJP').click(function() {
+            let auth_izin = htmlspecialchars($(".o8s9l3l8n34m7834m22n4w3a").text());
+
+            if (auth_izin !== "") {
+                swal({
+                    title: "Hapus Data IUJP/Perizinan",
+                    text: "Yakin data IUJP/Perizinan akan dihapus, data tidak dapat dikembalikan lagi?",
+                    type: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#36c6d3',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya, Hapus',
+                    cancelButtonText: 'Batalkan'
+                }).then(function(result) {
+                    if (result.value) {
+                        $.LoadingOverlay("show");
+                        let formData = new FormData();
+                        formData.append('auth_izin', auth_izin);
+                        $.ajax({
+                            type: "POST",
+                            url: site_url+"struktur/resetiujp",
+                            data: formData,
+                            cache: false,
+                            processData: false,
+                            contentType: false,
+                            success: function(data) {
+                                var data = JSON.parse(data);
+                                if (data.statusCode == 200) {
+                                    $("#noiujp").val('');
+                                    $("#tglAktifiujp").val('');
+                                    $("#tglakhiriujp").val('');
+                                    $("#ketiujp").val('');
+                                    $("#fileiujp").val('');
+                                    $('#imgIUJP').addClass('d-none');
+                                    $(".o8s9l3l8n34m7834m22n4w3a").text('')
+                                    swal("Berhasil", "IUJP/Perizinan berhasil dihapus", "success");
+                                    $("#addBukaFileIUJP").addClass('disabled');
+                                    $("#addBukaFileIUJP").attr('href','');
+                                    $("#addResetFileIUJP").attr('disabled', true);
+                                    $("#btnUploadFileIUJP").removeAttr('disabled');
+                                    $(".error6rk3l").text('');
+                                    $.LoadingOverlay("hide");
+                                } else if (data.statusCode == 201) {
+                                    swal("Error", data.pesan, "error");
+                                    $.LoadingOverlay("hide");
+                                } else {
+                                    $(".error6rk3l").html(data.filerk3l);
+                                    if (data.auth_m_per != "") {
+                                        $(".errormsgrk3l").removeClass('d-none');
+                                        $(".errormsgrk3l").addClass('alert-danger');
+                                        $(".errormsgrk3l").html(data.auth_m_per);
+                                    }
+                                    $.LoadingOverlay("hide");
+                                }
+                            },
+                            error: function(xhr, ajaxOptions, thrownError) {
+                                $.LoadingOverlay("hide");
+                                $(".errormsgrk3l").removeClass('d-none');
+                                $(".errormsgrk3l").addClass('alert-danger');
+                                if (thrownError != "") {
+                                    $(".errormsgrk3l").html("Terjadi kesalahan saat reset data RK3L, hubungi administrator");
+                                    $("#AddPerusahaan").remove();
+
+                                    $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
+                                        $(".errormsgrk3l ").slideUp(500);
+                                        $(".errormsgrk3l ").addClass("d-none");
+                                    });
+                                }
+                            }
+                        })
+                    }
+                });
+            } else {
+                $(".error6rk3l").html(err_filerk3l);
+                if (err_auth_m_per != "") {
+                    $(".errormsgrk3l").removeClass('d-none');
+                    $(".errormsgrk3l").addClass('alert-danger');
+                    $(".errormsgrk3l").html(err_auth_m_per);
+                }
+
+                $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
+                    $(".errormsgrk3l ").slideUp(500);
+                    $(".errormsgrk3l ").addClass("d-none");
+                });
+            }
+
         });
 
         $('#btnUploadFileSIO').click(function() {

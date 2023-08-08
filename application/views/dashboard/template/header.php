@@ -67,6 +67,7 @@
                               </div>
                          </div>
                     </div>
+                    <input type="text" class="txt_csrfname d-none" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>"><br>
                     <ul class="nav pcoded-inner-navbar mt-3">
                          <li class="nav-item pcoded-menu-caption">
                               <label>Shortcut</label>
@@ -112,7 +113,8 @@
                          <li class="nav-item pcoded-hasmenu">
                               <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Data Karyawan</span></a>
                               <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('karyawan'); ?>">Karyawan</a></li>
+                                   <li><a href="<?= base_url('karyawan'); ?>">Karyawan </a></li>
+                                   <li><a href="<?= base_url('NonaktifKary'); ?>">Non-Aktif Karyawan</a></li>
                               </ul>
                          </li>
                     </ul>

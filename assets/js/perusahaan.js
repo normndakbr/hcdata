@@ -1,6 +1,15 @@
 
      //========================================== Perusahaan ========================================================
      $(document).ready(function() {
+          var csrfName = $('.txt_csrfname').attr('name');
+          var csrfHash = $('.txt_csrfname').val();
+  
+          var csfrData = {};
+          csfrData[csrfName] = csrfHash;
+          $.ajaxSetup({
+              data: csfrData
+          });
+
           $("#logout").click(function() {
                $("#logoutmdl").modal("show");
           });
@@ -55,12 +64,16 @@
                });
           });
           $("#provPerusahaan").change(function() {
+               var csrfName = $('.txt_csrfname').attr('name');
+               var csrfHash = $('.txt_csrfname').val();
+
                let id_prov = $("#provPerusahaan").val();
                $.ajax({
                     type: "post",
                     url: site_url+"daerah/get_kab",
                     data: {
-                         id_prov: id_prov
+                         id_prov: id_prov,
+                         [csrfName]:csrfHash
                     },
                     success: function(data) {
                          var data = JSON.parse(data);
@@ -498,7 +511,7 @@
                          npwp: npwp,
                          web: web,
                          keg: keg,
-                         ket: ket
+                         ket: ket,
                     },
                     timeout: 20000,
                     success: function(data) {

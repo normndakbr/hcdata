@@ -48,22 +48,6 @@
                                         <label for="detailPerusahaanKodepos">Kodepos :</label><br>
                                         <input id='detailPerusahaanKodepos' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
                                    </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPerusahaanTelp">No. Telpon :</label><br>
-                                        <input id='detailPerusahaanTelp' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPerusahaanEmail">Email :</label><br>
-                                        <input id='detailPerusahaanEmail' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPerusahaanWeb">Website :</label><br>
-                                        <input id='detailPerusahaanWeb' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12">
-                                        <label for="detailPerusahaanNpwp">No. NPWP :</label><br>
-                                        <input id='detailPerusahaanNpwp' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
-                                   </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="detailPerusahaanKet">Keterangan :</label><br>
                                         <textarea id='detailPerusahaanKet' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly></textarea><br>
@@ -163,35 +147,7 @@
                                         </div>
                                         <small id="error8eper" class="text-danger font-italic font-weight-bold"></small>
                                    </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
-                                        <div class="form-group fill">
-                                             <label for="editPerusahaanTelp" class="floating-label">No. Telpon </label>
-                                             <input id='editPerusahaanTelp' type="text" autocomplete="off" placeholder="No. Telpon" spellcheck="false" class="form-control" value="">
-                                        </div>
-                                        <small id="error9eper" class="text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
-                                        <div class="form-group fill">
-                                             <label for="editPerusahaanEmail" class="floating-label">Email </label>
-                                             <input id='editPerusahaanEmail' type="text" autocomplete="off" placeholder="Email" spellcheck="false" class="form-control" value="">
-                                        </div>
-                                        <small id="error10eper" class="text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
-                                        <div class="form-group fill">
-                                             <label for="editPerusahaanWeb" class="floating-label">Website </label>
-                                             <input id='editPerusahaanWeb' type="text" autocomplete="off" placeholder="Website" spellcheck="false" class="form-control" value="">
-                                        </div>
-                                        <small id="error11eper" class="text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-3 col-md-6 col-sm-12 mt-3">
-                                        <div class="form-group fill">
-                                             <label for="editPerusahaanNpwp" class="floating-label">No. NPWP </label>
-                                             <input id='editPerusahaanNpwp' type="text" autocomplete="off" placeholder="No. NPWP" spellcheck="false" class="form-control" value="">
-                                        </div>
-                                        <small id="error12eper" class="text-danger font-italic font-weight-bold"></small>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                   <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                         <label for="editPerusahaanKet" class="floating-label">Keterangan </label>
                                         <textarea id='editPerusahaanKet' type="text" autocomplete="off" spellcheck="false" class="form-control" value=""></textarea>
                                         <small id="error14eper" class="text-danger font-italic font-weight-bold"></small>

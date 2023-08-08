@@ -30,20 +30,21 @@ class My_Controller extends CI_Controller
           $this->load->model('Izin_tambang_model', 'smp');
           $this->load->model('Sertifikasi_model', 'srt');
           $this->load->model('Vaksin_model', 'vks');
+          $this->load->model('NonaktifKary_model', 'nakary');
           $this->load->helper('url', 'form', 'captcha');
           $this->load->library('form_validation', 'session');
      }
 
      public function is_logout()
      {
-          if ($this->session->userdata("email") == "") {
+          if ($this->session->userdata("email_hcdata") == "") {
                header("location: http://localhost:8080/hcdata");
           }
      }
 
      public function is_login()
      {
-          if ($this->session->userdata("email") != "") {
+          if ($this->session->userdata("email_hcdata") != "") {
                header("location: http://localhost:8080/hcdata/dash");
           }
      }

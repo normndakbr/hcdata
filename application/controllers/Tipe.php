@@ -11,11 +11,11 @@ class Tipe extends My_Controller
 
      public function index()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/tipe/tipe');
           $this->load->view('dashboard/template/footer', $data);
@@ -24,11 +24,11 @@ class Tipe extends My_Controller
 
      public function new()
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/tipe/tipe_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -107,7 +107,7 @@ class Tipe extends My_Controller
                     'stat_tipe' => 'T',
                     'tgl_buat' => date('Y-m-d H:i:s'),
                     'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user')
+                    'id_user' => $this->session->userdata('id_user_hcdata')
                ];
 
                $tipe = $this->tpe->input_tipe($data);
@@ -156,7 +156,7 @@ class Tipe extends My_Controller
                          'pembuat' => $list->nama_user
                     ];
 
-                    $this->session->set_userdata('id_tipe', $list->id_tipe);
+                    $this->session->set_userdata('id_tipe_hcdt', $list->id_tipe);
                }
                echo json_encode($data);
           } else {
@@ -188,7 +188,7 @@ class Tipe extends My_Controller
                die;
           } else {
 
-               if ($this->session->userdata('id_tipe') == "") {
+               if ($this->session->userdata('id_tipe_hcdt') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Golongan tidak ditemukan"));
                     return;
                }

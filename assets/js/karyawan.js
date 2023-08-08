@@ -1,4 +1,5 @@
     $(document).ready(function() {
+        
         $("#logout").click(function() {
             $("#logoutmdl").modal("show");
         });
@@ -563,7 +564,7 @@
         $("#btnverifikasiktp").click(function() {
             let noktp = $("#noKTPCek").val();
             let errnoktp = $(".errornoKTPCek").text();
-            
+
             if (noktp != "") {
                 if(errnoktp == ""){
                     swal({
@@ -595,7 +596,8 @@
                                         $.ajax({
                                             type: "POST",
                                             url: site_url+"daerah/get_prov",
-                                            data: {},
+                                            data: {
+                                            },
                                             success: function(provdata) {
                                                 var provdata = JSON.parse(provdata);
                                                 $("#provData").html(provdata.prov);
@@ -655,7 +657,8 @@
                                             type: "POST",
                                             url: site_url+"daerah/get_prov",
                                             async:false,
-                                            data: {},
+                                            data: {
+                                            },
                                             success: function(provdata) {
                                                 var provdata = JSON.parse(provdata);
                                                 $("#provData").html(provdata.prov);

@@ -116,7 +116,7 @@
                                                                                                </div>
                                                                                                <div class="col-lg-12 col-md-12 col-sm-12">
                                                                                                     <div>
-                                                                                                         <h6 class="text-danger font-italic">Catatan : Upload Rencana Keselamatan, Kesehatan Kerja Dan Lingkungan (RK3L) dalam format pdf, ukuran maksimal 1 mb.</h6>
+                                                                                                         <h6 class="text-danger font-italic">Catatan : Upload Rencana Keselamatan, Kesehatan Kerja Dan Lingkungan (RK3L) dalam format pdf, ukuran maksimal 600 kb.</h6>
                                                                                                     </div>
                                                                                                     <div class="form-group mb-3">
                                                                                                          <label for="filerk3l"><b>Rencana Keselamatan, Kesehatan Kerja Dan Lingkungan (RK3L) </b> :</label>
@@ -127,8 +127,8 @@
                                                                                                     </div>
                                                                                                </div>
                                                                                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                                                    <a href="#!" id="addBukaFile" target="_blank" class="btn btn-success font-weight-bold mt-3" disabled>Tampilkan RK3L</a>
-                                                                                                    <button id="addResetFileRK3L" class="btn btn-danger font-weight-bold mt-3 ml-2" disabled>Reset RK3L</button>
+                                                                                                    <a href="#!" id="addBukaFile" target="_blank" class="btn btn-success font-weight-bold mt-3 disabled">Tampilkan RK3L</a>
+                                                                                                    <button href="#!" id="addResetFileRK3L" class="btn btn-danger font-weight-bold mt-3 ml-2" disabled>Reset RK3L</button>
                                                                                                     <button id="btnUploadFileRK3L" class="btn btn-primary font-weight-bold mt-3 ml-2" disabled>Upload RK3L</button>
                                                                                                </div>
                                                                                           </div>
@@ -175,7 +175,7 @@
                                                                                                </div>
                                                                                                <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                                                                                     <div>
-                                                                                                         <h6 class="text-danger font-italic">Catatan : Upload Izin Usaha Jasa Penambangan (IUJP) dalam format pdf, Ukuran maksimal 500 kb.</h6>
+                                                                                                         <h6 class="text-danger font-italic">Catatan : Upload Izin Usaha Jasa Penambangan (IUJP) dalam format pdf, Ukuran maksimal 100 kb.</h6>
                                                                                                     </div>
                                                                                                     <div class="form-group mb-3">
                                                                                                          <label for="fileiujp"><b>Upload Izin Usaha Jasa Penambangan (IUJP)</b> :</label>
@@ -184,7 +184,7 @@
                                                                                                          </div>
                                                                                                          <small class="error6iujp text-danger font-italic font-weight-bold mb-3"></small>
                                                                                                     </div>
-                                                                                                    <a id="addBukaFileIUJP" href="#!" target="_blank" class="btn btn-success font-weight-bold mt-3" disabled>Tampilkan IUJP</a>
+                                                                                                    <a id="addBukaFileIUJP" href="#!" target="_blank" class="btn btn-success font-weight-bold mt-3 disabled" disabled>Tampilkan IUJP</a>
                                                                                                     <button id="addResetFileIUJP" class="btn btn-danger font-weight-bold mt-3 ml-2" disabled>Reset IUJP</button>
                                                                                                     <button id="btnUploadFileIUJP" class="btn btn-primary font-weight-bold mt-3 ml-2" disabled> Simpan & Upload IUJP</button>
                                                                                                </div>

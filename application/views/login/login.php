@@ -32,8 +32,20 @@
                     </div>
                </div>
                <div class="card" style="border-radius: 2%;">
-                    <form action="<?= base_url('login/auth'); ?>" method="post">
+                    <form action="<?= base_url('login/auth'); ?>" method="post">,
                          <div class="card-body">
+
+                              <?php
+
+                              if (!$this->session->csrf_token) {
+                                   $this->session->csrf_token = hash("sha1", time());
+                              } else {
+                                   $this->session->csrf_token = hash("sha1", time());
+                              }
+
+                              ?>
+
+                              <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                               <div class="align-items-center text-center" style="margin-top: -35px;">
                                    <img src="<?= base_url('assets/assets/images/auth/idc.jpg'); ?>" alt="PT Indexim Coalindo" class="w-75 mt-1">
                                    <h4 class="text-black font-weight-bolder mt-2">PT INDEXIM COALINDO</h4>

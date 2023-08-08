@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
 
-class Posisi extends My_Controller
+class NonaktifKary extends My_Controller
 {
      public function __construct()
      {
@@ -14,8 +14,8 @@ class Posisi extends My_Controller
           if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
                $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
-                    $data['permst'] = $this->str->getMasterPrs($idmper, "");
-                    $data['perstr'] = $this->str->getMenuPrs($idmper, "");
+                    $data['permst'] = $this->str->getMaster($idmper, "");
+                    $data['perstr'] = $this->str->getMenu($idmper, "");
                } else {
                     $data['permst'] = "";
                     $data['perstr'] = "";
@@ -25,15 +25,16 @@ class Posisi extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+
+          $id_perusahaan = $this->session->userdata("id_m_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
-          $this->load->view('dashboard/posisi/posisi');
+          $this->load->view('dashboard/nonaktif_karyawan/nonaktif_kary');
           $this->load->view('dashboard/template/footer', $data);
-          $this->load->view('dashboard/code/posisi');
+          $this->load->view('dashboard/code/nonaktif_kary');
      }
 
      public function new()
@@ -41,8 +42,8 @@ class Posisi extends My_Controller
           if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
                $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
-                    $data['permst'] = $this->str->getMasterPrs($idmper, "");
-                    $data['perstr'] = $this->str->getMenuPrs($idmper, "");
+                    $data['permst'] = $this->str->getMaster($idmper, "");
+                    $data['perstr'] = $this->str->getMenu($idmper, "");
                } else {
                     $data['permst'] = "";
                     $data['perstr'] = "";
@@ -52,133 +53,181 @@ class Posisi extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+
+          $id_perusahaan = $this->session->userdata("id_m_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
-          $this->load->view('dashboard/posisi/posisi_add');
+          $this->load->view('dashboard/nonaktif_karyawan/nonaktif_kary_add');
           $this->load->view('dashboard/template/footer', $data);
-          $this->load->view('dashboard/code/posisi');
+          $this->load->view('dashboard/code/nonaktif_kary');
      }
 
      public function ajax_list()
      {
-          $auth_per = $this->input->get("auth_per");
-          $list = $this->pss->get_datatables($auth_per);
+          $auth_m_per = $this->input->get("auth_m_per");
+          $list = $this->nakary->get_datatables($auth_m_per);
           $data = array();
           $no = $_POST['start'];
-          foreach ($list as $pss) {
+          foreach ($list as $nakary) {
                $no++;
                $row = array();
                $row['no'] = $no;
-               $row['auth_posisi'] = $pss->auth_posisi;
-               $row['posisi'] = $pss->posisi;
-               $row['depart'] = $pss->depart;
-               $row['ket_posisi'] = $pss->ket_posisi;
-
-               if ($pss->stat_posisi == "T") {
-                    $row['stat_posisi'] = "<span class='btn btn-success btn-sm '> AKTIF </span>";
-               } else {
-                    $row['stat_posisi'] = "<div class='btn btn-danger btn-sm'> NONAKTIF </div>";
-               }
-
-               $row['kode_perusahaan'] = $pss->kode_perusahaan;
-               $row['tgl_buat'] = date('d-M-Y', strtotime($pss->tgl_buat));
-               $row['tgl_edit'] = date('d-M-Y', strtotime($pss->tgl_edit));
-               $row['proses'] = '<button id="' . $pss->auth_posisi . '" class="btn btn-primary btn-sm font-weight-bold dtlposisi" title="Detail" value="' . $pss->posisi . '"> <i class="fas fa-asterisk"></i> </button> 
-                    <button id="' . $pss->auth_posisi . '" class="btn btn-warning btn-sm font-weight-bold edttposisi" title="Edit" value="' . $pss->posisi . '"> <i class="fas fa-edit"></i> </button> 
-                    <button id="' . $pss->auth_posisi . '" class="btn btn-danger btn-sm font-weight-bold hpsposisi" title="Hapus" value="' . $pss->posisi . '"> <i class="fas fa-trash-alt"></i> </button>';
+               $row['auth_kary_nonaktif'] = $nakary->auth_kary_nonaktif;
+               $row['no_ktp'] = $nakary->no_ktp;
+               $row['no_nik'] = $nakary->no_nik;
+               $row['nama_lengkap'] = $nakary->nama_lengkap;
+               $row['depart'] = $nakary->depart;
+               $row['alasan_nonaktif'] = $nakary->alasan_nonaktif;
+               $row['tgl_nonaktif'] = date('d-M-Y', strtotime($nakary->tgl_nonaktif));
+               $row['ket_nonaktif'] = $nakary->ket_nonaktif;
+               $row['kode_perusahaan'] = $nakary->kode_perusahaan;
+               $row['tgl_buat'] = date('d-M-Y', strtotime($nakary->tgl_buat));
+               $row['tgl_edit'] = date('d-M-Y', strtotime($nakary->tgl_edit));
+               $row['proses'] = '<button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-primary btn-sm font-weight-bold dtlnonaktif" title="Detail" value=""> <i class="fas fa-asterisk"></i> </button> 
+                    <button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-warning btn-sm font-weight-bold edtnonaktif" title="Edit" value=""> <i class="fas fa-edit"></i> </button> 
+                    <button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-danger btn-sm font-weight-bold hpsnonaktif" title="Hapus" value=""> <i class="fas fa-trash-alt"></i> </button>';
                $data[] = $row;
           }
 
           $output = array(
                "draw" => $_POST['draw'],
-               "recordsTotal" => $this->pss->count_all(),
-               "recordsFiltered" => $this->pss->count_filtered($auth_per),
+               "recordsTotal" => $this->nakary->count_all(),
+               "recordsFiltered" => $this->nakary->count_filtered($auth_m_per),
                "data" => $data,
           );
           //output to json format
           echo json_encode($output);
      }
 
-     public function input_posisi()
+     public function input_NonaktifKary()
      {
 
-          $this->form_validation->set_rules("prs", "prs", "required|trim", [
+          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
                'required' => 'Perusahaan wajib dipilih'
           ]);
-          $this->form_validation->set_rules("depart", "depart", "required|trim", [
-               'required' => 'Departemen wajib dipilih'
+          $this->form_validation->set_rules("auth_kary", "auth_kary", "required|trim", [
+               'required' => 'Karyawan wajib dipilih'
           ]);
-          $this->form_validation->set_rules("posisi", "posisi", "required|trim|max_length[100]", [
-               'required' => 'Posisi wajib diisi',
-               'max_length' => 'Posisi maksimal 100 karakter'
+          $this->form_validation->set_rules("auth_alasan", "auth_alasan", "required|trim|max_length[100]", [
+               'required' => 'Alasan nonaktif wajib diisi',
           ]);
-          $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000]", [
+          $this->form_validation->set_rules("tglnonaktif", "tglnonaktif", "required|trim|max_length[100]", [
+               'required' => 'Tanggal nonaktif wajib diisi',
+          ]);
+          $this->form_validation->set_rules("ket_alasan", "ket_alasan", "required|trim|max_length[1000]", [
+               'required' => 'Keterangan wajib diisi',
                'max_length' => 'Keterangan maksimal 1000 karakter'
+          ]);
+          $this->form_validation->set_rules("file_nonaktif", "file_nonaktif", "trim|required", [
+               'required' => 'Berkas karyawan wajib diupload'
           ]);
 
           if ($this->form_validation->run() == false) {
                $error = [
                     'statusCode' => 202,
-                    'prs' => form_error("prs"),
-                    'depart' => form_error("depart"),
-                    'posisi' => form_error("posisi"),
-                    'ket' => form_error("ket")
+                    'prs' => form_error("auth_m_per"),
+                    'kary' => form_error("auth_kary"),
+                    'tglnonaktif' => form_error("tglnonaktif"),
+                    'alasan' => form_error("auth_alasan"),
+                    'ket' => form_error("ket_alasan"),
+                    'fileup' => form_error("file_nonaktif"),
                ];
 
                echo json_encode($error);
                return;
           } else {
-               $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-               $auth_depart = htmlspecialchars($this->input->post("depart", true));
-               $posisi = htmlspecialchars($this->input->post("posisi", true));
-               $ket_posisi = htmlspecialchars($this->input->post("ket"));
-               $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
+               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+               $tglnonaktif = htmlspecialchars($this->input->post("tglnonaktif", true));
+               $auth_alasan = htmlspecialchars($this->input->post("auth_alasan", true));
+               $ket_alasan = htmlspecialchars($this->input->post("ket_alasan", true));
+               $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
+               $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+               $id_kary = $this->kry->get_id_karyawan($auth_kary);
+               $id_alasan = $this->nakary->get_id_alasan($auth_alasan);
+               $foldername = md5($id_personal);
+               $now = date('YmdHis');
+               $nama_file = $now . "-NONAKTIF.pdf";
 
-
-               if ($id_perusahaan == 0) {
+               if ($id_m_perusahaan == 0) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
 
-
-               $query = $this->dprt->get_depart_id($auth_depart);
-               if (!empty($query)) {
-                    foreach ($query as $list) {
-                         $id_depart = $list->id_depart;
-                         if ($id_depart == 0) {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Departemen tidak ditemukan"));
-                              return;
-                         }
-                    }
-               }
-
-               $cekposisi = $this->pss->cek_posisi($id_perusahaan, $id_depart, $posisi);
-
-               if ($cekposisi) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Posisi sudah digunakan"));
+               $cekkary = $this->kry->get_by_auth($auth_kary);
+               if (empty($cekkary)) {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
                     return;
                }
 
-               $data = [
-                    'posisi' => $posisi,
-                    'id_depart' => $id_depart,
-                    'ket_posisi' => $ket_posisi,
-                    'stat_posisi' => 'T',
-                    'tgl_buat' => date('Y-m-d H:i:s'),
-                    'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user_hcdata'),
-                    'id_perusahaan' => $id_perusahaan
-               ];
+               $ceknonaktif = $this->nakary->cek_nonaktif($auth_kary);
+               if (!empty($ceknonaktif)) {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Data gagal disimpan, karyawan telah dinonaktifkan, periksa data"));
+                    return;
+               }
 
-               $posisi = $this->pss->input_posisi($data);
-               if ($posisi) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "Posisi berhasil disimpan"));
+
+               if (is_dir('./assets/berkas/karyawan/' . $foldername) == false) {
+                    mkdir('./assets/berkas/karyawan/' . $foldername, 0775, TRUE);
+               }
+
+
+               if (is_dir('./assets/berkas/karyawan/' . $foldername)) {
+                    $config['upload_path'] = './assets/berkas/karyawan/' . $foldername;
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 200;
+                    $config['file_name'] = $nama_file;
+
+                    $this->load->library('upload', $config);
+                    if (!$this->upload->do_upload('fl_nonaktif')) {
+                         $err = $this->upload->display_errors();
+
+                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                              $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                              $error = "<p>Format file nya dalam bentuk pdf</p>";
+                         } else {
+                              $error = $err;
+                         }
+
+                         $err_nonaktif = [
+                              'statusCode' => 202,
+                              'prs' => '',
+                              'kary' => '',
+                              'tglnonaktif' => '',
+                              'alasan' => '',
+                              'ket' => '',
+                              'fileup' => $error,
+                         ];
+
+                         echo json_encode($err_nonaktif);
+                         die;
+                    } else {
+
+                         $dt_nonaktif = array(
+                              'id_kary' => $id_kary,
+                              'tgl_nonaktif' => $tglnonaktif,
+                              'id_alasan_nonaktif' => $id_alasan,
+                              'ket_nonaktif' => $ket_alasan,
+                              'url_berkas_nonaktif' => $nama_file,
+                              'tgl_buat' => date('Y-m-d H:i:s'),
+                              'tgl_edit' => date('Y-m-d H:i:s'),
+                              'id_user' => $this->session->userdata('id_user_hcdata')
+                         );
+
+                         $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
+                         if ($ins_nonaktif) {
+                              echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
+                              return;
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
+                         }
+                    }
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Posisi gagal disimpan"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Folder penyimpanan tidak ditemukan"));
                }
           }
      }
@@ -186,7 +235,7 @@ class Posisi extends My_Controller
      public function hapus_posisi()
      {
           $auth_posisi = htmlspecialchars(trim($this->input->post('authposisi')));
-          $query = $this->pss->hapus_posisi($auth_posisi);
+          $query = $this->nakary->hapus_posisi($auth_posisi);
           if ($query == 200) {
                echo json_encode(array("statusCode" => 200, "pesan" => "Posisi berhasil dihapus"));
                return;
@@ -202,7 +251,7 @@ class Posisi extends My_Controller
      public function detail_posisi()
      {
           $auth_posisi = htmlspecialchars(trim($this->input->post("authposisi")));
-          $query = $this->pss->get_posisi_id($auth_posisi);
+          $query = $this->nakary->get_posisi_id($auth_posisi);
           if (!empty($query)) {
                foreach ($query as $list) {
                     if ($list->stat_posisi == "T") {
@@ -289,7 +338,7 @@ class Posisi extends My_Controller
                } else {
                     $status = "F";
                }
-               $posisi = $this->pss->edit_posisi($posisi, $depart, $ket_posisi, $status);
+               $posisi = $this->nakary->edit_posisi($posisi, $depart, $ket_posisi, $status);
                if ($posisi == 200) {
                     $this->session->unset_userdata('id_posisi');
                     $this->session->unset_userdata('id_depart');
@@ -302,28 +351,27 @@ class Posisi extends My_Controller
           }
      }
 
-     public function get_by_idper()
+     public function gel_all_alasan()
      {
-          if ($this->session->userdata('id_perusahaan') != "") {
-               $id_per = $this->session->userdata('id_perusahaan');
-               $output = "<option value=''>-- Pilih Departemen --</option>";
-               $query = $this->dprt->get_by_idper($id_per);
-               foreach ($query as $list) {
-                    $output = $output . " <option value='" . $list->auth_depart . "'>" . $list->depart . "</option>";
-               }
+          $query = $this->nakary->get_all_alasan();
 
-               echo json_encode(array("statusCode" => 200, "depart" => $output, "pesan" => "Sukses"));
+          if (!empty($query)) {
+               $output = "<option value=''>-- PILIH ALASAN NONAKTIF --</option>";
+               foreach ($query as $list) {
+                    $output = $output . " <option value='" . $list->auth_alasan_nonaktif . "'>" . $list->alasan_nonaktif . "</option>";
+               }
           } else {
-               $output = "<option value=''>-- DEPARTEMEN TIDAK DITEMUKAN --</option>";
-               echo json_encode(array("statusCode" => 200, "depart" => $output, "pesan", "Departemen gagal ditampilkan"));
+               $output = " <option value=''>TIDAK ADA DATA</option>";
           }
+
+          echo json_encode(array("statusCode" => 200, "alasan" => $output, "pesan" => "Sukses"));
      }
 
      public function get_by_authdepart()
      {
           $auth_depart = $this->input->post('auth_depart');
 
-          $query = $this->pss->get_by_authdepart($auth_depart);
+          $query = $this->nakary->get_by_authdepart($auth_depart);
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {
@@ -339,7 +387,7 @@ class Posisi extends My_Controller
      public function get_auth_posisi_by_id()
      {
           $id_posisi = $this->input->post('id_posisi');
-          $query = $this->pss->get_auth_posisi($id_posisi);
+          $query = $this->nakary->get_auth_posisi($id_posisi);
           if ($query === 0) {
                return 0;
           } else {

@@ -401,7 +401,7 @@
                 {
                     "data": 'lokker',
                     "className": "text-nowrap  align-middle",
-                    "width": "25%"
+                    "width": "60%"
                 },
                 {
                     "data": 'stat_lokker',

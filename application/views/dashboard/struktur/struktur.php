@@ -88,7 +88,7 @@
                                                        $dbname = "db_kary";
                                                        $conn = mysqli_connect($servername, $username, $password, $dbname);
 
-                                                       $idperusahaan = $_SESSION['id_m_perusahaan'];
+                                                       $idperusahaan = $_SESSION['id_m_perusahaan_hcdata'];
                                                        $no = 0;
                                                        $sql = "SELECT * from vw_m_prs WHERE id_m_perusahaan=" . $idperusahaan . " ORDER BY id_m_perusahaan ASC";
                                                        $result = mysqli_query($conn, $sql);
