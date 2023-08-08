@@ -11,8 +11,8 @@ class Karyawan extends My_Controller
 
      public function index()
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMaster($idmper, "");
                     $data['perstr'] = $this->str->getMenu($idmper, "");
@@ -25,11 +25,11 @@ class Karyawan extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan');
           $this->load->view('dashboard/template/footer', $data);
@@ -41,10 +41,10 @@ class Karyawan extends My_Controller
 
           // if ($this->session->flashdata("kary_sukses") != "") {
           //      $this->session->set_flashdata('psn', '<div class="alert alert-primary suksesalrt animate__animated animate__bounce mb-2" role="alert"> Data karyawan berhasil disimpan </div>');
-          // }  
+          // }
 
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMaster($idmper, "");
                     $data['perstr'] = $this->str->getMenu($idmper, "");
@@ -57,11 +57,11 @@ class Karyawan extends My_Controller
                $data['permst'] = "";
                $data['perstr'] = "";
           }
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -100,11 +100,11 @@ class Karyawan extends My_Controller
 
      public function detail_karyawan($auth_kary)
      {
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
           $data["data_alamat"] = $this->kry->get_alamat_by_auth($auth_kary);
           $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
@@ -122,8 +122,8 @@ class Karyawan extends My_Controller
 
      public function edit_karyawan($id_kary)
      {
-          if ($this->session->has_userdata('id_m_perusahaan')) {
-               $idmper = $this->session->userdata('id_m_perusahaan');
+          if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
+               $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
                     $data['permst'] = $this->str->getMaster($idmper, "");
                     $data['perstr'] = $this->str->getMenu($idmper, "");
@@ -137,12 +137,11 @@ class Karyawan extends My_Controller
                $data['perstr'] = "";
           }
 
-          $id_perusahaan = $this->session->userdata("id_perusahaan");
+          $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-          $data['nama'] = $this->session->userdata("nama");
-          $data['email'] = $this->session->userdata("email");
-          $data['menu'] = $this->session->userdata("id_menu");
-          $data['menu'] = $this->session->userdata("id_menu");
+          $data['nama'] = $this->session->userdata("nama_hcdata");
+          $data['email'] = $this->session->userdata("email_hcdata");
+          $data['menu'] = $this->session->userdata("id_menu_hcdata");
           $data["data_kary"] = $this->kry->get_by_auth($id_kary);
           // echo $data["data_kary"]->auth_personal;
           $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($id_kary);
@@ -834,7 +833,7 @@ class Karyawan extends My_Controller
                                         'ket_kontrak' => '',
                                         'tgl_buat' =>  date('Y-m-d H:i:s'),
                                         'tgl_edit' =>  date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user')
+                                        'id_user' => $this->session->userdata('id_user_hcdata')
                                    ];
 
                                    $this->kry->update_dtkontrak($id_kontrak, $data_kontrak);
@@ -876,7 +875,7 @@ class Karyawan extends My_Controller
                                    'alasan_nonaktif' => '',
                                    'tgl_buat' =>  date('Y-m-d H:i:s'),
                                    'tgl_edit' =>  date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                                    'id_m_perusahaan' => $id_m_perusahaan,
                               ];
 
@@ -898,7 +897,7 @@ class Karyawan extends My_Controller
                                              'ket_kontrak' => '',
                                              'tgl_buat' =>  date('Y-m-d H:i:s'),
                                              'tgl_edit' =>  date('Y-m-d H:i:s'),
-                                             'id_user' => $this->session->userdata('id_user')
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
                                         ];
 
                                         $this->kry->input_dtKontrak($data_kontrak);
@@ -959,7 +958,7 @@ class Karyawan extends My_Controller
                          'url_pendukung' => '',
                          'tgl_buat' => date('Y-m-d H:i:s'),
                          'tgl_edit' => date('Y-m-d H:i:s'),
-                         'id_user' => $this->session->userdata('id_user'),
+                         'id_user' => $this->session->userdata('id_user_hcdata'),
                     ];
 
                     $personal = $this->kry->input_dtPersonal($data_personal);
@@ -988,7 +987,7 @@ class Karyawan extends My_Controller
                                    'stat_alamat_ktp' => 'T',
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
                               $this->kry->input_dtAlamat($data_alamat);
@@ -1029,7 +1028,7 @@ class Karyawan extends My_Controller
                                    'alasan_nonaktif' => '',
                                    'tgl_buat' =>  date('Y-m-d H:i:s'),
                                    'tgl_edit' =>  date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                                    'id_m_perusahaan' => $id_m_perusahaan,
                               ];
 
@@ -1051,7 +1050,7 @@ class Karyawan extends My_Controller
                                              'ket_kontrak' => '',
                                              'tgl_buat' =>  date('Y-m-d H:i:s'),
                                              'tgl_edit' =>  date('Y-m-d H:i:s'),
-                                             'id_user' => $this->session->userdata('id_user')
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
                                         ];
 
                                         $this->kry->input_dtKontrak($data_kontrak);
@@ -1234,7 +1233,7 @@ class Karyawan extends My_Controller
                                    'ket_izin_tambang' => '',
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user'),
+                                   'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
 
                               $izin = $this->smp->input_izin_tambang($data_izin_tambang);
@@ -1374,7 +1373,7 @@ class Karyawan extends My_Controller
                                    'file_sertifikasi' =>  $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $sertifikasi = $this->srt->input_sertifikasi($data_sertifikat);
@@ -1490,7 +1489,7 @@ class Karyawan extends My_Controller
                                    'file_sertifikasi' =>  $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $sertifikasi = $this->srt->input_sertifikasi($data_sertifikat);
@@ -1598,7 +1597,7 @@ class Karyawan extends My_Controller
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
                                    'id_perusahaan' => 0,
-                                   'id_user' => $this->session->userdata('id_user')
+                                   'id_user' => $this->session->userdata('id_user_hcdata')
                               ];
 
                               $mcu = $this->kry->input_dtMCU($data_mcu);
@@ -1774,7 +1773,7 @@ class Karyawan extends My_Controller
                                              'tgl_buat' => date('Y-m-d H:i:s'),
                                              'tgl_edit' => date('Y-m-d H:i:s'),
                                              'id_perusahaan' => 0,
-                                             'id_user' => $this->session->userdata('id_user')
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
                                         ];
 
                                         $mcu = $this->kry->input_dtMCU($data_mcu);
@@ -1883,7 +1882,7 @@ class Karyawan extends My_Controller
                          'id_vaksin_nama' => $namavaksin,
                          'tgl_buat' => date('Y-m-d H:i:s'),
                          'tgl_edit' => date('Y-m-d H:i:s'),
-                         'id_user' => $this->session->userdata('id_user')
+                         'id_user' => $this->session->userdata('id_user_hcdata')
                     ];
 
                     $vaksin = $this->vks->input_vaksin_kary($data_vaksin);
@@ -2074,7 +2073,6 @@ class Karyawan extends My_Controller
      public function get_id_perusahaan($auth_perusahaan)
      {
           $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
-          // $_SESSION["addPerKary"] = $id_perusahaan;
           echo json_encode($id_perusahaan);
      }
 
