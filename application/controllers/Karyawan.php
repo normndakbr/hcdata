@@ -38,11 +38,6 @@ class Karyawan extends My_Controller
 
      public function new()
      {
-
-          // if ($this->session->flashdata("kary_sukses") != "") {
-          //      $this->session->set_flashdata('psn', '<div class="alert alert-primary suksesalrt animate__animated animate__bounce mb-2" role="alert"> Data karyawan berhasil disimpan </div>');
-          // }
-
           if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
                $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                if ($idmper != "") {
