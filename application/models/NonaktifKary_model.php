@@ -113,15 +113,15 @@ class NonaktifKary_model extends CI_Model
           }
      }
 
-     public function hapus_posisi($auth_posisi)
+     public function hapus_NonaktifKary($authNonaktifKary)
      {
-          $cek_id = $this->db->get_where('vw_posisi', ['auth_posisi' => $auth_posisi]);
+          $cek_id = $this->db->get_where('vw_karyawan_nonaktif', ['auth_kary_nonaktif' => $authNonaktifKary]);
           if (!empty($cek_id->result())) {
                foreach ($cek_id->result() as $list) {
-                    $id_posisi = $list->id_posisi;
+                    $id_kary_nonaktif = $list->id_kary_nonaktif;
                }
 
-               $this->db->delete('tb_posisi', ['id_posisi' => $id_posisi]);
+               $this->db->delete('tb_karyawan_nonaktif', ['id_kary_nonaktif' => $id_kary_nonaktif]);
                if ($this->db->affected_rows() > 0) {
                     return 200;
                } else {

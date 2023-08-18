@@ -189,14 +189,9 @@ class Lokterima_model extends CI_Model
           return $this->db->get('vw_lokterima')->result();
      }
 
-     public function get_by_authper($auth_per)
+     public function get_by_authper()
      {
-          $query = $this->db->get_where('vw_m_perusahaan', ['auth_m_perusahaan' => $auth_per]);
-          foreach ($query->result() as $list) {
-               $id_perusahaan = $list->id_perusahaan;
-          }
-
-          $query = $this->db->get_where('vw_lokterima', ['id_perusahaan' => $id_perusahaan]);
+          $query = $this->db->get('vw_lokterima');
           return $query->result();
      }
 

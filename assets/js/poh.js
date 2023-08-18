@@ -20,6 +20,7 @@
             let poh = $('#editPoh').val();
             let status = $('#editPohStatus').val();
             let ket = $('#editPohKet').val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -28,31 +29,18 @@
                     kode: kode,
                     poh: poh,
                     status: status,
-                    ket: ket
+                    ket: ket,
+                    token:token,
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
                         tbmPoh.draw();
                         $("#editPohmdl").modal("hide");
-                        $(".err_psn_poh").removeClass('d-none');
-                        $(".err_psn_poh").removeClass('alert-danger');
-                        $(".err_psn_poh").addClass('alert-info');
-                        $(".err_psn_poh").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         reseteditpoh();
-                        $(".err_psn_poh").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_poh").slideUp(500);
-                            $(".err_psn_poh").addClass('d-none');
-                        });
                     } else if (data.statusCode == 201 || data.statusCode == 203 || data.statusCode == 204 || data.statusCode == 205) {
-                        $(".err_psn_edit_poh").removeClass('d-none');
-                        $(".err_psn_edit_poh").removeClass('alert-info');
-                        $(".err_psn_edit_poh").addClass('alert-danger');
-                        $(".err_psn_edit_poh").html(data.pesan);
-                        $(".err_psn_edit_poh").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_edit_poh").slideUp(500);
-                            $(".err_psn_edit_poh").addClass('d-none');
-                        });
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         $("#error1epoh").html('');
                         $("#error2epoh").html('');
                         $("#error3epoh").html('');
@@ -66,22 +54,16 @@
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_poh").removeClass("alert-primary");
-                    $(".err_psn_poh").addClass("alert-danger");
-                    $(".err_psn_poh").removeClass("d-none");
+                    
                     if (xhr.status == 404) {
-                        $(".err_psn_poh").html("Point of hire gagal diupdate, Link data tidak ditemukan");
+                        pesan = "Point of hire gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_poh").html("Point of hire gagal diupdate, Waktu koneksi habis");
+                        pesan = "Point of hire gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_poh").html("Terjadi kesalahan saat meng-update data, hubungi administrator");
+                        pesan = "Terjadi kesalahan saat meng-update data, hubungi administrator";
                     }
-
+                    swal("Error",pesan,'error');
                     $("#editPohmdl").modal("hide");
-                    $(".err_psn_poh ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_poh").slideUp(500);
-                        $(".err_psn_poh").addClass('d-none');
-                    });
                 }
             })
         });
@@ -104,6 +86,7 @@
             var kode = $("#kodePoh").val();
             var poh = $("#Poh").val();
             var ket = $("#ketPoh").val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -111,50 +94,34 @@
                 data: {
                     kode: kode,
                     poh: poh,
-                    ket: ket
+                    ket: ket,
+                    token:token,
                 },
                 timeout: 20000,
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
-                        $(".err_psn_poh").removeClass('d-none');
-                        $(".err_psn_poh").removeClass('alert-danger');
-                        $(".err_psn_poh").addClass('alert-info');
-                        $(".err_psn_poh").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         resetaddpoh()
                     } else if (data.statusCode == 201) {
-                        $(".err_psn_poh").removeClass('d-none');
-                        $(".err_psn_poh").removeClass('alert-info');
-                        $(".err_psn_poh").addClass('alert-danger');
-                        $(".err_psn_poh").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     } else if (data.statusCode == 202) {
                         $(".error1").html(data.kode);
                         $(".error2").html(data.poh);
                         $(".error3").html(data.ket);
                     }
-
-                    $(".err_psn_poh").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_poh").slideUp(500);
-                        $(".err_psn_poh").addClass('d-none');
-                    });
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_poh").removeClass('d-none');
-                    $(".err_psn_poh").removeClass("alert-primary");
-                    $(".err_psn_poh").addClass("alert-danger");
                     if (xhr.status == 404) {
-                        $(".err_psn_poh").html("Point of hire gagal disimpan, Link data tidak ditemukan");
+                        pesan = "Point of hire gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_poh").html("Point of hire gagal disimpan, Waktu koneksi habis");
+                       pesan = "Point of hire gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_poh").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                       pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
                     }
 
-                    $(".err_psn_poh ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_poh ").slideUp(500);
-                        $(".err_psn_poh").addClass('d-none');
-                    });
+                    swal("Error",pesan,'error');
                 }
             })
         });
@@ -162,6 +129,7 @@
         $(document).on('click', '.hpspoh', function() {
             let auth_poh = $(this).attr('id');
             let namaPoh = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_poh == "") {
                 $(".err_psn_poh").removeClass("alert-primary");
@@ -185,48 +153,34 @@
                             type: "POST",
                             url: site_url+"poh/hapus_poh",
                             data: {
-                                auth_poh: auth_poh
+                                auth_poh: auth_poh,
+                                token:token,
                             },
                             timeout: 20000,
                             success: function(data, textStatus, xhr) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     tbmPoh.draw();
-                                    $(".err_psn_poh").removeClass("alert-danger");
-                                    $(".err_psn_poh").addClass("alert-primary");
-                                    $(".err_psn_poh").removeClass('d-none');
-                                    $(".err_psn_poh").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
-                                    $(".err_psn_poh").removeClass("alert-primary");
-                                    $(".err_psn_poh").addClass("alert-danger");
-                                    $(".err_psn_poh").removeClass('d-none');
-                                    $(".err_psn_poh").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
 
                                 $.LoadingOverlay("hide");
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".err_psn_poh").removeClass("alert-primary");
-                                $(".err_psn_poh").addClass("alert-danger");
-                                $(".err_psn_poh").removeClass('d-none');
                                 if (xhr.status == 404) {
-                                    $(".err_psn_poh").html("Point of hire gagal dihapus, , Link data tidak ditemukan");
+                                    pesan = "Point of hire gagal diupdate, Link data tidak ditemukan";
                                 } else if (xhr.status == 0) {
-                                    $(".err_psn_poh").html("Point of hire gagal dihapus, Waktu koneksi habis");
+                                   pesan = "Point of hire gagal diupdate, Waktu koneksi habis";
                                 } else {
-                                    $(".err_psn_poh").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                                   pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
                                 }
+            
+                                swal("Error",pesan,'error');
                             }
                         });
-
-                        $(".err_psn_poh").fadeTo(4000, 500).slideUp(500, function() {
-                            $(".err_psn_poh").slideUp(500);
-                            $(".err_psn_poh").addClass('d-none');
-                        });
-                    } else if (result.dismiss == 'cancel') {
-                        swal('Batal', 'Point of hire ' + namaPoh + ' batal dihapus', 'error');
-                        return false;
                     }
                 });
             }
@@ -234,7 +188,7 @@
 
         $(document).on('click', '.dtlpoh', function() {
             let auth_poh = $(this).attr('id');
-            let namaPoh = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_poh == "") {
                 $(".err_psn_poh").removeClass("alert-primary");
@@ -246,7 +200,8 @@
                     type: "post",
                     url: site_url+"poh/detail_poh",
                     data: {
-                        auth_poh: auth_poh
+                        auth_poh: auth_poh,
+                        token:token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -260,25 +215,20 @@
                             $("#detailPohTglBuat").val(data.tgl_buat);
                             $("#detailPohmdl").modal("show");
                         } else {
-                            $(".err_psn_poh").removeClass('d-none');
-                            $(".err_psn_poh").html(data.pesan);
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_poh").removeClass("alert-primary");
-                        $(".err_psn_poh").addClass("alert-danger");
-                        $(".err_psn_poh").removeClass('d-none');
                         if (xhr.status == 404) {
-                            $(".err_psn_poh").html("Point of hire gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Point of hire gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_poh").html("Point of hire gagal ditampilkan, Waktu koneksi habis");
+                           pesan = "Point of hire gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_poh").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                           pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
                         }
-                        $(".err_psn_poh ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_poh ").slideUp(500);
-                        });
+    
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -286,7 +236,7 @@
 
         $(document).on('click', '.edttpoh', function() {
             let auth_poh = $(this).attr('id');
-            let namaPoh = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_poh == "") {
                 $(".err_psn_poh").removeClass("alert-primary");
@@ -298,7 +248,8 @@
                     type: "post",
                     url: site_url+"poh/detail_poh",
                     data: {
-                        auth_poh: auth_poh
+                        auth_poh: auth_poh,
+                        token:token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -314,26 +265,20 @@
                             $("#error3epoh").html('');
                             $("#error4epoh").html('');
                         } else {
-                            $(".err_psn_poh").removeClass('d-none');
-                            $(".err_psn_poh").html(data.pesan);
+                            swal(dataPoh.kode_pesan,dataPoh.pesan,dataPoh.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_poh").removeClass("alert-primary");
-                        $(".err_psn_poh").addClass("alert-danger");
-                        $(".err_psn_poh").removeClass('d-none');
                         if (xhr.status == 404) {
-                            $(".err_psn_poh").html("Poh gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Point of hire gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_poh").html("Poh gagal ditampilkan, Waktu koneksi habis");
+                           pesan = "Point of hire gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_poh").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                           pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
                         }
-
-                        $(".err_psn_poh ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_poh ").slideUp(500);
-                        });
+    
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -345,65 +290,98 @@
             $('#tbmPoh').LoadingOverlay("hide");
         });
 
-        tbmPoh = $('#tbmPoh').DataTable({
-            "processing": true,
-            "responsive": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [
-                [1, 'asc'],
-            ],
-            "ajax": {
-                "url": site_url+"poh/ajax_list",
-                "type": "POST",
-                "error": function(xhr, error, code) {
-                    if (code != "") {
-                        $(".err_psn_poh").removeClass("d-none");
-                        $(".err_psn_poh").removeClass('d-none');
-                        $(".err_psn_poh").html("terjadi kesalahan saat melakukan load data Poh, hubungi administrator");
-                        $("#secadd").addClass("disabled");
+        tbPOH();
+
+        function tbPOH(){
+            var token = $("#token").val();
+
+            $.ajax ({
+                type:"POST",
+                url : site_url + "dash/Oauth",
+                data : {
+                    token : token,
+                },
+                success : function(data){
+                    var data = JSON.parse(data);
+                    if(data.statusCode==200) {
+                        tbmPoh = $('#tbmPoh').DataTable({
+                            "processing": true,
+                            "responsive": true,
+                            "serverSide": true,
+                            "ordering": true,
+                            "order": [
+                                [1, 'asc'],
+                            ],
+                            "ajax": {
+                                "url": site_url+"poh/ajax_list?authtoken="+$("#token").val(),
+                                "type": "POST",
+                                "error": function(xhr, error, code) {
+                                    if (code != "") {
+                                        pesan = "terjadi kesalahan saat melakukan load data Poh, hubungi administrator";
+                                        $("#secadd").remove();
+                                        swal("Error",pesan,'error');
+                                    }
+                                }
+                            },
+                            "deferRender": true,
+                            "aLengthMenu": [
+                                [10, 25, 50],
+                                [10, 25, 50]
+                            ],
+                            "columns": [{
+                                    data: 'no',
+                                    name: 'id_poh',
+                                    render: function(data, type, row, meta) {
+                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                    },
+                                    "className": "text-center align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'kd_poh',
+                                    "className": "text-nowrap align-middle",
+                                    "width": "10%"
+                                },
+                                {
+                                    "data": 'poh',
+                                    "className": "text-nowrap align-middle",
+                                    "width": "50%"
+                                },
+                                {
+                                    "data": 'stat_poh',
+                                    "className": "text-center align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'tgl_buat',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "8%"
+                                },
+                                {
+                                    "data": 'proses',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "1%"
+                                }
+                            ]
+                        });
+                    } else {
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    $.LoadingOverlay("hide");
+
+                    if (xhr.status == 404) {
+                        pesan = "Point of Hire gagal diupdate, Link data tidak ditemukan";
+                    } else if (xhr.status == 0) {
+                        pesan = "Point of Hire gagal diupdate, Waktu koneksi habis";
+                    } else {
+                        pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                    }
+
+                    swal("Error",pesan,'error');
                 }
-            },
-            "deferRender": true,
-            "aLengthMenu": [
-                [10, 25, 50],
-                [10, 25, 50]
-            ],
-            "columns": [{
-                    data: 'no',
-                    name: 'id_poh',
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    "className": "text-center align-middle",
-                    "width": "1%"
-                },
-                {
-                    "data": 'kd_poh',
-                    "className": "text-nowrap align-middle",
-                    "width": "10%"
-                },
-                {
-                    "data": 'poh',
-                    "className": "text-nowrap align-middle",
-                    "width": "50%"
-                },
-                {
-                    "data": 'stat_poh',
-                    "className": "text-center align-middle",
-                    "width": "1%"
-                },
-                {
-                    "data": 'tgl_buat',
-                    "className": "text-center text-nowrap align-middle",
-                    "width": "8%"
-                },
-                {
-                    "data": 'proses',
-                    "className": "text-center text-nowrap align-middle",
-                    "width": "1%"
-                }
-            ]
-        });
+            });
+        }
+
     });

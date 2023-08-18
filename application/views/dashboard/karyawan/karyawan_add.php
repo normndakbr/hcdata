@@ -58,6 +58,16 @@
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
                               <h5>Isi data berikut dengan benar : </h5>
                               <div class="row pt-2">
+
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div id="clPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
                                         <button id="clPersonal-click" class="btn btn-primary w-100" style="text-align:left;">
                                              <a class="text-white" data-toggle="collapse" href="#!" role="button" aria-expanded="false" aria-controls="colPersonal">
@@ -77,6 +87,7 @@
                                                                  <input id='noKTP' name='noKTP' type="text" autocomplete=" off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorNoKTP text-danger font-italic font-weight-bold"></small>
                                                                  <span class="0c09efa8ccb5e0114e97df31736ce2e3 d-none"></span>
+                                                                 <span class="yy43234 ujfso78sn2 h2344234jfsd d-none"></span>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
@@ -255,23 +266,23 @@
                                                                  <span class="89kjm78ujki782m4x787909h3 d-none"></span>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="email">Email Pribadi </label>
                                                                  <input id='email' name='email' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="erroremail text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-3 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-7 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="noTelp">No. Telp </label>
                                                                  <input id='noTelp' name='noTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errornoTelp text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-3 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-5 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="pendidikanTerakhir">Pendidikan Terakhir </label>
+                                                                 <label for="pendidikanTerakhir">Pendidikan Terakhir <span class="text-danger">*</span></label>
                                                                  <div id="txtDidik" name="txtDidik" class="input-group mt-2">
                                                                       <select id='pendidikanTerakhir' name='pendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required disabled>
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
@@ -280,6 +291,7 @@
                                                                            <button id="refreshDidik" name="refreshDidik" class="btn btn-primary btn-sm" title="Refresh Pendidikan" disabled><i class="fas fa-sync-alt"></i></button>
                                                                       </div>
                                                                  </div>
+                                                                 <small class="errorPendidikanAkhir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="btnlanjutpersonal col-lg-12 col-md-12 col-sm-12 text-right mt-2"></div>
@@ -328,7 +340,7 @@
 
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <label for="addNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
+                                                                 <label for="addNIKKary">Nomor Induk Karyawan (NIK) <span class="text-danger">*</span></label>
                                                                  <input id='addNIKKary' name='addNIKKary' type="number" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="erroraddNIKKary text-danger font-italic font-weight-bold"></small>
                                                                  <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span>
@@ -421,7 +433,7 @@
                                                                  <small class="erroraddPOHKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addLokterimaKary">Lokasi Penerimaan <span class="text-danger">*</span></label>
                                                                  <div id='txtlokterimakary' class="input-group">
@@ -435,7 +447,7 @@
                                                                  <small class="erroraddLokterimaKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addLokasiKerja">Lokasi Kerja <span class="text-danger">*</span></label>
                                                                  <div id='txtlokkerkary' class="input-group">
@@ -449,14 +461,12 @@
                                                                  <small class="erroraddLokasiKerja text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addStatusResidence">Status Residence <span class="text-danger">*</span></label>
                                                                  <div id='txtstatresidence' class="input-group">
                                                                       <select id='addStatusResidence' name='addStatusResidence' class="form-control form-control-user" disabled>
                                                                            <option value="" default>-- WAJIB DIPILIH --</option>
-                                                                           <option value="1" default>RESIDENCE</option>
-                                                                           <option value="2">NON RESIDENCE</option>
                                                                       </select>
                                                                       <div class="input-group-prepend">
                                                                            <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence" disabled><i class="fas fa-sync-alt"></i></button>
@@ -465,14 +475,14 @@
                                                                  <small class="erroraddStatusResidence text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                       <div class="col-lg-4 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addDOH">Date of Hire <span class="text-danger">*</span></label>
                                                                  <input id='addDOH' name='addDOH' type='date' class="form-control form-control-user" disabled>
                                                                  <small class="erroraddDOH text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                       <div class="col-lg-4 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="addTanggalAktif">Tanggal Aktif <span class="text-danger">*</span></label>
                                                                  <input id='addTanggalAktif' name='addTanggalAktif' type='date' class="form-control form-control-user" disabled>
@@ -674,9 +684,14 @@
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="jenisSertifikasi">Jenis Sertifikasi <span class="text-danger">*</span></label>
-                                                                 <select id='jenisSertifikasi' name='jenisSertifikasi' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
-                                                                      <option value="">-- WAJIB DIPILIH --</option>
-                                                                 </select>
+                                                                 <div id="txtjenisSertifkat" class="input-group mt-2">
+                                                                      <select id='jenisSertifikasi' name='jenisSertifikasi' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                                                           <option value="">-- WAJIB DIPILIH --</option>
+                                                                      </select>
+                                                                      <div class="input-group-prepend">
+                                                                           <button id="refreshJenisSertifikat" name="refreshJenisSertifikat" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                      </div>
+                                                                 </div>
                                                                  <small class="errorjenisSertifikasi text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
@@ -711,6 +726,9 @@
                                                                       <option value="3">3 TAHUN</option>
                                                                       <option value="4">4 TAHUN</option>
                                                                       <option value="5">5 TAHUN</option>
+                                                                      <option value="6">6 TAHUN</option>
+                                                                      <option value="7">7 TAHUN</option>
+                                                                      <option value="8">8 TAHUN</option>
                                                                  </select>
                                                             </div>
                                                        </div>
@@ -789,9 +807,14 @@
                                                        <div class="col-lg-8 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="hasilMCU">Hasil MCU <span class="text-danger">*</span></label>
-                                                                 <select id='hasilMCU' name='hasilMCU' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
-                                                                      <option value="">-- WAJID DIPILIH --</option>
-                                                                 </select>
+                                                                 <div id="txthasilMCU" class="input-group">
+                                                                      <select id='hasilMCU' name='hasilMCU' autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                                                           <option value="">-- WAJID DIPILIH --</option>
+                                                                      </select>
+                                                                      <div class="input-group-prepend">
+                                                                           <button id="refreshhasilMCU" name="refreshhasilMCU" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                      </div>
+                                                                 </div>
                                                                  <small class="errorHasilMCU text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
@@ -815,13 +838,14 @@
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <a id="addTampilkanMCU" data-scroll href="#!" target="_blank" class="btn btn-primary font-weight-bold disabled">Tampilkan File</a>
                                                             <a id="addHapusMCU" data-scroll href="#!" class="btn btn-warning font-weight-bold disabled">Hapus</a>
+                                                            <a id="addUploadMCU" data-scroll href="#!" class="btn btn-success font-weight-bold">Simpan & Upload</a>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <hr>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
                                                             <a id="addbtnkembaliMCU" data-scroll href="#clSertifikasi" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                            <a id="addSimpanMCU" data-scroll href="#clVaksin" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Upload MCU & Lanjutkan</a>
+                                                            <a id="addLanjutMCU" data-scroll href="#clVaksin" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Lanjutkan</a>
                                                        </div>
                                                   </div>
                                              </div>
@@ -858,18 +882,28 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div id="jnsVaksin" class="form-group">
                                                                  <label for="jenisVaksin">Jenis Vaksin <span class="text-danger">*</span></label>
-                                                                 <select id='jenisVaksin' name='jenisVaksin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
-                                                                      <option value="" -- PILIH JENIS VAKSIN --</option>
-                                                                 </select>
+                                                                 <div id="txtjenisVaksin" class="input-group">
+                                                                      <select id='jenisVaksin' name='jenisVaksin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                                                           <option value="" -- PILIH JENIS VAKSIN --</option>
+                                                                      </select>
+                                                                      <div class="input-group-prepend">
+                                                                           <button id="refreshjenisVaksin" name="refreshjenisVaksin" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                      </div>
+                                                                 </div>
                                                                  <small class="errorJenisVaksin text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div id="nmVaksin" class="form-group">
                                                                  <label for="namaVaksin">Nama Vaksin <span class="text-danger">*</span></label>
-                                                                 <select id='namaVaksin' name='namaVaksin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
-                                                                      <option value="">-- PILIH VAKSIN --</option>
-                                                                 </select>
+                                                                 <div id="txtnamaVaksin" class="input-group">
+                                                                      <select id='namaVaksin' name='namaVaksin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                                                           <option value="">-- PILIH VAKSIN --</option>
+                                                                      </select>
+                                                                      <div class="input-group-prepend">
+                                                                           <button id="refreshnamaVaksin" name="refreshnamaVaksin" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                                                      </div>
+                                                                 </div>
                                                                  <small class="errorNamaVaksin text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
@@ -1000,7 +1034,6 @@
                                    <label for="noKTPCek">Ketikkan No. KTP</label>
                                    <input id='noKTPCek' name='noKTPCek' autocomplete="off" spellcheck="false" class="noKTPCek form-control bg-white" value="">
                                    <small class="errornoKTPCek text-danger font-italic font-weight-bold"></small><br>
-                                   <span class="yy43234 ujfso78sn2 h2344234jfsd d-none"></span>
                               </div>
                          </div>
                     </div>
@@ -1111,16 +1144,26 @@
                               <div class="row p-2">
                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="jenisUnitSimper">Unit :</label><br>
-                                        <select id='jenisUnitSimper' class="form-control form-control-user" required>
-                                             <option value="">-- WAJIB DIPILIH --</option>
-                                        </select>
+                                        <div id="txtjenisUnitSimper" class="input-group">
+                                             <select id='jenisUnitSimper' class="form-control form-control-user" required>
+                                                  <option value="">-- WAJIB DIPILIH --</option>
+                                             </select>
+                                             <div class="input-group-prepend">
+                                                  <button id="refreshjenisUnitSimper" name="refreshjenisUnitSimper" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                             </div>
+                                        </div>
                                         <small class="errorjenisUnitSimper text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="tipeAksesUnit">Izin Akses Unit :</label><br>
-                                        <select id='tipeAksesUnit' class="form-control form-control-user" required>
-                                             <option value="">-- WAJIB DIPILIH --</option>
-                                        </select>
+                                        <div id="txttipeAksesUnit" class="input-group">
+                                             <select id='tipeAksesUnit' class="form-control form-control-user" required>
+                                                  <option value="">-- WAJIB DIPILIH --</option>
+                                             </select>
+                                             <div class="input-group-prepend">
+                                                  <button id="refreshtipeAksesUnit" name="refreshtipeAksesUnit" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                             </div>
+                                        </div>
                                         <small class="errortipeAksesUnit text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                               </div>
@@ -1149,9 +1192,14 @@
                          <div class="col-lg-12 col-md-12 col-sm-12">
                               <div class="form-group">
                                    <label for="jenisSertifikasiEdit">Jenis Sertifikasi :</label>
-                                   <select id='jenisSertifikasiEdit' name='jenisSertifikasiEdit' autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                        <option value="">-- WAJIB DIPILIH --</option>
-                                   </select>
+                                   <div id="txtjenisSertifikasiEdit" class="input-group">
+                                        <select id='jenisSertifikasiEdit' name='jenisSertifikasiEdit' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                             <option value="">-- WAJIB DIPILIH --</option>
+                                        </select>
+                                        <div class="input-group-prepend">
+                                             <button id="refreshjenisSertifikasiEdit" name="refreshjenisSertifikasiEdit" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                        </div>
+                                   </div>
                                    <small class="errorjenisSertifikasiEdit text-danger font-italic font-weight-bold"></small>
                                    <span class="7u67u834hs7dg4haj231hh67ju7a2 d-none"></span>
                               </div>
@@ -1187,6 +1235,9 @@
                                         <option value="3">3 TAHUN</option>
                                         <option value="4">4 TAHUN</option>
                                         <option value="5">5 TAHUN</option>
+                                        <option value="6">6 TAHUN</option>
+                                        <option value="7">7 TAHUN</option>
+                                        <option value="8">8 TAHUN</option>
                                    </select>
                               </div>
                          </div>
@@ -1342,7 +1393,6 @@
                <div class="modal-header bg-c-yellow">
                     <h5 class="modal-title text-white" id="exampleModalLabel">Informasi Klasifikasi</h5>
                </div>
-
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                     <div class="row p-2">
                          <div class="col-lg-12 col-md-12 col-sm-12">

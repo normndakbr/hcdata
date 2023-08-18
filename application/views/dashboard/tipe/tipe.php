@@ -59,9 +59,16 @@
                                         <a href="<?= base_url('tipe'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
                                         <a id="addbtn" href="<?= base_url('tipe/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
-                                   <div class="alert alert-danger err_psn_tipe animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-12">
                                         <div class="table-responsive">
                                              <table id="tbmTipe" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
@@ -74,8 +81,7 @@
                                                             <th style="text-align:center;">Proses</th>
                                                        </tr>
                                                   </thead>
-                                                  <tbody>
-                                                  </tbody>
+                                                  <tbody></tbody>
                                              </table>
                                         </div>
                                    </div>
@@ -111,13 +117,13 @@
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Tipe</h5>
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Detail Golongan</h5>
                </div>
 
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                     <div class="row">
                          <div class="col-lg-12 col-md-12 col-sm-12">
-                              <label for="detailTipe">Tipe :</label><br>
+                              <label for="detailTipe">Golongan :</label><br>
                               <input id='detailTipe' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="" readonly><br>
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
@@ -152,7 +158,7 @@
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-primary">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Tipe</h5>
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Edit Golongan</h5>
                </div>
 
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
@@ -161,7 +167,7 @@
                               <div class="alert alert-danger err_psn_edit_tipe animate__animated animate__bounce d-none"></div>
                               <div class="row">
                                    <div class="col-lg-9 col-md-9 col-sm-12">
-                                        <label for="editTipe">Tipe :</label><br>
+                                        <label for="editTipe">Golongan :</label><br>
                                         <input id='editTipe' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user bg-white" value="">
                                         <small id="error2et" class="text-danger font-italic font-weight-bold"></small><br>
                                    </div>

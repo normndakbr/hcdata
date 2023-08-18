@@ -243,6 +243,9 @@ class Perjanjian extends My_Controller
 
      public function get_all()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->janji->get_all();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
@@ -258,7 +261,7 @@ class Perjanjian extends My_Controller
 
      public function get_by_authper()
      {
-          $auth_per = $this->input->post('auth_per');
+          $auth_per = htmlspecialchars($this->input->post('auth_per', true));
 
           $query = $this->janji->get_by_authper($auth_per);
           $output = "<option value=''>-- Pilih stat_perjanjian --</option>";
@@ -292,6 +295,9 @@ class Perjanjian extends My_Controller
 
      public function get_stat_waktu()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $stat_kary = htmlspecialchars($this->input->post("stat_kary", true));
           $query = $this->janji->get_stat_Waktu($stat_kary);
           if ($query === 0) {

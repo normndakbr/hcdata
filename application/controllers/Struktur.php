@@ -24,6 +24,7 @@ class Struktur extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/struktur/struktur');
           $this->load->view('dashboard/modal/mdlform');
@@ -56,6 +57,7 @@ class Struktur extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/struktur/struktur_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -269,192 +271,223 @@ class Struktur extends My_Controller
      public function input_perusahaan()
      {
 
-          $this->form_validation->set_rules("idparent", "idparent", "required|trim", [
-               'required' => 'Perusahaan utama wajib dipilih'
-          ]);
-          $this->form_validation->set_rules("kodeper", "kodeper", "required|trim", [
-               'required' => 'Kode perusahaan wajib diisi'
-          ]);
-          $this->form_validation->set_rules("namaper", "namaper", "required|trim", [
-               'required' => 'Nama perusahaan wajib diisi'
-          ]);
-          if ($this->form_validation->run() == false) {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-               $error = [
-                    'statusCode' => 202,
-                    'idparent' => form_error("idparent"),
-                    'kodeper' => form_error("kodeper"),
-                    'namaper' => form_error("namaper")
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_per = $this->session->userdata('auth_per_sub');
-               $idparent = htmlspecialchars($this->input->post("idparent", true));
-               $namaper = htmlspecialchars($this->input->post("namaper", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_perusahaan = $this->prs->get_by_auth($auth_per);
-               $id_parent = $this->str->get_by_m_authper($idparent);
 
-               $dtper = [
-                    'id_parent' => $id_parent,
-                    'id_perusahaan' => $id_perusahaan,
-                    'nama_m_perusahaan' => $namaper,
-                    'id_jenis_perusahaan' => 3,
-                    'stat_m_perusahaan' => 'T',
-                    'url_rk3l' => '',
-                    'tgl_buat' => date('Y-m-d H:i:s'),
-                    'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user_hcdata')
-               ];
+               $this->form_validation->set_rules("idparent", "idparent", "required|trim", [
+                    'required' => 'Perusahaan utama wajib dipilih'
+               ]);
+               $this->form_validation->set_rules("kodeper", "kodeper", "required|trim", [
+                    'required' => 'Kode perusahaan wajib diisi'
+               ]);
+               $this->form_validation->set_rules("namaper", "namaper", "required|trim", [
+                    'required' => 'Nama perusahaan wajib diisi'
+               ]);
+               if ($this->form_validation->run() == false) {
 
-               $str_per = $this->str->input_struktur($dtper);
-               if ($str_per) {
-                    $auth_m_per = $this->str->last_row_idmper();
-                    echo json_encode(array(
-                         'statusCode' => 200,
-                         'pesan' => 'Data perusahaan berhasil disimpan',
-                         "auth_m_per" => $auth_m_per,
-                         'auth_parent' => $idparent,
-                         'auth_per' => $auth_per
-                    ));
+                    $error = [
+                         'statusCode' => 202,
+                         'idparent' => form_error("idparent"),
+                         'kodeper' => form_error("kodeper"),
+                         'namaper' => form_error("namaper")
+                    ];
+
+                    echo json_encode($error);
                } else {
-                    echo json_encode(array(
-                         'statusCode' => 201,
-                         'pesan' => 'Data perusahaan gagal disimpan'
-                    ));
+                    $auth_per = $this->session->userdata('auth_per_sub');
+                    $idparent = htmlspecialchars($this->input->post("idparent", true));
+                    $namaper = htmlspecialchars($this->input->post("namaper", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_perusahaan = $this->prs->get_by_auth($auth_per);
+                    $id_parent = $this->str->get_by_m_authper($idparent);
+
+                    $dtper = [
+                         'id_parent' => $id_parent,
+                         'id_perusahaan' => $id_perusahaan,
+                         'nama_m_perusahaan' => $namaper,
+                         'id_jenis_perusahaan' => 3,
+                         'stat_m_perusahaan' => 'T',
+                         'url_rk3l' => '',
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                         'tgl_edit' => date('Y-m-d H:i:s'),
+                         'id_user' => $this->session->userdata('id_user_hcdata')
+                    ];
+
+                    $str_per = $this->str->input_struktur($dtper);
+                    if ($str_per) {
+                         $auth_m_per = $this->str->last_row_idmper();
+                         echo json_encode(array(
+                              'statusCode' => 200,
+                              'pesan' => 'Data perusahaan berhasil disimpan, lanjut lengkapi data selanjutnya',
+                              'auth_m_per' => $auth_m_per,
+                              'auth_parent' => $idparent,
+                              'auth_per' => $auth_per,
+                              'kode_pesan' => 'Berhasil',
+                              'tipe_pesan' => 'success',
+                         ));
+                    } else {
+                         echo json_encode(array(
+                              'statusCode' => 201,
+                              'kode_pesan' => 'Gagal',
+                              'tipe_pesan' => 'error',
+                              'pesan' => 'Data perusahaan gagal disimpan',
+                              'kode_pesan' => 'Gagal',
+                              'tipe_pesan' => 'error',
+                         ));
+                    }
                }
           }
      }
 
      public function addrk3l()
      {
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
 
-          if ($this->form_validation->run() == false) {
-               $filerk3l = htmlspecialchars($this->input->post("filerk3l", true));
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-               if ($filerk3l == "") {
-                    $errupload = "<p>File RK3L wajib diupload</p>";
-               } else {
-                    $errupload = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'auth_m_per' => form_error("auth_m_per"),
-                    'filerk3l' => $errupload
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $nama_file = $now . "-RK3L.pdf";
 
-               $filerk3l = htmlspecialchars($this->input->post("filerk3l", true));
-               if ($filerk3l == "") {
-                    echo json_encode(array('statusCode' => 202, 'filerk3l' => '<p>File RK3L wajib diupload</p>'));
-                    return;
-               }
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
 
-               if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                    mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-               }
+               if ($this->form_validation->run() == false) {
+                    $filerk3l = htmlspecialchars($this->input->post("filerk3l", true));
 
-               if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                    $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                    $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 600;
-                    $config['file_name'] = $nama_file;
-
-                    $this->load->library('upload', $config);
-
-                    if (!$this->upload->do_upload('flrk3l')) {
-                         $err = $this->upload->display_errors();
-
-                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                              $error = "<p>Ukuran file maksimal 600 kb.</p>";
-                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                              $error = "<p>Format file nya dalam bentuk pdf</p>";
-                         } else {
-                              $error = $err;
-                         }
-
-                         echo json_encode(array("statusCode" => 202, "filerk3l" =>  $error));
+                    if ($filerk3l == "") {
+                         $errupload = "<p>File RK3L wajib diupload</p>";
                     } else {
-                         if ($id_m_per != "") {
-                              $dtrk3l = [
-                                   'url_rk3l' => $nama_file,
-                                   'tgl_edit' => date('Y-m-d H:i:s')
-                              ];
-
-                              $str_per = $this->str->update_rk3l($id_m_per, $dtrk3l);
-                              if ($str_per) {
-                                   $link = base_url('struktur/rk3l/') .  $auth_m_per;
-                                   echo json_encode(array('statusCode' => 200, 'pesan' => 'Data RK3L berhasil disimpan', 'link' => $link));
-                              } else {
-                                   echo json_encode(array('statusCode' => 201, 'pesan' => 'Data RK3L gagal disimpan'));
-                              }
-                         } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
-                         }
+                         $errupload = "";
                     }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'auth_m_per' => form_error("auth_m_per"),
+                         'filerk3l' => $errupload
+                    ];
+
+                    echo json_encode($error);
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $nama_file = $now . "-RK3L.pdf";
+
+                    $filerk3l = htmlspecialchars($this->input->post("filerk3l", true));
+                    if ($filerk3l == "") {
+                         echo json_encode(array('statusCode' => 202, 'filerk3l' => '<p>File RK3L wajib diupload</p>'));
+                         return;
+                    }
+
+                    if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                         mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                    }
+
+                    if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                         $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                         $config['allowed_types'] = 'pdf';
+                         $config['max_size'] = 600;
+                         $config['file_name'] = $nama_file;
+
+                         $this->load->library('upload', $config);
+
+                         if (!$this->upload->do_upload('flrk3l')) {
+                              $err = $this->upload->display_errors();
+
+                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                   $error = "<p>Ukuran file maksimal 600 kb.</p>";
+                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
+                              } else {
+                                   $error = $err;
+                              }
+
+                              echo json_encode(array("statusCode" => 202, "filerk3l" =>  $error));
+                         } else {
+                              if ($id_m_per != "") {
+                                   $dtrk3l = [
+                                        'url_rk3l' => $nama_file,
+                                        'tgl_edit' => date('Y-m-d H:i:s')
+                                   ];
+
+                                   $str_per = $this->str->update_rk3l($id_m_per, $dtrk3l);
+                                   if ($str_per) {
+                                        $link = base_url('struktur/rk3l/') .  $auth_m_per;
+                                        echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data RK3L berhasil disimpan', 'link' => $link, "tipe_pesan" => "success"));
+                                   } else {
+                                        echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data RK3L gagal disimpan', "tipe_pesan" => "error"));
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                              }
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                    }
                }
           }
      }
 
      public function resetrk3l()
      {
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Perusahaan tidak ditemukan'
-          ]);
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          if ($this->form_validation->run() == false) {
-
-               $error = [
-                    'statusCode' => 202,
-                    'auth_m_per' => form_error("auth_m_per")
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $url_rk3l = $this->prs->get_rk3l_by_auth_m($auth_m_per);
 
-               if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                    mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-               }
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Perusahaan tidak ditemukan'
+               ]);
 
-               if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                    if ($url_rk3l != "") {
-                         unlink('./assets/berkas/perusahaan/' . $namafolder . "/" . $url_rk3l);
+               if ($this->form_validation->run() == false) {
+
+                    $error = [
+                         'statusCode' => 202,
+                         'auth_m_per' => form_error("auth_m_per")
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $url_rk3l = $this->prs->get_rk3l_by_auth_m($auth_m_per);
+
+                    if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                         mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
                     }
 
-                    if ($id_m_per != "") {
-                         $dtrk3l = [
-                              'url_rk3l' => '',
-                              'tgl_edit' => date('Y-m-d H:i:s')
-                         ];
-
-                         $str_per = $this->str->update_rk3l($id_m_per, $dtrk3l);
-                         if ($str_per) {
-                              echo json_encode(array('statusCode' => 200, 'pesan' => 'Data RK3L berhasil direset'));
-                         } else {
-                              echo json_encode(array('statusCode' => 201, 'pesan' => 'Data RK3L gagal direset'));
+                    if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                         if ($url_rk3l != "") {
+                              unlink('./berkas/perusahaan/' . $namafolder . "/" . $url_rk3l);
                          }
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
+
+                         if ($id_m_per != "") {
+                              $dtrk3l = [
+                                   'url_rk3l' => '',
+                                   'tgl_edit' => date('Y-m-d H:i:s')
+                              ];
+
+                              $str_per = $this->str->update_rk3l($id_m_per, $dtrk3l);
+                              if ($str_per) {
+                                   echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data RK3L berhasil direset', "tipe_pesan" => "success"));
+                              } else {
+                                   echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data RK3L gagal direset', "tipe_pesan" => "error"));
+                              }
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                         }
                     }
                }
           }
@@ -462,40 +495,48 @@ class Struktur extends My_Controller
 
      public function resetiujp()
      {
-          $this->form_validation->set_rules("auth_izin", "auth_izin", "required|trim", [
-               'required' => 'Perizinan tidak ditemukan'
-          ]);
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          if ($this->form_validation->run() == false) {
-
-               $error = [
-                    'statusCode' => 202,
-                    'auth_izin' => form_error("auth_izin")
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
-               $auth_m_per = $this->prs->get_auth_m_by_auth_izin($auth_izin);
-               $id_izin = $this->prs->get_by_auth_izin($auth_izin);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $url_iujp = $this->prs->get_izin_by_auth_m($auth_izin);
 
-               if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                    if ($url_iujp !== "") {
-                         unlink('./assets/berkas/perusahaan/' . $namafolder . "/" . $url_iujp);
-                    }
+               $this->form_validation->set_rules("auth_izin", "auth_izin", "required|trim", [
+                    'required' => 'Perizinan tidak ditemukan'
+               ]);
 
-                    if ($id_izin != "") {
-                         $hps_izin = $this->prs->hapus_izin_perusahaan($id_izin);
-                         if ($hps_izin) {
-                              echo json_encode(array('statusCode' => 200, 'pesan' => 'Data IUJP/Perizinan berhasil Hapus'));
-                         } else {
-                              echo json_encode(array('statusCode' => 201, 'pesan' => 'Data IUJP/Perizinan gagal Hapus'));
+               if ($this->form_validation->run() == false) {
+
+                    $error = [
+                         'statusCode' => 202,
+                         'auth_izin' => form_error("auth_izin")
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
+                    $auth_m_per = $this->prs->get_auth_m_by_auth_izin($auth_izin);
+                    $id_izin = $this->prs->get_by_auth_izin($auth_izin);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $url_iujp = $this->prs->get_izin_by_auth_m($auth_izin);
+
+                    if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                         if ($url_iujp !== "") {
+                              unlink('./berkas/perusahaan/' . $namafolder . "/" . $url_iujp);
                          }
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perizinan"));
+
+                         if ($id_izin != "") {
+                              $hps_izin = $this->prs->hapus_izin_perusahaan($id_izin);
+                              if ($hps_izin) {
+                                   echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data IUJP/Perizinan berhasil Hapus', "tipe_pesan" => "error"));
+                              } else {
+                                   echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data IUJP/Perizinan gagal Hapus', "tipe_pesan" => "error"));
+                              }
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perizinan", "tipe_pesan" => "error"));
+                         }
                     }
                }
           }
@@ -503,79 +544,269 @@ class Struktur extends My_Controller
 
      public function addiujp()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          $this->form_validation->set_rules("no_iujp", "no_iujp", "required|trim", [
-               'required' => 'No. IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_iujp", "tgl_awal_iujp", "required|trim", [
-               'required' => 'Tanggal mulai IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_iujp", "tgl_akhir_iujp", "required|trim", [
-               'required' => 'Tanggal akhir IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_iujp", "ket_iujp", "trim");
-
-          if ($this->form_validation->run() == false) {
-               $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
-
-               if ($fileiujp == "") {
-                    $errupload = "<p>File IUJP wajib diupload</p>";
-               } else {
-                    $errupload = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_iujp' => form_error("no_iujp"),
-                    'tgl_awal_iujp' => form_error("tgl_awal_iujp"),
-                    'tgl_akhir_iujp' => form_error("tgl_akhir_iujp"),
-                    'fileiujp' => $errupload
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $no_iujp = htmlspecialchars($this->input->post("no_iujp", true));
-               $tgl_awal_iujp = htmlspecialchars($this->input->post("tgl_awal_iujp", true));
-               $tgl_akhir_iujp = htmlspecialchars($this->input->post("tgl_akhir_iujp", true));
-               $ket_iujp = htmlspecialchars($this->input->post("ket_iujp", true));
-               $auth_iujp = htmlspecialchars($this->input->post("auth_iujp", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_per = htmlspecialchars($this->input->post("auth_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_by_auth($auth_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_iujp));
-               $nama_file = $id_per . "-" . $id_m_per . "-" . $tglakhir . "-" . $now . "-IUJP.pdf";
-               $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
 
-               if ($fileiujp == "") {
-                    echo json_encode(array('statusCode' => 202, 'fileiujp' => '<p>File IUJP wajib dipilih</p>'));
-                    return;
+               $this->form_validation->set_rules("no_iujp", "no_iujp", "required|trim", [
+                    'required' => 'No. IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_iujp", "tgl_awal_iujp", "required|trim", [
+                    'required' => 'Tanggal mulai IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_iujp", "tgl_akhir_iujp", "required|trim", [
+                    'required' => 'Tanggal akhir IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_iujp", "ket_iujp", "trim");
+
+               if ($this->form_validation->run() == false) {
+                    $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
+
+                    if ($fileiujp == "") {
+                         $errupload = "<p>File IUJP wajib diupload</p>";
+                    } else {
+                         $errupload = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_iujp' => form_error("no_iujp"),
+                         'tgl_awal_iujp' => form_error("tgl_awal_iujp"),
+                         'tgl_akhir_iujp' => form_error("tgl_akhir_iujp"),
+                         'fileiujp' => $errupload
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_iujp = htmlspecialchars($this->input->post("no_iujp", true));
+                    $tgl_awal_iujp = htmlspecialchars($this->input->post("tgl_awal_iujp", true));
+                    $tgl_akhir_iujp = htmlspecialchars($this->input->post("tgl_akhir_iujp", true));
+                    $ket_iujp = htmlspecialchars($this->input->post("ket_iujp", true));
+                    $auth_iujp = htmlspecialchars($this->input->post("auth_iujp", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $auth_per = htmlspecialchars($this->input->post("auth_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_by_auth($auth_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_iujp));
+                    $nama_file = $id_per . "-" . $id_m_per . "-" . $tglakhir . "-" . $now . "-IUJP.pdf";
+                    $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
+
+                    if ($fileiujp == "") {
+                         echo json_encode(array('statusCode' => 202, 'fileiujp' => '<p>File IUJP wajib dipilih</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_iujp > $tgl_akhir_iujp) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_iujp' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
+                    if ($cek_izin == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if ($auth_iujp == "") {
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 100;
+                                   $config['file_name'] = $nama_file;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('fliujp')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "fileiujp" =>  $error));
+                                   } else {
+                                        $dtiujp = [
+                                             'id_m_perusahaan' => $id_m_per,
+                                             'no_izin_perusahaan' => $no_iujp,
+                                             'tgl_mulai_izin' => $tgl_awal_iujp,
+                                             'tgl_akhir_izin' => $tgl_akhir_iujp,
+                                             'url_izin_perusahaan' => $nama_file,
+                                             'ket_izin_perusahaan' => $ket_iujp,
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
+                                        ];
+
+                                        $str_per = $this->str->input_iujp($dtiujp);
+                                        if ($str_per) {
+                                             $auth_izin = $this->str->last_row_idiujp();
+                                             $link = base_url('struktur/iujp/') .  $auth_m_per;
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data IUJP berhasil disimpan', "tipe_pesan" => "success", "auth_izin" => $auth_izin, "link" => $link));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data IUJP gagal disimpan', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         } else {
+                              $url_izin = $this->str->get_by_url_izin($auth_iujp);
+
+                              if ($url_izin != "") {
+                                   $nama_file = $url_izin;
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 100;
+                                   $config['file_name'] = $nama_file;
+                                   $config['overwrite'] = TRUE;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('fliujp')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "fileiujp" =>  $error));
+                                   } else {
+                                        $id_izin = $this->str->get_by_auth_izin($auth_iujp);
+                                        $dtiujp = [
+                                             'no_izin_perusahaan' => $no_iujp,
+                                             'tgl_mulai_izin' => $tgl_awal_iujp,
+                                             'tgl_akhir_izin' => $tgl_akhir_iujp,
+                                             'url_izin_perusahaan' => $nama_file,
+                                             'ket_izin_perusahaan' => $ket_iujp,
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                        ];
+
+                                        $str_per = $this->str->update_iujp($id_izin, $dtiujp);
+                                        if ($str_per == 200) {
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data IUJP berhasil diupdate', "tipe_pesan" => "success"));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data IUJP gagal diupdate', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                    }
                }
+          }
+     }
 
-               if ($tgl_awal_iujp > $tgl_akhir_iujp) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_iujp' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
+     public function add_iujp()
+     {
 
-               $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
-               if ($cek_izin == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan'));
-                    return;
-               }
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-               if ($id_m_per != "") {
-                    if ($auth_iujp == "") {
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $this->form_validation->set_rules("no_iujp", "no_iujp", "required|trim", [
+                    'required' => 'No. IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_iujp", "tgl_awal_iujp", "required|trim", [
+                    'required' => 'Tanggal mulai IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_iujp", "tgl_akhir_iujp", "required|trim", [
+                    'required' => 'Tanggal akhir IUJP wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_iujp", "ket_iujp", "trim");
+
+               if ($this->form_validation->run() == false) {
+                    $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
+
+                    if ($fileiujp == "") {
+                         $errupload = "<p>File IUJP wajib diupload</p>";
+                    } else {
+                         $errupload = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_iujp' => form_error("no_iujp"),
+                         'tgl_awal_iujp' => form_error("tgl_awal_iujp"),
+                         'tgl_akhir_iujp' => form_error("tgl_akhir_iujp"),
+                         'auth_m_per' => form_error("auth_m_per"),
+                         'fileiujp' => $errupload
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_iujp = htmlspecialchars($this->input->post("no_iujp", true));
+                    $tgl_awal_iujp = htmlspecialchars($this->input->post("tgl_awal_iujp", true));
+                    $tgl_akhir_iujp = htmlspecialchars($this->input->post("tgl_akhir_iujp", true));
+                    $ket_iujp = htmlspecialchars($this->input->post("ket_iujp", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_iujp));
+                    $nama_file = $tglakhir . "-" . $now . "-IUJP.pdf";
+                    $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
+
+                    if ($fileiujp == "") {
+                         echo json_encode(array('statusCode' => 202, 'fileiujp' => '<p>File IUJP wajib dipilih</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_iujp > $tgl_akhir_iujp) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_iujp' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
+                    if ($cek_izin == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                              mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
                          }
 
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
+                         if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                              $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
                               $config['allowed_types'] = 'pdf';
                               $config['max_size'] = 100;
                               $config['file_name'] = $nama_file;
@@ -609,192 +840,17 @@ class Struktur extends My_Controller
 
                                    $str_per = $this->str->input_iujp($dtiujp);
                                    if ($str_per) {
-                                        $auth_izin = $this->str->last_row_idiujp();
-                                        $link = base_url('struktur/iujp/') .  $auth_m_per;
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data IUJP berhasil disimpan', "auth_izin" => $auth_izin, "link" => $link));
+                                        echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data IUJP berhasil disimpan', "tipe_pesan" => "success"));
                                    } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data IUJP gagal disimpan'));
+                                        echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data IUJP gagal disimpan', "tipe_pesan" => "error"));
                                    }
                               }
                          } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
                          }
                     } else {
-                         $url_izin = $this->str->get_by_url_izin($auth_iujp);
-
-                         if ($url_izin != "") {
-                              $nama_file = $url_izin;
-                         }
-
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                         }
-
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                              $config['allowed_types'] = 'pdf';
-                              $config['max_size'] = 100;
-                              $config['file_name'] = $nama_file;
-                              $config['overwrite'] = TRUE;
-
-                              $this->load->library('upload', $config);
-
-                              if (!$this->upload->do_upload('fliujp')) {
-                                   $err = $this->upload->display_errors();
-
-                                   if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                        $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                                   } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                        $error = "<p>Format file nya dalam bentuk pdf</p>";
-                                   } else {
-                                        $error = $err;
-                                   }
-
-                                   echo json_encode(array("statusCode" => 202, "fileiujp" =>  $error));
-                              } else {
-                                   $id_izin = $this->str->get_by_auth_izin($auth_iujp);
-                                   $dtiujp = [
-                                        'no_izin_perusahaan' => $no_iujp,
-                                        'tgl_mulai_izin' => $tgl_awal_iujp,
-                                        'tgl_akhir_izin' => $tgl_akhir_iujp,
-                                        'url_izin_perusahaan' => $nama_file,
-                                        'ket_izin_perusahaan' => $ket_iujp,
-                                        'tgl_edit' => date('Y-m-d H:i:s'),
-                                   ];
-
-                                   $str_per = $this->str->update_iujp($id_izin, $dtiujp);
-                                   if ($str_per == 200) {
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data IUJP berhasil diupdate'));
-                                   } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data IUJP gagal diupdate'));
-                                   }
-                              }
-                         } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                         }
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
                     }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
-               }
-          }
-     }
-
-     public function add_iujp()
-     {
-
-          $this->form_validation->set_rules("no_iujp", "no_iujp", "required|trim", [
-               'required' => 'No. IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_iujp", "tgl_awal_iujp", "required|trim", [
-               'required' => 'Tanggal mulai IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_iujp", "tgl_akhir_iujp", "required|trim", [
-               'required' => 'Tanggal akhir IUJP wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_iujp", "ket_iujp", "trim");
-
-          if ($this->form_validation->run() == false) {
-               $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
-
-               if ($fileiujp == "") {
-                    $errupload = "<p>File IUJP wajib diupload</p>";
-               } else {
-                    $errupload = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_iujp' => form_error("no_iujp"),
-                    'tgl_awal_iujp' => form_error("tgl_awal_iujp"),
-                    'tgl_akhir_iujp' => form_error("tgl_akhir_iujp"),
-                    'auth_m_per' => form_error("auth_m_per"),
-                    'fileiujp' => $errupload
-               ];
-
-               echo json_encode($error);
-          } else {
-               $no_iujp = htmlspecialchars($this->input->post("no_iujp", true));
-               $tgl_awal_iujp = htmlspecialchars($this->input->post("tgl_awal_iujp", true));
-               $tgl_akhir_iujp = htmlspecialchars($this->input->post("tgl_akhir_iujp", true));
-               $ket_iujp = htmlspecialchars($this->input->post("ket_iujp", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_iujp));
-               $nama_file = $tglakhir . "-" . $now . "-IUJP.pdf";
-               $fileiujp = htmlspecialchars($this->input->post("fileiujp", true));
-
-               if ($fileiujp == "") {
-                    echo json_encode(array('statusCode' => 202, 'fileiujp' => '<p>File IUJP wajib dipilih</p>'));
-                    return;
-               }
-
-               if ($tgl_awal_iujp > $tgl_akhir_iujp) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_iujp' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
-
-               $cek_izin = $this->str->cek_iujp($no_iujp, $tgl_awal_iujp, $tgl_akhir_iujp);
-               if ($cek_izin == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'IUJP/Perizinan dengan Nomor : ' . $no_iujp . ' Sudah digunakan'));
-                    return;
-               }
-
-               if ($id_m_per != "") {
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                         mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                    }
-
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                         $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                         $config['allowed_types'] = 'pdf';
-                         $config['max_size'] = 100;
-                         $config['file_name'] = $nama_file;
-
-                         $this->load->library('upload', $config);
-
-                         if (!$this->upload->do_upload('fliujp')) {
-                              $err = $this->upload->display_errors();
-
-                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
-                              } else {
-                                   $error = $err;
-                              }
-
-                              echo json_encode(array("statusCode" => 202, "fileiujp" =>  $error));
-                         } else {
-                              $dtiujp = [
-                                   'id_m_perusahaan' => $id_m_per,
-                                   'no_izin_perusahaan' => $no_iujp,
-                                   'tgl_mulai_izin' => $tgl_awal_iujp,
-                                   'tgl_akhir_izin' => $tgl_akhir_iujp,
-                                   'url_izin_perusahaan' => $nama_file,
-                                   'ket_izin_perusahaan' => $ket_iujp,
-                                   'tgl_buat' => date('Y-m-d H:i:s'),
-                                   'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user_hcdata')
-                              ];
-
-                              $str_per = $this->str->input_iujp($dtiujp);
-                              if ($str_per) {
-                                   echo json_encode(array('statusCode' => 200, 'pesan' => 'Data IUJP berhasil disimpan'));
-                              } else {
-                                   echo json_encode(array('statusCode' => 201, 'pesan' => 'Data IUJP gagal disimpan'));
-                              }
-                         }
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                    }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
                }
           }
      }
@@ -802,79 +858,269 @@ class Struktur extends My_Controller
      public function addsio()
      {
 
-          $this->form_validation->set_rules("no_sio", "no_sio", "required|trim", [
-               'required' => 'No. SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_sio", "tgl_awal_sio", "required|trim", [
-               'required' => 'Tanggal mulai SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_sio", "tgl_akhir_sio", "required|trim", [
-               'required' => 'Tanggal akhir SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_sio", "ket_sio", "trim");
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-
-          if ($this->form_validation->run() == false) {
-
-               $filesio = htmlspecialchars($this->input->post("filesio", true));
-               if ($filesio == "") {
-                    $errfile = "<p>File SIO wajib dipilih</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_sio' => form_error("no_sio"),
-                    'tgl_awal_sio' => form_error("tgl_awal_sio"),
-                    'tgl_akhir_sio' => form_error("tgl_akhir_sio"),
-                    'filesio' => $errfile
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $no_sio = htmlspecialchars($this->input->post("no_sio", true));
-               $tgl_awal_sio = htmlspecialchars($this->input->post("tgl_awal_sio", true));
-               $tgl_akhir_sio = htmlspecialchars($this->input->post("tgl_akhir_sio", true));
-               $ket_sio = htmlspecialchars($this->input->post("ket_sio", true));
-               $auth_sio = htmlspecialchars($this->input->post("auth_sio", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_per = htmlspecialchars($this->input->post("auth_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_by_auth($auth_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_sio));
-               $nama_file = $tglakhir . "-" . $now . "-SIO.pdf";
 
-               $filesio = htmlspecialchars($this->input->post("filesio", true));
-               if ($filesio == "") {
-                    echo json_encode(array('statusCode' => 202, 'filesio' => '<p>File SIO wajib diupload</p>'));
-                    return;
+               $this->form_validation->set_rules("no_sio", "no_sio", "required|trim", [
+                    'required' => 'No. SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_sio", "tgl_awal_sio", "required|trim", [
+                    'required' => 'Tanggal mulai SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_sio", "tgl_akhir_sio", "required|trim", [
+                    'required' => 'Tanggal akhir SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_sio", "ket_sio", "trim");
+
+
+               if ($this->form_validation->run() == false) {
+
+                    $filesio = htmlspecialchars($this->input->post("filesio", true));
+                    if ($filesio == "") {
+                         $errfile = "<p>File SIO wajib dipilih</p>";
+                    } else {
+                         $errfile = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_sio' => form_error("no_sio"),
+                         'tgl_awal_sio' => form_error("tgl_awal_sio"),
+                         'tgl_akhir_sio' => form_error("tgl_akhir_sio"),
+                         'filesio' => $errfile
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_sio = htmlspecialchars($this->input->post("no_sio", true));
+                    $tgl_awal_sio = htmlspecialchars($this->input->post("tgl_awal_sio", true));
+                    $tgl_akhir_sio = htmlspecialchars($this->input->post("tgl_akhir_sio", true));
+                    $ket_sio = htmlspecialchars($this->input->post("ket_sio", true));
+                    $auth_sio = htmlspecialchars($this->input->post("auth_sio", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $auth_per = htmlspecialchars($this->input->post("auth_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_by_auth($auth_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_sio));
+                    $nama_file = $tglakhir . "-" . $now . "-SIO.pdf";
+
+                    $filesio = htmlspecialchars($this->input->post("filesio", true));
+                    if ($filesio == "") {
+                         echo json_encode(array('statusCode' => 202, 'filesio' => '<p>File SIO wajib diupload</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_sio > $tgl_akhir_sio) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_sio' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
+                    if ($cek_sio == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if ($auth_sio == "") {
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 100;
+                                   $config['file_name'] = $nama_file;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('flsio')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "filesio" =>  $error));
+                                   } else {
+                                        $dtsio = [
+                                             'id_m_perusahaan' => $id_m_per,
+                                             'no_sio_perusahaan' => $no_sio,
+                                             'tgl_mulai_sio' => $tgl_awal_sio,
+                                             'tgl_akhir_sio' => $tgl_akhir_sio,
+                                             'url_sio' => $nama_file,
+                                             'ket_sio' => $ket_sio,
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
+                                        ];
+
+                                        $str_per = $this->str->input_sio($dtsio);
+                                        if ($str_per) {
+                                             $auth_sio = $this->str->last_row_idsio();
+                                             $link = base_url('struktur/sio/') .  $auth_m_per;
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data SIO berhasil disimpan', "auth_sio" => $auth_sio, "tipe_pesan" => "success", "link" => $link));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data SIO gagal disimpan', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         } else {
+                              $url_sio = $this->str->get_by_url_sio($auth_sio);
+
+                              if ($url_sio != "") {
+                                   $nama_file = $url_sio;
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 1000;
+                                   $config['file_name'] = $nama_file;
+                                   $config['overwrite'] = TRUE;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('flsio')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 1 mb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "filesio" =>  $error));
+                                   } else {
+                                        $id_sio = $this->str->get_by_auth_sio($auth_sio);
+                                        $dtsio = [
+                                             'no_sio_perusahaan' => $no_sio,
+                                             'tgl_mulai_sio' => $tgl_awal_sio,
+                                             'tgl_akhir_sio' => $tgl_akhir_sio,
+                                             'url_sio' => $nama_file,
+                                             'ket_sio' => $ket_sio,
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                        ];
+
+                                        $str_per = $this->str->update_sio($id_sio, $dtsio);
+                                        if ($str_per == 200) {
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data SIO berhasil diupdate', "tipe_pesan" => "success"));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data SIO gagal diupdate', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                    }
                }
+          }
+     }
 
-               if ($tgl_awal_sio > $tgl_akhir_sio) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_sio' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
+     public function add_sio()
+     {
 
-               $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
-               if ($cek_sio == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan'));
-                    return;
-               }
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-               if ($id_m_per != "") {
-                    if ($auth_sio == "") {
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $this->form_validation->set_rules("no_sio", "no_sio", "required|trim", [
+                    'required' => 'No. SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_sio", "tgl_awal_sio", "required|trim", [
+                    'required' => 'Tanggal mulai SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_sio", "tgl_akhir_sio", "required|trim", [
+                    'required' => 'Tanggal akhir SIO wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_sio", "ket_sio", "trim");
+
+               if ($this->form_validation->run() == false) {
+
+                    $filesio = htmlspecialchars($this->input->post("filesio", true));
+                    if ($filesio == "") {
+                         $errfile = "<p>File SIO wajib dipilih</p>";
+                    } else {
+                         $errfile = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_sio' => form_error("no_sio"),
+                         'tgl_awal_sio' => form_error("tgl_awal_sio"),
+                         'tgl_akhir_sio' => form_error("tgl_akhir_sio"),
+                         'filesio' => $errfile
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_sio = htmlspecialchars($this->input->post("no_sio", true));
+                    $tgl_awal_sio = htmlspecialchars($this->input->post("tgl_awal_sio", true));
+                    $tgl_akhir_sio = htmlspecialchars($this->input->post("tgl_akhir_sio", true));
+                    $ket_sio = htmlspecialchars($this->input->post("ket_sio", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_sio));
+                    $nama_file = $tglakhir . "-" . $now . "-SIO.pdf";
+
+                    $filesio = htmlspecialchars($this->input->post("filesio", true));
+                    if ($filesio == "") {
+                         echo json_encode(array('statusCode' => 202, 'filesio' => '<p>File SIO wajib diupload</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_sio > $tgl_akhir_sio) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_sio' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
+                    if ($cek_sio == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                              mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
                          }
 
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
+                         if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                              $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
                               $config['allowed_types'] = 'pdf';
                               $config['max_size'] = 100;
                               $config['file_name'] = $nama_file;
@@ -909,269 +1155,286 @@ class Struktur extends My_Controller
                                    $str_per = $this->str->input_sio($dtsio);
                                    if ($str_per) {
                                         $auth_sio = $this->str->last_row_idsio();
-                                        $link = base_url('struktur/sio/') .  $auth_m_per;
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data SIO berhasil disimpan', "auth_sio" => $auth_sio, "link" => $link));
+                                        echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data SIO berhasil disimpan', "tipe_pesan" => "success"));
                                    } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data SIO gagal disimpan'));
+                                        echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data SIO gagal disimpan', "tipe_pesan" => "error"));
                                    }
                               }
                          } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
                          }
                     } else {
-                         $url_sio = $this->str->get_by_url_sio($auth_sio);
-
-                         if ($url_sio != "") {
-                              $nama_file = $url_sio;
-                         }
-
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                         }
-
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                              $config['allowed_types'] = 'pdf';
-                              $config['max_size'] = 1000;
-                              $config['file_name'] = $nama_file;
-                              $config['overwrite'] = TRUE;
-
-                              $this->load->library('upload', $config);
-
-                              if (!$this->upload->do_upload('flsio')) {
-                                   $err = $this->upload->display_errors();
-
-                                   if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                        $error = "<p>Ukuran file maksimal 1 mb.</p>";
-                                   } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                        $error = "<p>Format file nya dalam bentuk pdf</p>";
-                                   } else {
-                                        $error = $err;
-                                   }
-
-                                   echo json_encode(array("statusCode" => 202, "filesio" =>  $error));
-                              } else {
-                                   $id_sio = $this->str->get_by_auth_sio($auth_sio);
-                                   $dtsio = [
-                                        'no_sio_perusahaan' => $no_sio,
-                                        'tgl_mulai_sio' => $tgl_awal_sio,
-                                        'tgl_akhir_sio' => $tgl_akhir_sio,
-                                        'url_sio' => $nama_file,
-                                        'ket_sio' => $ket_sio,
-                                        'tgl_edit' => date('Y-m-d H:i:s'),
-                                   ];
-
-                                   $str_per = $this->str->update_sio($id_sio, $dtsio);
-                                   if ($str_per == 200) {
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data SIO berhasil diupdate'));
-                                   } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data SIO gagal diupdate'));
-                                   }
-                              }
-                         } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                         }
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
                     }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
-               }
-          }
-     }
-
-     public function add_sio()
-     {
-
-          $this->form_validation->set_rules("no_sio", "no_sio", "required|trim", [
-               'required' => 'No. SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_sio", "tgl_awal_sio", "required|trim", [
-               'required' => 'Tanggal mulai SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_sio", "tgl_akhir_sio", "required|trim", [
-               'required' => 'Tanggal akhir SIO wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_sio", "ket_sio", "trim");
-
-          if ($this->form_validation->run() == false) {
-
-               $filesio = htmlspecialchars($this->input->post("filesio", true));
-               if ($filesio == "") {
-                    $errfile = "<p>File SIO wajib dipilih</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_sio' => form_error("no_sio"),
-                    'tgl_awal_sio' => form_error("tgl_awal_sio"),
-                    'tgl_akhir_sio' => form_error("tgl_akhir_sio"),
-                    'filesio' => $errfile
-               ];
-
-               echo json_encode($error);
-          } else {
-               $no_sio = htmlspecialchars($this->input->post("no_sio", true));
-               $tgl_awal_sio = htmlspecialchars($this->input->post("tgl_awal_sio", true));
-               $tgl_akhir_sio = htmlspecialchars($this->input->post("tgl_akhir_sio", true));
-               $ket_sio = htmlspecialchars($this->input->post("ket_sio", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_sio));
-               $nama_file = $tglakhir . "-" . $now . "-SIO.pdf";
-
-               $filesio = htmlspecialchars($this->input->post("filesio", true));
-               if ($filesio == "") {
-                    echo json_encode(array('statusCode' => 202, 'filesio' => '<p>File SIO wajib diupload</p>'));
-                    return;
-               }
-
-               if ($tgl_awal_sio > $tgl_akhir_sio) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_sio' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
-
-               $cek_sio = $this->str->cek_sio($no_sio, $tgl_awal_sio, $tgl_akhir_sio);
-               if ($cek_sio == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'SIO dengan Nomor : ' . $no_sio . ' Sudah digunakan'));
-                    return;
-               }
-
-               if ($id_m_per != "") {
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                         mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                    }
-
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                         $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                         $config['allowed_types'] = 'pdf';
-                         $config['max_size'] = 100;
-                         $config['file_name'] = $nama_file;
-
-                         $this->load->library('upload', $config);
-
-                         if (!$this->upload->do_upload('flsio')) {
-                              $err = $this->upload->display_errors();
-
-                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
-                              } else {
-                                   $error = $err;
-                              }
-
-                              echo json_encode(array("statusCode" => 202, "filesio" =>  $error));
-                         } else {
-                              $dtsio = [
-                                   'id_m_perusahaan' => $id_m_per,
-                                   'no_sio_perusahaan' => $no_sio,
-                                   'tgl_mulai_sio' => $tgl_awal_sio,
-                                   'tgl_akhir_sio' => $tgl_akhir_sio,
-                                   'url_sio' => $nama_file,
-                                   'ket_sio' => $ket_sio,
-                                   'tgl_buat' => date('Y-m-d H:i:s'),
-                                   'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user_hcdata')
-                              ];
-
-                              $str_per = $this->str->input_sio($dtsio);
-                              if ($str_per) {
-                                   $auth_sio = $this->str->last_row_idsio();
-                                   echo json_encode(array('statusCode' => 200, 'pesan' => 'Data SIO berhasil disimpan'));
-                              } else {
-                                   echo json_encode(array('statusCode' => 201, 'pesan' => 'Data SIO gagal disimpan'));
-                              }
-                         }
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                    }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
                }
           }
      }
 
      public function addkontrak()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          $this->form_validation->set_rules("no_kontrak", "no_kontrak", "required|trim", [
-               'required' => 'No. kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_kontrak", "tgl_awal_kontrak", "required|trim", [
-               'required' => 'Tanggal mulai kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_kontrak", "tgl_akhir_kontrak", "required|trim", [
-               'required' => 'Tanggal akhir kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_kontrak", "ket_kontrak", "trim");
-
-          if ($this->form_validation->run() == false) {
-               $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
-               if ($filekontrak == "") {
-                    $errfile = "<p>File kontrak wajib dipilih</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_kontrak' => form_error("no_kontrak"),
-                    'tgl_awal_kontrak' => form_error("tgl_awal_kontrak"),
-                    'tgl_akhir_kontrak' => form_error("tgl_akhir_kontrak"),
-                    'filekontrak' => $errfile
-               ];
-
-               echo json_encode($error);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $no_kontrak = htmlspecialchars($this->input->post("no_kontrak", true));
-               $tgl_awal_kontrak = htmlspecialchars($this->input->post("tgl_awal_kontrak", true));
-               $tgl_akhir_kontrak = htmlspecialchars($this->input->post("tgl_akhir_kontrak", true));
-               $ket_kontrak = htmlspecialchars($this->input->post("ket_kontrak", true));
-               $auth_kontrak = htmlspecialchars($this->input->post("auth_kontrak", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_per = htmlspecialchars($this->input->post("auth_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_by_auth($auth_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_kontrak));
-               $nama_file = $tglakhir . "-" . $now . "-KONTRAK.pdf";
 
-               $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
-               if ($filekontrak == "") {
-                    echo json_encode(array('statusCode' => 202, 'filekontrak' => '<p>File kontrak wajib diupload</p>'));
-                    return;
+               $this->form_validation->set_rules("no_kontrak", "no_kontrak", "required|trim", [
+                    'required' => 'No. kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_kontrak", "tgl_awal_kontrak", "required|trim", [
+                    'required' => 'Tanggal mulai kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_kontrak", "tgl_akhir_kontrak", "required|trim", [
+                    'required' => 'Tanggal akhir kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_kontrak", "ket_kontrak", "trim");
+
+               if ($this->form_validation->run() == false) {
+                    $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
+                    if ($filekontrak == "") {
+                         $errfile = "<p>File kontrak wajib dipilih</p>";
+                    } else {
+                         $errfile = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_kontrak' => form_error("no_kontrak"),
+                         'tgl_awal_kontrak' => form_error("tgl_awal_kontrak"),
+                         'tgl_akhir_kontrak' => form_error("tgl_akhir_kontrak"),
+                         'filekontrak' => $errfile
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_kontrak = htmlspecialchars($this->input->post("no_kontrak", true));
+                    $tgl_awal_kontrak = htmlspecialchars($this->input->post("tgl_awal_kontrak", true));
+                    $tgl_akhir_kontrak = htmlspecialchars($this->input->post("tgl_akhir_kontrak", true));
+                    $ket_kontrak = htmlspecialchars($this->input->post("ket_kontrak", true));
+                    $auth_kontrak = htmlspecialchars($this->input->post("auth_kontrak", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $auth_per = htmlspecialchars($this->input->post("auth_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_by_auth($auth_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_kontrak));
+                    $nama_file = $tglakhir . "-" . $now . "-KONTRAK.pdf";
+
+                    $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
+                    if ($filekontrak == "") {
+                         echo json_encode(array('statusCode' => 202, 'filekontrak' => '<p>File kontrak wajib diupload</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_kontrak > $tgl_akhir_kontrak) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_kontrak' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
+                    if ($cek_kontrak == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal",  'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if ($auth_kontrak == "") {
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 100;
+                                   $config['file_name'] = $nama_file;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('flkontrak')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "filekontrak" =>  $error));
+                                   } else {
+                                        $dtkontrak = [
+                                             'id_m_perusahaan' => $id_m_per,
+                                             'id_perusahaan' => 0,
+                                             'no_kontrak_perusahaan' => $no_kontrak,
+                                             'ket_kontrak_perusahaan' => $ket_kontrak,
+                                             'tgl_mulai' => $tgl_awal_kontrak,
+                                             'tgl_akhir' => $tgl_akhir_kontrak,
+                                             'url_doc_kontrak_perusahaan' => $nama_file,
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
+                                        ];
+
+                                        $str_per = $this->str->input_kontrak($dtkontrak);
+
+                                        if ($str_per) {
+                                             $auth_kontrak = $this->str->last_row_idkontrak();
+                                             $link = base_url('struktur/kontrak/') .  $auth_m_per;
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data kontrak berhasil disimpan', "auth_kontrak" => $auth_kontrak, "tipe_pesan" => "success", "link" => $link));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data kontrak gagal disimpan', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         } else {
+                              $url_kontrak = $this->str->get_by_url_kontrak($auth_kontrak);
+
+                              if ($url_kontrak != "") {
+                                   $nama_file = $url_kontrak;
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                                   mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                              }
+
+                              if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                                   $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 100;
+                                   $config['file_name'] = $nama_file;
+                                   $config['overwrite'] = TRUE;
+
+                                   $this->load->library('upload', $config);
+
+                                   if (!$this->upload->do_upload('flkontrak')) {
+                                        $err = $this->upload->display_errors();
+
+                                        if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                             $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                        } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                             $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                        } else {
+                                             $error = $err;
+                                        }
+
+                                        echo json_encode(array("statusCode" => 202, "filekontrak" =>  $error));
+                                   } else {
+                                        $id_kontrak = $this->str->get_by_auth_kontrak($auth_kontrak);
+                                        $dtkontrak = [
+                                             'no_kontrak_perusahaan' => $no_kontrak,
+                                             'ket_kontrak_perusahaan' => $ket_kontrak,
+                                             'tgl_mulai' => $tgl_awal_kontrak,
+                                             'tgl_akhir' => $tgl_akhir_kontrak,
+                                             'url_doc_kontrak_perusahaan' => $nama_file,
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                        ];
+
+                                        $str_per = $this->str->update_kontrak($id_kontrak, $dtkontrak);
+
+                                        if ($str_per == 200) {
+                                             echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data kontrak berhasil diupdate', "tipe_pesan" => "success"));
+                                        } else {
+                                             echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data kontrak gagal diupdate', "tipe_pesan" => "error"));
+                                        }
+                                   }
+                              } else {
+                                   echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
+                              }
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                    }
                }
+          }
+     }
 
-               if ($tgl_awal_kontrak > $tgl_akhir_kontrak) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_kontrak' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
+     public function add_kontrak()
+     {
 
-               $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
-               if ($cek_kontrak == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan'));
-                    return;
-               }
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-               if ($id_m_per != "") {
-                    if ($auth_kontrak == "") {
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $this->form_validation->set_rules("no_kontrak", "no_kontrak", "required|trim", [
+                    'required' => 'No. kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_awal_kontrak", "tgl_awal_kontrak", "required|trim", [
+                    'required' => 'Tanggal mulai kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_kontrak", "tgl_akhir_kontrak", "required|trim", [
+                    'required' => 'Tanggal akhir kontrak wajib diisi'
+               ]);
+               $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
+                    'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
+               ]);
+               $this->form_validation->set_rules("ket_kontrak", "ket_kontrak", "trim");
+
+               if ($this->form_validation->run() == false) {
+                    $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
+                    if ($filekontrak == "") {
+                         $errfile = "<p>File kontrak wajib dipilih</p>";
+                    } else {
+                         $errfile = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_kontrak' => form_error("no_kontrak"),
+                         'tgl_awal_kontrak' => form_error("tgl_awal_kontrak"),
+                         'tgl_akhir_kontrak' => form_error("tgl_akhir_kontrak"),
+                         'filekontrak' => $errfile
+                    ];
+
+                    echo json_encode($error);
+               } else {
+                    $no_kontrak = htmlspecialchars($this->input->post("no_kontrak", true));
+                    $tgl_awal_kontrak = htmlspecialchars($this->input->post("tgl_awal_kontrak", true));
+                    $tgl_akhir_kontrak = htmlspecialchars($this->input->post("tgl_akhir_kontrak", true));
+                    $ket_kontrak = htmlspecialchars($this->input->post("ket_kontrak", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_kontrak));
+                    $nama_file = $tglakhir . "-" . $now . "-KONTRAK.pdf";
+
+                    $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
+                    if ($filekontrak == "") {
+                         echo json_encode(array('statusCode' => 202, 'filekontrak' => '<p>File kontrak wajib diupload</p>'));
+                         return;
+                    }
+
+                    if ($tgl_awal_kontrak > $tgl_akhir_kontrak) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_kontrak' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
+                    if ($cek_kontrak == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                              mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
                          }
 
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
+                         if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                              $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
                               $config['allowed_types'] = 'pdf';
                               $config['max_size'] = 100;
                               $config['file_name'] = $nama_file;
@@ -1208,36 +1471,128 @@ class Struktur extends My_Controller
 
                                    if ($str_per) {
                                         $auth_kontrak = $this->str->last_row_idkontrak();
-                                        $link = base_url('struktur/kontrak/') .  $auth_m_per;
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data kontrak berhasil disimpan', "auth_kontrak" => $auth_kontrak, "link" => $link));
+                                        echo json_encode(array('statusCode' => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data kontrak berhasil disimpan', "tipe_pesan" => "success"));
                                    } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data kontrak gagal disimpan'));
+                                        echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data kontrak gagal disimpan', "tipe_pesan" => "error"));
                                    }
                               }
                          } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
                          }
                     } else {
-                         $url_kontrak = $this->str->get_by_url_kontrak($auth_kontrak);
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
+                    }
+               }
+          }
+     }
 
-                         if ($url_kontrak != "") {
-                              $nama_file = $url_kontrak;
+     public function addpjo()
+     {
+
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
+
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $this->form_validation->set_rules("no_pjo", "no_pjo", "required|trim", [
+                    'required' => 'No. pengesahan PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("id_lokker", "id_lokker", "required|trim", [
+                    'required' => 'Lokasi kerja PJO wajib dipilih',
+               ]);
+               $this->form_validation->set_rules("tgl_awal_pjo", "tgl_awal_pjo", "required|trim", [
+                    'required' => 'Tanggal aktif wajib diisi',
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_pjo", "tgl_akhir_pjo", "required|trim", [
+                    'required' => 'Tanggal akhir wajib diisi',
+               ]);
+               $this->form_validation->set_rules("ketpjo", "ketpjo", "trim");
+
+               $this->form_validation->set_rules("ktp_pjo", "ktp_pjo", "required|trim", [
+                    'required' => 'No. KTP PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("nik_pjo", "nik_pjo", "required|trim", [
+                    'required' => 'NIK PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("nama_pjo", "nama_pjo", "required|trim", [
+                    'required' => 'Nama PJO Wajib diisi',
+               ]);
+
+               if ($this->form_validation->run() == false) {
+
+                    $filepjo = htmlspecialchars($this->input->post("filepjo", true));
+                    if ($filepjo == "") {
+                         $errfile = "<p>File pengesahan PJO wajib diupload</p>";
+                    } else {
+                         $errfile = "";
+                    }
+
+                    $error = [
+                         'statusCode' => 202,
+                         'no_pjo' => form_error("no_pjo"),
+                         'id_lokker' => form_error("id_lokker"),
+                         'tgl_awal_pjo' => form_error("tgl_awal_pjo"),
+                         'tgl_akhir_pjo' => form_error("tgl_akhir_pjo"),
+                         'ktp_pjo' => form_error("ktp_pjo"),
+                         'nik_pjo' => form_error("nik_pjo"),
+                         'nama_pjo' => form_error("nama_pjo"),
+                         'filepjo' => $errfile
+                    ];
+
+                    echo json_encode($error);
+                    return;
+               } else {
+                    $no_pjo = htmlspecialchars($this->input->post("no_pjo", true));
+                    $lokker_pjo = htmlspecialchars($this->input->post("id_lokker", true));
+                    $tgl_aktif_pjo = htmlspecialchars($this->input->post("tgl_awal_pjo", true));
+                    $tgl_akhir_pjo = htmlspecialchars($this->input->post("tgl_akhir_pjo", true));
+                    $ket_pjo = htmlspecialchars($this->input->post("ket_pjo", true));
+                    $ktp_pjo = htmlspecialchars($this->input->post("ktp_pjo", true));
+                    $nik_pjo = htmlspecialchars($this->input->post("nik_pjo", true));
+                    $nama_pjo = htmlspecialchars($this->input->post("nama_pjo", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+                    $filepjo = htmlspecialchars($this->input->post("filepjo", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_pjo));
+                    $nama_file = $tglakhir . "-" . $now . "-PJO.pdf";
+
+                    if ($filepjo == "") {
+                         $errfile = "<p>File pengesahan PJO wajib diupload</p>";
+                         echo json_encode(array("statusCode" => 202, "filepjo" => "<p>File pengesahan PJO wajib diupload</p>"));
+                         return;
+                    }
+
+                    if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
+                    if ($cek_pjo == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                              mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
                          }
 
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                              mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                         }
-
-                         if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                              $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
+                         if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                              $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
                               $config['allowed_types'] = 'pdf';
                               $config['max_size'] = 100;
                               $config['file_name'] = $nama_file;
-                              $config['overwrite'] = TRUE;
 
                               $this->load->library('upload', $config);
 
-                              if (!$this->upload->do_upload('flkontrak')) {
+                              if (!$this->upload->do_upload('flpjo')) {
                                    $err = $this->upload->display_errors();
 
                                    if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
@@ -1248,384 +1603,124 @@ class Struktur extends My_Controller
                                         $error = $err;
                                    }
 
-                                   echo json_encode(array("statusCode" => 202, "filekontrak" =>  $error));
+                                   echo json_encode(array("statusCode" => 202, "filepjo" =>  $error));
                               } else {
-                                   $id_kontrak = $this->str->get_by_auth_kontrak($auth_kontrak);
-                                   $dtkontrak = [
-                                        'no_kontrak_perusahaan' => $no_kontrak,
-                                        'ket_kontrak_perusahaan' => $ket_kontrak,
-                                        'tgl_mulai' => $tgl_awal_kontrak,
-                                        'tgl_akhir' => $tgl_akhir_kontrak,
-                                        'url_doc_kontrak_perusahaan' => $nama_file,
-                                        'tgl_edit' => date('Y-m-d H:i:s'),
-                                   ];
+                                   if ($auth_kary === "") {
+                                        $query = $this->kry->cek_noKTP($ktp_pjo);
+                                        if ($query) {
+                                             echo json_encode(array("statusCode" => 202, "ktp_pjo" => "<p>No. KTP sudah digunakan</p>"));
+                                             return;
+                                        }
 
-                                   $str_per = $this->str->update_kontrak($id_kontrak, $dtkontrak);
+                                        $id_per_cek = $this->prs->get_id_per_by_auth_m($id_per);
+                                        $query = $this->kry->cek_nik($nik_pjo, $id_per_cek);
+                                        if ($query) {
+                                             echo json_encode(array("statusCode" => 202, "nik_pjo" => "<p>NIK sudah digunakan</p>"));
+                                             return;
+                                        }
 
-                                   if ($str_per == 200) {
-                                        echo json_encode(array('statusCode' => 200, 'pesan' => 'Data kontrak berhasil diupdate'));
+                                        $dtpersonal = [
+                                             'no_ktp' => $ktp_pjo,
+                                             'no_kk' => 0,
+                                             'nama_lengkap' => $nama_pjo,
+                                             'nama_alias' => '',
+                                             'jk' => '',
+                                             'tmp_lahir' => '',
+                                             'tgl_lahir' => '1970-01-01',
+                                             'id_stat_nikah' => 0,
+                                             'id_agama' => 0,
+                                             'warga_negara' => '',
+                                             'email_pribadi' => '',
+                                             'hp_1' => 0,
+                                             'hp_2' => 0,
+                                             'nama_ibu' => '',
+                                             'stat_ibu' => '',
+                                             'nama_ayah' => '',
+                                             'stat_ayah' => '',
+                                             'no_bpjstk' => 0,
+                                             'no_bpjskes' => 0,
+                                             'no_bpjspensiun' => 0,
+                                             'no_equity' => 0,
+                                             'no_npwp' => 0,
+                                             'id_pendidikan' => 0,
+                                             'nama_sekolah' => '',
+                                             'fakultas' => '',
+                                             'jurusan' => '',
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
+                                        ];
+
+                                        $this->kry->input_dtPersonal($dtpersonal);
+                                        $id_personal = $this->kry->last_row_id_personal();
+
+                                        $dtkary = [
+                                             'id_personal' => $id_personal,
+                                             'id_perkerjaan' => 0,
+                                             'no_acr' => 0,
+                                             'no_nik' => $nik_pjo,
+                                             'doh' => '1970-01-01',
+                                             'tgl_aktif' => '1970-01-01',
+                                             'id_depart' => 0,
+                                             'id_section' => 0,
+                                             'id_posisi' => 0,
+                                             'id_grade' => 0,
+                                             'id_level' => 0,
+                                             'id_lokker' => 0,
+                                             'id_lokterima' => 0,
+                                             'id_poh' => 0,
+                                             'id_roster' => 0,
+                                             'id_klasifikasi' => 0,
+                                             'paybase' => 0,
+                                             'statpajak' => 0,
+                                             'id_tipe' => 0,
+                                             'stat_tinggal' => 0,
+                                             'email_kantor' => 0,
+                                             'tgl_permanen' => '1970-01-01',
+                                             'id_stat_perjanjian' => 0,
+                                             'tgl_nonaktif' => '1970-01-01',
+                                             'alasan_nonaktif' => '',
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata'),
+                                             'id_m_perusahaan' => $id_m_per
+                                        ];
+
+                                        $this->kry->input_dtKaryawan($dtkary);
+
+                                        $id_karyawan = $this->kry->last_row_idkary();
                                    } else {
-                                        echo json_encode(array('statusCode' => 201, 'pesan' => 'Data kontrak gagal diupdate'));
-                                   }
-                              }
-                         } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                         }
-                    }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
-               }
-          }
-     }
-
-     public function add_kontrak()
-     {
-
-          $this->form_validation->set_rules("no_kontrak", "no_kontrak", "required|trim", [
-               'required' => 'No. kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_awal_kontrak", "tgl_awal_kontrak", "required|trim", [
-               'required' => 'Tanggal mulai kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_kontrak", "tgl_akhir_kontrak", "required|trim", [
-               'required' => 'Tanggal akhir kontrak wajib diisi'
-          ]);
-          $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
-               'required' => 'Pilih perusahaan yang akan menjadi contractor/subcontractor'
-          ]);
-          $this->form_validation->set_rules("ket_kontrak", "ket_kontrak", "trim");
-
-          if ($this->form_validation->run() == false) {
-               $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
-               if ($filekontrak == "") {
-                    $errfile = "<p>File kontrak wajib dipilih</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_kontrak' => form_error("no_kontrak"),
-                    'tgl_awal_kontrak' => form_error("tgl_awal_kontrak"),
-                    'tgl_akhir_kontrak' => form_error("tgl_akhir_kontrak"),
-                    'filekontrak' => $errfile
-               ];
-
-               echo json_encode($error);
-          } else {
-               $no_kontrak = htmlspecialchars($this->input->post("no_kontrak", true));
-               $tgl_awal_kontrak = htmlspecialchars($this->input->post("tgl_awal_kontrak", true));
-               $tgl_akhir_kontrak = htmlspecialchars($this->input->post("tgl_akhir_kontrak", true));
-               $ket_kontrak = htmlspecialchars($this->input->post("ket_kontrak", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_kontrak));
-               $nama_file = $tglakhir . "-" . $now . "-KONTRAK.pdf";
-
-               $filekontrak = htmlspecialchars($this->input->post("filekontrak", true));
-               if ($filekontrak == "") {
-                    echo json_encode(array('statusCode' => 202, 'filekontrak' => '<p>File kontrak wajib diupload</p>'));
-                    return;
-               }
-
-               if ($tgl_awal_kontrak > $tgl_akhir_kontrak) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_kontrak' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
-
-               $cek_kontrak = $this->str->cek_kontrak($no_kontrak, $tgl_awal_kontrak, $tgl_akhir_kontrak);
-               if ($cek_kontrak == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Kontrak dengan Nomor : ' . $no_kontrak . ' Sudah digunakan'));
-                    return;
-               }
-
-               if ($id_m_per != "") {
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                         mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                    }
-
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                         $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                         $config['allowed_types'] = 'pdf';
-                         $config['max_size'] = 100;
-                         $config['file_name'] = $nama_file;
-
-                         $this->load->library('upload', $config);
-
-                         if (!$this->upload->do_upload('flkontrak')) {
-                              $err = $this->upload->display_errors();
-
-                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
-                              } else {
-                                   $error = $err;
-                              }
-
-                              echo json_encode(array("statusCode" => 202, "filekontrak" =>  $error));
-                         } else {
-                              $dtkontrak = [
-                                   'id_m_perusahaan' => $id_m_per,
-                                   'id_perusahaan' => 0,
-                                   'no_kontrak_perusahaan' => $no_kontrak,
-                                   'ket_kontrak_perusahaan' => $ket_kontrak,
-                                   'tgl_mulai' => $tgl_awal_kontrak,
-                                   'tgl_akhir' => $tgl_akhir_kontrak,
-                                   'url_doc_kontrak_perusahaan' => $nama_file,
-                                   'tgl_buat' => date('Y-m-d H:i:s'),
-                                   'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user_hcdata')
-                              ];
-
-                              $str_per = $this->str->input_kontrak($dtkontrak);
-
-                              if ($str_per) {
-                                   $auth_kontrak = $this->str->last_row_idkontrak();
-                                   echo json_encode(array('statusCode' => 200, 'pesan' => 'Data kontrak berhasil disimpan'));
-                              } else {
-                                   echo json_encode(array('statusCode' => 201, 'pesan' => 'Data kontrak gagal disimpan'));
-                              }
-                         }
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
-                    }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
-               }
-          }
-     }
-
-     public function addpjo()
-     {
-
-          $this->form_validation->set_rules("no_pjo", "no_pjo", "required|trim", [
-               'required' => 'No. pengesahan PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("id_lokker", "id_lokker", "required|trim", [
-               'required' => 'Lokasi kerja PJO wajib dipilih',
-          ]);
-          $this->form_validation->set_rules("tgl_awal_pjo", "tgl_awal_pjo", "required|trim", [
-               'required' => 'Tanggal aktif wajib diisi',
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_pjo", "tgl_akhir_pjo", "required|trim", [
-               'required' => 'Tanggal akhir wajib diisi',
-          ]);
-          $this->form_validation->set_rules("ketpjo", "ketpjo", "trim");
-
-          $this->form_validation->set_rules("ktp_pjo", "ktp_pjo", "required|trim", [
-               'required' => 'No. KTP PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("nik_pjo", "nik_pjo", "required|trim", [
-               'required' => 'NIK PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("nama_pjo", "nama_pjo", "required|trim", [
-               'required' => 'Nama PJO Wajib diisi',
-          ]);
-
-          if ($this->form_validation->run() == false) {
-
-               $filepjo = htmlspecialchars($this->input->post("filepjo", true));
-               if ($filepjo == "") {
-                    $errfile = "<p>File pengesahan PJO wajib diupload</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_pjo' => form_error("no_pjo"),
-                    'id_lokker' => form_error("id_lokker"),
-                    'tgl_awal_pjo' => form_error("tgl_awal_pjo"),
-                    'tgl_akhir_pjo' => form_error("tgl_akhir_pjo"),
-                    'ktp_pjo' => form_error("ktp_pjo"),
-                    'nik_pjo' => form_error("nik_pjo"),
-                    'nama_pjo' => form_error("nama_pjo"),
-                    'filepjo' => $errfile
-               ];
-
-               echo json_encode($error);
-               return;
-          } else {
-               $no_pjo = htmlspecialchars($this->input->post("no_pjo", true));
-               $lokker_pjo = htmlspecialchars($this->input->post("id_lokker", true));
-               $tgl_aktif_pjo = htmlspecialchars($this->input->post("tgl_awal_pjo", true));
-               $tgl_akhir_pjo = htmlspecialchars($this->input->post("tgl_akhir_pjo", true));
-               $ket_pjo = htmlspecialchars($this->input->post("ket_pjo", true));
-               $ktp_pjo = htmlspecialchars($this->input->post("ktp_pjo", true));
-               $nik_pjo = htmlspecialchars($this->input->post("nik_pjo", true));
-               $nama_pjo = htmlspecialchars($this->input->post("nama_pjo", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-               $filepjo = htmlspecialchars($this->input->post("filepjo", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_pjo));
-               $nama_file = $tglakhir . "-" . $now . "-PJO.pdf";
-
-               if ($filepjo == "") {
-                    $errfile = "<p>File pengesahan PJO wajib diupload</p>";
-                    echo json_encode(array("statusCode" => 202, "filepjo" => "<p>File pengesahan PJO wajib diupload</p>"));
-                    return;
-               }
-
-               if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
-
-               $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
-               if ($cek_pjo == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan'));
-                    return;
-               }
-
-               if ($id_m_per != "") {
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                         mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
-                    }
-
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                         $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                         $config['allowed_types'] = 'pdf';
-                         $config['max_size'] = 100;
-                         $config['file_name'] = $nama_file;
-
-                         $this->load->library('upload', $config);
-
-                         if (!$this->upload->do_upload('flpjo')) {
-                              $err = $this->upload->display_errors();
-
-                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
-                              } else {
-                                   $error = $err;
-                              }
-
-                              echo json_encode(array("statusCode" => 202, "filepjo" =>  $error));
-                         } else {
-                              if ($auth_kary === "") {
-                                   $query = $this->kry->cek_noKTP($ktp_pjo);
-                                   if ($query) {
-                                        echo json_encode(array("statusCode" => 202, "ktp_pjo" => "<p>No. KTP sudah digunakan</p>"));
-                                        return;
+                                        $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
                                    }
 
-                                   $id_per_cek = $this->prs->get_id_per_by_auth_m($id_per);
-                                   $query = $this->kry->cek_nik($nik_pjo, $id_per_cek);
-                                   if ($query) {
-                                        echo json_encode(array("statusCode" => 202, "nik_pjo" => "<p>NIK sudah digunakan</p>"));
-                                        return;
-                                   }
-
-                                   $dtpersonal = [
-                                        'no_ktp' => $ktp_pjo,
-                                        'no_kk' => 0,
-                                        'nama_lengkap' => $nama_pjo,
-                                        'nama_alias' => '',
-                                        'jk' => '',
-                                        'tmp_lahir' => '',
-                                        'tgl_lahir' => '1970-01-01',
-                                        'id_stat_nikah' => 0,
-                                        'id_agama' => 0,
-                                        'warga_negara' => '',
-                                        'email_pribadi' => '',
-                                        'hp_1' => 0,
-                                        'hp_2' => 0,
-                                        'nama_ibu' => '',
-                                        'stat_ibu' => '',
-                                        'nama_ayah' => '',
-                                        'stat_ayah' => '',
-                                        'no_bpjstk' => 0,
-                                        'no_bpjskes' => 0,
-                                        'no_bpjspensiun' => 0,
-                                        'no_equity' => 0,
-                                        'no_npwp' => 0,
-                                        'id_pendidikan' => 0,
-                                        'nama_sekolah' => '',
-                                        'fakultas' => '',
-                                        'jurusan' => '',
-                                        'tgl_buat' => date('Y-m-d H:i:s'),
-                                        'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user_hcdata')
-                                   ];
-
-                                   $this->kry->input_dtPersonal($dtpersonal);
-                                   $id_personal = $this->kry->last_row_id_personal();
-
-                                   $dtkary = [
-                                        'id_personal' => $id_personal,
-                                        'id_perkerjaan' => 0,
-                                        'no_acr' => 0,
-                                        'no_nik' => $nik_pjo,
-                                        'doh' => '1970-01-01',
-                                        'tgl_aktif' => '1970-01-01',
-                                        'id_depart' => 0,
-                                        'id_section' => 0,
-                                        'id_posisi' => 0,
-                                        'id_grade' => 0,
-                                        'id_level' => 0,
-                                        'id_lokker' => 0,
-                                        'id_lokterima' => 0,
-                                        'id_poh' => 0,
-                                        'id_roster' => 0,
-                                        'id_klasifikasi' => 0,
-                                        'paybase' => 0,
-                                        'statpajak' => 0,
-                                        'id_tipe' => 0,
-                                        'stat_tinggal' => 0,
-                                        'email_kantor' => 0,
-                                        'tgl_permanen' => '1970-01-01',
-                                        'id_stat_perjanjian' => 0,
-                                        'tgl_nonaktif' => '1970-01-01',
-                                        'alasan_nonaktif' => '',
+                                   $dtpjo = [
+                                        'id_m_perusahaan' => $id_m_per,
+                                        'id_lokasi' => $lokker_pjo,
+                                        'id_karyawan' => $id_karyawan,
+                                        'no_pengesahan_pjo' => $no_pjo,
+                                        'tgl_aktif_pjo' =>  $tgl_aktif_pjo,
+                                        'tgl_akhir_pjo' =>  $tgl_akhir_pjo,
+                                        'url_pengesahan_pjo' => $nama_file,
+                                        'ket_pjo' =>  $ket_pjo,
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
                                         'id_user' => $this->session->userdata('id_user_hcdata'),
-                                        'id_m_perusahaan' => $id_m_per
                                    ];
 
-                                   $this->kry->input_dtKaryawan($dtkary);
+                                   $inputpjo = $this->str->input_pjo($dtpjo);
 
-                                   $id_karyawan = $this->kry->last_row_idkary();
-                              } else {
-                                   $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+                                   if ($inputpjo) {
+                                        echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data PJO berhasil disimpan', "tipe_pesan" => "success"));
+                                   } else {
+                                        echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data PJO gagal disimpan', "tipe_pesan" => "error"));
+                                   }
                               }
-
-                              $dtpjo = [
-                                   'id_m_perusahaan' => $id_m_per,
-                                   'id_lokasi' => $lokker_pjo,
-                                   'id_karyawan' => $id_karyawan,
-                                   'no_pengesahan_pjo' => $no_pjo,
-                                   'tgl_aktif_pjo' =>  $tgl_aktif_pjo,
-                                   'tgl_akhir_pjo' =>  $tgl_akhir_pjo,
-                                   'url_pengesahan_pjo' => $nama_file,
-                                   'ket_pjo' =>  $ket_pjo,
-                                   'tgl_buat' => date('Y-m-d H:i:s'),
-                                   'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user_hcdata'),
-                              ];
-
-                              $inputpjo = $this->str->input_pjo($dtpjo);
-
-                              if ($inputpjo) {
-                                   echo json_encode(array("statusCode" => 200, 'pesan' => 'Data PJO berhasil disimpan'));
-                              } else {
-                                   echo json_encode(array("statusCode" => 200, 'pesan' => 'Data PJO gagal disimpan'));
-                              }
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
                          }
                     } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
                     }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
                }
           }
      }
@@ -1633,420 +1728,476 @@ class Struktur extends My_Controller
      public function add_pjo()
      {
 
-          $this->form_validation->set_rules("no_pjo", "no_pjo", "required|trim", [
-               'required' => 'No. pengesahan PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("id_lokker", "id_lokker", "required|trim", [
-               'required' => 'Lokasi kerja PJO wajib dipilih',
-          ]);
-          $this->form_validation->set_rules("tgl_awal_pjo", "tgl_awal_pjo", "required|trim", [
-               'required' => 'Tanggal aktif wajib diisi',
-          ]);
-          $this->form_validation->set_rules("tgl_akhir_pjo", "tgl_akhir_pjo", "required|trim", [
-               'required' => 'Tanggal akhir wajib diisi',
-          ]);
-          $this->form_validation->set_rules("ketpjo", "ketpjo", "trim");
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          $this->form_validation->set_rules("ktp_pjo", "ktp_pjo", "required|trim", [
-               'required' => 'No. KTP PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("nik_pjo", "nik_pjo", "required|trim", [
-               'required' => 'NIK PJO wajib diisi',
-          ]);
-          $this->form_validation->set_rules("nama_pjo", "nama_pjo", "required|trim", [
-               'required' => 'Nama PJO Wajib diisi',
-          ]);
-
-          if ($this->form_validation->run() == false) {
-
-               $filepjo = htmlspecialchars($this->input->post("filepjo", true));
-               if ($filepjo == "") {
-                    $errfile = "<p>File pengesahan PJO wajib diupload</p>";
-               } else {
-                    $errfile = "";
-               }
-
-               $error = [
-                    'statusCode' => 202,
-                    'no_pjo' => form_error("no_pjo"),
-                    'id_lokker' => form_error("id_lokker"),
-                    'tgl_awal_pjo' => form_error("tgl_awal_pjo"),
-                    'tgl_akhir_pjo' => form_error("tgl_akhir_pjo"),
-                    'ktp_pjo' => form_error("ktp_pjo"),
-                    'nik_pjo' => form_error("nik_pjo"),
-                    'nama_pjo' => form_error("nama_pjo"),
-                    'filepjo' => $errfile
-               ];
-
-               echo json_encode($error);
-               return;
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $no_pjo = htmlspecialchars($this->input->post("no_pjo", true));
-               $lokker_pjo = htmlspecialchars($this->input->post("id_lokker", true));
-               $tgl_aktif_pjo = htmlspecialchars($this->input->post("tgl_awal_pjo", true));
-               $tgl_akhir_pjo = htmlspecialchars($this->input->post("tgl_akhir_pjo", true));
-               $ket_pjo = htmlspecialchars($this->input->post("ket_pjo", true));
-               $ktp_pjo = htmlspecialchars($this->input->post("ktp_pjo", true));
-               $nik_pjo = htmlspecialchars($this->input->post("nik_pjo", true));
-               $nama_pjo = htmlspecialchars($this->input->post("nama_pjo", true));
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-               $filepjo = htmlspecialchars($this->input->post("filepjo", true));
-               $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
-               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
-               $namafolder = md5($id_per);
-               $now = date('YmdHis');
-               $tglakhir = date('Ymd', strtotime($tgl_akhir_pjo));
-               $nama_file = $tglakhir . "-" . $now . "-PJO.pdf";
 
-               if ($filepjo == "") {
-                    $errfile = "<p>File pengesahan PJO wajib diupload</p>";
-                    echo json_encode(array("statusCode" => 202, "filepjo" => "<p>File pengesahan PJO wajib diupload</p>"));
-                    return;
-               }
+               $this->form_validation->set_rules("no_pjo", "no_pjo", "required|trim", [
+                    'required' => 'No. pengesahan PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("id_lokker", "id_lokker", "required|trim", [
+                    'required' => 'Lokasi kerja PJO wajib dipilih',
+               ]);
+               $this->form_validation->set_rules("tgl_awal_pjo", "tgl_awal_pjo", "required|trim", [
+                    'required' => 'Tanggal aktif wajib diisi',
+               ]);
+               $this->form_validation->set_rules("tgl_akhir_pjo", "tgl_akhir_pjo", "required|trim", [
+                    'required' => 'Tanggal akhir wajib diisi',
+               ]);
+               $this->form_validation->set_rules("ketpjo", "ketpjo", "trim");
 
-               if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
-                    echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
-                    return;
-               }
+               $this->form_validation->set_rules("ktp_pjo", "ktp_pjo", "required|trim", [
+                    'required' => 'No. KTP PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("nik_pjo", "nik_pjo", "required|trim", [
+                    'required' => 'NIK PJO wajib diisi',
+               ]);
+               $this->form_validation->set_rules("nama_pjo", "nama_pjo", "required|trim", [
+                    'required' => 'Nama PJO Wajib diisi',
+               ]);
 
-               $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
-               if ($cek_pjo == 201) {
-                    echo json_encode(array('statusCode' => 201, 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan'));
-                    return;
-               }
+               if ($this->form_validation->run() == false) {
 
-               if ($id_m_per != "") {
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder) == false) {
-                         mkdir('./assets/berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                    $filepjo = htmlspecialchars($this->input->post("filepjo", true));
+                    if ($filepjo == "") {
+                         $errfile = "<p>File pengesahan PJO wajib diupload</p>";
+                    } else {
+                         $errfile = "";
                     }
 
-                    if (is_dir('./assets/berkas/perusahaan/' . $namafolder)) {
-                         $config['upload_path'] = './assets/berkas/perusahaan/' . $namafolder;
-                         $config['allowed_types'] = 'pdf';
-                         $config['max_size'] = 100;
-                         $config['file_name'] = $nama_file;
+                    $error = [
+                         'statusCode' => 202,
+                         'no_pjo' => form_error("no_pjo"),
+                         'id_lokker' => form_error("id_lokker"),
+                         'tgl_awal_pjo' => form_error("tgl_awal_pjo"),
+                         'tgl_akhir_pjo' => form_error("tgl_akhir_pjo"),
+                         'ktp_pjo' => form_error("ktp_pjo"),
+                         'nik_pjo' => form_error("nik_pjo"),
+                         'nama_pjo' => form_error("nama_pjo"),
+                         'filepjo' => $errfile
+                    ];
 
-                         $this->load->library('upload', $config);
+                    echo json_encode($error);
+                    return;
+               } else {
+                    $no_pjo = htmlspecialchars($this->input->post("no_pjo", true));
+                    $lokker_pjo = htmlspecialchars($this->input->post("id_lokker", true));
+                    $tgl_aktif_pjo = htmlspecialchars($this->input->post("tgl_awal_pjo", true));
+                    $tgl_akhir_pjo = htmlspecialchars($this->input->post("tgl_akhir_pjo", true));
+                    $ket_pjo = htmlspecialchars($this->input->post("ket_pjo", true));
+                    $ktp_pjo = htmlspecialchars($this->input->post("ktp_pjo", true));
+                    $nik_pjo = htmlspecialchars($this->input->post("nik_pjo", true));
+                    $nama_pjo = htmlspecialchars($this->input->post("nama_pjo", true));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+                    $filepjo = htmlspecialchars($this->input->post("filepjo", true));
+                    $id_m_per = $this->prs->get_m_by_auth($auth_m_per);
+                    $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+                    $namafolder = md5($id_per);
+                    $now = date('YmdHis');
+                    $tglakhir = date('Ymd', strtotime($tgl_akhir_pjo));
+                    $nama_file = $tglakhir . "-" . $now . "-PJO.pdf";
 
-                         if (!$this->upload->do_upload('flpjo')) {
-                              $err = $this->upload->display_errors();
+                    if ($filepjo == "") {
+                         $errfile = "<p>File pengesahan PJO wajib diupload</p>";
+                         echo json_encode(array("statusCode" => 202, "filepjo" => "<p>File pengesahan PJO wajib diupload</p>"));
+                         return;
+                    }
 
-                              if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                              } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
+                    if ($tgl_aktif_pjo > $tgl_akhir_pjo) {
+                         echo json_encode(array('statusCode' => 202, 'tgl_akhir_pjo' => '<p>Isi tanggal berakhir dengan benar</p>'));
+                         return;
+                    }
+
+                    $cek_pjo = $this->str->cek_pjo($no_pjo, $tgl_aktif_pjo, $tgl_akhir_pjo);
+                    if ($cek_pjo == 201) {
+                         echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", 'pesan' => 'Pengesahan PJO dengan Nomor : ' . $no_pjo . ' Sudah digunakan', "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    if ($id_m_per != "") {
+                         if (is_dir('./berkas/perusahaan/' . $namafolder) == false) {
+                              mkdir('./berkas/perusahaan/' . $namafolder, 0775, TRUE);
+                         }
+
+                         if (is_dir('./berkas/perusahaan/' . $namafolder)) {
+                              $config['upload_path'] = './berkas/perusahaan/' . $namafolder;
+                              $config['allowed_types'] = 'pdf';
+                              $config['max_size'] = 100;
+                              $config['file_name'] = $nama_file;
+
+                              $this->load->library('upload', $config);
+
+                              if (!$this->upload->do_upload('flpjo')) {
+                                   $err = $this->upload->display_errors();
+
+                                   if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                                        $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                                   } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                                        $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                   } else {
+                                        $error = $err;
+                                   }
+
+                                   echo json_encode(array("statusCode" => 202, "filepjo" =>  $error));
                               } else {
-                                   $error = $err;
-                              }
+                                   if ($auth_kary === "") {
+                                        $query = $this->kry->cek_noKTP($ktp_pjo);
+                                        if ($query) {
+                                             echo json_encode(array("statusCode" => 202, "ktp_pjo" => "<p>No. KTP sudah digunakan</p>"));
+                                             return;
+                                        }
 
-                              echo json_encode(array("statusCode" => 202, "filepjo" =>  $error));
-                         } else {
-                              if ($auth_kary === "") {
-                                   $query = $this->kry->cek_noKTP($ktp_pjo);
-                                   if ($query) {
-                                        echo json_encode(array("statusCode" => 202, "ktp_pjo" => "<p>No. KTP sudah digunakan</p>"));
-                                        return;
+                                        $id_per_cek = $this->prs->get_id_per_by_auth_m($id_per);
+                                        $query = $this->kry->cek_nik($nik_pjo, $id_per_cek);
+                                        if ($query) {
+                                             echo json_encode(array("statusCode" => 202, "nik_pjo" => "<p>NIK sudah digunakan</p>"));
+                                             return;
+                                        }
+
+                                        $dtpersonal = [
+                                             'no_ktp' => $ktp_pjo,
+                                             'no_kk' => 0,
+                                             'nama_lengkap' => $nama_pjo,
+                                             'nama_alias' => '',
+                                             'jk' => '',
+                                             'tmp_lahir' => '',
+                                             'tgl_lahir' => '1970-01-01',
+                                             'id_stat_nikah' => 0,
+                                             'id_agama' => 0,
+                                             'warga_negara' => '',
+                                             'email_pribadi' => '',
+                                             'hp_1' => 0,
+                                             'hp_2' => 0,
+                                             'nama_ibu' => '',
+                                             'stat_ibu' => '',
+                                             'nama_ayah' => '',
+                                             'stat_ayah' => '',
+                                             'no_bpjstk' => 0,
+                                             'no_bpjskes' => 0,
+                                             'no_bpjspensiun' => 0,
+                                             'no_equity' => 0,
+                                             'no_npwp' => 0,
+                                             'id_pendidikan' => 0,
+                                             'nama_sekolah' => '',
+                                             'fakultas' => '',
+                                             'jurusan' => '',
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata')
+                                        ];
+
+                                        $this->kry->input_dtPersonal($dtpersonal);
+                                        $id_personal = $this->kry->last_row_id_personal();
+
+                                        $dtkary = [
+                                             'id_personal' => $id_personal,
+                                             'id_perkerjaan' => 0,
+                                             'no_acr' => 0,
+                                             'no_nik' => $nik_pjo,
+                                             'doh' => '1970-01-01',
+                                             'tgl_aktif' => '1970-01-01',
+                                             'id_depart' => 0,
+                                             'id_section' => 0,
+                                             'id_posisi' => 0,
+                                             'id_grade' => 0,
+                                             'id_level' => 0,
+                                             'id_lokker' => 0,
+                                             'id_lokterima' => 0,
+                                             'id_poh' => 0,
+                                             'id_roster' => 0,
+                                             'id_klasifikasi' => 0,
+                                             'paybase' => 0,
+                                             'statpajak' => 0,
+                                             'id_tipe' => 0,
+                                             'stat_tinggal' => 0,
+                                             'email_kantor' => 0,
+                                             'tgl_permanen' => '1970-01-01',
+                                             'id_stat_perjanjian' => 0,
+                                             'tgl_nonaktif' => '1970-01-01',
+                                             'alasan_nonaktif' => '',
+                                             'tgl_buat' => date('Y-m-d H:i:s'),
+                                             'tgl_edit' => date('Y-m-d H:i:s'),
+                                             'id_user' => $this->session->userdata('id_user_hcdata'),
+                                             'id_m_perusahaan' => $id_m_per
+                                        ];
+
+                                        $this->kry->input_dtKaryawan($dtkary);
+
+                                        $id_karyawan = $this->kry->last_row_idkary();
+                                   } else {
+                                        $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
                                    }
 
-                                   $id_per_cek = $this->prs->get_id_per_by_auth_m($id_per);
-                                   $query = $this->kry->cek_nik($nik_pjo, $id_per_cek);
-                                   if ($query) {
-                                        echo json_encode(array("statusCode" => 202, "nik_pjo" => "<p>NIK sudah digunakan</p>"));
-                                        return;
-                                   }
-
-                                   $dtpersonal = [
-                                        'no_ktp' => $ktp_pjo,
-                                        'no_kk' => 0,
-                                        'nama_lengkap' => $nama_pjo,
-                                        'nama_alias' => '',
-                                        'jk' => '',
-                                        'tmp_lahir' => '',
-                                        'tgl_lahir' => '1970-01-01',
-                                        'id_stat_nikah' => 0,
-                                        'id_agama' => 0,
-                                        'warga_negara' => '',
-                                        'email_pribadi' => '',
-                                        'hp_1' => 0,
-                                        'hp_2' => 0,
-                                        'nama_ibu' => '',
-                                        'stat_ibu' => '',
-                                        'nama_ayah' => '',
-                                        'stat_ayah' => '',
-                                        'no_bpjstk' => 0,
-                                        'no_bpjskes' => 0,
-                                        'no_bpjspensiun' => 0,
-                                        'no_equity' => 0,
-                                        'no_npwp' => 0,
-                                        'id_pendidikan' => 0,
-                                        'nama_sekolah' => '',
-                                        'fakultas' => '',
-                                        'jurusan' => '',
-                                        'tgl_buat' => date('Y-m-d H:i:s'),
-                                        'tgl_edit' => date('Y-m-d H:i:s'),
-                                        'id_user' => $this->session->userdata('id_user_hcdata')
-                                   ];
-
-                                   $this->kry->input_dtPersonal($dtpersonal);
-                                   $id_personal = $this->kry->last_row_id_personal();
-
-                                   $dtkary = [
-                                        'id_personal' => $id_personal,
-                                        'id_perkerjaan' => 0,
-                                        'no_acr' => 0,
-                                        'no_nik' => $nik_pjo,
-                                        'doh' => '1970-01-01',
-                                        'tgl_aktif' => '1970-01-01',
-                                        'id_depart' => 0,
-                                        'id_section' => 0,
-                                        'id_posisi' => 0,
-                                        'id_grade' => 0,
-                                        'id_level' => 0,
-                                        'id_lokker' => 0,
-                                        'id_lokterima' => 0,
-                                        'id_poh' => 0,
-                                        'id_roster' => 0,
-                                        'id_klasifikasi' => 0,
-                                        'paybase' => 0,
-                                        'statpajak' => 0,
-                                        'id_tipe' => 0,
-                                        'stat_tinggal' => 0,
-                                        'email_kantor' => 0,
-                                        'tgl_permanen' => '1970-01-01',
-                                        'id_stat_perjanjian' => 0,
-                                        'tgl_nonaktif' => '1970-01-01',
-                                        'alasan_nonaktif' => '',
+                                   $dtpjo = [
+                                        'id_m_perusahaan' => $id_m_per,
+                                        'id_lokasi' => $lokker_pjo,
+                                        'id_karyawan' => $id_karyawan,
+                                        'no_pengesahan_pjo' => $no_pjo,
+                                        'tgl_aktif_pjo' =>  $tgl_aktif_pjo,
+                                        'tgl_akhir_pjo' =>  $tgl_akhir_pjo,
+                                        'url_pengesahan_pjo' => $nama_file,
+                                        'ket_pjo' =>  $ket_pjo,
                                         'tgl_buat' => date('Y-m-d H:i:s'),
                                         'tgl_edit' => date('Y-m-d H:i:s'),
                                         'id_user' => $this->session->userdata('id_user_hcdata'),
-                                        'id_m_perusahaan' => $id_m_per
                                    ];
 
-                                   $this->kry->input_dtKaryawan($dtkary);
+                                   $inputpjo = $this->str->input_pjo($dtpjo);
 
-                                   $id_karyawan = $this->kry->last_row_idkary();
-                              } else {
-                                   $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+                                   if ($inputpjo) {
+                                        echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", 'pesan' => 'Data PJO berhasil disimpan', "tipe_pesan" => "success"));
+                                   } else {
+                                        echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", 'pesan' => 'Data PJO gagal disimpan', "tipe_pesan" => "error"));
+                                   }
                               }
-
-                              $dtpjo = [
-                                   'id_m_perusahaan' => $id_m_per,
-                                   'id_lokasi' => $lokker_pjo,
-                                   'id_karyawan' => $id_karyawan,
-                                   'no_pengesahan_pjo' => $no_pjo,
-                                   'tgl_aktif_pjo' =>  $tgl_aktif_pjo,
-                                   'tgl_akhir_pjo' =>  $tgl_akhir_pjo,
-                                   'url_pengesahan_pjo' => $nama_file,
-                                   'ket_pjo' =>  $ket_pjo,
-                                   'tgl_buat' => date('Y-m-d H:i:s'),
-                                   'tgl_edit' => date('Y-m-d H:i:s'),
-                                   'id_user' => $this->session->userdata('id_user_hcdata'),
-                              ];
-
-                              $inputpjo = $this->str->input_pjo($dtpjo);
-
-                              if ($inputpjo) {
-                                   echo json_encode(array("statusCode" => 200, 'pesan' => 'Data PJO berhasil disimpan'));
-                              } else {
-                                   echo json_encode(array("statusCode" => 200, 'pesan' => 'Data PJO gagal disimpan'));
-                              }
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat membuat folder", "tipe_pesan" => "error"));
                          }
                     } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Error saat membuat folder"));
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Error saat mengambil data perusahaan", "tipe_pesan" => "error"));
                     }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data perusahaan"));
                }
           }
      }
 
      public function hapus_pjo()
      {
-          $auth_pjo = htmlspecialchars(trim($this->input->post('auth_pjo')));
-          $auth_m_per = htmlspecialchars(trim($this->input->post('auth_m_per')));
-          $id_pjo = $this->str->get_by_auth_pjo($auth_pjo);
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          $query = $this->str->hapus_pjo($id_pjo);
-          if ($query == 200) {
-               $jml_pjo = $this->str->jml_pjo($auth_m_per);
-               echo json_encode(array("statusCode" => 200, "pesan" => "Data PJO berhasil dihapus", "jml_pjo" => $jml_pjo));
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Data PJO gagal dihapus"));
+
+               $auth_pjo = htmlspecialchars(trim($this->input->post('auth_pjo')));
+               $auth_m_per = htmlspecialchars(trim($this->input->post('auth_m_per')));
+               $id_pjo = $this->str->get_by_auth_pjo($auth_pjo);
+
+               $query = $this->str->hapus_pjo($id_pjo);
+               if ($query == 200) {
+                    $jml_pjo = $this->str->jml_pjo($auth_m_per);
+                    echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Data PJO berhasil dihapus", "jml_pjo" => $jml_pjo, "tipe_pesan" => "success"));
+               } else {
+                    echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Data PJO gagal dihapus", "tipe_pesan" => "error"));
+               }
           }
      }
 
      public function hapus_str_per()
      {
-          $auth_m_per = htmlspecialchars(trim($this->input->post('auth_m_per')));
-          $id_m_per = $this->str->get_by_m_authper($auth_m_per);
-          $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          if ($id_per != "") {
-               $namafolder = md5($id_per);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $namafolder = "";
-          }
 
-          $query = $this->str->hapus_str_per($id_m_per);
-          if ($query == 200) {
-               $this->session->set_flashdata("hapus_sukses", "1");
-               echo json_encode(array("statusCode" => 200, "pesan" => "Data struktur perusahaan berhasil dihapus"));
-          } elseif ($query == 201) {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Data struktur perusahaan gagal dihapus"));
-          } else {
-               echo json_encode(array("statusCode" => 202, "pesan" => "Data struktur perusahaan tidak dapat dihapus, digunakan pada data karyawan"));
+               $auth_m_per = htmlspecialchars(trim($this->input->post('auth_m_per')));
+               $id_m_per = $this->str->get_by_m_authper($auth_m_per);
+               $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+
+               if ($id_per != "") {
+                    $namafolder = md5($id_per);
+               } else {
+                    $namafolder = "";
+               }
+
+               $query = $this->str->hapus_str_per($id_m_per);
+               if ($query == 200) {
+                    $this->session->set_flashdata("hapus_sukses", "1");
+                    echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Data struktur perusahaan berhasil dihapus", "tipe_pesan" => "success"));
+               } elseif ($query == 201) {
+                    echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Data struktur perusahaan gagal dihapus", "tipe_pesan" => "error"));
+               } else {
+                    echo json_encode(array("statusCode" => 202, "kode_pesan" => "Gagal", "pesan" => "Data struktur perusahaan tidak dapat dihapus, digunakan pada data karyawan", "tipe_pesan" => "error"));
+               }
           }
      }
 
      public function str_selesai()
      {
           $this->session->set_flashdata("str_sukses", "1");
-          echo json_encode(array("statusCode" => 200, "pesan" => "Data struktur perusahaan berhasil dibuat"));
+          echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Data struktur perusahaan berhasil dibuat", "tipe_pesan" => "success"));
      }
 
      public function hapus_struktur()
      {
-          $auth_struktur = htmlspecialchars(trim($this->input->post('authstruktur')));
-          $query = $this->str->hapus_struktur($auth_struktur);
-          if ($query == 200) {
-               echo json_encode(array("statusCode" => 200, "pesan" => "Struktur perusahaan berhasil dihapus"));
-               return;
-          } else if ($query == 201) {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Struktur perusahaan gagal dihapus"));
-               return;
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
+
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               echo json_encode(array("statusCode" => 202, "pesan" => "Struktur perusahaan tidak ditemukan"));
-               return;
+
+               $auth_struktur = htmlspecialchars(trim($this->input->post('authstruktur')));
+               $query = $this->str->hapus_struktur($auth_struktur);
+               if ($query == 200) {
+                    echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Struktur perusahaan berhasil dihapus", "tipe_pesan" => "success"));
+                    return;
+               } else if ($query == 201) {
+                    echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Struktur perusahaan gagal dihapus", "tipe_pesan" => "error"));
+                    return;
+               } else {
+                    echo json_encode(array("statusCode" => 202, "kode_pesan" => "Gagal", "pesan" => "Struktur perusahaan tidak ditemukan", "tipe_pesan" => "error"));
+                    return;
+               }
           }
      }
 
      public function detail_struktur()
      {
-          $auth_struktur = htmlspecialchars(trim($this->input->post("authstruktur")));
-          $query = $this->str->get_struktur_id($auth_struktur);
-          if (!empty($query)) {
-               foreach ($query as $list) {
-                    if ($list->stat_struktur == "T") {
-                         $status = "AKTIF";
-                    } else {
-                         $status = "NONAKTIF";
-                    }
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-                    $data = [
-                         'statusCode' => 200,
-                         'nama_perusahaan' => $list->nama_perusahaan,
-                         'kode' => $list->kd_struktur,
-                         'struktur' => $list->struktur,
-                         'ket' => $list->ket_struktur,
-                         'status' => $status,
-                         'tgl_buat' => date('d-M-Y H:i:s', strtotime($list->tgl_buat)),
-                         'pembuat' => $list->nama_user
-                    ];
-
-                    $this->session->set_userdata('id_struktur_sim_hcdt', $list->id_struktur);
-                    $this->session->set_userdata('id_perusahaan_struktur_hcdt', $list->id_perusahaan);
-               }
-               echo json_encode($data);
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               echo json_encode(array('statusCode' => 201, "pesan" => "struktur tidak ditemukan"));
+
+               $auth_struktur = htmlspecialchars(trim($this->input->post("authstruktur")));
+               $query = $this->str->get_struktur_id($auth_struktur);
+               if (!empty($query)) {
+                    foreach ($query as $list) {
+                         if ($list->stat_struktur == "T") {
+                              $status = "AKTIF";
+                         } else {
+                              $status = "NONAKTIF";
+                         }
+
+                         $data = [
+                              'statusCode' => 200,
+                              'nama_perusahaan' => $list->nama_perusahaan,
+                              'kode' => $list->kd_struktur,
+                              'struktur' => $list->struktur,
+                              'ket' => $list->ket_struktur,
+                              'status' => $status,
+                              'tgl_buat' => date('d-M-Y H:i:s', strtotime($list->tgl_buat)),
+                              'pembuat' => $list->nama_user
+                         ];
+
+                         $this->session->set_userdata('id_struktur_sim_hcdt', $list->id_struktur);
+                         $this->session->set_userdata('id_perusahaan_struktur_hcdt', $list->id_perusahaan);
+                    }
+                    echo json_encode($data);
+               } else {
+                    echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "struktur tidak ditemukan", "tipe_pesan" => "error"));
+               }
           }
      }
 
      public function edit_struktur()
      {
-          $this->form_validation->set_rules("kode", "kode", "required|trim|max_length[8]", [
-               'required' => 'Kode wajib diisi',
-               'max_length' => 'Kode maksimal 8 karakter'
-          ]);
-          $this->form_validation->set_rules("struktur", "struktur", "required|trim|max_length[100]", [
-               'required' => 'struktur wajib diisi',
-               'max_length' => 'struktur maksimal 100 karakter'
-          ]);
-          $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000],[
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
+
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $this->form_validation->set_rules("kode", "kode", "required|trim|max_length[8]", [
+                    'required' => 'Kode wajib diisi',
+                    'max_length' => 'Kode maksimal 8 karakter'
+               ]);
+               $this->form_validation->set_rules("struktur", "struktur", "required|trim|max_length[100]", [
+                    'required' => 'struktur wajib diisi',
+                    'max_length' => 'struktur maksimal 100 karakter'
+               ]);
+               $this->form_validation->set_rules("ket", "ket", "trim|max_length[1000],[
                'max_length' => 'Keterangan maksimal 1000 karakter'
           ]");
-          $this->form_validation->set_rules("status", "status", "required|trim", [
-               'required' => 'Status wajib dipilih'
-          ]);
+               $this->form_validation->set_rules("status", "status", "required|trim", [
+                    'required' => 'Status wajib dipilih'
+               ]);
 
-          if ($this->form_validation->run() == false) {
-               $error = [
-                    'statusCode' => 202,
-                    'kode' => form_error("kode"),
-                    'struktur' => form_error("struktur"),
-                    'status' => form_error("status")
-               ];
+               if ($this->form_validation->run() == false) {
+                    $error = [
+                         'statusCode' => 202,
+                         'kode' => form_error("kode"),
+                         'struktur' => form_error("struktur"),
+                         'status' => form_error("status")
+                    ];
 
-               echo json_encode($error);
-               die;
-          } else {
-               if ($this->session->userdata('id_perusahaan_struktur_hcdt') == "") {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
-                    return;
-               }
-
-               if ($this->session->userdata('id_struktur_sim_hcdt') == "") {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "struktur tidak ditemukan"));
-                    return;
-               }
-
-               $kd_struktur = htmlspecialchars($this->input->post("kode", true));
-               $struktur = htmlspecialchars($this->input->post("struktur", true));
-               $ket_struktur = htmlspecialchars($this->input->post("ket", true));
-               if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
-                    $status = "T";
+                    echo json_encode($error);
+                    die;
                } else {
-                    $status = "F";
-               }
+                    if ($this->session->userdata('id_perusahaan_struktur_hcdt') == "") {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Perusahaan tidak terdaftar", "tipe_pesan" => "error"));
+                         return;
+                    }
 
-               $struktur = $this->str->edit_struktur($kd_struktur, $struktur, $ket_struktur, $status);
-               if ($struktur == 200) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "struktur berhasil diupdate"));
-               } else if ($struktur == 201) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "struktur gagal diupdate"));
-               } else if ($struktur == 203) {
-                    echo json_encode(array("statusCode" => 203, "pesan" => "Kode sudah digunakan"));
-               } else if ($struktur == 204) {
-                    echo json_encode(array("statusCode" => 205, "pesan" => "struktur sudah digunakan"));
+                    if ($this->session->userdata('id_struktur_sim_hcdt') == "") {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "struktur tidak ditemukan", "tipe_pesan" => "error"));
+                         return;
+                    }
+
+                    $kd_struktur = htmlspecialchars($this->input->post("kode", true));
+                    $struktur = htmlspecialchars($this->input->post("struktur", true));
+                    $ket_struktur = htmlspecialchars($this->input->post("ket", true));
+                    if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
+                         $status = "T";
+                    } else {
+                         $status = "F";
+                    }
+
+                    $struktur = $this->str->edit_struktur($kd_struktur, $struktur, $ket_struktur, $status);
+                    if ($struktur == 200) {
+                         echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "struktur berhasil diupdate", "tipe_pesan" => "success"));
+                    } else if ($struktur == 201) {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "struktur gagal diupdate", "tipe_pesan" => "error"));
+                    } else if ($struktur == 203) {
+                         echo json_encode(array("statusCode" => 203, "kode_pesan" => "Gagal", "pesan" => "Kode sudah digunakan", "tipe_pesan" => "error"));
+                    } else if ($struktur == 204) {
+                         echo json_encode(array("statusCode" => 205, "kode_pesan" => "Gagal", "pesan" => "struktur sudah digunakan", "tipe_pesan" => "error"));
+                    }
                }
           }
      }
 
      public function update_str_nama_per()
      {
-          $this->form_validation->set_rules("namaper", "namaper", "required|trim", [
-               'required' => 'Nama perusahaan wajib diisi'
-          ]);
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
 
-          if ($this->form_validation->run() == false) {
-               $error = [
-                    'statusCode' => 202,
-                    'namaper' => form_error("namaper")
-               ];
-
-               echo json_encode($error);
-               die;
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $namaper = htmlspecialchars($this->input->post("namaper", true));
-               $id_m_per = $this->str->get_by_m_authper($auth_m_per);
 
-               if ($id_m_per != "") {
-                    $dtper = [
-                         'nama_m_perusahaan' => $namaper,
-                         'tgl_edit' => date('Y-m-d H:i:s')
+               $this->form_validation->set_rules("namaper", "namaper", "required|trim", [
+                    'required' => 'Nama perusahaan wajib diisi'
+               ]);
+
+               if ($this->form_validation->run() == false) {
+                    $error = [
+                         'statusCode' => 202,
+                         'namaper' => form_error("namaper")
                     ];
 
-                    $updstr = $this->str->update_struktur($id_m_per, $dtper);
-                    if ($updstr == 200) {
-                         $this->session->set_flashdata("updstr_sukses", "1");
-                         echo json_encode(array("statusCode" => 200, "pesan" => "Nama perusahaan berhasil diupdate"));
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Nama perusahaan gagal diupdate"));
-                    }
+                    echo json_encode($error);
+                    die;
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Data perusahaan tidak ditemukan"));
+                    $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+                    $namaper = htmlspecialchars($this->input->post("namaper", true));
+                    $id_m_per = $this->str->get_by_m_authper($auth_m_per);
+
+                    if ($id_m_per != "") {
+                         $dtper = [
+                              'nama_m_perusahaan' => $namaper,
+                              'tgl_edit' => date('Y-m-d H:i:s')
+                         ];
+
+                         $updstr = $this->str->update_struktur($id_m_per, $dtper);
+                         if ($updstr == 200) {
+                              $this->session->set_flashdata("updstr_sukses", "1");
+                              echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Nama perusahaan berhasil diupdate", "tipe_pesan" => "success"));
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Nama perusahaan gagal diupdate", "tipe_pesan" => "error"));
+                         }
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Data perusahaan tidak ditemukan", "tipe_pesan" => "error"));
+                    }
                }
           }
      }
@@ -2061,7 +2212,7 @@ class Struktur extends My_Controller
                }
                echo json_encode(array("statusCode" => 200, "str" => $output));
           } else {
-               $output = "<option value=''>-- struktur Tidak Ditemukan --</option>";
+               $output = "<option value=''>-- Struktur Tidak Ditemukan --</option>";
                echo json_encode(array("statusCode" => 201, "str" => $output));
           }
      }
@@ -2219,7 +2370,9 @@ class Struktur extends My_Controller
           } else {
                $data = [
                     'statusCode' => 201,
-                    'pesan' => 'Data tidak ditemukan'
+                    'pesan' => 'Data tidak ditemukan',
+                    "kode_pesan" => "Gagal",
+                    "tipe_pesan" => "error"
                ];
           }
 

@@ -264,7 +264,7 @@ class Lokasipenerimaan extends My_Controller
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
-s
+
                if ($this->session->userdata('id_lokterima_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Lokasi penerimaan tidak ditemukan"));
                     return;
@@ -309,9 +309,10 @@ s
 
      public function get_by_authper()
      {
-          $auth_per = $this->input->post('auth_per');
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
 
-          $query = $this->lkt->get_by_authper($auth_per);
+          $query = $this->lkt->get_by_authper();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {

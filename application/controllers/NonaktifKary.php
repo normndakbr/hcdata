@@ -31,6 +31,7 @@ class NonaktifKary extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/nonaktif_karyawan/nonaktif_kary');
           $this->load->view('dashboard/template/footer', $data);
@@ -59,6 +60,7 @@ class NonaktifKary extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/nonaktif_karyawan/nonaktif_kary_add');
           $this->load->view('dashboard/template/footer', $data);
@@ -67,6 +69,9 @@ class NonaktifKary extends My_Controller
 
      public function ajax_list()
      {
+          $auth = htmlspecialchars($this->input->get("authtoken"));
+          $this->cek_auth($auth);
+
           $auth_m_per = $this->input->get("auth_m_per");
           $list = $this->nakary->get_datatables($auth_m_per);
           $data = array();
@@ -88,7 +93,7 @@ class NonaktifKary extends My_Controller
                $row['tgl_edit'] = date('d-M-Y', strtotime($nakary->tgl_edit));
                $row['proses'] = '<button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-primary btn-sm font-weight-bold dtlnonaktif" title="Detail" value=""> <i class="fas fa-asterisk"></i> </button> 
                     <button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-warning btn-sm font-weight-bold edtnonaktif" title="Edit" value=""> <i class="fas fa-edit"></i> </button> 
-                    <button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-danger btn-sm font-weight-bold hpsnonaktif" title="Hapus" value=""> <i class="fas fa-trash-alt"></i> </button>';
+                    <button id="' . $nakary->auth_kary_nonaktif . '" class="btn btn-danger btn-sm font-weight-bold hpsnonaktif" title="Hapus" value="No. KTP : ' . $nakary->no_ktp . ', Nama : ' . $nakary->nama_lengkap . '"> <i class="fas fa-trash-alt"></i> </button>';
                $data[] = $row;
           }
 
@@ -102,8 +107,11 @@ class NonaktifKary extends My_Controller
           echo json_encode($output);
      }
 
-     public function input_NonaktifKary()
+     public function cek_data()
      {
+
+          $auth = htmlspecialchars($this->input->post("token"));
+          $this->cek_auth($auth);
 
           $this->form_validation->set_rules("auth_m_per", "auth_m_per", "required|trim", [
                'required' => 'Perusahaan wajib dipilih'
@@ -139,111 +147,122 @@ class NonaktifKary extends My_Controller
                echo json_encode($error);
                return;
           } else {
-               $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
-               $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-               $tglnonaktif = htmlspecialchars($this->input->post("tglnonaktif", true));
-               $auth_alasan = htmlspecialchars($this->input->post("auth_alasan", true));
-               $ket_alasan = htmlspecialchars($this->input->post("ket_alasan", true));
-               $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
-               $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
-               $id_kary = $this->kry->get_id_karyawan($auth_kary);
-               $id_alasan = $this->nakary->get_id_alasan($auth_alasan);
-               $foldername = md5($id_personal);
-               $now = date('YmdHis');
-               $nama_file = $now . "-NONAKTIF.pdf";
-
-               if ($id_m_perusahaan == 0) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
-                    return;
-               }
-
-               $cekkary = $this->kry->get_by_auth($auth_kary);
-               if (empty($cekkary)) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
-                    return;
-               }
-
-               $ceknonaktif = $this->nakary->cek_nonaktif($auth_kary);
-               if (!empty($ceknonaktif)) {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Data gagal disimpan, karyawan telah dinonaktifkan, periksa data"));
-                    return;
-               }
-
-
-               if (is_dir('./assets/berkas/karyawan/' . $foldername) == false) {
-                    mkdir('./assets/berkas/karyawan/' . $foldername, 0775, TRUE);
-               }
-
-
-               if (is_dir('./assets/berkas/karyawan/' . $foldername)) {
-                    $config['upload_path'] = './assets/berkas/karyawan/' . $foldername;
-                    $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 200;
-                    $config['file_name'] = $nama_file;
-
-                    $this->load->library('upload', $config);
-                    if (!$this->upload->do_upload('fl_nonaktif')) {
-                         $err = $this->upload->display_errors();
-
-                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                              $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                              $error = "<p>Format file nya dalam bentuk pdf</p>";
-                         } else {
-                              $error = $err;
-                         }
-
-                         $err_nonaktif = [
-                              'statusCode' => 202,
-                              'prs' => '',
-                              'kary' => '',
-                              'tglnonaktif' => '',
-                              'alasan' => '',
-                              'ket' => '',
-                              'fileup' => $error,
-                         ];
-
-                         echo json_encode($err_nonaktif);
-                         die;
-                    } else {
-
-                         $dt_nonaktif = array(
-                              'id_kary' => $id_kary,
-                              'tgl_nonaktif' => $tglnonaktif,
-                              'id_alasan_nonaktif' => $id_alasan,
-                              'ket_nonaktif' => $ket_alasan,
-                              'url_berkas_nonaktif' => $nama_file,
-                              'tgl_buat' => date('Y-m-d H:i:s'),
-                              'tgl_edit' => date('Y-m-d H:i:s'),
-                              'id_user' => $this->session->userdata('id_user_hcdata')
-                         );
-
-                         $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
-                         if ($ins_nonaktif) {
-                              echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
-                              return;
-                         } else {
-                              echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
-                         }
-                    }
-               } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Folder penyimpanan tidak ditemukan"));
-               }
+               echo json_encode(["statusCode" => 200, "pesan" => "Sukses"]);
+               return;
           }
      }
 
-     public function hapus_posisi()
+     public function input_NonaktifKary()
      {
-          $auth_posisi = htmlspecialchars(trim($this->input->post('authposisi')));
-          $query = $this->nakary->hapus_posisi($auth_posisi);
+
+          $auth = htmlspecialchars($this->input->post("token"));
+          $this->cek_auth($auth);
+
+          $auth_m_per = htmlspecialchars($this->input->post("auth_m_per", true));
+          $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+          $tglnonaktif = htmlspecialchars($this->input->post("tglnonaktif", true));
+          $auth_alasan = htmlspecialchars($this->input->post("auth_alasan", true));
+          $ket_alasan = htmlspecialchars($this->input->post("ket_alasan", true));
+          $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
+          $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+          $id_kary = $this->kry->get_id_karyawan($auth_kary);
+          $id_alasan = $this->nakary->get_id_alasan($auth_alasan);
+          $foldername = md5($id_personal);
+          $now = date('YmdHis');
+          $nama_file = $now . "-NONAKTIF.pdf";
+
+          if ($id_m_perusahaan == 0) {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
+               return;
+          }
+
+          $cekkary = $this->kry->get_by_auth($auth_kary);
+          if (empty($cekkary)) {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
+               return;
+          }
+
+          $ceknonaktif = $this->nakary->cek_nonaktif($auth_kary);
+          if (!empty($ceknonaktif)) {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Data gagal disimpan, karyawan telah dinonaktifkan, periksa data"));
+               return;
+          }
+
+          if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+               mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
+          }
+
+          if (is_dir('./berkas/karyawan/' . $foldername)) {
+               $config['upload_path'] = './berkas/karyawan/' . $foldername;
+               $config['allowed_types'] = 'pdf';
+               $config['max_size'] = 200;
+               $config['file_name'] = $nama_file;
+
+               $this->load->library('upload', $config);
+               if (!$this->upload->do_upload('fl_nonaktif')) {
+                    $err = $this->upload->display_errors();
+
+                    if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                         $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                    } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                         $error = "<p>Format file nya dalam bentuk pdf</p>";
+                    } else {
+                         $error = $err;
+                    }
+
+                    $err_nonaktif = [
+                         'statusCode' => 202,
+                         'prs' => '',
+                         'kary' => '',
+                         'tglnonaktif' => '',
+                         'alasan' => '',
+                         'ket' => '',
+                         'fileup' => $error,
+                    ];
+
+                    echo json_encode($err_nonaktif);
+                    die;
+               } else {
+
+                    $dt_nonaktif = array(
+                         'id_kary' => $id_kary,
+                         'tgl_nonaktif' => $tglnonaktif,
+                         'id_alasan_nonaktif' => $id_alasan,
+                         'ket_nonaktif' => $ket_alasan,
+                         'url_berkas_nonaktif' => $nama_file,
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                         'tgl_edit' => date('Y-m-d H:i:s'),
+                         'id_user' => $this->session->userdata('id_user_hcdata')
+                    );
+
+                    $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
+                    if ($ins_nonaktif) {
+                         echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
+                         return;
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
+                    }
+               }
+          } else {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Folder penyimpanan tidak ditemukan"));
+          }
+     }
+
+     public function hapus_NonaktifKary()
+     {
+          $auth = htmlspecialchars($this->input->post("token"));
+          $this->cek_auth($auth);
+
+          $authNonaktifKary = htmlspecialchars(trim($this->input->post('authNonaktifKary')));
+          $query = $this->nakary->hapus_NonaktifKary($authNonaktifKary);
           if ($query == 200) {
-               echo json_encode(array("statusCode" => 200, "pesan" => "Posisi berhasil dihapus"));
+               echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil dihapus"));
                return;
           } else if ($query == 201) {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Posisi gagal dihapus"));
+               echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal dihapus"));
                return;
           } else {
-               echo json_encode(array("statusCode" => 202, "pesan" => "Posisi tidak ditemukan"));
+               echo json_encode(array("statusCode" => 202, "pesan" => "Data nonaktif karyawan tidak ditemukan"));
                return;
           }
      }

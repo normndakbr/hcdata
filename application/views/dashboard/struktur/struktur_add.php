@@ -62,6 +62,16 @@
                                    <?= $this->session->flashdata("psn"); ?>
                               </div>
                               <div class="row">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div id="clPerusahaan" class="btn-primary w-100" style="height:40px;padding-left:15px;padding-top:10px;">
                                              Data perusahaan

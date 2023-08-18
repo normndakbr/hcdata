@@ -216,6 +216,10 @@ class Pendidikan extends My_Controller
 
      public function get_all()
      {
+
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->pdk->get_all();
           $output = "<option value=''>-- PILIH PENDIDIKAN --</option>";
           if (!empty($query)) {

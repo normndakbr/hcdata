@@ -429,6 +429,29 @@ $(document).ready(function () {
         });
     }
 
+    function fetch_statustinggal() {
+        $.ajax({
+            type: "POST",
+            url: site_url+"karyawan/get_resident",
+            success: function(data) {
+                var data = JSON.parse(data);
+                $("#editStatusResidence").html(data.tgl);
+                $("#refreshEditResidence").removeAttr('disabled');
+                $("#txtEditStatResidence").LoadingOverlay("hide");
+                get_initial_value("statResidence");
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                $(".errormsg").removeClass('d-none');
+                $(".errormsg").removeClass('alert-info');
+                $(".errormsg").addClass('alert-danger');
+                if (thrownError != "") {
+                    $(".errormsg").html("Terjadi kesalahan saat load data status tinggal, hubungi administrator");
+                    $("#editSimpanPekerjaan").remove();
+                }
+            }
+        });
+    }
+
     function fetch_statPerjanjian() {
         $.ajax({
             type: "POST",
@@ -490,63 +513,15 @@ $(document).ready(function () {
             $("#refreshPosisi").attr('disabled', true);
         }
     });
+
     fetch_klasifikasi();
     fetch_tipe();
     fetch_level();
     fetch_poh();
     fetch_lokasipenerimaan();
     fetch_lokasikerja();
+    fetch_statustinggal();
     fetch_statPerjanjian();
-    get_initial_value("statResidence");
-
-    $("#editPerKary").change(function () {
-        if (initial_auth_per != "") {
-            swal({
-                title: "Ganti Perusahaan",
-                text: "Mengganti perusahaan akan me-reset beberapa data karyawan, yakin akan diganti?",
-                type: 'question',
-                showCancelButton: true,
-                confirmButtonColor: '#36c6d3',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya, Ganti Perusahaan',
-                cancelButtonText: 'Batalkan'
-            }).then(function (result) {
-                if (result.value) {
-                    initial_auth_per = $("#editPerKary").val();
-                    console.log("id Perusahaan = " + initial_auth_per);
-                    $.LoadingOverlay("show");
-                    fetch_departemen();
-                    fetch_klasifikasi();
-                    fetch_tipe();
-                    fetch_level();
-                    fetch_poh();
-                    fetch_lokasipenerimaan();
-                    fetch_lokasikerja();
-                    fetch_statPerjanjian();
-                    get_initial_value("statResidence");
-                    $.LoadingOverlay("hide");
-                    swal('Informasi', 'Perusahaan telah berhasil diganti', 'warning');
-                } else if (result.dismiss == 'cancel') {
-                    initial_auth_per = $("#valuePerusahaan").val();
-                    $.LoadingOverlay("show");
-                    rollback_initial_value();
-                    fetch_departemen();
-                    fetch_klasifikasi();
-                    fetch_tipe();
-                    fetch_level();
-                    fetch_poh();
-                    fetch_lokasipenerimaan();
-                    fetch_lokasikerja();
-                    fetch_statPerjanjian();
-                    get_initial_value("statResidence");
-                    $.LoadingOverlay("hide");
-                }
-            });
-            // }
-        } else {
-            swal("Perhatian", "Pilih perusahaan terlebih dahulu sebelum memasukkan data karyawan", "warning");
-        }
-    });
 
     $("#refreshEditDepart").click(() => {
         fetch_departemen();

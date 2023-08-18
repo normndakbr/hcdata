@@ -63,6 +63,14 @@
                                    <div class="alert alert-danger err_psn_struktur animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-12">
                                         <div class="table-responsive">
                                              <table id="tbmStruktur" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
@@ -204,7 +212,7 @@
                                                                  if ($url_rk3l == null) {
                                                                       echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
                                                                  } else {
-                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
+                                                                      echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
                                                                  }
 
                                                                  echo $stt_izin;
@@ -344,7 +352,7 @@
                                                                            if ($url_rk3l == null) {
                                                                                 echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
                                                                            } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
+                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
                                                                            }
                                                                            echo $stt_izin;
                                                                            echo $stt_sio;
@@ -376,7 +384,7 @@
                                                                            if ($url_rk3l == null) {
                                                                                 echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-danger'>TA</span></td>";
                                                                            } else {
-                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-success'>A</span></td>";
+                                                                                echo "<td class='align-middle' style='text-align:center;width:1%;'><span class='btn btn-sm btn-primary'>A</span></td>";
                                                                            }
                                                                            echo $stt_izin;
                                                                            echo $stt_sio;

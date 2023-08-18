@@ -114,6 +114,15 @@
                               <input id="valueTglExpiredSimKary" class="d-none" value="<?= !$data_sim_kary ? "" : $data_sim_kary->tgl_exp ?>"></input>
 
                               <div class="row pt-2">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+
                                    <div id="clEditPersonal" class="col-md-12 col-sm-12 mb-2 clPersonal">
                                         <button id="clEditPersonal-click" class="btn btn-primary w-100" style="text-align:left;">
                                              <a class="text-white" data-toggle="collapse" href="#!" role="button" aria-expanded="false" aria-controls="colPersonal">
@@ -310,24 +319,24 @@
                                                                  <span class="89kjm78ujki782m4x787909h3 d-none"></span>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-8 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editEmail">Email Pribadi </label>
                                                                  <input id='editEmail' name='editEmail' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->email_pribadi ?>" required>
                                                                  <small class="errorEditEmail text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-3 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-7 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editNoTelp">No. Telp </label>
                                                                  <input id='editNoTelp' name='editNoTelp' type="number" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->hp_1 ?>" required>
                                                                  <small class="errorEditNoTelp text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-3 col-md-4 col-sm-12">
+                                                       <div class="col-lg-3 col-md-5 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editPendidikanTerakhir">Pendidikan Terakhir </label>
-                                                                 <div id="txtEditDidik" name="txtEditDidik" class="input-group">
+                                                                 <div id="txtEditDidik" name="txtEditDidik" class="input-group mt-2">
                                                                       <select id='editPendidikanTerakhir' name='editPendidikanTerakhir' type="text" autocomplete="off" spellcheck="false" class="custom-select" title="Refresh Pendidikan" required>
                                                                            <option value="">-- PILIH PENDIDIKAN --</option>
                                                                       </select>
@@ -372,17 +381,11 @@
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <hr>
                                                        </div>
-                                                       <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <label for="editPerKary" class="font-weight-bold font-italic">Pilih Perusahaan <span class="text-danger"> *</span></label>
-                                                            <div id='txtperkary' class="input-group">
-                                                                 <select id='editPerKary' name='editPerKary' class="form-control form-control-user">
-                                                                      <option value="">-- WAJIB DIPILIH --</option>
-                                                                      <?= $permst . $perstr; ?>
-                                                                 </select>
-                                                            </div>
-                                                            <small class="errorEditPerKary text-danger font-italic font-weight-bold"></small><br>
+                                                       <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
+                                                            <label for="editPerKary">Perusahaan</label>
+                                                            <h5 id='txtPerusahaan'><?= $data_kary->nama_perusahaan ?></h5>
+                                                            <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
                                                        </div>
-
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
@@ -477,7 +480,7 @@
                                                                  <small class="erroreEditPOHKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editLokterimaKary">Lokasi Penerimaan <span class="text-danger">*</span></label>
                                                                  <div id='txtEditLokterimaKary' class="input-group">
@@ -491,7 +494,7 @@
                                                                  <small class="errorEditLokterimaKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editLokkerKary">Lokasi Kerja <span class="text-danger">*</span></label>
                                                                  <div id='txtEditLokkerKary' class="input-group">
@@ -505,30 +508,28 @@
                                                                  <small class="errorEditLokkerKary text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
+                                                       <div class="col-lg-6 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editStatusResidence">Status Residence <span class="text-danger">*</span></label>
                                                                  <div id='txtEditStatResidence' class="input-group">
                                                                       <select id='editStatusResidence' name='editStatusResidence' class="form-control form-control-user">
                                                                            <option value="" default>-- WAJIB DIPILIH --</option>
-                                                                           <option value="R" default>RESIDENCE</option>
-                                                                           <option value="NR">NON RESIDENCE</option>
                                                                       </select>
-                                                                      <!-- <div class="input-group-prepend">
-                                                                           <button id="refreshResidence" name="refreshResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence"><i class="fas fa-sync-alt"></i></button>
-                                                                      </div> -->
+                                                                      <div class="input-group-prepend">
+                                                                           <button id="refreshEditResidence" name="refreshEditResidence" class="btn btn-primary btn-sm" title="Refresh Status Residence"><i class="fas fa-sync-alt"></i></button>
+                                                                      </div>
                                                                  </div>
                                                                  <small class="errorEditStatusResidence text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                       <div class="col-lg-4 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editDOH">Date of Hire <span class="text-danger">*</span></label>
                                                                  <input id='editDOH' name='editDOH' type='date' class="form-control form-control-user" value="<?= $data_kary->doh ?>">
                                                                  <small class="errorEditDOH text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-4 col-md-6 col-sm-12">
+                                                       <div class="col-lg-4 col-md-3 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editTanggalAktif">Tanggal Aktif <span class="text-danger">*</span></label>
                                                                  <input id='editTanggalAktif' name='editTanggalAktif' type='date' class="form-control form-control-user" value="<?= $data_kary->tgl_aktif ?>">
@@ -545,7 +546,7 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editStatusKerjaKary">Status Karyawan <span class="text-danger">*</span></label>
-                                                                 <div id='txtEditStatKerjaKary' class="input-group">
+                                                                 <div id='txtEditStatKerjaKary' class="input-group mt-2">
                                                                       <select id='editStatusKerjaKary' name='editStatusKerjaKary' class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIISI --</option>
                                                                       </select>
@@ -578,7 +579,7 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                            <a id="editSimpanPekerjaan" class="btn btn-primary font-weight-bold" style="margin-left:30px;">Simpan Data</a>
+                                                            <a id="editSimpanPekerjaan" class="btn btn-primary font-weight-bold text-white" style="margin-left:30px;">Simpan Data</a>
                                                        </div>
                                                   </div>
                                              </div>

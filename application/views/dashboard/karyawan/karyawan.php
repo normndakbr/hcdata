@@ -59,6 +59,17 @@
                                    <div class="alert alert-danger err_psn_kary animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
+
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="alert alert-danger errormsgper animate__animated animate__bounce d-none mb-3"></div>
                                         <h6 class="mt-3">Pilih Perusahaan Utama<span class="text-danger">*</span></h6>
@@ -67,6 +78,10 @@
                                              <?= $permst . $perstr; ?>
                                         </select>
                                         <small class="error1str text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-6 col-md-8 col-sm-12 ml-4 mb-3">
+                                        <input type="checkbox" class="form-check-input" id="krycekNonaktif">
+                                        <label for="krycekNonaktif" class="form-check-label">Tampilkan karyawan nonaktif</label><br>
                                    </div>
                                    <div class="col-lg-12">
                                         <div class="table-responsive">
@@ -149,6 +164,9 @@
                                         <option value="3">3 TAHUN</option>
                                         <option value="4">4 TAHUN</option>
                                         <option value="5">5 TAHUN</option>
+                                        <option value="6">6 TAHUN</option>
+                                        <option value="7">7 TAHUN</option>
+                                        <option value="8">8 TAHUN</option>
                                    </select>
                               </div>
                          </div>
