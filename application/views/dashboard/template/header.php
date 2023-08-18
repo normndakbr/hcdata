@@ -45,6 +45,13 @@
                pointer-events: none;
                cursor: default;
           }
+
+          .center_img {
+               display: block;
+               margin-left: auto;
+               margin-right: auto;
+               width: 40%;
+          }
      </style>
 </head>
 
@@ -69,54 +76,35 @@
                     </div>
                     <input type="text" class="txt_csrfname d-none" name="<?= $this->security->get_csrf_token_name(); ?>" value="<?= $this->security->get_csrf_hash(); ?>"><br>
                     <ul class="nav pcoded-inner-navbar mt-3">
-                         <li class="nav-item pcoded-menu-caption">
-                              <label>Shortcut</label>
-                         </li>
-                         <li class="nav-item">
-                              <a href="<?= base_url('dash'); ?>" target="_blank" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Tambah Karyawan</span></a>
-                         </li>
+                         <li id="mnusctambahkary" class="nav-item">
+                              <a href="<?= base_url('dash'); ?>" class="nav-link"><span class="pcoded-micon"><i class="feather icon-tablet"></i></span><span class="pcoded-mtext">Beranda</span></a>
                          <li class="nav-item pcoded-menu-caption">
                               <label>Menu</label>
                          </li>
-                         <li class="nav-item pcoded-hasmenu">
-                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-home"></i></span><span class="pcoded-mtext">Data Perusahaan</span></a>
-                              <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('perusahaan'); ?>">Perusahaan</a></li>
-                                   <li><a href="<?= base_url('struktur'); ?>">Struktur Perusahaan</a></li>
-                              </ul>
-                         </li>
-                         <li class="nav-item pcoded-hasmenu">
-                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-share-2"></i></span><span class="pcoded-mtext">Data Pekerjaan</span></a>
-                              <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('departemen'); ?>">Departemen</a></li>
-                                   <li><a href="<?= base_url('posisi'); ?>">Posisi</a></li>
-                                   <li><a href="<?= base_url('level'); ?>">Level</a></li>
-                                   <li><a href="<?= base_url('tipe'); ?>">Golongan</a></li>
-                                   <li><a href="<?= base_url('perjanjian'); ?>">Status Perjanjian</a></li>
-                              </ul>
-                         </li>
-                         <li class="nav-item pcoded-hasmenu">
-                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-map"></i></span><span class="pcoded-mtext">Data Daerah</span></a>
-                              <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('lokasikerja'); ?>">Lokasi Kerja</a></li>
-                                   <li><a href="<?= base_url('lokasipenerimaan'); ?>">Lokasi Penerimaan</a></li>
-                                   <li><a href="<?= base_url('poh'); ?>">Point of Hire</a></li>
-                              </ul>
-                         </li>
-                         <li class="nav-item pcoded-hasmenu">
-                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-check-square"></i></span><span class="pcoded-mtext">Data SIMPER</span></a>
-                              <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('sim'); ?>">Jenis SIM Polisi</a></li>
-                                   <li><a href="<?= base_url('unit'); ?>">Data Unit</a></li>
-                              </ul>
-                         </li>
-                         <li class="nav-item pcoded-hasmenu">
-                              <a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather icon-users"></i></span><span class="pcoded-mtext">Data Karyawan</span></a>
-                              <ul class="pcoded-submenu">
-                                   <li><a href="<?= base_url('karyawan'); ?>">Karyawan </a></li>
-                                   <li><a href="<?= base_url('NonaktifKary'); ?>">Non-Aktif Karyawan</a></li>
-                              </ul>
-                         </li>
+                         <?php
+
+                         foreach ($get_menu as $lsmenu) {
+                              $id_parent = $lsmenu->IdParent;
+                              $id_modul = $lsmenu->id_modul_role;
+
+                              if ($id_parent == 0) {
+                                   echo '<li class="nav-item pcoded-hasmenu">';
+                                   echo '<a href="#!" class="nav-link"><span class="pcoded-micon"><i class="feather ' . $lsmenu->IconModule . '"></i></span><span class="pcoded-mtext">' . $lsmenu->LabelMenu . '</span></a>';
+                                   echo '<ul class="pcoded-submenu">';
+
+                                   foreach ($get_menu as $lsmenu) {
+                                        $id_parent = $lsmenu->IdParent;
+                                        if ($id_parent > 0 && $id_modul == $id_parent) {
+                                             echo '<li id="mnuperusahaan"><a href="' . base_url($lsmenu->UrlModule) . '">' . $lsmenu->LabelMenu . '</a></li>';
+                                        }
+                                   }
+
+                                   echo '</ul>';
+                                   echo '</li>';
+                              }
+                         }
+
+                         ?>
                     </ul>
                </div>
           </div>
@@ -156,7 +144,7 @@
                                              <a href="<?= base_url('gantisandi'); ?>" class="dropdown-item"><i class="feather icon-lock"> </i> Ganti Sandi</a>
                                         </li>
                                         <li>
-                                             <a href="#" id="logout" class="dropdown-item"><i class="feather icon-log-out"></i></i> Logout</a>
+                                             <a href="#" id="logout" class="dropdown-item" data-toggle="modal" data-target="#logoutmdl"><i class="feather icon-log-out"></i></i> Logout</a>
                                         </li>
                                    </ul>
                               </div>

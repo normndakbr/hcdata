@@ -4,6 +4,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Dash_model extends CI_Model
 {
 
+     public function get_menu()
+     {
+          $idmenu = $this->session->userdata('id_menu_hcdata');
+          return $this->db->get_where('vw_modul_role_menu', ['id_menu' => $idmenu])->result();
+     }
+
      public function count_all_user()
      {
           return $this->db->count_all_results('vw_user');

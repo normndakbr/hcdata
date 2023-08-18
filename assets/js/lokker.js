@@ -8,6 +8,12 @@
             theme: 'bootstrap4'
         });
 
+        window.addEventListener('resize', function(event) {
+            $('#perLokker').select2({
+                theme: 'bootstrap4'
+            });
+        }, true);
+
         $.ajax({
             type: "POST",
             url: site_url+"perusahaan/get_all",
@@ -22,8 +28,9 @@
                 $(".err_psn_lokker").removeClass('alert-info');
                 $(".err_psn_lokker").addClass('alert-danger');
                 if (thrownError != "") {
-                    $(".err_psn_lokker").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                    $("#btnTambahLokker").attr("disabled", true);
+                   pesan = "Terjadi kesalahan saat load data perusahaan, hubungi administrator";
+                   swal("Error",pesan,'error');
+                   $("#btnTambahLokker").remove();
                 }
             }
         })
@@ -44,6 +51,7 @@
             let lokker = $('#editLokker').val();
             let status = $('#editLokkerStatus').val();
             let ket = $('#editLokkerKet').val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -52,31 +60,18 @@
                     kode: kode,
                     lokker: lokker,
                     status: status,
-                    ket: ket
+                    ket: ket,
+                    token : token,
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
+                        $('#editLokkermdl').modal('hide');
                         tbmLokker.draw();
-                        $("#editLokkermdl").modal("hide");
-                        $(".err_psn_lokker").removeClass('d-none');
-                        $(".err_psn_lokker").removeClass('alert-danger');
-                        $(".err_psn_lokker").addClass('alert-info');
-                        $(".err_psn_lokker").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         reseteditlokker();
-                        $(".err_psn_lokker").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_lokker").slideUp(500);
-                            $(".err_psn_lokker").addClass('d-none');
-                        });
                     } else if (data.statusCode == 201 || data.statusCode == 203 || data.statusCode == 204 || data.statusCode == 205) {
-                        $(".err_psn_edit_lokker").removeClass('d-none');
-                        $(".err_psn_edit_lokker").removeClass('alert-info');
-                        $(".err_psn_edit_lokker").addClass('alert-danger');
-                        $(".err_psn_edit_lokker").html(data.pesan);
-                        $(".err_psn_edit_lokker").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_edit_lokker").slideUp(500);
-                            $(".err_psn_lokker").addClass('d-none');
-                        });
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         $("#error1elkr").html('');
                         $("#error2elkr").html('');
                         $("#error3elkr").html('');
@@ -90,20 +85,15 @@
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_lokker").removeClass("alert-primary");
-                    $(".err_psn_lokker").addClass("alert-danger");
-                    $(".err_psn_lokker").removeClass("d-none");
                     if (xhr.status == 404) {
-                        $(".err_psn_lokker").html("Lokasi kerja gagal diupdate, Link data tidak ditemukan");
+                        pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_lokker").html("Lokasi kerja gagal diupdate, Waktu koneksi habis");
+                       pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_lokker").html("Terjadi kesalahan saat meng-update data, hubungi administrator");
+                       pesan = "Terjadi kesalahan saat meng-update data, hubungi administrator";
                     }
-                    $("#editLokkermdl").modal("hide");
-                    $(".err_psn_lokker ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_lokker ").slideUp(500);
-                    });
+
+                    swal("Error",pesan,'error');
                 }
             })
         });
@@ -127,6 +117,7 @@
             var kode = $("#kodeLokker").val();
             var lokker = $("#Lokker").val();
             var ket = $("#ketLokker").val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -134,52 +125,34 @@
                 data: {
                     kode: kode,
                     lokker: lokker,
-                    ket: ket
+                    ket: ket,
+                    token : token,
                 },
                 timeout: 20000,
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
-                        $(".err_psn_lokker").removeClass('d-none');
-                        $(".err_psn_lokker").removeClass('alert-danger');
-                        $(".err_psn_lokker").addClass('alert-info');
-                        $(".err_psn_lokker").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         resetaddlokker();
                     } else if (data.statusCode == 201) {
-                        $(".err_psn_lokker").removeClass('d-none');
-                        $(".err_psn_lokker").removeClass('alert-info');
-                        $(".err_psn_lokker").addClass('alert-danger');
-                        $(".err_psn_lokker").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     } else if (data.statusCode == 202) {
                         $(".error1").html(data.kode);
                         $(".error2").html(data.lokker);
                         $(".error3").html(data.ket);
                     }
-
-                    $(".err_psn_lokker").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_lokker").slideUp(500);
-                        $(".err_psn_lokker").addClass('d-none');
-                    });
-
-
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_lokker").removeClass("alert-primary");
-                    $(".err_psn_lokker").addClass("alert-danger");
-                    $(".err_psn_lokker").removeClass("d-none");
                     if (xhr.status == 404) {
-                        $(".err_psn_lokker").html("Lokasi kerja gagal disimpan, Link data tidak ditemukan");
+                        pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_lokker").html("Lokasi kerja kerjakker gagal disimpan, Waktu koneksi habis");
+                       pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_lokker").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                       pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
                     }
 
-                    $(".err_psn_lokker ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_lokker ").slideUp(500);
-                        $(".err_psn_lokker").addClass('d-none');
-                    });
+                    swal("Error",pesan,'error');
                 }
             })
         });
@@ -187,6 +160,7 @@
         $(document).on('click', '.hpslokker', function() {
             let auth_lokker = $(this).attr('id');
             let namaLokker = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_lokker == "") {
                 swal("Error", "Lokasi kerja tidak ditemukan", "error");
@@ -207,48 +181,34 @@
                             type: "POST",
                             url:site_url+"lokasikerja/hapus_lokker",
                             data: {
-                                auth_lokker: auth_lokker
+                                auth_lokker: auth_lokker,
+                                token : token,
                             },
                             timeout: 20000,
                             success: function(data, textStatus, xhr) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     tbmLokker.draw();
-                                    $(".err_psn_lokker").removeClass("alert-danger");
-                                    $(".err_psn_lokker").addClass("alert-primary");
-                                    $(".err_psn_lokker").removeClass("d-none");
-                                    $(".err_psn_lokker").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
-                                    $(".err_psn_lokker").removeClass("alert-primary");
-                                    $(".err_psn_lokker").addClass("alert-danger");
-                                    $(".err_psn_lokker").removeClass("d-none");
-                                    $(".err_psn_lokker").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
 
                                 $.LoadingOverlay("hide");
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".err_psn_lokker").removeClass("alert-primary");
-                                $(".err_psn_lokker").addClass("alert-danger");
-                                $(".err_psn_lokker").removeClass("d-none");
                                 if (xhr.status == 404) {
-                                    $(".err_psn_lokker").html("Lokasi kerja gagal dihapus, , Link data tidak ditemukan");
+                                    pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
                                 } else if (xhr.status == 0) {
-                                    $(".err_psn_lokker").html("Lokasi kerja gagal dihapus, Waktu koneksi habis");
+                                   pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
                                 } else {
-                                    $(".err_psn_lokker").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                                   pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
                                 }
+            
+                                swal("Error",pesan,'error');
                             }
                         });
-
-                        $(".err_psn_lokker").fadeTo(4000, 500).slideUp(500, function() {
-                            $(".err_psn_lokker").slideUp(500);
-                            $(".err_psn_lokker").addClass('d-none');
-                        });
-                    } else if (result.dismiss == 'cancel') {
-                        swal('Batal', 'Lokasi kerja ' + namaLokker + ' batal dihapus', 'error');
-                        return false;
                     }
                 });
             }
@@ -256,7 +216,7 @@
 
         $(document).on('click', '.dtllokker', function() {
             let auth_lokker = $(this).attr('id');
-            let namaLokker = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_lokker == "") {
                 swal("Error", "Lokasi kerja tidak ditemukan", "error");
@@ -265,7 +225,8 @@
                     type: "post",
                     url:site_url+"lokasikerja/detail_lokker",
                     data: {
-                        auth_lokker: auth_lokker
+                        auth_lokker: auth_lokker,
+                        token : token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -279,26 +240,20 @@
                             $("#detailLokkerTglBuat").val(data.tgl_buat);
                             $("#detailLokkermdl").modal("show");
                         } else {
-                            $(".err_psn_lokker").removeClass("d-none");
-                            $(".err_psn_lokker").html(data.pesan);
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_lokker").removeClass("alert-primary");
-                        $(".err_psn_lokker").addClass("alert-danger");
-                        $(".err_psn_lokker").removeClass("d-none");
                         if (xhr.status == 404) {
-                            $(".err_psn_lokker").html("Lokasi kerja gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_lokker").html("Lokasi kerja gagal ditampilkan, Waktu koneksi habis");
+                           pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_lokker").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                           pesan = "Terjadi kesalahan saat menampikan data, hubungi administrator";
                         }
-                        $(".err_psn_lokker ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_lokker ").slideUp(500);
-                            $(".err_psn_lokker").addClass('d-none');
-                        });
+    
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -306,7 +261,7 @@
 
         $(document).on('click', '.edttlokker', function() {
             let auth_lokker = $(this).attr('id');
-            let namaLokker = $(this).attr('value');
+            var token = $("#token").val();
 
             if (auth_lokker == "") {
                 swal("Error", "Lokasi kerja tidak ditemukan", "error");
@@ -315,7 +270,8 @@
                     type: "post",
                     url:site_url+"lokasikerja/detail_lokker",
                     data: {
-                        auth_lokker: auth_lokker
+                        auth_lokker: auth_lokker,
+                        token : token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -328,27 +284,20 @@
                             $("#editLokkerKet").val(dataLokker.ket);
                             $("#editLokkermdl").modal("show");
                         } else {
-                            $(".err_psn_lokker").removeClass("d-none");
-                            $(".err_psn_lokker").html(data.pesan);
+                            swal(dataLokker.kode_pesan,dataLokker.pesan,dataLokker.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_lokker").removeClass("alert-primary");
-                        $(".err_psn_lokker").addClass("alert-danger");
-                        $(".err_psn_lokker").removeClass("d-none");
                         if (xhr.status == 404) {
-                            $(".err_psn_lokker").html("Lokasi kerja gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_lokker").html("Lokasi kerja gagal ditampilkan, Waktu koneksi habis");
+                           pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_lokker").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                           pesan = "Terjadi kesalahan saat menampikan data, hubungi administrator";
                         }
-
-                        $(".err_psn_lokker ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_lokker ").slideUp(500);
-                            $(".err_psn_lokker").addClass('d-none');
-                        });
+    
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -360,65 +309,98 @@
             $('#tbmLokker').LoadingOverlay("hide");
         });
 
-        tbmLokker = $('#tbmLokker').DataTable({
-            "processing": true,
-            "responsive": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [
-                [1, 'asc'],
-            ],
-            "ajax": {
-                "url":site_url+"lokasikerja/ajax_list",
-                "type": "POST",
-                "error": function(xhr, error, code) {
-                    if (code != "") {
-                        $(".err_psn_lokker").removeClass("d-none");
-                        $(".err_psn_lokker").html("terjadi kesalahan saat melakukan load data lokasi kerja, hubungi administrator");
-                        $("#secadd").addClass("disabled");
+        tbLokker()
+
+        function tbLokker(){
+            var token = $("#token").val();
+
+            $.ajax ({
+                type:"POST",
+                url : site_url + "dash/Oauth",
+                data : {
+                    token : token,
+                },
+                success : function(data){
+                    var data = JSON.parse(data);
+                    if(data.statusCode==200) {
+                        tbmLokker = $('#tbmLokker').DataTable({
+                            "processing": true,
+                            "responsive": true,
+                            "serverSide": true,
+                            "ordering": true,
+                            "order": [
+                                [1, 'asc'],
+                            ],
+                            "ajax": {
+                                "url":site_url+"lokasikerja/ajax_list?authtoken=" + $("#token").val(),
+                                "type": "POST",
+                                "error": function(xhr, error, code) {
+                                    if (code != "") {
+                                        pesan = "terjadi kesalahan saat melakukan load data lokasi kerja, hubungi administrator";
+                                        swal("Error",pesan,'error');
+                                        $("#secadd").remove();
+                                    }
+                                }
+                            },
+                            "deferRender": true,
+                            "aLengthMenu": [
+                                [10, 25, 50],
+                                [10, 25, 50]
+                            ],
+                            "columns": [{
+                                    data: 'no',
+                                    name: 'id_lokker',
+                                    render: function(data, type, row, meta) {
+                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                    },
+                                    "className": "text-center align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'kd_lokker',
+                                    "className": "text-nowrap align-middle",
+                                    "width": "10%"
+                                },
+                                {
+                                    "data": 'lokker',
+                                    "className": "text-nowrap  align-middle",
+                                    "width": "60%"
+                                },
+                                {
+                                    "data": 'stat_lokker',
+                                    "className": "text-center  align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'tgl_buat',
+                                    "className": "text-center text-nowrap",
+                                    "width": "8%"
+                                },
+                                {
+                                    "data": 'proses',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "1%"
+                                }
+                            ]
+                        });
+                    } else {
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    $.LoadingOverlay("hide");
+
+                    if (xhr.status == 404) {
+                        pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
+                    } else if (xhr.status == 0) {
+                        pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
+                    } else {
+                        pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                    }
+
+                    swal("Error",pesan,'error');
                 }
-            },
-            "deferRender": true,
-            "aLengthMenu": [
-                [10, 25, 50],
-                [10, 25, 50]
-            ],
-            "columns": [{
-                    data: 'no',
-                    name: 'id_lokker',
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    "className": "text-center align-middle",
-                    "width": "1%"
-                },
-                {
-                    "data": 'kd_lokker',
-                    "className": "text-nowrap align-middle",
-                    "width": "10%"
-                },
-                {
-                    "data": 'lokker',
-                    "className": "text-nowrap  align-middle",
-                    "width": "60%"
-                },
-                {
-                    "data": 'stat_lokker',
-                    "className": "text-center  align-middle",
-                    "width": "1%"
-                },
-                {
-                    "data": 'tgl_buat',
-                    "className": "text-center text-nowrap",
-                    "width": "8%"
-                },
-                {
-                    "data": 'proses',
-                    "className": "text-center text-nowrap align-middle",
-                    "width": "1%"
-                }
-            ]
-        });
+            });
+        }
 
     });

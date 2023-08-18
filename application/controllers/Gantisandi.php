@@ -17,6 +17,7 @@ class Gantisandi extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/ganti_snd/ganti_sandi');
           $this->load->view('dashboard/modal/gantisandi');
@@ -45,6 +46,7 @@ class Gantisandi extends My_Controller
                $data['nama'] = $this->session->userdata("nama_hcdata");
                $data['email'] = $this->session->userdata("email_hcdata");
                $data['menu'] = $this->session->userdata("id_menu_hcdata");
+               $data['get_menu'] = $this->dsmod->get_menu();
                $this->load->view('dashboard/template/header', $data);
                $this->load->view('dashboard/ganti_snd/ganti_sandi');
                $this->load->view('dashboard/modal/gantisandi');
@@ -70,6 +72,7 @@ class Gantisandi extends My_Controller
                $data['nama'] = $this->session->userdata("nama_hcdata");
                $data['email'] = $this->session->userdata("email_hcdata");
                $data['menu'] = $this->session->userdata("id_menu_hcdata");
+               $data['get_menu'] = $this->dsmod->get_menu();
                $this->load->view('dashboard/template/header', $data);
                $this->load->view('dashboard/ganti_snd/ganti_sandi');
                $this->load->view('dashboard/modal/gantisandi');

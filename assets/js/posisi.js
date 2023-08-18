@@ -1,22 +1,11 @@
     $(document).ready(function() {
-        var csrfName = $('.txt_csrfname').attr('name');
-        var csrfHash = $('.txt_csrfname').val();
-
-        var csfrData = {};
-        csfrData[csrfName] = csrfHash;
-        $.ajaxSetup({
-            data: csfrData
-        });
-        
-        $("#logout").click(function() {
-            $("#logoutmdl").modal("show");
-        });
 
         $('#btnupdatePosisi').click(function() {
             let posisi = $('#editPosisi').val();
             let depart = $('#editPosisiDepart').val();
             let status = $('#editPosisiStatus').val();
             let ket = $('#editPosisiKet').val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -25,17 +14,14 @@
                     posisi: posisi,
                     depart: depart,
                     status: status,
-                    ket: ket
+                    ket: ket,
+                    token : token,
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
                         tbmPosisi.draw();
-                        $("#editPosisimdl").modal("hide");
-                        $(".err_psn_posisi").removeClass('d-none');
-                        $(".err_psn_posisi").removeClass('alert-danger');
-                        $(".err_psn_posisi").addClass('alert-info');
-                        $(".err_psn_posisi").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         $("#editPosisi").val('');
                         $("#editPosisiKet").val('');
                         $("#editPosisiStatus").val('');
@@ -43,17 +29,9 @@
                         $("#error3ep").html('');
                         $("#error4ep").html('');
                         $("#error5ep").html('');
-                        $(".err_psn_posisi").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_posisi").slideUp(500);
-                        });
+                        $("#editPosisimdl").modal("hide");
                     } else if (data.statusCode == 201 || data.statusCode == 203 || data.statusCode == 204 || data.statusCode == 205) {
-                        $(".err_psn_edit_posisi").removeClass('d-none');
-                        $(".err_psn_edit_posisi").removeClass('alert-info');
-                        $(".err_psn_edit_posisi").addClass('alert-danger');
-                        $(".err_psn_edit_posisi").html(data.pesan);
-                        $(".err_psn_edit_posisi").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_edit_posisi").slideUp(500);
-                        });
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     } else if (data.statusCode == 202) {
                         $("#error2ep").html(data.posisi);
                         $("#error3ep").html(data.depart);
@@ -63,20 +41,15 @@
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_posisi").removeClass("alert-primary");
-                    $(".err_psn_posisi").addClass("alert-danger");
-                    $(".err_psn_posisi").css("display", "block");
                     if (xhr.status == 404) {
-                        $(".err_psn_posisi").html("Posisi gagal diupdate, Link data tidak ditemukan");
+                        pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_posisi").html("Posisi gagal diupdate, Waktu koneksi habis");
+                       pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_posisi").html("Terjadi kesalahan saat meng-update data, hubungi administrator");
+                       pesan = "Terjadi kesalahan saat meng-update data, hubungi administrator";
                     }
-                    $("#editPosisimdl").modal("hide");
-                    $(".err_psn_posisi ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_posisi ").slideUp(500);
-                    });
+
+                    swal("Error",pesan,'error');
                 }
             })
         });
@@ -110,80 +83,29 @@
             dropdownParent: $('#editPosisimdl')
         });
 
+        window.addEventListener('resize', function(event) {
+            $('#depPosisi').select2({
+                theme: 'bootstrap4'
+            });
+            $('#perPosisi').select2({
+                theme: 'bootstrap4'
+            });
+            $('#perPosisiData').select2({
+                theme: 'bootstrap4'
+            });
+            $('#editPosisiDepart').select2({
+                theme: 'bootstrap4',
+                dropdownParent: $('#editPosisimdl')
+            });
+        }, true);
+
         $("#perPosisiData").change(function(){
             let prs = $("#perPosisiData").val();
 
             $('#tbmPosisi').LoadingOverlay('show');
             $('#tbmPosisi').DataTable().destroy();
 
-            tbmPosisi = $('#tbmPosisi').DataTable({
-                "processing": true,
-                "responsive": true,
-                "serverSide": true,
-                "ordering": true,
-                "order": [
-                    [2, 'asc'],
-                ],
-                "ajax": {
-                    "url": site_url+"posisi/ajax_list?auth_per="+prs,
-                    "type": "POST",
-                    "error": function(xhr, error, code) {
-                        if (code != "") {
-                            $(".err_psn_posisi").removeClass("d-none");
-                            $(".err_psn_posisi").css("display", "block");
-                            $(".err_psn_posisi").html("terjadi kesalahan saat melakukan load data posisi, hubungi administrator");
-                            $("#secadd").addClass("disabled");
-                        }
-                    }
-                },
-                "deferRender": true,
-                "aLengthMenu": [
-                    [10, 25, 50],
-                    [10, 25, 50]
-                ],
-                "columns": [{
-                        data: 'no',
-                        name: 'id_posisi',
-                        render: function(data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        },
-                        "className": "text-center",
-                        "width": "1%"
-                    },
-                    {
-                        "data": 'posisi',
-                        "className": "text-nowrap",
-                        "width": "25%"
-                    },
-                    {
-                        "data": 'depart',
-                        "className": "text-nowrap",
-                        "width": "42%"
-                    },
-                    {
-                        "data": 'stat_posisi',
-                        "className": "text-center text-nowrap",
-                        "width": "1%"
-                    },
-                    {
-                        "data": 'kode_perusahaan',
-                        "className": "text-center text-nowrap",
-                        "width": "1%"
-                    },
-                    {
-                        "data": 'tgl_buat',
-                        "className": "text-center text-nowrap",
-                        "width": "8%"
-                    },
-                    {
-                        "data": 'proses',
-                        "className": "text-center text-nowrap",
-                        "width": "1%"
-                    }
-                ]
-            });
-
-            $("#tbmPosisi").LoadingOverlay("hide");
+            tbPosisi();
         });
 
         $.ajax({
@@ -200,24 +122,25 @@
             },
             error: function(xhr, ajaxOptions, thrownError) {
                 $.LoadingOverlay("hide");
-                $(".err_psn_depart").removeClass('d-none');
-                $(".err_psn_depart").removeClass('alert-info');
-                $(".err_psn_depart").addClass('alert-danger');
                 if (thrownError != "") {
-                    $(".err_psn_depart").html("Terjadi kesalahan saat load data perusahaan, hubungi administrator");
-                    $("#btnTambahPosisi").attr("disabled", true);
+                    pesan = "Terjadi kesalahan saat load data perusahaan, hubungi administrator";
+                    $("#btnTambahPosisi").remove()
                 }
+
+                swal("Error",pesan,'error');
             }
         })
 
         $('#perPosisi').change(function() {
             let auth_per = $("#perPosisi").val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
                 url: site_url+"departemen/get_by_authper",
                 data: {
-                    auth_per: auth_per
+                    auth_per: auth_per,
+                    token:token,
                 },
                 success: function(data) {
                     var data = JSON.parse(data);
@@ -237,6 +160,7 @@
             var depart = $("#depPosisi").val();
             var posisi = $("#Posisi").val();
             var ket = $("#ketPosisi").val();
+            var token = $("#token").val();
 
             $.ajax({
                 type: "POST",
@@ -245,16 +169,14 @@
                     prs: prs,
                     posisi: posisi,
                     depart: depart,
-                    ket: ket
+                    ket: ket,
+                    token : token,
                 },
                 timeout: 20000,
                 success: function(data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
-                        $(".err_psn_posisi").removeClass('d-none');
-                        $(".err_psn_posisi").removeClass('alert-danger');
-                        $(".err_psn_posisi").addClass('alert-info');
-                        $(".err_psn_posisi").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         $("#Posisi").val('');
                         $("#ketPosisi").val('');
                         $(".error1").html('');
@@ -262,10 +184,7 @@
                         $(".error4").html('');
                         $(".error5").html('');
                     } else if (data.statusCode == 201) {
-                        $(".err_psn_posisi").removeClass('d-none');
-                        $(".err_psn_posisi").removeClass('alert-info');
-                        $(".err_psn_posisi").addClass('alert-danger');
-                        $(".err_psn_posisi").html(data.pesan);
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                     } else if (data.statusCode == 202) {
                         $(".error1").html(data.prs);
                         $(".error2").html(data.depart);
@@ -273,26 +192,18 @@
                         $(".error5").html(data.ket);
                     }
 
-                    $(".err_psn_posisi").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_posisi").slideUp(500);
-                    });
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
-                    $(".err_psn_posisi").removeClass("alert-primary");
-                    $(".err_psn_posisi").addClass("alert-danger");
-                    $(".err_psn_posisi").css("display", "block");
                     if (xhr.status == 404) {
-                        $(".err_psn_posisi").html("Posisi gagal disimpan, Link data tidak ditemukan");
+                        pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                     } else if (xhr.status == 0) {
-                        $(".err_psn_posisi").html("Posisi gagal disimpan, Waktu koneksi habis");
+                    pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                     } else {
-                        $(".err_psn_posisi").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                    pesan = "Terjadi kesalahan saat membuat data, hubungi administrator";
                     }
 
-                    $(".err_psn_posisi ").fadeTo(3000, 500).slideUp(500, function() {
-                        $(".err_psn_posisi ").slideUp(500);
-                    });
+                    swal("Error",pesan,'error');
                 }
             })
         });
@@ -300,6 +211,7 @@
         $(document).on('click', '.hpsposisi', function() {
             let authposisi = $(this).attr('id');
             let namaPosisi = $(this).attr('value');
+            var token = $("#token").val();
 
             if (authposisi == "") {
                 swal("Error", "Posisi tidak ditemukan", "error");
@@ -320,56 +232,43 @@
                             type: "POST",
                             url: site_url+"Posisi/hapus_Posisi",
                             data: {
-                                authposisi: authposisi
+                                authposisi: authposisi,
+                                token : token,
                             },
                             timeout: 20000,
                             success: function(data, textStatus, xhr) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     tbmPosisi.draw();
-                                    $(".err_psn_posisi").removeClass("d-none");
-                                    $(".err_psn_posisi").removeClass("alert-danger");
-                                    $(".err_psn_posisi").addClass("alert-primary");
-                                    $(".err_psn_posisi").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
-                                    $(".err_psn_posisi").removeClass("d-none");
-                                    $(".err_psn_posisi").removeClass("alert-primary");
-                                    $(".err_psn_posisi").addClass("alert-danger");
-                                    $(".err_psn_posisi").html(data.pesan);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
 
                                 $.LoadingOverlay("hide");
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".err_psn_posisi").removeClass("d-none");
-                                $(".err_psn_posisi").removeClass("alert-primary");
-                                $(".err_psn_posisi").addClass("alert-danger");
-
+                                                            
                                 if (xhr.status == 404) {
-                                    $(".err_psn_posisi").html("Posisi gagal dihapus, , Link data tidak ditemukan");
+                                    pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                                 } else if (xhr.status == 0) {
-                                    $(".err_psn_posisi").html("Posisi gagal dihapus, Waktu koneksi habis");
+                                    pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                                 } else {
-                                    $(".err_psn_posisi").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
-
-                        $(".err_psn_posisi").fadeTo(4000, 500).slideUp(500, function() {
-                            $(".err_psn_posisi").slideUp(500);
-                        });
-                    } else if (result.dismiss == 'cancel') {
-                        swal('Batal', 'Posisi ' + namaPosisi + ' batal dihapus', 'error');
-                        return false;
-                    }
+                    } 
                 });
             }
         });
 
         $(document).on('click', '.dtlposisi', function() {
             let authposisi = $(this).attr('id');
-            let namaposisi = $(this).attr('value');
+            var token = $("#token").val();
 
             if (authposisi == "") {
                 swal("Error", "Posisi tidak ditemukan", "error");
@@ -378,7 +277,8 @@
                     type: "post",
                     url: site_url+"posisi/detail_posisi",
                     data: {
-                        authposisi: authposisi
+                        authposisi: authposisi,
+                        token : token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -393,25 +293,22 @@
                             $("#detailPosisiTglBuat").val(data.tgl_buat);
                             $("#detailPosisimdl").modal("show");
                         } else {
-                            $(".err_psn_posisi").css("display", "block");
-                            $(".err_psn_posisi").html(data.pesan);
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
+
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_posisi").removeClass("alert-primary");
-                        $(".err_psn_posisi").addClass("alert-danger");
-                        $(".err_psn_posisi").css("display", "block");
+                      
                         if (xhr.status == 404) {
-                            $(".err_psn_posisi").html("Posisi gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_posisi").html("Posisi gagal ditampilkan, Waktu koneksi habis");
+                            pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_posisi").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
                         }
-                        $(".err_psn_posisi ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_posisi ").slideUp(500);
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -419,6 +316,7 @@
 
         $(document).on('click', '.edttposisi', function() {
             let authposisi = $(this).attr('id');
+            var token = $("#token").val();
 
             if (authposisi == "") {
                 swal("Error", "Posisi tidak ditemukan", "error");
@@ -427,7 +325,8 @@
                     type: "post",
                     url: site_url+"posisi/detail_posisi",
                     data: {
-                        authposisi: authposisi
+                        authposisi: authposisi,
+                        token : token,
                     },
                     timeout: 15000,
                     success: function(data) {
@@ -436,6 +335,9 @@
                             $.ajax({
                                 type: "POST",
                                 url: site_url+"Posisi/get_by_idper",
+                                data:{
+                                    token : token,
+                                },
                                 success: function(data) {
                                     var data = JSON.parse(data);
                                     if (data.statusCode == 200) {
@@ -444,10 +346,7 @@
                                     } else {
                                         $("#editPosisiDepart").html(data.depart);
                                         $.LoadingOverlay("hide");
-                                        $(".err_psn_edit_dprt").removeClass("alert-primary");
-                                        $(".err_psn_edit_dprt").addClass("alert-danger");
-                                        $(".err_psn_edit_dprt").css("display", "block");
-                                        $(".err_psn_edit_dprt").html(data.pesan);
+                                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     }
                                     $("#editPosisiDepart").val(dataPosisi.auth_depart);
                                     $("#editPosisi").val(dataPosisi.posisi);
@@ -461,42 +360,32 @@
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     $.LoadingOverlay("hide");
-                                    $(".err_psn_edit_dprt").removeClass("alert-primary");
-                                    $(".err_psn_edit_dprt").addClass("alert-danger");
-                                    $(".err_psn_edit_dprt").css("display", "block");
                                     if (xhr.status == 404) {
-                                        $(".err_psn_edit_dprt").html("Departemen gagal ditampilkan, Link data tidak ditemukan");
+                                        pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                                     } else if (xhr.status == 0) {
-                                        $(".err_psn_edit_dprt").html("Departemen gagal ditampilkan, Waktu koneksi habis");
+                                       pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                                     } else {
-                                        $(".err_psn_edit_dprt").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                                       pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
                                     }
-                                    $(".err_psn_edit_dprt ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".err_psn_edit_dprt ").slideUp(500);
-                                    });
+                
+                                    swal("Error",pesan,'error');
                                 }
                             });
                         } else {
-                            $(".err_psn_posisi").css("display", "block");
-                            $(".err_psn_posisi").html(data.pesan);
+                            swal(dataPosisi.kode_pesan,dataPosisi.pesan,dataPosisi.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".err_psn_posisi").removeClass("alert-primary");
-                        $(".err_psn_posisi").addClass("alert-danger");
-                        $(".err_psn_posisi").css("display", "block");
                         if (xhr.status == 404) {
-                            $(".err_psn_posisi").html("Posisi gagal ditampilkan, Link data tidak ditemukan");
+                            pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
                         } else if (xhr.status == 0) {
-                            $(".err_psn_posisi").html("Posisi gagal ditampilkan, Waktu koneksi habis");
+                            pesan = "Posisi gagal diupdate, Waktu koneksi habis";
                         } else {
-                            $(".err_psn_posisi").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
                         }
-
-                        $(".err_psn_posisi ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".err_psn_posisi ").slideUp(500);
-                        });
+    
+                        swal("Error",pesan,'error');
                     }
                 });
             }
@@ -508,73 +397,103 @@
             $('#tbmPosisi').LoadingOverlay("hide");
         });
 
-        tbmPosisi = $('#tbmPosisi').DataTable({
-            "processing": true,
-            "responsive": true,
-            "serverSide": true,
-            "ordering": true,
-            "order": [
-                [2, 'asc'],
-            ],
-            "ajax": {
-                "url": site_url+"posisi/ajax_list",
-                "type": "POST",
-                "error": function(xhr, error, code) {
-                    if (code != "") {
-                        $(".err_psn_posisi").removeClass("d-none");
-                        $(".err_psn_posisi").css("display", "block");
-                        $(".err_psn_posisi").html("terjadi kesalahan saat melakukan load data posisi, hubungi administrator");
-                        $("#secadd").addClass("disabled");
-                    }
-                }
-            },
-            "deferRender": true,
-            "aLengthMenu": [
-                [10, 25, 50],
-                [10, 25, 50]
-            ],
-            "columns": [{
-                    data: 'no',
-                    name: 'id_posisi',
-                    render: function(data, type, row, meta) {
-                        return meta.row + meta.settings._iDisplayStart + 1;
-                    },
-                    "className": "text-center",
-                    "width": "1%"
-                },
-                {
-                    "data": 'posisi',
-                    "className": "text-nowrap",
-                    "width": "25%"
-                },
-                {
-                    "data": 'depart',
-                    "className": "text-nowrap",
-                    "width": "42%"
-                },
-                {
-                    "data": 'stat_posisi',
-                    "className": "text-center text-nowrap",
-                    "width": "1%"
-                },
-                {
-                    "data": 'kode_perusahaan',
-                    "className": "text-center text-nowrap",
-                    "width": "1%"
-                },
-                {
-                    "data": 'tgl_buat',
-                    "className": "text-center text-nowrap",
-                    "width": "8%"
-                },
-                {
-                    "data": 'proses',
-                    "className": "text-center text-nowrap",
-                    "width": "1%"
-                }
-            ]
-        });
+        function tbPosisi(){
+            var token = $("#token").val();
 
-        $("#tbmPosisi").LoadingOverlay("hide");
+            $.ajax ({
+                type:"POST",
+                url : site_url + "dash/Oauth",
+                data : {
+                    token : token,
+                },
+                success : function(data){
+                    var data = JSON.parse(data);
+                    if(data.statusCode==200) {
+                        tbmPosisi = $('#tbmPosisi').DataTable({
+                            "processing": true,
+                            "responsive": true,
+                            "serverSide": true,
+                            "ordering": true,
+                            "order": [
+                                [2, 'asc'],
+                            ],
+                            "ajax": {
+                                "url": site_url+"posisi/ajax_list?auth_per=" + $("#perPosisiData").val() + "&authtoken=" + $("#token").val(),
+                                "type": "POST",
+                                "error": function(xhr, error, code) {
+                                    if (code != "") {
+                                        pesan ="terjadi kesalahan saat melakukan load data posisi, hubungi administrator";
+                                        $("#secadd").remove();
+                                        swal("Error",pesan,'error');
+                                    }
+                                }
+                            },
+                            "deferRender": true,
+                            "aLengthMenu": [
+                                [10, 25, 50],
+                                [10, 25, 50]
+                            ],
+                            "columns": [{
+                                    data: 'no',
+                                    name: 'id_posisi',
+                                    render: function(data, type, row, meta) {
+                                        return meta.row + meta.settings._iDisplayStart + 1;
+                                    },
+                                    "className": "text-center align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'posisi',
+                                    "className": "text-nowrap align-middle",
+                                    "width": "25%"
+                                },
+                                {
+                                    "data": 'depart',
+                                    "className": "text-nowrap align-middle",
+                                    "width": "42%"
+                                },
+                                {
+                                    "data": 'stat_posisi',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'kode_perusahaan',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "1%"
+                                },
+                                {
+                                    "data": 'tgl_buat',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "8%"
+                                },
+                                {
+                                    "data": 'proses',
+                                    "className": "text-center text-nowrap align-middle",
+                                    "width": "1%"
+                                }
+                            ]
+                        });
+                
+                        $("#tbmPosisi").LoadingOverlay("hide");
+                    } else {
+                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    $.LoadingOverlay("hide");
+
+                    if (xhr.status == 404) {
+                        pesan = "Posisi gagal diupdate, Link data tidak ditemukan";
+                    } else if (xhr.status == 0) {
+                        pesan = "Posisi gagal diupdate, Waktu koneksi habis";
+                    } else {
+                        pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                    }
+
+                    swal("Error",pesan,'error');
+                }
+            });
+        }
 
     });

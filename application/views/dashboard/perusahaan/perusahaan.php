@@ -59,9 +59,16 @@
                                         <a href="<?= base_url('perusahaan'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
                                         <a id="addbtn" href="<?= base_url('perusahaan/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
-                                   <div class="alert alert-danger err_psn_perusahaan animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-12">
                                         <div class="table-responsive">
                                              <table id="tbmPerusahaan" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">

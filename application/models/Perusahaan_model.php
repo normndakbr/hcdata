@@ -179,11 +179,7 @@ class Perusahaan_model extends CI_Model
      {
           $this->db->where($where);
           $this->db->update('tb_perusahaan', $data);
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function edit_perusahaan($kd_perusahaan)
@@ -195,16 +191,11 @@ class Perusahaan_model extends CI_Model
                return 203;
           }
 
-          // $query = $this->db->query("SELECT * FROM tb_perusahaan WHERE perusahaan='" . $perusahaan . "' AND id_perusahaan=" . $id_perusahaan . " AND id_perusahaan <> " . $id_perusahaan);
-          // if (!empty($query->result())) {
-          //      return 204;
-          // }
-
           $this->db->set('kode_perusahaan', $kd_perusahaan);
-          // $this->db->set('perusahaan', $perusahaan);
-          // $this->db->set('ket_perusahaan', $ket_perusahaan);
-          // $this->db->set('stat_perusahaan', $status);
-          // $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
+          $this->db->set('perusahaan', '');
+          $this->db->set('ket_perusahaan', '');
+          $this->db->set('stat_perusahaan', 'T');
+          $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_perusahaan', $id_perusahaan);
           $this->db->update('tb_perusahaan');
           if ($this->db->affected_rows() > 0) {

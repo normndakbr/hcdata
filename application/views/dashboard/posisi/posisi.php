@@ -59,10 +59,20 @@
                                         <a href="<?= base_url('posisi'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
                                         <a id="secadd" href="<?= base_url('posisi/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
-                                   <div class="alert alert-danger err_psn_posisi animate__animated animate__bounce d-none"></div>
+                                   <div class="alert alert-danger err_psn_posisi animate__animated animate__bounce" style="display:none;"></div>
                               </div>
                               <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+
+                                   <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
                                         <label for="perPosisiData">Pilih Perusahaan :</label><br>
                                         <select id='perPosisiData' name='perPosisi' class="form-control form-control-user">
                                              <option value="">-- PILIH PERUSAHAAN --</option>
@@ -179,7 +189,7 @@
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                     <div class="row">
                          <div class="col-lg-12">
-                              <div class="alert alert-danger err_psn_edit_posisi animate__animated animate__bounce d-none"></div>
+                              <div class="alert alert-danger err_psn_edit_posisi animate__animated animate__bounce" style="display:none;"></div>
                               <div class="row">
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="editPosisiDepart">Departemen :</label><br>

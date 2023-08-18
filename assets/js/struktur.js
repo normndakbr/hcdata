@@ -176,21 +176,6 @@
         $("#colPerusahaan").collapse("show");
         $("#idpjo").load(site_url+"struktur/pjo");
 
-        $(".suksesalrt").fadeTo(4000, 500).slideUp(500, function() {
-            $(".suksesalrt").slideUp(500);
-            $(".suksesalrt").addClass("d-none");
-        });
-
-        $(".suksesupdtstr").fadeTo(4000, 500).slideUp(500, function() {
-            $(".suksesupdtstr").slideUp(500);
-            $(".suksesupdtstr").addClass("d-none");
-        });
-
-        $(".err_psn_prs_str ").fadeTo(3000, 500).slideUp(500, function() {
-            $(".err_psn_prs_str ").slideUp(500);
-            $(".err_psn_prs_str ").addClass("d-none");
-        });
-
         $("#perJenis").change(function() {
             $("#cariMPerusahaan").focus();
         });
@@ -348,6 +333,7 @@
             let kodeper = htmlspecialchars($("#kodeMperusahaan").val());
             let namaper = htmlspecialchars($("#namaMperusahaan").val());
             let auth_m_per = htmlspecialchars($(".a67z34ssdh53b45jfasda4").text());
+            var token = $("#token").val();
 
             if (idparent == "") {
                 errparent = "Perusahaan utama wajib dipilih";
@@ -385,6 +371,7 @@
                         formData.append('kodeper', kodeper);
                         formData.append('namaper', namaper);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
 
                         $.ajax({
                             type: "POST",
@@ -396,7 +383,6 @@
                             success: function(data) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
-                                    // $('.btnselesai').append('<a name="btnHapusStrPer" data-scroll href="#clIUJP" id="btnHapusStrPer" class="btn font-weight-bold btn-danger mt-1">Hapus Perusahaan</a>');
                                     $('.btnselesai').append('<button id="btnSelesaiStrPer" class="btn btn-success font-weight-bold mt-1 ml-2">Update & Selesai</button>');
                                     $('#imgPerusahaan').removeClass('d-none');
                                     $('#colRK3L').collapse('show');
@@ -416,7 +402,7 @@
                                     aktifSIO();
                                     aktifKontrak();
                                     aktifPJO();
-                                    swal("Berhasil", "Data berhasil dibuat, lengkapi data perusahaan : RK3L, IUJP, SIO, Kontrak dan Pengesahaan PJO", "info");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                     //=============================================================================================================
                                     $('#btnSelesaiStrPer').click(function() {
@@ -435,7 +421,6 @@
                                                 $.ajax({
                                                     type: 'POST',
                                                     url: site_url+"struktur/str_selesai",
-                                                    data: {},
                                                     success: function(data) {
                                                         var data = JSON.parse(data);
                                                         if (data.statusCode == 200) {
@@ -443,18 +428,15 @@
                                                             window.location.href = site_url+"struktur/new";
                                                         } else {
                                                             $.LoadingOverlay("hide");
-                                                            swal('Error', data.pesan, 'error');
+                                                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                                         }
                                                     }
                                                 });
-                                            } else if (result.dismiss == 'cancel') {
-                                                swal('Batal', 'Data karyawan batal disimpan', 'warning');
-                                                return false;
                                             }
                                         });
                                     });
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $('.error1str').html(data.idparent);
@@ -465,17 +447,14 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgper").removeClass('d-none');
-                                $(".errormsgper").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgper").html("Terjadi kesalahan saat menyimpan data struktur Perusahaan, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat menyimpan data struktur Perusahaan, hubungi administrator";
                                     $("#AddPerusahaan").remove();
-
-                                    $(".errormsgper ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgper ").slideUp(500);
-                                        $(".errormsgper ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         })
                     }
@@ -548,6 +527,7 @@
             let auth_m_per = htmlspecialchars($(".a67z34ssdh53b45jfasda4").text());
             let filerk3l = $("#filerk3l").val();
             const flrk3l = $('#filerk3l').prop('files')[0];
+            var token = $("#token").val();
 
             if (auth_m_per == "") {
                 err_auth_m_per = "Perusahaan belum dibuat";
@@ -578,6 +558,7 @@
                         formData.append('flrk3l', flrk3l);
                         formData.append('filerk3l', filerk3l);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
 
                         $.ajax({
                             type: "POST",
@@ -595,7 +576,7 @@
                                     $('#colSIO').collapse('hide');
                                     $('#colKontrak').collapse('hide');
                                     $('#colPJO').collapse('hide');
-                                    swal("Berhasil", "RK3L berhasil di-upload", "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $("#filerk3l").attr('disabled', true);
                                     $("#btnUploadFileRK3L").attr('disabled', true);
                                     $("#addResetFileRK3L").removeAttr('disabled');
@@ -613,17 +594,14 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgrk3l").removeClass('d-none');
-                                $(".errormsgrk3l").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgrk3l").html("Terjadi kesalahan saat upload data RK3L, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat upload data RK3L, hubungi administrator";
                                     $("#AddPerusahaan").remove();
-
-                                    $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgrk3l ").slideUp(500);
-                                        $(".errormsgrk3l ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         })
                     }
@@ -631,15 +609,8 @@
             } else {
                 $(".error6rk3l").html(err_filerk3l);
                 if (err_auth_m_per != "") {
-                    $(".errormsgrk3l").removeClass('d-none');
-                    $(".errormsgrk3l").addClass('alert-danger');
-                    $(".errormsgrk3l").html(err_auth_m_per);
+                    swal("Error",err_auth_m_per,"error");
                 }
-
-                $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                    $(".errormsgrk3l ").slideUp(500);
-                    $(".errormsgrk3l ").addClass("d-none");
-                });
             }
 
         });
@@ -647,6 +618,7 @@
         $('#addResetFileRK3L').click(function() {
             let auth_m_per = htmlspecialchars($(".a67z34ssdh53b45jfasda4").text());
             let filerk3l = $("#filerk3l").val();
+            var token = $("#token").val();
 
             if (auth_m_per == "") {
                 err_auth_m_per = "Perusahaan belum dibuat";
@@ -675,6 +647,7 @@
                         $.LoadingOverlay("show");
                         let formData = new FormData();
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
                         $.ajax({
                             type: "POST",
                             url: site_url+"struktur/resetrk3l",
@@ -686,7 +659,7 @@
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     $('#imgRK3L').addClass('d-none');
-                                    swal("Berhasil", "RK3L berhasil di-reset", "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $("#addBukaFile").addClass('disabled');
                                     $("#addBukaFile").attr('href','');
                                     $("#addResetFileRK3L").attr('disabled', true);
@@ -696,31 +669,28 @@
                                     $("#filerk3l").val('');
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".error6rk3l").html(data.filerk3l);
                                     if (data.auth_m_per != "") {
-                                        $(".errormsgrk3l").removeClass('d-none');
-                                        $(".errormsgrk3l").addClass('alert-danger');
-                                        $(".errormsgrk3l").html(data.auth_m_per);
+                                        swal(data.kode_pesan,data.auth_m_per,data.tipe_pesan);
                                     }
                                     $.LoadingOverlay("hide");
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgrk3l").removeClass('d-none');
-                                $(".errormsgrk3l").addClass('alert-danger');
+                                
                                 if (thrownError != "") {
-                                    $(".errormsgrk3l").html("Terjadi kesalahan saat reset data RK3L, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat reset data RK3L, hubungi administrator";
                                     $("#AddPerusahaan").remove();
-
-                                    $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgrk3l ").slideUp(500);
-                                        $(".errormsgrk3l ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
+
                             }
                         })
                     }
@@ -728,15 +698,8 @@
             } else {
                 $(".error6rk3l").html(err_filerk3l);
                 if (err_auth_m_per != "") {
-                    $(".errormsgrk3l").removeClass('d-none');
-                    $(".errormsgrk3l").addClass('alert-danger');
-                    $(".errormsgrk3l").html(err_auth_m_per);
+                    swal("Error",err_auth_m_per,'error');
                 }
-
-                $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                    $(".errormsgrk3l ").slideUp(500);
-                    $(".errormsgrk3l ").addClass("d-none");
-                });
             }
 
         });
@@ -754,6 +717,7 @@
             let auth_parent = htmlspecialchars($(".b8f9s7sd7f7asj3h4j3k2j").text());
             let auth_per = htmlspecialchars($(".8ih3js7h3k8kj42b5n1m5n3").text());
             let auth_iujp = $(".o8s9l3l8n34m7834m22n4w3a").text();
+            var token = $("#token").val();
 
             if (no_iujp == "") {
                 err_no_iujp = "No. IUJP wajib diisi";
@@ -802,6 +766,7 @@
                         formData.append('auth_parent', auth_parent);
                         formData.append('auth_per', auth_per);
                         formData.append('auth_iujp', auth_iujp);
+                        formData.append('token', token);
                         $.LoadingOverlay("show");
                         $.ajax({
                             type: 'POST',
@@ -828,7 +793,7 @@
                                     $(".error3iujp").html('');
                                     $(".error4iujp").html('');
                                     $(".error6iujp").html('');
-                                    swal("Berhasil", data.pesan, "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
                                     swal("Error", data.pesan, "error");
@@ -843,17 +808,15 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgiujp").removeClass('d-none');
-                                $(".errormsgiujp").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgiujp").html("Terjadi kesalahan saat menyimpan data IUJP, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat menyimpan data IUJP, hubungi administrator";
                                     $("#addIUJP").remove();
-
-                                    $(".errormsgiujp ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgiujp ").slideUp(500);
-                                        $(".errormsgiujp ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
+
                             }
                         });
                     }
@@ -869,6 +832,7 @@
 
         $('#addResetFileIUJP').click(function() {
             let auth_izin = htmlspecialchars($(".o8s9l3l8n34m7834m22n4w3a").text());
+            var token = $("#token").val();
 
             if (auth_izin !== "") {
                 swal({
@@ -885,6 +849,7 @@
                         $.LoadingOverlay("show");
                         let formData = new FormData();
                         formData.append('auth_izin', auth_izin);
+                        formData.append('token', token);
                         $.ajax({
                             type: "POST",
                             url: site_url+"struktur/resetiujp",
@@ -902,6 +867,7 @@
                                     $("#fileiujp").val('');
                                     $('#imgIUJP').addClass('d-none');
                                     $(".o8s9l3l8n34m7834m22n4w3a").text('')
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     swal("Berhasil", "IUJP/Perizinan berhasil dihapus", "success");
                                     $("#addBukaFileIUJP").addClass('disabled');
                                     $("#addBukaFileIUJP").attr('href','');
@@ -910,31 +876,27 @@
                                     $(".error6rk3l").text('');
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".error6rk3l").html(data.filerk3l);
                                     if (data.auth_m_per != "") {
-                                        $(".errormsgrk3l").removeClass('d-none');
-                                        $(".errormsgrk3l").addClass('alert-danger');
-                                        $(".errormsgrk3l").html(data.auth_m_per);
+                                        swal("Error",data.auth_m_per,"error");
                                     }
                                     $.LoadingOverlay("hide");
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgrk3l").removeClass('d-none');
-                                $(".errormsgrk3l").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgrk3l").html("Terjadi kesalahan saat reset data RK3L, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat reset data RK3L, hubungi administrator";
                                     $("#AddPerusahaan").remove();
-
-                                    $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgrk3l ").slideUp(500);
-                                        $(".errormsgrk3l ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
+
                             }
                         })
                     }
@@ -942,15 +904,8 @@
             } else {
                 $(".error6rk3l").html(err_filerk3l);
                 if (err_auth_m_per != "") {
-                    $(".errormsgrk3l").removeClass('d-none');
-                    $(".errormsgrk3l").addClass('alert-danger');
-                    $(".errormsgrk3l").html(err_auth_m_per);
+                    swal("Error",err_auth_m_per,"error");
                 }
-
-                $(".errormsgrk3l ").fadeTo(3000, 500).slideUp(500, function() {
-                    $(".errormsgrk3l ").slideUp(500);
-                    $(".errormsgrk3l ").addClass("d-none");
-                });
             }
 
         });
@@ -968,6 +923,7 @@
             let auth_parent = htmlspecialchars($(".b8f9s7sd7f7asj3h4j3k2j").text());
             let auth_per = htmlspecialchars($(".8ih3js7h3k8kj42b5n1m5n3").text());
             let auth_sio = $(".2l7k6h9m1v9j3b8k3h8d5d0").text();
+            var token = $("#token").val();
 
             if (no_sio == "") {
                 err_no_sio = "No. SIO wajib diisi";
@@ -1016,6 +972,7 @@
                         formData.append('auth_parent', auth_parent);
                         formData.append('auth_per', auth_per);
                         formData.append('auth_sio', auth_sio);
+                        formData.append('token', token);
 
                         $.LoadingOverlay("show");
                         $.ajax({
@@ -1043,10 +1000,10 @@
                                     $(".error3SIO").html('');
                                     $(".error4SIO").html('');
                                     $(".error6fileSIO").html('');
-                                    swal("Berhasil", data.pesan, "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
                                     $(".error2SIO").html(data.no_sio);
                                     $(".error3SIO").html(data.tgl_awal_sio);
@@ -1057,17 +1014,14 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgsio").removeClass('d-none');
-                                $(".errormsgsio").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgsio").html("Terjadi kesalahan saat menyimpan data SIO, hubungi administrator");
-                                    // $("#addSIO").remove();
-
-                                    $(".errormsgsio ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgsio ").slideUp(500);
-                                        $(".errormsgsio ").addClass("d-none");
-                                    });
+                                    pesan = "Terjadi kesalahan saat menyimpan data SIO, hubungi administrator";
+                                    $("#AddPerusahaan").remove();
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -1093,6 +1047,7 @@
             let auth_parent = htmlspecialchars($(".b8f9s7sd7f7asj3h4j3k2j").text());
             let auth_per = htmlspecialchars($(".8ih3js7h3k8kj42b5n1m5n3").text());
             let auth_kontrak = $(".8jl23m67jsd9lasd0m2n34bn344").text();
+            var token = $("#token").val();
 
             if (no_kontrak == "") {
                 err_no_kontrak = "No. kontrak wajib diisi";
@@ -1141,6 +1096,8 @@
                         formData.append('auth_parent', auth_parent);
                         formData.append('auth_per', auth_per);
                         formData.append('auth_kontrak', auth_kontrak);
+                        formData.append('token', token);
+
                         $.LoadingOverlay("show");
                         $.ajax({
                             type: 'POST',
@@ -1167,10 +1124,10 @@
                                     $(".error4kontrak").html('');
                                     $(".error5kontrak").html('');
                                     $(".error7kontrak").html('');
-                                    swal("Berhasil", data.pesan, "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".error3kontrak").html(data.no_kontrak);
@@ -1182,17 +1139,14 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgkontrak").removeClass('d-none');
-                                $(".errormsgkontrak").addClass('alert-danger');
-                                if (thrownError != "") {
-                                    $(".errormsgkontrak").html("Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator");
-                                    // $("#addSIO").remove();
 
-                                    $(".errormsgkontrak ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgkontrak ").slideUp(500);
-                                        $(".errormsgkontrak ").addClass("d-none");
-                                    });
+                                if (thrownError != "") {
+                                    pesan = "Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -1229,7 +1183,7 @@
             $(".error10pjo").html('');
             $(".8jl23m67jsd9lasd0m2n34bn344").text('');
             $("#idpjo").LoadingOverlay("show");
-            $("#idpjo").load(site_url+"struktur/pjo?auth_m_per=" + auth_m_per);
+            $("#idpjo").load(site_url+"struktur/pjo?auth_m_per=" + auth_m_per + "&authtoken="+$("#token").val());
             $("#idpjo").LoadingOverlay("hide");
             $.LoadingOverlay('hide');
         });
@@ -1252,6 +1206,7 @@
             let auth_m_per = htmlspecialchars($(".a67z34ssdh53b45jfasda4").text());
             let auth_parent = htmlspecialchars($(".b8f9s7sd7f7asj3h4j3k2j").text());
             let auth_per = htmlspecialchars($(".8ih3js7h3k8kj42b5n1m5n3").text());
+            var token = $("#token").val();
 
             if (no_pjo == "") {
                 err_no_pjo = "No. PJO wajib diisi";
@@ -1335,6 +1290,7 @@
                         formData.append('nik_pjo', nik_pjo);
                         formData.append('nama_pjo', nama_pjo);
                         formData.append('auth_kary', auth_kary);
+                        formData.append('token', token);
 
                         $.ajax({
                             type: 'POST',
@@ -1386,16 +1342,15 @@
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgpjo").removeClass('d-none');
-                                $(".errormsgpjo").addClass('alert-danger');
+                                
                                 if (thrownError != "") {
-                                    $(".errormsgpjo").html("Terjadi kesalahan saat menyimpan data PJO, hubungi administrator");
-
-                                    $(".errormsgpjo ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgpjo ").slideUp(500);
-                                        $(".errormsgpjo ").addClass("d-none");
-                                    });
+                                    pesan = "Terjadi kesalahan saat menyimpan data PJO, hubungi administrator";
+                                    $("#AddPerusahaan").remove();
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -1470,13 +1425,15 @@
 
         $(document).on('click', '.btnDetailStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1503,36 +1460,38 @@
                             $("#tblKontrakDetail").load(site_url+"struktur/kontrakdetail?auth_m_per=" + auth_m_per);
                             $('#mdlDetailStrPer').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgdetper").removeClass('d-none');
-                        $(".errormsgdetper").removeClass('alert-info');
-                        $(".errormsgdetper").addClass('alert-danger');
+
                         if (thrownError != "") {
-                            $(".errormsgdetper").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                            $("#AddPerusahaan").remove();
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgdetper ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgdetper ").slideUp(500);
-                            $(".errormsgdetper ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
             } else {
                 swal("Error", "Data perusahaan tidak ditemukan", "error");
             }
         });
+
         $(document).on('click', '.btnRK3LStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1542,21 +1501,19 @@
                             $("#subConRK3L").text(data.nama_m_perusahaan + " | " + data.kode_perusahaan);
                             $('#mdlUploadRK3L').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgRK3L").removeClass('d-none');
-                        $(".errormsgRK3L").removeClass('alert-info');
-                        $(".errormsgRK3L").addClass('alert-danger');
+                        
                         if (thrownError != "") {
-                            $(".errormsgRK3L").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgRK3L ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgRK3L ").slideUp(500);
-                            $(".errormsgRK3L ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
 
@@ -1567,13 +1524,15 @@
 
         $(document).on('click', '.btnIUJPStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1593,37 +1552,38 @@
                             $(".errsubcon").html('');
                             $('#mdlUploadIUJP').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgIUJP").removeClass('d-none');
-                        $(".errormsgIUJP").removeClass('alert-info');
-                        $(".errormsgIUJP").addClass('alert-danger');
+
                         if (thrownError != "") {
-                            $(".errormsgIUJP").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                            $("#AddPerusahaan").remove();
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgIUJP ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgIUJP ").slideUp(500);
-                            $(".errormsgIUJP ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
-
             } else {
                 swal("Error", "Data perusahaan tidak ditemukan", "error");
             }
         });
+
         $(document).on('click', '.btnSIOStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1643,21 +1603,19 @@
                             $("#subConSIO").text(data.nama_m_perusahaan + " | " + data.kode_perusahaan);
                             $('#mdlUploadSIO').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgSIO").removeClass('d-none');
-                        $(".errormsgSIO").removeClass('alert-info');
-                        $(".errormsgSIO").addClass('alert-danger');
+
                         if (thrownError != "") {
-                            $(".errormsgSIO").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgSIO ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgSIO ").slideUp(500);
-                            $(".errormsgSIO ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
 
@@ -1667,13 +1625,15 @@
         });
         $(document).on('click', '.btnKontrakStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1692,21 +1652,19 @@
                             $(".erruploadkontraknew").text('');
                             $('#mdlUploadKontrak').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgKontrak").removeClass('d-none');
-                        $(".errormsgKontrak").removeClass('alert-info');
-                        $(".errormsgKontrak").addClass('alert-danger');
+
                         if (thrownError != "") {
-                            $(".errormsgKontrak").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgKontrak ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgKontrak ").slideUp(500);
-                            $(".errormsgKontrak ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
             } else {
@@ -1715,13 +1673,15 @@
         });
         $(document).on('click', '.btnPJOStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1741,12 +1701,14 @@
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     $.LoadingOverlay("hide");
-                                    $(".errormsgpjo").removeClass('d-none');
-                                    $(".errormsgpjo").removeClass('alert-info');
-                                    $(".errormsgpjo").addClass('alert-danger');
+
                                     if (thrownError != "") {
-                                        $(".errormsgpjo").html("Terjadi kesalahan saat load data lokasi kerja PJO, hubungi administrator");
+                                        pesan = "Terjadi kesalahan saat load data lokasi kerja PJO, hubungi administrator";
+                                    } else {
+                                        pesan = "";
                                     }
+    
+                                    swal("Error",pesan,'error');
                                 }
                             })
 
@@ -1773,21 +1735,19 @@
                             $("#filepjonew").val("");
                             $('#mdlUploadPJO').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgPJO").removeClass('d-none');
-                        $(".errormsgPJO").removeClass('alert-info');
-                        $(".errormsgPJO").addClass('alert-danger');
+
                         if (thrownError != "") {
-                            $(".errormsgPJO").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgPJO ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgPJO ").slideUp(500);
-                            $(".errormsgPJO ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
             } else {
@@ -1796,13 +1756,15 @@
         });
         $(document).on('click', '.editPJO', function() {
             let auth_pjo = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_pjo != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token : token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1811,21 +1773,19 @@
                             $("#subConPJO").text(data.nama_m_perusahaan + " | " + data.kode_perusahaan);
                             $('#mdlUploadPJO').modal('show');
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgPJO").removeClass('d-none');
-                        $(".errormsgPJO").removeClass('alert-info');
-                        $(".errormsgPJO").addClass('alert-danger');
                         if (thrownError != "") {
-                            $(".errormsgPJO").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                            $("#AddPerusahaan").remove();
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgPJO ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgPJO ").slideUp(500);
-                            $(".errormsgPJO ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
             } else {
@@ -1835,6 +1795,7 @@
         $(document).on('click', '.hapusPJO', function() {
             let auth_pjo = $(this).attr('id');
             let auth_m_per = $(".a67z34ssdh53b45jfasda4").text();
+            var token = $("#token").val();
 
             if (auth_pjo != "") {
                 swal({
@@ -1853,7 +1814,8 @@
                             url: site_url+"struktur/hapus_pjo",
                             data: {
                                 auth_pjo: auth_pjo,
-                                auth_m_per: auth_m_per
+                                auth_m_per: auth_m_per,
+                                token : token,
                             },
                             success: function(data) {
                                 var data = JSON.parse(data);
@@ -1864,23 +1826,20 @@
                                     if (data.jml_pjo == 0) {
                                         $("#imgPJO").addClass("d-none");
                                     }
-                                    swal('Berhasil', data.pesan, 'info');
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgPJO").removeClass('d-none');
-                                $(".errormsgPJO").removeClass('alert-info');
-                                $(".errormsgPJO").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgPJO").html("Terjadi kesalahan saat menghapus PJO, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat menghapus PJO, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
-                                $(".errormsgPJO ").fadeTo(3000, 500).slideUp(500, function() {
-                                    $(".errormsgPJO ").slideUp(500);
-                                    $(".errormsgPJO ").addClass("d-none");
-                                });
+
+                                swal("Error",pesan,'error');
                             }
                         })
                     }
@@ -1891,6 +1850,7 @@
         });
         $(document).on('click', '.hpsStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 swal({
@@ -1909,30 +1869,28 @@
                             type: "POST",
                             url: site_url+"struktur/hapus_str_per",
                             data: {
-                                auth_m_per: auth_m_per
+                                auth_m_per: auth_m_per,
+                                token : token,
                             },
                             success: function(data) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     $.LoadingOverlay("hide");
-                                    window.location.href = site_url+"struktur";
+                                    window.location.href = site_url + "struktur";
                                 } else {
                                     $.LoadingOverlay("hide");
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgPJO").removeClass('d-none');
-                                $(".errormsgPJO").removeClass('alert-info');
-                                $(".errormsgPJO").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgPJO").html("Terjadi kesalahan saat menghapus PJO, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat menghapus PJO, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
-                                $(".errormsgPJO ").fadeTo(3000, 500).slideUp(500, function() {
-                                    $(".errormsgPJO ").slideUp(500);
-                                    $(".errormsgPJO ").addClass("d-none");
-                                });
+
+                                swal("Error",pesan,'error');
                             }
                         })
                     }
@@ -1943,13 +1901,15 @@
         });
         $(document).on('click', '.editStrPer', function() {
             let auth_m_per = $(this).attr('id');
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 $.ajax({
                     type: "POST",
                     url: site_url+"struktur/get_detail_m_per",
                     data: {
-                        auth_m_per: auth_m_per
+                        auth_m_per: auth_m_per,
+                        token:token,
                     },
                     success: function(data) {
                         var data = JSON.parse(data);
@@ -1960,21 +1920,19 @@
                             $("#namaPerEdit").val(data.nama_m_perusahaan);
                             $("#mdlEditStrPer").modal("show")
                         } else {
-                            swal("Error", data.pesan, "error");
+                            swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                         }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
-                        $(".errormsgStrPerEdit").removeClass('d-none');
-                        $(".errormsgStrPerEdit").removeClass('alert-info');
-                        $(".errormsgStrPerEdit").addClass('alert-danger');
                         if (thrownError != "") {
-                            $(".errormsgStrPerEdit").html("Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator");
+                            pesan = "Terjadi kesalahan saat load data struktur perusahaan, hubungi administrator";
+                            $("#AddPerusahaan").remove();
+                        } else {
+                            pesan = "";
                         }
-                        $(".errormsgStrPerEdit ").fadeTo(3000, 500).slideUp(500, function() {
-                            $(".errormsgStrPerEdit ").slideUp(500);
-                            $(".errormsgStrPerEdit ").addClass("d-none");
-                        });
+
+                        swal("Error",pesan,'error');
                     }
                 })
             } else {
@@ -1985,6 +1943,7 @@
         $("#btnUpdateStrPerEdit").click(function() {
             let auth_m_per = $(".7uik4gsdm89okl23s6j4h3c").text();
             let namaper = $("#namaPerEdit").val();
+            var token = $("#token").val();
 
             if (auth_m_per != "") {
                 if (namaper != "") {
@@ -2005,7 +1964,8 @@
                                 url: site_url+"struktur/update_str_nama_per",
                                 data: {
                                     auth_m_per: auth_m_per,
-                                    namaper: namaper
+                                    namaper: namaper,
+                                    token : token,
                                 },
                                 success: function(data) {
                                     var data = JSON.parse(data);
@@ -2014,22 +1974,20 @@
                                         $.LoadingOverlay("hide");
                                         window.location.href = site_url+"struktur";
                                     } else {
-                                        swal("Error", data.pesan, "error");
+                                        swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                         $.LoadingOverlay("hide");
                                     }
                                 },
                                 error: function(xhr, ajaxOptions, thrownError) {
                                     $.LoadingOverlay("hide");
-                                    $(".errormsgStrPerEdit").removeClass('d-none');
-                                    $(".errormsgStrPerEdit").removeClass('alert-info');
-                                    $(".errormsgStrPerEdit").addClass('alert-danger');
+                                    
                                     if (thrownError != "") {
-                                        $(".errormsgStrPerEdit").html("Terjadi kesalahan saat meng-update nama perusahaan, hubungi administrator");
+                                        pesan = "Terjadi kesalahan saat meng-update nama perusahaan, hubungi administrator";
+                                    } else {
+                                        pesan = "";
                                     }
-                                    $(".errormsgStrPerEdit ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgStrPerEdit ").slideUp(500);
-                                        $(".errormsgStrPerEdit ").addClass("d-none");
-                                    });
+
+                                    swal("Error",pesan,'error');
                                 }
                             })
                         }
@@ -2046,6 +2004,7 @@
             let auth_m_per = $(".7c7dj3hn7k2j7n8j3g7j34").text();
             let filerk3l = $("#uploadRK3L").val();
             const flrk3l = $('#uploadRK3L').prop('files')[0];
+            var token = $("#token").val();
 
             if (auth_m_per == "") {
                 err_auth_m_per = "Perusahaan tidak ditemukan";
@@ -2076,6 +2035,7 @@
                         formData.append('flrk3l', flrk3l);
                         formData.append('filerk3l', filerk3l);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
 
                         $.ajax({
                             type: "POST",
@@ -2091,30 +2051,28 @@
                                     $("#uploadRK3L").val('');
                                     $(".erruploadRK3L").text('');
                                     $("#mdlUploadRK3L").modal('hide')
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     swal("Berhasil", "RK3L berhasil di-upload", "success");
-                                    location.reload();
+                                    // location.reload();
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".erruploadRK3L").html(data.filerk3l);
                                     $.LoadingOverlay("hide");
-                                    swal("Error", "Error saat menyimpan data, periksa kembali data", "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgRK3L").removeClass('d-none');
-                                $(".errormsgRK3L").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgRK3L").html("Terjadi kesalahan saat upload data RK3L, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat upload data RK3L, hubungi administrator";
                                     $("#AddPerusahaan").remove();
-
-                                    $(".errormsgRK3L ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgRK3L ").slideUp(500);
-                                        $(".errormsgRK3L ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         })
                     }
@@ -2142,6 +2100,7 @@
             let fileiujp = $("#uploadIUJP").val();
             const fliujp = $('#uploadIUJP').prop('files')[0];
             let auth_m_per = htmlspecialchars($(".7k23n78j23b7l34c77s4f5h7").text());
+            var token = $("#token").val();
 
             if (auth_m_per == "") {
                 err_auth_m_per = "Perusahaan tidak ditemukan";
@@ -2193,6 +2152,8 @@
                         formData.append('tgl_akhir_iujp', tgl_akhir_iujp);
                         formData.append('ket_iujp', ket_iujp);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
+
                         $.LoadingOverlay("show");
                         $.ajax({
                             type: 'POST',
@@ -2214,11 +2175,11 @@
                                     $(".errtglIUJP").html('');
                                     $(".errtglAkhirIUJP").html('');
                                     $(".erruploadIUJP").html('');
-                                    swal("Berhasil", data.pesan, "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
-                                    location.reload();
+                                    // location.reload();
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".errsubcon").html(data.auth_m_per);
@@ -2226,23 +2187,20 @@
                                     $(".errtglIUJP").html(data.tgl_awal_iujp);
                                     $(".errtglAkhirIUJP").html(data.tgl_akhir_iujp);
                                     $(".erruploadIUJP").html(data.fileiujp);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
-                                    swal("Error", "Error saat menyimpan data, periksa kembali data", "error");
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgiujp").removeClass('d-none');
-                                $(".errormsgiujp").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgiujp").html("Terjadi kesalahan saat menyimpan data IUJP, hubungi administrator");
+                                    pesan = "Terjadi kesalahan saat menyimpan data IUJP, hubungi administrator";
                                     $("#addIUJP").remove();
-
-                                    $(".errormsgiujp ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgiujp ").slideUp(500);
-                                        $(".errormsgiujp ").addClass("d-none");
-                                    });
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -2266,6 +2224,7 @@
             let filesio = $("#uploadSIO").val();
             const flsio = $('#uploadSIO').prop('files')[0];
             let auth_m_per = htmlspecialchars($(".9k7j8h5g4h9j0k2g3b5g3g").text());
+            var token = $("#token").val();
 
             if (no_sio == "") {
                 err_no_sio = "No. SIO wajib diisi";
@@ -2311,6 +2270,7 @@
                         formData.append('tgl_akhir_sio', tgl_akhir_sio);
                         formData.append('ket_sio', ket_sio);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
 
                         $.LoadingOverlay("show");
                         $.ajax({
@@ -2334,32 +2294,28 @@
                                     $("#ketSIO").val('');
                                     $("#uploadSIO").val('');
                                     $.LoadingOverlay("hide");
-                                    swal("Berhasil", data.pesan, "success");
-                                    location.reload();
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
+                                    // location.reload();
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 } else {
                                     $(".errnosionew").html(data.no_sio);
                                     $(".errtglawalsionew").html(data.tgl_awal_sio);
                                     $(".errtglakhirsionew").html(data.tgl_akhir_sio);
                                     $(".erruploadsionew").html(data.filesio);
                                     $.LoadingOverlay("hide");
-                                    swal("Error", "Error saat menyimpan data, periksa kembali data", "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgsio").removeClass('d-none');
-                                $(".errormsgsio").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgsio").html("Terjadi kesalahan saat menyimpan data SIO, hubungi administrator");
-                                    // $("#addSIO").remove();
-
-                                    $(".errormsgsio ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgsio ").slideUp(500);
-                                        $(".errormsgsio ").addClass("d-none");
-                                    });
+                                    pesan = "Terjadi kesalahan saat menyimpan data SIO, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -2380,6 +2336,7 @@
             let filekontrak = $("#uploadKontrak").val();
             const flkontrak = $('#uploadKontrak').prop('files')[0];
             let auth_m_per = htmlspecialchars($(".2e3r4t5y6u7i8o0o9i8u7y6t").text());
+            var token = $("#token").val();
 
             if (no_kontrak == "") {
                 err_no_kontrak = "No. kontrak wajib diisi";
@@ -2425,6 +2382,7 @@
                         formData.append('tgl_akhir_kontrak', tgl_akhir_kontrak);
                         formData.append('ket_kontrak', ket_kontrak);
                         formData.append('auth_m_per', auth_m_per);
+                        formData.append('token', token);
                         $.LoadingOverlay("show");
                         $.ajax({
                             type: 'POST',
@@ -2447,33 +2405,30 @@
                                     $(".errtglkontraknew").text('');
                                     $(".errtglakhirkontraknew").text('');
                                     $(".erruploadkontraknew").text('');
-                                    swal("Berhasil", data.pesan, "success");
-                                    location.reload();
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
+                                    // location.reload();
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".errnokontraknew").html(data.no_kontrak);
                                     $(".errtglkontraknew").html(data.tgl_awal_kontrak);
                                     $(".errtglakhirkontraknew").html(data.tgl_akhir_kontrak);
                                     $(".erruploadkontraknew").html(data.filekontrak);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
-                                    swal("Error", "Error saat menyimpan data, periksa kembali data", "error");
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgkontrak").removeClass('d-none');
-                                $(".errormsgkontrak").addClass('alert-danger');
+                                
                                 if (thrownError != "") {
-                                    $(".errormsgkontrak").html("Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator");
-                                    // $("#addSIO").remove();
-
-                                    $(".errormsgkontrak ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgkontrak ").slideUp(500);
-                                        $(".errormsgkontrak ").addClass("d-none");
-                                    });
+                                    pesan = "Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }
@@ -2500,6 +2455,7 @@
             let filepjo = $("#filepjonew").val();
             const flpjo = $('#filepjonew').prop('files')[0];
             let auth_m_per = $(".2d3f4g5h6j7k8j6b4vec5v").text()
+            var token = $("#token").val();
 
             if (no_pjo == "") {
                 err_no_pjo = "No. PJO wajib diisi";
@@ -2581,6 +2537,7 @@
                         formData.append('nik_pjo', nik_pjo);
                         formData.append('nama_pjo', nama_pjo);
                         formData.append('auth_kary', auth_kary);
+                        formData.append('token', token);
 
                         $.ajax({
                             type: 'POST',
@@ -2592,14 +2549,14 @@
                             success: function(data) {
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
-                                    swal("Berhasil", data.pesan, "success");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $("#mdlUploadPJO").modal('hide');
-                                    $.LoadingOverlay("hide");
                                     $(".2d3f4g5h6j7k8j6b4vec5v").text('');
                                     $(".ccv445bb66n7uj8ikmhg23fsdf").text('');
-                                    location.reload();
+                                    $.LoadingOverlay("hide");
+                                    // location.reload();
                                 } else if (data.statusCode == 201) {
-                                    swal("Error", data.pesan, "error");
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
                                 } else {
                                     $(".errnopjonew").html(data.no_pjo);
@@ -2610,23 +2567,19 @@
                                     $(".errnikpjonew").html(data.nik_pjo);
                                     $(".errnamapjonew").html(data.nama_pjo);
                                     $(".errfilepjonew").html(data.filepjo);
+                                    swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                     $.LoadingOverlay("hide");
-                                    swal("Error", "Error saat menyimpan data, periksa kembali data", "error");
                                 }
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".errormsgpjo").removeClass('d-none');
-                                $(".errormsgpjo").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errormsgpjo").html("Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator");
-                                    // $("#addSIO").remove();
-
-                                    $(".errormsgpjo ").fadeTo(3000, 500).slideUp(500, function() {
-                                        $(".errormsgpjo ").slideUp(500);
-                                        $(".errormsgpjo ").addClass("d-none");
-                                    });
+                                    pesan = "Terjadi kesalahan saat menyimpan data kontrak, hubungi administrator";
+                                } else {
+                                    pesan = "";
                                 }
+
+                                swal("Error",pesan,'error');
                             }
                         });
                     }

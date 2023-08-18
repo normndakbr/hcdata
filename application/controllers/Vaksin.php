@@ -16,6 +16,7 @@ class Vaksin extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/vaksin/vaksin');
           $this->load->view('dashboard/modal/mdlform');
@@ -30,6 +31,7 @@ class Vaksin extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/vaksin/vaksin_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -259,6 +261,9 @@ class Vaksin extends My_Controller
 
      public function get_vaksin_jenis_all()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->vks->get_vaksin_jenis_all();
           $output = "<option value=''>-- Pilih Jenis Vaksin --</option> ";
           $output = $output . "<option value='0'>Wajib Dipilih</option> ";
@@ -275,6 +280,9 @@ class Vaksin extends My_Controller
 
      public function get_vaksin_nama_all()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->vks->get_vaksin_nama_all();
           $output = "<option value=''>-- Pilih Nama Vaksin --</option> ";
           $output = $output . "<option value='0'>Wajib Dipilih</option> ";

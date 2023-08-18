@@ -14,15 +14,17 @@ class Karyawan_model extends CI_Model
         $this->load->database();
     }
 
-    private function _get_datatables_query($auth_m_per)
+    private function _get_datatables_query($auth_m_per, $ck)
     {
-        $id_m_perusahaan = $this->prs->get_m_by_auth($auth_m_per);
+        $id_m_perusahaan = $this->prs->get_m_by_auth($auth_m_per, $ck);
         if (empty($id_m_perusahaan)) {
             $id_m_perusahaan = 0;
         }
 
-        $this->db->where(['id_m_perusahaan' => $id_m_perusahaan]);
-        $this->db->where(['tgl_nonaktif' => '1970-01-01']);
+        $this->db->where('id_m_perusahaan', $id_m_perusahaan);
+        if ($ck == 0) {
+            $this->db->where('tgl_nonaktif', null);
+        }
         $this->db->from($this->table);
         $this->db->order_by('id_m_perusahaan', 'ASC');
 
@@ -54,19 +56,19 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    function get_datatables($auth_m_per)
+    function get_datatables($auth_m_per, $ck)
     {
         if ($_POST['length'] != -1) {
-            $this->_get_datatables_query($auth_m_per);
+            $this->_get_datatables_query($auth_m_per, $ck);
             $this->db->limit($_POST['length'], $_POST['start']);
         }
         $query = $this->db->get();
         return $query->result();
     }
 
-    function count_filtered($auth_m_per)
+    function count_filtered($auth_m_per, $ck)
     {
-        $this->_get_datatables_query($auth_m_per);
+        $this->_get_datatables_query($auth_m_per, $ck);
         $query = $this->db->get();
         return $query->num_rows();
     }
@@ -89,7 +91,7 @@ class Karyawan_model extends CI_Model
 
     public function get_alamat_by_id_person($id_personal)
     {
-        $this->db->from('tb_alamat_ktp');
+        $this->db->from('vw_alamat_karyawan');
         $this->db->where('id_personal', $id_personal);
         $this->db->where('stat_alamat_ktp', 'T');
         $query = $this->db->get();
@@ -229,9 +231,20 @@ class Karyawan_model extends CI_Model
         }
     }
 
+    public function get_resident()
+    {
+        return $this->db->get('tb_stat_tinggal')->result();
+    }
+
     public function get_mcu_by_authmcu($auth_mcu)
     {
         $query = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
+        return $query;
+    }
+
+    public function get_mcu_by_authmcu_one($auth_mcu)
+    {
+        $query = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->row();
         return $query;
     }
 
@@ -421,7 +434,8 @@ class Karyawan_model extends CI_Model
         $auth_m_per = $postData['auth_m_per'];
         // $id_per = $this->prs->get_idp_by_auth($auth_m_per);
         if (isset($postData['search'])) {
-            $records = $this->db->query("SELECT auth_karyawan, auth_m_perusahaan, no_ktp, no_nik, nama_lengkap, depart FROM vw_karyawan WHERE auth_m_perusahaan = '" . $auth_m_per . "' AND (no_ktp LIKE '%" . $postData['search'] .
+            $records = $this->db->query("SELECT auth_karyawan, auth_m_perusahaan, no_ktp, no_nik, nama_lengkap, depart FROM vw_karyawan WHERE auth_m_perusahaan = '" . $auth_m_per .
+                "' AND tgl_nonaktif is null AND (no_ktp LIKE '%" . $postData['search'] .
                 "%' OR no_nik like '%" . $postData['search'] .
                 "%' OR nama_lengkap like '%" . $postData['search'] . "%') ORDER BY nama_lengkap ASC")->result();
             foreach ($records as $row) {
@@ -509,7 +523,7 @@ class Karyawan_model extends CI_Model
         $this->db->select("*");
         $this->db->from("vw_personal");
         $this->db->limit(1);
-        $this->db->order_by('id_personal', "DESC");
+        $this->db->order_by('tgl_buat', "DESC");
         $query = $this->db->get()->result();
 
         if (!empty($query)) {
@@ -523,13 +537,13 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    public function last_row_kontrak($auth_kary)
+    public function last_row_kontrak($id_kary)
     {
         $this->db->select("*");
         $this->db->from("vw_kontrak_karyawan");
-        $this->db->where("auth_karyawan", $auth_kary);
+        $this->db->where("id_kary", $id_kary);
         $this->db->limit(1);
-        $this->db->order_by('tgl_buat', "DESC");
+        $this->db->order_by('id_kontrak_kary', "DESC");
         $query = $this->db->get()->row();
 
         if (!empty($query)) {
@@ -613,13 +627,15 @@ class Karyawan_model extends CI_Model
 
     public function last_row_authkary($auth_person)
     {
-        $query = $this->db->get_where('vw_karyawan', ['auth_personal' => $auth_person])->result();
-        if (!empty($query)) {
-            foreach ($query as $list) {
-                $auth_karyawan = $list->auth_karyawan;
-            }
+        $this->db->select('auth_karyawan, tgl_buat, auth_personal');
+        $this->db->from('vw_karyawan');
+        $this->db->where('auth_personal', $auth_person);
+        $this->db->order_by('tgl_buat', 'DESC');
+        $this->db->limit(1);
+        $query = $this->db->get()->row();
 
-            return $auth_karyawan;
+        if (!empty($query)) {
+            return $query->auth_karyawan;
         } else {
             return;
         }
@@ -902,6 +918,26 @@ class Karyawan_model extends CI_Model
         return $this->db->get('tb_sim')->result();
     }
 
+    public function cek_personal($auth_person)
+    {
+        $query = $this->db->get_where('vw_personal', ['auth_personal' => $auth_person])->result();
+        if (!empty($query)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function cek_mcu($auth_mcu)
+    {
+        $query = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
+        if (!empty($query)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function cek_noKTP($noktp)
     {
         $query = $this->db->get_where('tb_personal', ['no_ktp' => $noktp])->result();
@@ -1034,8 +1070,9 @@ class Karyawan_model extends CI_Model
 
     public function edit_depart($kd_depart, $depart, $ket_depart, $status)
     {
-        $id_perusahaan = $this->session->userdata('id_perusahaan');
-        $id_depart = $this->session->userdata('id_depart');
+
+        $id_perusahaan = $this->session->userdata('id_perusahaan_hcdata');
+        $id_depart = $this->session->userdata('id_depart_hcdata');
 
         $query = $this->db->query("SELECT * FROM tb_depart WHERE kd_depart='" . $kd_depart . "' AND id_perusahaan=" . $id_perusahaan . " AND id_depart <> " . $id_depart);
         if (!empty($query->result())) {

@@ -148,7 +148,7 @@ class Poh_model extends CI_Model
 
      public function edit_poh($kd_poh, $poh, $ket_poh, $status)
      {
-          $id_poh = $this->session->userdata('id_poh');
+          $id_poh = $this->session->userdata('id_poh_hcdata');
 
           $query = $this->db->query("SELECT * FROM tb_poh WHERE kd_poh='" . $kd_poh . "' AND id_poh <> " . $id_poh);
           if (!empty($query->result())) {
@@ -167,11 +167,7 @@ class Poh_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_poh', $id_poh);
           $this->db->update('tb_poh');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all()

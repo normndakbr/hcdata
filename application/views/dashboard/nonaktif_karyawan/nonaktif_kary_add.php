@@ -59,13 +59,25 @@
                               </div>
                               <div class="alert alert-danger err_psn_nonaktifkary animate__animated animate__bounce d-none"></div>
                               <div class="row mt-3">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   } else {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+
                                    <div class="col-lg-5 col-md-12 col-sm-12">
                                         <label for="perNonkatifKary" class="mb-3">Perusahaan <span class="text-danger">*</span></label><br>
                                         <select id='perNonkatifKary' name='perNonkatifKary' class="form-control">
                                              <option value="">-- PILIH PERUSAHAAN --</option>
                                              <?= $permst . $perstr; ?>
                                         </select>
-                                        <small class="error1 text-danger font-italic font-weight-bold"></small><br>
+                                        <small class="error1 text-danger font-italic font-weight-bold"></small><BR>
                                    </div>
                                    <div class="col-lg-7 col-md-12 col-sm-12">
                                         <label for="cariKaryNonaktif">Cari Karyawan <span class="text-danger"> (No. KTP/NIK/Nama Karyawan) *</span></label><br>
@@ -82,7 +94,7 @@
                                    </div>
                                    <div class="col-lg-3 col-md-6 col-sm-12">
                                         <label for="namaKarytglNonaktif">Nama Karyawan</label>
-                                        <input type="text" id='namaKarytglNonaktif' name='namaKarytglNonaktif' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                        <input type="text" id='namaKarytglNonaktif' name='namaKarytglNonaktif' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled><br>
                                    </div>
                                    <div class="col-lg-2 col-md-6 col-sm-12">
                                         <label for="noNIKNonaktif">NIK</label>

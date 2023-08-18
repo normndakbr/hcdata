@@ -148,8 +148,8 @@ class Posisi_model extends CI_Model
 
      public function edit_posisi($posisi, $depart, $ket_posisi, $status)
      {
-          $id_perusahaan = $this->session->userdata('id_perusahaan');
-          $id_posisi = $this->session->userdata('id_posisi');
+          $id_perusahaan = $this->session->userdata('id_perusahaan_posisi_hcdt');
+          $id_posisi = $this->session->userdata('id_posisi_hcdt');
 
           $query = $this->db->get_where('vw_depart', ['auth_depart' => $depart]);
           if (!empty($query->result())) {
@@ -163,6 +163,7 @@ class Posisi_model extends CI_Model
           $query = $this->db->query("SELECT * FROM tb_posisi WHERE posisi='" . $posisi .
                "' AND id_perusahaan=" . $id_perusahaan . " AND id_depart=" . $id_depart .
                " AND id_posisi <> " . $id_posisi);
+
           if (!empty($query->result())) {
                return 204;
           }
@@ -174,11 +175,7 @@ class Posisi_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_posisi', $id_posisi);
           $this->db->update('tb_posisi');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_by_authdepart($auth_depart)

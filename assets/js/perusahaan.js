@@ -1,14 +1,11 @@
 
      //========================================== Perusahaan ========================================================
      $(document).ready(function() {
-          var csrfName = $('.txt_csrfname').attr('name');
-          var csrfHash = $('.txt_csrfname').val();
-  
-          var csfrData = {};
-          csfrData[csrfName] = csrfHash;
-          $.ajaxSetup({
-              data: csfrData
-          });
+
+          $("#txtprovadd").LoadingOverlay("show");
+          $("#txtkabadd").LoadingOverlay("show");
+          $("#txtkecadd").LoadingOverlay("show");
+          $("#txtkeladd").LoadingOverlay("show");
 
           $("#logout").click(function() {
                $("#logoutmdl").modal("show");
@@ -46,58 +43,71 @@
 
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_prov",
+                    url: site_url+"daerah/get_prov?authtoken=" + $("#token").val(),
                     success: function(data) {
                          var data = JSON.parse(data);
                          $("#provPerusahaan").html(data.prov);
+                         $("#txtprovadd").LoadingOverlay("hide");
+                         $("#txtkabadd").LoadingOverlay("hide");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data provinsi, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
+
           $("#provPerusahaan").change(function() {
-               var csrfName = $('.txt_csrfname').attr('name');
-               var csrfHash = $('.txt_csrfname').val();
+               $("#txtkabadd").LoadingOverlay("show");
+               $("#txtkecadd").LoadingOverlay("show");
+               $("#txtkeladd").LoadingOverlay("show");
 
                let id_prov = $("#provPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kab",
+                    url: site_url+"daerah/get_kab?authtoken="+$("#token").val(),
                     data: {
-                         id_prov: id_prov,
-                         [csrfName]:csrfHash
+                         id_prov: id_prov
                     },
                     success: function(data) {
                          var data = JSON.parse(data);
                          $("#kabPerusahaan").html(data.kab);
                          $("#kecPerusahaan").html("<option value='000000'>-- WAJIB DIPILIH --</option>");
                          $("#kelPerusahaan").html("<option value='00000000'>-- WAJIB DIPILIH --</option>");
+                         $("#txtkabadd").LoadingOverlay("hide");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kabupaten, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
           $("#kabPerusahaan").change(function() {
+               $("#txtkecadd").LoadingOverlay("show");
+               $("#txtkeladd").LoadingOverlay("show");
+
                let id_kab = $("#kabPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kec",
+                    url: site_url+"daerah/get_kec?authtoken="+$("#token").val(),
                     data: {
                          id_kab: id_kab
                     },
@@ -105,40 +115,47 @@
                          var data = JSON.parse(data);
                          $("#kecPerusahaan").html(data.kec);
                          $("#kelPerusahaan").html("<option value='00000000'>-- WAJIB DIPILIH --</option>");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kecamatan, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
           $("#kecPerusahaan").change(function() {
+               $("#txtkeladd").LoadingOverlay("show");
+
                let id_kec = $("#kecPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kel",
+                    url: site_url+"daerah/get_kel?authtoken="+$("#token").val(),
                     data: {
                          id_kec: id_kec
                     },
                     success: function(data) {
                          var data = JSON.parse(data);
                          $("#kelPerusahaan").html(data.kel);
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kelurahan, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
@@ -146,7 +163,7 @@
                let id_prov = $("#editPerusahaanProv").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kab",
+                    url: site_url+"daerah/get_kab?authtoken="+$("#token").val(),
                     data: {
                          id_prov: id_prov
                     },
@@ -158,21 +175,24 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
-                              $("#btnupdatePerusahaan").remove();
+                              pesan = "Terjadi kesalahan saat load data kabupaten, hubungi administrator";
+                              $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
+
           $("#editPerusahaanKab").change(function() {
                let id_kab = $("#editPerusahaanKab").val();
+
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kec",
+                    url: site_url+"daerah/get_kec?authtoken="+$("#token").val(),
                     data: {
                          id_kab: id_kab
                     },
@@ -183,13 +203,14 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
-                              $("#btnupdatePerusahaan").remove();
+                              pesan = "Terjadi kesalahan saat load data kecamatan, hubungi administrator";
+                              $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
@@ -197,7 +218,7 @@
                let id_kec = $("#editPerusahaanKec").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kel",
+                    url: site_url+"daerah/get_kel?authtoken="+$("#token").val(),
                     data: {
                          id_kec: id_kec
                     },
@@ -207,45 +228,61 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
-                              $("#btnupdatePerusahaan").remove();
+                              pesan = "Terjadi kesalahan saat load data kelurahan, hubungi administrator";
+                              $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
+
           $(".refprov").click(function() {
-               $("#provPerusahaan").LoadingOverlay("show");
+               $("#txtprovadd").LoadingOverlay("show");
+               $("#txtkabadd").LoadingOverlay("show");
+               $("#txtkecadd").LoadingOverlay("show");
+               $("#txtkeladd").LoadingOverlay("show");
+
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_prov",
+                    url: site_url+"daerah/get_prov?authtoken="+$("#token").val(),
                     success: function(data) {
                          var data = JSON.parse(data);
                          $("#provPerusahaan").html(data.prov);
-                         $("#provPerusahaan").LoadingOverlay("hide");
+                         $("#kabPerusahaan").html("<option value='000000'>-- WAJIB DIPILIH --</option>");
+                         $("#kecPerusahaan").html("<option value='000000'>-- WAJIB DIPILIH --</option>");
+                         $("#kelPerusahaan").html("<option value='00000000'>-- WAJIB DIPILIH --</option>");
+                         $("#txtprovadd").LoadingOverlay("hide");
+                         $("#txtkabadd").LoadingOverlay("hide");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         $("#provPerusahaan").attr("disabled", true);
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data provinsi, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
+
           $(".refkab").click(function() {
-               $("#kabPerusahaan").LoadingOverlay("show");
+               $("#txtkabadd").LoadingOverlay("show");
+               $("#txtkecadd").LoadingOverlay("show");
+               $("#txtkeladd").LoadingOverlay("show");
+
                let id_prov = $("#provPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kab",
+                    url: site_url+"daerah/get_kab?authtoken="+$("#token").val(),
                     data: {
                          id_prov: id_prov
                     },
@@ -254,27 +291,30 @@
                          $("#kabPerusahaan").html(data.kab);
                          $("#kecPerusahaan").html("<option value='000000'>-- WAJIB DIPILIH --</option>");
                          $("#kelPerusahaan").html("<option value='00000000'>-- WAJIB DIPILIH --</option>");
-                         $("#kabPerusahaan").LoadingOverlay("hide");
+                         $("#txtkabadd").LoadingOverlay("hide");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         $("#kabPerusahaan").LoadingOverlay("hide");
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kabupaten, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
           $(".refkec").click(function() {
-               $("#kecPerusahaan").LoadingOverlay("show");
+               $("#txtkecadd").LoadingOverlay("show");
+               $("#txtkeladd").LoadingOverlay("show");
                let id_kab = $("#kabPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kec",
+                    url: site_url+"daerah/get_kec?authtoken="+$("#token").val(),
                     data: {
                          id_kab: id_kab
                     },
@@ -282,18 +322,20 @@
                          var data = JSON.parse(data);
                          $("#kecPerusahaan").html(data.kec);
                          $("#kelPerusahaan").html("<option value='00000000'>-- WAJIB DIPILIH --</option>");
-                         $("#kecPerusahaan").LoadingOverlay("hide");
+                         $("#txtkecadd").LoadingOverlay("hide");
+                         $("#txtkeladd").LoadingOverlay("hide");
+
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         $("#kecPerusahaan").LoadingOverlay("hide");
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kecamatan, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
@@ -302,7 +344,7 @@
                let id_kec = $("#kecPerusahaan").val();
                $.ajax({
                     type: "post",
-                    url: site_url+"daerah/get_kel",
+                    url: site_url+"daerah/get_kel?authtoken="+$("#token").val(),
                     data: {
                          id_kec: id_kec
                     },
@@ -313,14 +355,14 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         $("#kelPerusahaan").LoadingOverlay("hide");
                          if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
+                              pesan = "Terjadi kesalahan saat load data kelurahan, hubungi administrator";
                               $("#btnTambahPerusahaan").remove();
+                         } else {
+                              pesan = "";
                          }
+
+                         swal("Error",pesan,'error');
                     }
                });
           });
@@ -340,6 +382,7 @@
                let kegiatan = $('#editPerusahaanKeg').val();
                let status = $('#editPerusahaanStatus').val();
                let ket = $('#editPerusahaanKet').val();
+               var token = $("#token").val();
 
                $.ajax({
                     type: "POST",
@@ -359,17 +402,15 @@
                          npwp: npwp,
                          status: status,
                          keg: kegiatan,
-                         ket: ket
+                         ket: ket,
+                         token:token
                     },
                     success: function(data) {
                          var data = JSON.parse(data);
                          if (data.statusCode == 200) {
                               tbmPerusahaan.draw();
                               $("#editPerusahaanmdl").modal("hide");
-                              $(".err_psn_perusahaan").removeClass('d-none');
-                              $(".err_psn_perusahaan").removeClass('alert-danger');
-                              $(".err_psn_perusahaan").addClass('alert-info');
-                              $(".err_psn_perusahaan").html(data.pesan);
+                              swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                               $("#editPerusahaanKode").val('');
                               $("#editPerusahaan").val('');
                               $("#editPerusahaanKet").val('');
@@ -378,19 +419,8 @@
                               $("#error2el").html('');
                               $("#error3el").html('');
                               $("#error4el").html('');
-                              $(".err_psn_perusahaan").fadeTo(3000, 500).slideUp(500, function() {
-                                   $(".err_psn_perusahaan").slideUp(500);
-                                   $(".err_psn_perusahaan").addClass('d-none');
-                              });
                          } else if (data.statusCode == 201 || data.statusCode == 203 || data.statusCode == 204 || data.statusCode == 205) {
-                              $(".err_psn_edit_perusahaan").removeClass('d-none');
-                              $(".err_psn_edit_perusahaan").removeClass('alert-info');
-                              $(".err_psn_edit_perusahaan").addClass('alert-danger');
-                              $(".err_psn_edit_perusahaan").html(data.pesan);
-                              $(".err_psn_edit_perusahaan").fadeTo(3000, 500).slideUp(500, function() {
-                                   $(".err_psn_edit_perusahaan").slideUp(500);
-                                   $(".err_psn_edit_perusahaan").addClass('d-none');
-                              });
+                              swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                               $("#error1eper").html('');
                               $("#error2eper").html('');
                               $("#error3eper").html('');
@@ -425,21 +455,15 @@
                          }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
-                         $(".err_psn_perusahaan").removeClass("alert-primary");
-                         $(".err_psn_perusahaan").addClass("alert-danger");
-                         $(".err_psn_perusahaan").removeClass("d-none");
                          if (xhr.status == 404) {
-                              $(".err_psn_perusahaan").html("Perusahaan gagal diupdate, Link data tidak ditemukan");
-                         } else if (xhr.status == 0) {
-                              $(".err_psn_perusahaan").html("Perusahaan gagal diupdate, Waktu koneksi habis");
-                         } else {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat meng-update data, hubungi administrator");
-                         }
-                         $("#editPerusahaanmdl").modal("hide");
-                         $(".err_psn_perusahaan ").fadeTo(3000, 500).slideUp(500, function() {
-                              $(".err_psn_perusahaan ").slideUp(500);
-                              $(".err_psn_perusahaan").addClass('d-none');
-                         });
+                              pesan = "Perusahaan gagal diupdate, Link data tidak ditemukan";
+                          } else if (xhr.status == 0) {
+                             pesan = "Perusahaan gagal diupdate, Waktu koneksi habis";
+                          } else {
+                             pesan = "Terjadi kesalahan saat meng-update data, hubungi administrator";
+                          }
+      
+                          swal("Error",pesan,'error');
                     }
                })
           });
@@ -493,6 +517,7 @@
                var npwp = $("#npwpPerusahaan").val();
                var keg = $("#kegPerusahaan").val();
                var ket = $("#ketPerusahaan").val();
+               var token = $("#token").val();
 
                $.ajax({
                     type: "POST",
@@ -512,23 +537,16 @@
                          web: web,
                          keg: keg,
                          ket: ket,
+                         token:token,
                     },
                     timeout: 20000,
                     success: function(data) {
                          var data = JSON.parse(data);
                          if (data.statusCode == 200) {
-                              swal("Sukses", data.pesan, "success");
+                              swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                               resetaddperusahaan()
-                              $(".err_psn_perusahaan").fadeTo(3000, 500).slideUp(500, function() {
-                                   $(".err_psn_perusahaan").slideUp(500);
-                                   $(".err_psn_perusahaan").addClass('d-none');
-                                   location.reload();
-                              });
                          } else if (data.statusCode == 201) {
-                              $(".err_psn_perusahaan").removeClass('d-none');
-                              $(".err_psn_perusahaan").removeClass('alert-info');
-                              $(".err_psn_perusahaan").addClass('alert-danger');
-                              $(".err_psn_perusahaan").html(data.pesan);
+                              swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                          } else if (data.statusCode == 202) {
                               $(".error1").html(data.kode);
                               $(".error2").html(data.perusahaan);
@@ -548,21 +566,15 @@
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                          $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass("alert-primary");
-                         $(".err_psn_perusahaan").addClass("alert-danger");
-                         $(".err_psn_perusahaan").addClass("d-none");
                          if (xhr.status == 404) {
-                              $(".err_psn_perusahaan").html("Perusahaan gagal disimpan, Link data tidak ditemukan");
-                         } else if (xhr.status == 0) {
-                              $(".err_psn_perusahaan").html("Perusahaan gagal disimpan, Waktu koneksi habis");
-                         } else {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat menyimpan data, hubungi administrator");
-                         }
-
-                         $(".err_psn_perusahaan ").fadeTo(3000, 500).slideUp(500, function() {
-                              $(".err_psn_perusahaan ").slideUp(500);
-                              $(".err_psn_perusahaan").addClass('d-none');
-                         });
+                              pesan = "Perusahaan gagal diupdate, Link data tidak ditemukan";
+                          } else if (xhr.status == 0) {
+                             pesan = "Perusahaan gagal diupdate, Waktu koneksi habis";
+                          } else {
+                             pesan = "Terjadi kesalahan saat membuat data, hubungi administrator";
+                          }
+      
+                          swal("Error",pesan,'error');
                     }
                })
           });
@@ -570,6 +582,7 @@
           $(document).on('click', '.hpsperusahaan', function() {
                let auth_perusahaan = $(this).attr('id');
                let namaPerusahaan = $(this).attr('value');
+               var token = $("#token").val();
 
                if (auth_perusahaan == "") {
                     swal("Error", "Perusahaan tidak ditemukan", "error");
@@ -589,48 +602,34 @@
                                    type: "POST",
                                    url: site_url+"perusahaan/hapus_perusahaan",
                                    data: {
-                                        auth_perusahaan: auth_perusahaan
+                                        auth_perusahaan: auth_perusahaan,
+                                        token:token
                                    },
                                    timeout: 20000,
                                    success: function(data, textStatus, xhr) {
                                         var data = JSON.parse(data);
                                         if (data.statusCode == 200) {
                                              tbmPerusahaan.draw();
-                                             $(".err_psn_perusahaan").removeClass("alert-danger");
-                                             $(".err_psn_perusahaan").addClass("alert-primary");
-                                             $(".err_psn_perusahaan").removeClass("d-none");
-                                             $(".err_psn_perusahaan").html(data.pesan);
+                                             swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                         } else {
-                                             $(".err_psn_perusahaan").removeClass("alert-primary");
-                                             $(".err_psn_perusahaan").addClass("alert-danger");
-                                             $(".err_psn_perusahaan").removeClass("d-none");
-                                             $(".err_psn_perusahaan").html(data.pesan);
+                                             swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                                         }
 
                                         $.LoadingOverlay("hide");
                                    },
                                    error: function(xhr, ajaxOptions, thrownError) {
                                         $.LoadingOverlay("hide");
-                                        $(".err_psn_perusahaan").removeClass("alert-primary");
-                                        $(".err_psn_perusahaan").addClass("alert-danger");
-                                        $(".err_psn_perusahaan").removeClass("d-none");
                                         if (xhr.status == 404) {
-                                             $(".err_psn_perusahaan").html("Perusahaan gagal dihapus, , Link data tidak ditemukan");
-                                        } else if (xhr.status == 0) {
-                                             $(".err_psn_perusahaan").html("Perusahaan gagal dihapus, Waktu koneksi habis");
-                                        } else {
-                                             $(".err_psn_perusahaan").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
-                                        }
+                                             pesan = "Perusahaan gagal diupdate, Link data tidak ditemukan";
+                                         } else if (xhr.status == 0) {
+                                            pesan = "Perusahaan gagal diupdate, Waktu koneksi habis";
+                                         } else {
+                                            pesan = "Terjadi kesalahan saat meng-hapus data, hubungi administrator";
+                                         }
+                     
+                                         swal("Error",pesan,'error');
                                    }
                               });
-
-                              $(".err_psn_perusahaan").fadeTo(4000, 500).slideUp(500, function() {
-                                   $(".err_psn_perusahaan").slideUp(500);
-                                   $(".err_psn_perusahaan").addClass("d-none");
-                              });
-                         } else if (result.dismiss == 'cancel') {
-                              swal('Batal', 'Perusahaan ' + namaPerusahaan + ' batal dihapus', 'error');
-                              return false;
                          }
                     });
                }
@@ -639,6 +638,7 @@
           $(document).on('click', '.dtlperusahaan', function() {
                let auth_perusahaan = $(this).attr('id');
                let namaPerusahaan = $(this).attr('value');
+               var token = $("#token").val();
 
                if (auth_perusahaan == "") {
                     swal("Error", "Perusahaan tidak ditemukan", "error");
@@ -647,7 +647,8 @@
                          type: "post",
                          url: site_url+"perusahaan/detail_perusahaan",
                          data: {
-                              auth_perusahaan: auth_perusahaan
+                              auth_perusahaan: auth_perusahaan,
+                              token:token
                          },
                          timeout: 15000,
                          success: function(data) {
@@ -669,118 +670,114 @@
                                    $("#detailPerusahaanTglEdit").val(data.tgl_edit);
                                    $("#detailPerusahaanmdl").modal("show");
                               } else {
-                                   $(".err_psn_perusahaan").addClass("d-none");
-                                   $(".err_psn_perusahaan").html(data.pesan);
+                                   swal(data.kode_pesan,data.pesan,data.tipe_pesan);
                               }
                          },
                          error: function(xhr, ajaxOptions, thrownError) {
                               $.LoadingOverlay("hide");
-                              $(".err_psn_perusahaan").removeClass("alert-primary");
-                              $(".err_psn_perusahaan").addClass("alert-danger");
-                              $(".err_psn_perusahaan").addClass("d-none");
                               if (xhr.status == 404) {
-                                   $(".err_psn_perusahaan").html("Perusahaan gagal ditampilkan, Link data tidak ditemukan");
-                              } else if (xhr.status == 0) {
-                                   $(".err_psn_perusahaan").html("Perusahaan gagal ditampilkan, Waktu koneksi habis");
-                              } else {
-                                   $(".err_psn_perusahaan").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
-                              }
-                              $(".err_psn_perusahaan ").fadeTo(3000, 500).slideUp(500, function() {
-                                   $(".err_psn_perusahaan ").slideUp(500);
-                              });
+                                   pesan = "Perusahaan gagal diupdate, Link data tidak ditemukan";
+                               } else if (xhr.status == 0) {
+                                  pesan = "Perusahaan gagal diupdate, Waktu koneksi habis";
+                               } else {
+                                  pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                               }
+           
+                               swal("Error",pesan,'error');
                          }
                     });
                }
           });
 
-          function edit_alamat(id_prov, id_kab, id_kec, id_kel) {
-               $.ajax({
-                    type: "post",
-                    url: site_url+"daerah/get_prov",
-                    success: function(data) {
-                         var data = JSON.parse(data);
-                         $("#editPerusahaanProv").html(data.prov);
-                         $("#editPerusahaanProv").val(id_prov);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data provinsi, hubungi administrator");
-                              // $("#btnTambahPerusahaan").remove();
-                         }
-                    }
-               });
-               $.ajax({
-                    type: "post",
-                    url: site_url+"daerah/get_kab",
-                    data: {
-                         id_prov: id_prov
-                    },
-                    success: function(data) {
-                         var data = JSON.parse(data);
-                         $("#editPerusahaanKab").html(data.kab);
-                         $("#editPerusahaanKab").val(id_kab);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kabupaten, hubungi administrator");
-                              // $("#btnTambahPerusahaan").remove();
-                         }
-                    }
-               });
-               $.ajax({
-                    type: "post",
-                    url: site_url+"daerah/get_kec",
-                    data: {
-                         id_kab: id_kab
-                    },
-                    success: function(data) {
-                         var data = JSON.parse(data);
-                         $("#editPerusahaanKec").html(data.kec);
-                         $("#editPerusahaanKec").val(id_kec);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kecamatan, hubungi administrator");
-                              // $("#btnTambahPerusahaan").remove();
-                         }
-                    }
-               });
-               $.ajax({
-                    type: "post",
-                    url: site_url+"daerah/get_kel",
-                    data: {
-                         id_kec: id_kec
-                    },
-                    success: function(data) {
-                         var data = JSON.parse(data);
-                         $("#editPerusahaanKel").html(data.kel);
-                         $("#editPerusahaanKel").val(id_kel);
-                    },
-                    error: function(xhr, ajaxOptions, thrownError) {
-                         $.LoadingOverlay("hide");
-                         $(".err_psn_perusahaan").removeClass('d-none');
-                         $(".err_psn_perusahaan").removeClass('alert-info');
-                         $(".err_psn_perusahaan").addClass('alert-danger');
-                         if (thrownError != "") {
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat load data kelurahan, hubungi administrator");
-                              // $("#btnTambahPerusahaan").remove();
-                         }
-                    }
-               });
-          }
+          // function edit_alamat(id_prov, id_kab, id_kec, id_kel) {
+          //      $.ajax({
+          //           type: "post",
+          //           url: site_url+"daerah/get_prov?authtoken="+$("#token").val(),
+          //           success: function(data) {
+          //                var data = JSON.parse(data);
+          //                $("#editPerusahaanProv").html(data.prov);
+          //                $("#editPerusahaanProv").val(id_prov);
+          //           },
+          //           error: function(xhr, ajaxOptions, thrownError) {
+          //                if (thrownError != "") {
+          //                    pesan = "Terjadi kesalahan saat load data provinsi, hubungi administrator";
+          //                } else {
+          //                     pesan = "";
+          //                }
+
+          //                swal("Error",pesan,'error');
+
+          //           }
+          //      });
+          //      $.ajax({
+          //           type: "post",
+          //           url: site_url+"daerah/get_kab?authtoken="+$("#token").val(),
+          //           data: {
+          //                id_prov: id_prov
+          //           },
+          //           success: function(data) {
+          //                var data = JSON.parse(data);
+          //                $("#editPerusahaanKab").html(data.kab);
+          //                $("#editPerusahaanKab").val(id_kab);
+          //           },
+          //           error: function(xhr, ajaxOptions, thrownError) {
+          //                if (thrownError != "") {
+          //                     pesan = "Terjadi kesalahan saat load data kabupaten, hubungi administrator";
+          //                 } else {
+          //                      pesan = "";
+          //                 }
+ 
+          //                 swal("Error",pesan,'error');
+          //           }
+          //      });
+          //      $.ajax({
+          //           type: "post",
+          //           url: site_url+"daerah/get_kec?authtoken="+$("#token").val(),
+          //           data: {
+          //                id_kab: id_kab
+          //           },
+          //           success: function(data) {
+          //                var data = JSON.parse(data);
+          //                $("#editPerusahaanKec").html(data.kec);
+          //                $("#editPerusahaanKec").val(id_kec);
+          //           },
+          //           error: function(xhr, ajaxOptions, thrownError) {
+          //                if (thrownError != "") {
+          //                     pesan = "Terjadi kesalahan saat load data kecamatan, hubungi administrator";
+          //                 } else {
+          //                      pesan = "";
+          //                 }
+ 
+          //                 swal("Error",pesan,'error');
+          //           }
+          //      });
+          //      $.ajax({
+          //           type: "post",
+          //           url: site_url+"daerah/get_kel?authtoken="+$("#token").val(),
+          //           data: {
+          //                id_kec: id_kec
+          //           },
+          //           success: function(data) {
+          //                var data = JSON.parse(data);
+          //                $("#editPerusahaanKel").html(data.kel);
+          //                $("#editPerusahaanKel").val(id_kel);
+          //           },
+          //           error: function(xhr, ajaxOptions, thrownError) {
+          //                $.LoadingOverlay("hide");
+          //                if (thrownError != "") {
+          //                     pesan = "Terjadi kesalahan saat load data kelurahan, hubungi administrator";
+          //                 } else {
+          //                      pesan = "";
+          //                 }
+ 
+          //                 swal("Error",pesan,'error');
+          //           }
+          //      });
+          // }
 
           $(document).on('click', '.edttperusahaan', function() {
                let auth_perusahaan = $(this).attr('id');
-               let namaPerusahaan = $(this).attr('value');
+               var token = $("#token").val();
 
                if (auth_perusahaan == "") {
                     swal("Error", "Perusahaan tidak ditemukan", "error");
@@ -789,7 +786,8 @@
                          type: "post",
                          url: site_url+"perusahaan/edit_detail_perusahaan",
                          data: {
-                              auth_perusahaan: auth_perusahaan
+                              auth_perusahaan: auth_perusahaan,
+                              token:token
                          },
                          timeout: 15000,
                          success: function(data) {
@@ -814,26 +812,20 @@
                                    $("#error3el").html('');
                                    $("#error4el").html('');
                               } else {
-                                   $(".err_psn_perusahaan").addClass("d-none");
-                                   $(".err_psn_perusahaan").html(data.pesan);
+                                   swal(dataPerusahaan.kode_pesan,dataPerusahaan.pesan,dataPerusahaan.tipe_pesan);
                               }
                          },
                          error: function(xhr, ajaxOptions, thrownError) {
                               $.LoadingOverlay("hide");
-                              $(".err_psn_perusahaan").removeClass("alert-primary");
-                              $(".err_psn_perusahaan").addClass("alert-danger");
-                              $(".err_psn_perusahaan").addClass("d-none");
                               if (xhr.status == 404) {
-                                   $(".err_psn_perusahaan").html("Perusahaan gagal ditampilkan, Link data tidak ditemukan");
-                              } else if (xhr.status == 0) {
-                                   $(".err_psn_perusahaan").html("Perusahaan gagal ditampilkan, Waktu koneksi habis");
-                              } else {
-                                   $(".err_psn_perusahaan").html("Terjadi kesalahan saat menampilkan data, hubungi administrator");
-                              }
-
-                              $(".err_psn_perusahaan ").fadeTo(3000, 500).slideUp(500, function() {
-                                   $(".err_psn_perusahaan ").slideUp(500);
-                              });
+                                   pesan = "Perusahaan gagal diupdate, Link data tidak ditemukan";
+                               } else if (xhr.status == 0) {
+                                  pesan = "Perusahaan gagal diupdate, Waktu koneksi habis";
+                               } else {
+                                  pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                               }
+           
+                               swal("Error",pesan,'error');
                          }
                     });
                }
@@ -841,69 +833,101 @@
 
           $("#btnrefreshPerusahaan").click(function() {
                $('#tbmPerusahaan').LoadingOverlay("show");
-               tbmPerusahaan.draw()
+               tbPerusahaan();
                $('#tbmPerusahaan').LoadingOverlay("hide");
           });
 
-          tbmPerusahaan = $('#tbmPerusahaan').DataTable({
-               "processing": true,
-               "responsive": true,
-               "serverSide": true,
-               "ordering": true,
-               "order": [
-                    [1, 'asc'],
-               ],
-               "ajax": {
-                    "url": site_url+"perusahaan/ajax_list",
-                    "type": "POST",
-                    "error": function(xhr, error, code) {
-                         if (code != "") {
-                              $(".err_psn_perusahaan").removeClass("d-none");
-                              $(".err_psn_perusahaan").addClass("d-none");
-                              $(".err_psn_perusahaan").html("Terjadi kesalahan saat melakukan load data perusahaan, hubungi administrator");
-                              $("#secadd").addClass("disabled");
-                         }
-                    }
-               },
-               "deferRender": true,
-               "aLengthMenu": [
-                    [10, 25, 50],
-                    [10, 25, 50]
-               ],
-               "columns": [{
-                         data: 'no',
-                         name: 'id_perusahaan',
-                         render: function(data, type, row, meta) {
-                              return meta.row + meta.settings._iDisplayStart + 1;
-                         },
-                         "className": "text-center align-middle",
-                         "width": "1%"
-                    },
-                    {
-                         "data": 'kode_perusahaan',
-                         "className": "text-nowrap  align-middle",
-                         "width": "10%"
-                    },
-                    {
-                         "data": 'nama_perusahaan',
-                         "className": "text-nowrap  align-middle",
-                         "width": "30%"
-                    },
-                    {
-                         "data": 'alamat_perusahaan',
-                         "className": "text-nowrap  align-middle",
-                         "width": "35%"
-                    },
-                    {
-                         "data": 'stat_perusahaan',
-                         "className": "text-center align-middle",
-                         "width": "1%"
-                    },
-                    {
-                         "data": 'proses',
-                         "className": "text-center text-nowrap  align-middle",
-                         "width": "1%"
-                    }
-               ]
-          });
+          tbPerusahaan();
+
+          function tbPerusahaan(){
+               var token = $("#token").val();
+
+               $.ajax ({
+                   type:"POST",
+                   url : site_url + "dash/Oauth",
+                   data : {
+                       token : token,
+                   },
+                   success : function(data){
+                       var data = JSON.parse(data);
+                       if(data.statusCode==200) {
+                         tbmPerusahaan = $('#tbmPerusahaan').DataTable({
+                              "processing": true,
+                              "responsive": true,
+                              "serverSide": true,
+                              "ordering": true,
+                              "order": [
+                                   [1, 'asc'],
+                              ],
+                              "ajax": {
+                                   "url": site_url+"perusahaan/ajax_list?authtoken=" + $("#token").val(),
+                                   "type": "POST",
+                                   "error": function(xhr, error, code) {
+                                        if (code != "") {
+                                             pesan = "Terjadi kesalahan saat melakukan load data perusahaan, hubungi administrator";
+                                             $("#secadd").remove();
+                                             swal("Error",pesan,'error');
+                                        }
+                                   }
+                              },
+                              "deferRender": true,
+                              "aLengthMenu": [
+                                   [10, 25, 50],
+                                   [10, 25, 50]
+                              ],
+                              "columns": [{
+                                        data: 'no',
+                                        name: 'id_perusahaan',
+                                        render: function(data, type, row, meta) {
+                                             return meta.row + meta.settings._iDisplayStart + 1;
+                                        },
+                                        "className": "text-center align-middle",
+                                        "width": "1%"
+                                   },
+                                   {
+                                        "data": 'kode_perusahaan',
+                                        "className": "text-nowrap  align-middle",
+                                        "width": "10%"
+                                   },
+                                   {
+                                        "data": 'nama_perusahaan',
+                                        "className": "text-nowrap  align-middle",
+                                        "width": "30%"
+                                   },
+                                   {
+                                        "data": 'alamat_perusahaan',
+                                        "className": "text-nowrap  align-middle",
+                                        "width": "35%"
+                                   },
+                                   {
+                                        "data": 'stat_perusahaan',
+                                        "className": "text-center align-middle",
+                                        "width": "1%"
+                                   },
+                                   {
+                                        "data": 'proses',
+                                        "className": "text-center text-nowrap  align-middle",
+                                        "width": "1%"
+                                   }
+                              ]
+                         });
+                       } else {
+                           swal(data.kode_pesan,data.pesan,data.tipe_pesan);
+                       }
+                   },
+                   error: function(xhr, ajaxOptions, thrownError) {
+                       $.LoadingOverlay("hide");
+   
+                       if (xhr.status == 404) {
+                           pesan = "Lokasi kerja gagal diupdate, Link data tidak ditemukan";
+                       } else if (xhr.status == 0) {
+                           pesan = "Lokasi kerja gagal diupdate, Waktu koneksi habis";
+                       } else {
+                           pesan = "Terjadi kesalahan saat menampilkan data, hubungi administrator";
+                       }
+   
+                       swal("Error",pesan,'error');
+                   }
+               });
+          }
      });

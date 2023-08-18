@@ -16,6 +16,7 @@ class Klasifikasi extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/klasifikasi/klasifikasi');
           $this->load->view('dashboard/modal/mdlform');
@@ -30,6 +31,7 @@ class Klasifikasi extends My_Controller
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
           $data['menu'] = $this->session->userdata("id_menu_hcdata");
+          $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/klasifikasi/klasifikasi_add');
           $this->load->view('dashboard/modal/mdlform');
@@ -216,6 +218,9 @@ class Klasifikasi extends My_Controller
 
      public function get_all()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->kls->get_all();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
@@ -231,7 +236,7 @@ class Klasifikasi extends My_Controller
 
      public function get_by_authper()
      {
-          $auth_per = $this->input->post('auth_per');
+          $auth_per = htmlspecialchars($this->input->post('auth_per', true));
 
           $query = $this->kls->get_by_authper($auth_per);
           $output = "<option value=''>-- Pilih klasifikasi --</option>";
