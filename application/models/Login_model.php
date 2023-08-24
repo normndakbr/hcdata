@@ -77,7 +77,6 @@ class Login_model extends CI_Model
                                    }
                               }
                          } else {
-
                               $data_err = [
                                    'email_error' => $email,
                                    'ip_error' => $_SERVER['REMOTE_ADDR'],

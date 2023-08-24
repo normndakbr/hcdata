@@ -4,8 +4,8 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class Karyawan_model extends CI_Model
 {
     var $table = 'vw_kry';
-    var $column_order = array(null, 'nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
-    var $column_search = array('nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
+    var $column_order = array(null, 'no_nik', 'nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat', null); //set column field database for datatable orderable
+    var $column_search = array('no_nik', 'nama_lengkap', 'depart', 'posisi', 'kode_perusahaan', 'nama_perusahaan', 'tgl_buat',); //set column field database for datatable searchable just firstname , lastname , address are searchable
     var $order = array('depart' => 'asc'); // default order 
 
     public function __construct()

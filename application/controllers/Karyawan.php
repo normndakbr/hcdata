@@ -764,7 +764,7 @@ class Karyawan extends My_Controller
                               'id_poh' => $id_poh,
                               'id_klasifikasi' => $id_klasifikasi,
                               'id_tipe' => $id_tipe,
-                              'stat_tinggal' => $stat_tinggal,
+                              'id_stat_tinggal' => $stat_tinggal,
                               'email_kantor' => $email_kantor,
                               'tgl_permanen' => $tgl_permanen,
                               'id_stat_perjanjian' => $stat_kerja,
@@ -896,7 +896,7 @@ class Karyawan extends My_Controller
                                    'paybase' => 0,
                                    'statpajak' => 0,
                                    'id_tipe' => $id_tipe,
-                                   'stat_tinggal' => $stat_tinggal,
+                                   'id_stat_tinggal' => $stat_tinggal,
                                    'email_kantor' => $email_kantor,
                                    'tgl_permanen' => '1970-01-01',
                                    'id_stat_perjanjian' => 0,
@@ -1053,7 +1053,7 @@ class Karyawan extends My_Controller
                                    'paybase' => 0,
                                    'statpajak' => 0,
                                    'id_tipe' => $id_tipe,
-                                   'stat_tinggal' => $stat_tinggal,
+                                   'id_stat_tinggal' => $stat_tinggal,
                                    'email_kantor' => $email_kantor,
                                    'tgl_permanen' => '1970-01-01',
                                    'id_stat_perjanjian' => 0,
@@ -2517,43 +2517,54 @@ class Karyawan extends My_Controller
      // fetch data karyawan
      public function ajax_list()
      {
-          $auth = htmlspecialchars($this->input->get("authtoken"));
-          $this->cek_auth($auth);
+          $auth = htmlspecialchars($this->input->get("authtoken", true));
+          $cekauth = $this->cek_auth($auth);
 
-          $ck = $this->input->get("ck");
-          $auth_m_per = $this->input->get("auth_m_per");
-          $list = $this->kry->get_datatables($auth_m_per, $ck);
-          $data = array();
-          $no = 0;
-          foreach ($list as $kry) {
-               $no++;
-               $row = array();
-               $row['no'] = $no;
-               $row['id_kary'] = $kry->id_kary;
-               $row['no_ktp'] = $kry->no_ktp;
-               $row['no_acr'] = $kry->no_acr;
-               $row['no_nik'] = $kry->no_nik;
-               $row['nama_lengkap'] = $kry->nama_lengkap;
-               $row['depart'] = $kry->depart;
-               $row['kode_perusahaan'] = $kry->kode_perusahaan;
+          if ($cekauth == 501) {
+               $output = array(
+                    "draw" => '',
+                    "recordsTotal" => 0,
+                    "recordsFiltered" => 0,
+                    "data" => '',
+                    "pesan" => "Autentikasi tidak valid, refresh data"
 
-               $kd_per = $this->prs->get_kode_per_by_parent($kry->id_m_perusahaan);
-               if (!empty($kd_per)) {
-                    $row['kode_m_perusahaan'] = $kry->kode_perusahaan . " | " . $kd_per;
-               } else {
-                    $row['kode_m_perusahaan'] =  $kry->kode_perusahaan;
-               }
+               );
 
-               $row['posisi'] = $kry->posisi;
-               if ($kry->tgl_nonaktif == null) {
-                    $row['stat_aktif'] = '<span class="btn btn-success btn-sm" style="cursor:text;">AKTIF</span>';
-               } else {
-                    $row['stat_aktif'] = '<span class="btn btn-danger btn-sm" style="cursor:text;">NONAKTIF</span>';
-               }
+               echo json_encode($output);
+          } else {
+               $ck = $this->input->get("ck");
+               $auth_m_per = $this->input->get("auth_m_per");
+               $list = $this->kry->get_datatables($auth_m_per, $ck);
+               $data = array();
+               $no = 0;
+               foreach ($list as $kry) {
+                    $no++;
+                    $row = array();
+                    $row['no'] = $no;
+                    $row['id_kary'] = $kry->id_kary;
+                    $row['no_ktp'] = $kry->no_ktp;
+                    $row['no_acr'] = $kry->no_acr;
+                    $row['no_nik'] = $kry->no_nik;
+                    $row['nama_lengkap'] = $kry->nama_lengkap;
+                    $row['depart'] = $kry->depart;
+                    $row['kode_perusahaan'] = $kry->kode_perusahaan;
 
-               $row['tgl_buat'] = date('d-M-Y', strtotime($kry->tgl_buat));
-               $row['proses'] = '
-               <div class="dropdown dropleft"><button id="' . $kry->auth_karyawan . '" class="btn btn-success btn-sm font-weight-bold aksikary" aria-haspopup="true" title="Aksi" data-toggle="dropdown" aria-expanded="false" value="' . $kry->nama_lengkap . '"> ... </button> 
+                    $kd_per = $this->prs->get_kode_per_by_parent($kry->id_m_perusahaan);
+                    if (!empty($kd_per)) {
+                         $row['kode_m_perusahaan'] = $kry->kode_perusahaan . " | " . $kd_per;
+                    } else {
+                         $row['kode_m_perusahaan'] =  $kry->kode_perusahaan . " | - ";
+                    }
+
+                    $row['posisi'] = $kry->posisi;
+                    if ($kry->tgl_nonaktif == null) {
+                         $row['stat_aktif'] = '<span class="btn btn-success btn-sm" style="cursor:text;">AKTIF</span>';
+                    } else {
+                         $row['stat_aktif'] = '<span class="btn btn-danger btn-sm" style="cursor:text;">NONAKTIF</span>';
+                    }
+
+                    $row['tgl_buat'] = date('d-M-Y', strtotime($kry->tgl_buat));
+                    $row['proses'] = '<div class="dropdown dropleft"><button id="' . $kry->auth_karyawan . '" class="btn btn-success btn-sm font-weight-bold aksikary" aria-haspopup="true" title="Aksi" data-toggle="dropdown" aria-expanded="false" value="' . $kry->nama_lengkap . '"> ... </button> 
                     <div class="dropdown-menu">
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail_karyawan/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
@@ -2565,18 +2576,19 @@ class Karyawan extends My_Controller
                     </div>
                     </div>';
 
-               $data[] = $row;
+                    $data[] = $row;
+               }
+
+               $output = array(
+                    "draw" => $_POST['draw'],
+                    "recordsTotal" => $this->kry->count_all(),
+                    "recordsFiltered" => $this->kry->count_filtered($auth_m_per, $ck),
+                    "data" => $data,
+               );
+
+               //output to json format
+               echo json_encode($output);
           }
-
-          $output = array(
-               "draw" => $_POST['draw'],
-               "recordsTotal" => $this->kry->count_all(),
-               "recordsFiltered" => $this->kry->count_filtered($auth_m_per, $ck),
-               "data" => $data,
-          );
-
-          //output to json format
-          echo json_encode($output);
      }
 
      public function update_personal()
