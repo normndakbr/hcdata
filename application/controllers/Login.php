@@ -12,7 +12,6 @@ class Login extends My_Controller
 
      public function index()
      {
-
           $ip = $_SERVER['REMOTE_ADDR'];
           $cek_ip = $this->lgn->cek_ip($ip);
 
@@ -39,16 +38,6 @@ class Login extends My_Controller
 
                $this->load->view('login/login', $dtcap);
           }
-     }
-
-     public function reset()
-     {
-          $this->load->view('login/resetlogin');
-     }
-
-     function sukses()
-     {
-          $this->load->view('login/sukseskirim');
      }
 
      function create_captcha()

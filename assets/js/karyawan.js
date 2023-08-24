@@ -3321,10 +3321,10 @@
                         }
                     }
                 });
-            } else {
+            } else {                
                 swal({
                     title: "Simpan Data",
-                    text: "Yakin data karyawan No. KTP : "+noktp+", Nama : "+nama+", akan disimpan?",
+                    text: "Yakin data karyawan No. KTP : " + noktp + ", Nama : " + nama + ", akan disimpan?",
                     type: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#36c6d3',
@@ -3391,6 +3391,7 @@
                                 token : token,
                             },
                             success: function(data) {
+                                alert(data);
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
                                     $('.0c09efa8ccb5e0114e97df31736ce2e3').text(data.auth_person);
@@ -3444,14 +3445,13 @@
                                 $(".errmsgKary").removeClass('d-none');
                                 $(".errmsgKary").addClass('alert-danger');
                                 if (thrownError != "") {
-                                    $(".errmsgKary").html("Terjadi kesalahan saat menyimpan data karyawan, hubungi administrator");
+                                    $(".errmsgKary").html("Terjadi kesalahan saat menyimpan data karyawan, hubungi administrator ZZ");
                                 }
                             }
                         });
                     }
                 });
             }
-
 
             $(".errormsg").fadeTo(5000, 500).slideUp(500, function() {
                 $(".errormsg").slideUp(500);
