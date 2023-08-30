@@ -309,9 +309,9 @@ class Perusahaan_model extends CI_Model
           }
      }
 
-     public function get_id_per_by_auth_m($auth_m_per)
+     public function get_id_per_by_auth_m($auth_per)
      {
-          $query = $this->db->get_where('vw_m_per', ['auth_m_perusahaan' => $auth_m_per]);
+          $query = $this->db->get_where('vw_m_per', ['auth_perusahaan' => $auth_per]);
           if (!empty($query->result())) {
                foreach ($query->result() as $list) {
                     return $list->id_perusahaan;

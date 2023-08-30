@@ -121,7 +121,6 @@ class Karyawan extends My_Controller
 
      public function edit_karyawan($id_kary)
      {
-
           $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama_hcdata");
@@ -139,7 +138,7 @@ class Karyawan extends My_Controller
           $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_edit', $data);
-          $this->load->view('dashboard/modal/karyawan');
+          $this->load->view('dashboard/modal/karyawan', $data);
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/karydetail');
      }
@@ -2951,7 +2950,7 @@ class Karyawan extends My_Controller
                     'id_poh' => $id_poh,
                     'id_klasifikasi' => $id_klasifikasi,
                     'id_tipe' => $id_tipe,
-                    'stat_tinggal' => $stat_tinggal,
+                    'id_stat_tinggal' => $stat_tinggal,
                     'email_kantor' => $email_kantor,
                     'tgl_permanen' => $tgl_permanen,
                     'id_stat_perjanjian' => $stat_kerja,
