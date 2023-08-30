@@ -102,6 +102,7 @@
                               <input id="valueLokterima" class="d-none" value="<?= $data_kary->id_lokterima ?>"></input>
                               <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
                               <input id="valueStatTinggal" class="d-none" value="<?= $data_kary->stat_tinggal ?>"></input>
+                              <input id="valueIDStatTinggal" class="d-none" value="<?= $data_kary->id_stat_tinggal ?>"></input>
                               <input id="valueStatPerjanjian" class="d-none" value="<?= $data_kontrak->id_stat_perjanjian ?>"></input>
                               <input id="valueKontrakKary" class="d-none" value="<?= $data_kontrak->auth_kontrak_kary ?>"></input>
 
@@ -611,68 +612,27 @@
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <hr>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="editJenisIzin">Jenis Izin <span class="text-danger">*</span></label>
-                                                                 <select id="editJenisIzin" name="editJenisIzin" class="form-control form-control-user">
-                                                                      <option value="">-- WAJIB DIPILIH --</option>
-                                                                      <option value="SP">SIMPER</option>
-                                                                      <option value="MP">MINE PERMIT</option>
-                                                                 </select>
-                                                                 <small class="errorEditJenisIzin text-danger font-italic font-weight-bold"></small>
-                                                                 <span class="ecb14fe704e08d9df8e343030bbbafcb d-none"></span>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-9 col-md-9 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="editNoReg">No. Register <span class="text-danger">*</span></label>
-                                                                 <input id='editNoReg' name='editNoReg' type="text" class="form-control form-control-user" value="<?= $data_izin->no_reg ?>">
-                                                                 <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
-                                                            </div>
-                                                       </div>
-                                                       <div id="txtEditSIM" class="col-lg-6 col-md-6 col-sm-12 mb-3 d-none">
-                                                            <div class="row">
-                                                                 <div class="col-lg-6 col-md-6 col-sm-12">
-                                                                      <div class="form-group">
-                                                                           <label for="editJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
-                                                                           <div id="txtEditIzinSIM" class="input-group">
-                                                                                <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
-                                                                                     <option value="">-- SIM TIDAK ADA --</option>
-                                                                                </select>
-                                                                                <div class="input-group-prepend">
-                                                                                     <button id="refreshEditJenisSIM" name="refreshJenisSIM" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
-                                                                                </div>
-                                                                           </div>
-                                                                           <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
-                                                                      </div>
-                                                                 </div>
-                                                                 <div class="col-lg-6 col-md-6 col-sm-12">
-                                                                      <div class="form-group">
-                                                                           <label for="addTglExpSIM">Tanggal Expired SIM <span class="text-danger">*</span></label>
-                                                                           <input id='addTglExpSIM' name='addTglExpSIM' type="date" class="form-control form-control-user" value="<?= !$data_sim_kary ? "" : $data_sim_kary->tgl_exp ?>">
-                                                                           <small class="erroraddTglExpSIM text-danger font-italic font-weight-bold"></small>
-                                                                      </div>
-                                                                 </div>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="editTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
-                                                                 <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= $data_izin->tgl_expired ?>">
-                                                                 <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
-                                                            </div>
-                                                       </div>
-                                                       <div id="txtEditunit" class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                            <div class="row">
-                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                                      <hr>
-                                                                 </div>
-                                                                 <div class="collapse col-lg-12 col-md-12 col-sm-12 mb-3 simperunit">
-                                                                      <a id="editUnitSIMPER" href="#!" class="btn btn-primary font-weight-bold mb-4">Tambah Unit</a>
-                                                                      <div id="idizintambang" class="data"></div>
-                                                                 </div>
+                                                            <div class="table-responsive my-4">
+                                                                 <table id="tbmStruktur" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                      <thead>
+                                                                           <tr class="font-weight-bold text-white">
+                                                                                <th style="text-align:center;">AKSI</th>
+                                                                                <th style="text-align:center;">JENIS IZIN</th>
+                                                                                <th style="text-align:center;">NO. REGISTRASI</th>
+                                                                                <th style="text-align:center;">TANGGAL EXPIRED IZIN</th>
+                                                                           </tr>
+                                                                      </thead>
+                                                                      <tbody>
+                                                                           <td style="text-align:center;">
+                                                                                <button type='button' class='btn btn-primary btn-sm btnDetailIzinKaryawan' aria-haspopup='true' title='Aksi' aria-expanded='false'> ... </button>
+                                                                                <button id='" . $auth_m_per . "' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button>
+                                                                                <button id='" . $auth_m_per . "' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button>
+                                                                           </td>
+                                                                           <td style="text-align:center;"><?= $data_izin->jenis_izin_tambang == "MP" ? "MINE PERMIT" : $data_izin->jenis_izin_tambang == "SP" ? "SIMPER" : "No Data" ?></td>
+                                                                           <td style="text-align:center;"><?= $data_izin->no_reg ?></td>
+                                                                           <td style="text-align:center;"><?= $data_izin->tgl_expired ?></td>
+                                                                      </tbody>
+                                                                 </table>
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">

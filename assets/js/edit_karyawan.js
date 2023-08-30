@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    let token = $("#token").val();;
     let auth_depart = "";
     let auth_posisi = "";
     let auth_tipe = "";
@@ -6,6 +7,7 @@ $(document).ready(function () {
     let auth_lokterima = "";
     let auth_lokker = "";
     let initial_auth_per = $("#valuePerusahaan").val();
+    let auth_perusahaan = $("#valueAuthPerusahaan").val();
     let idPosisi = $("#valuePosisi").val();
     let idDepart = $("#valueDepart").val();
     let idTipe = $("#valueTipe").val();
@@ -14,6 +16,7 @@ $(document).ready(function () {
     let idPOH = $("#valuePOH").val();
     let idLokterima = $("#valueLokterima").val();
     let idLokker = $("#valueLokker").val();
+    let idStatTinggal = $("#valueIDStatTinggal").val();
     let valueStatTinggal = $("#valueStatTinggal").val();
     let idStatPerjanjian = $("#valueStatPerjanjian").val();
     let flag_perusahaan = false;
@@ -123,7 +126,7 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     url: site_url + "level/get_auth_Level_by_id",
-                    data: { id_level: idLevel },
+                    data: { id_level: idLevel, token: token },
                     success: function (res) {
                         let data = JSON.parse(res);
                         auth_level = data.auth_level;
@@ -142,7 +145,7 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     url: site_url + "poh/get_auth_poh_by_id",
-                    data: { id_poh: idPOH },
+                    data: { id_poh: idPOH, token: token },
                     success: function (res) {
                         let data = JSON.parse(res);
                         auth_poh = data.auth_poh;
@@ -180,7 +183,7 @@ $(document).ready(function () {
                 $.ajax({
                     type: "POST",
                     url: site_url + "lokasikerja/get_auth_lokker_by_id",
-                    data: { id_lokker: idLokker },
+                    data: { id_lokker: idLokker, token: token },
                     success: function (res) {
                         let data = JSON.parse(res);
                         auth_lokker = data.auth_lokker;
@@ -203,7 +206,7 @@ $(document).ready(function () {
                 break;
             case "statResidence":
                 if (!flag_statResidence) {
-                    $("#editStatusResidence").val(valueStatTinggal).trigger('change');
+                    $("#editStatusResidence").val(idStatTinggal).trigger('change');
                     flag_statResidence = !flag_statResidence;
                 }
                 break;
@@ -330,7 +333,8 @@ $(document).ready(function () {
             type: "POST",
             url: site_url + "level/get_all",
             data: {
-                auth_per: initial_auth_per
+                auth_per: auth_perusahaan,
+                token: token
             },
             success: function (res) {
                 var data = JSON.parse(res);
@@ -356,7 +360,8 @@ $(document).ready(function () {
             type: "POST",
             url: site_url + "poh/get_all",
             data: {
-                id_poh: idPOH
+                id_poh: idPOH,
+                token: token
             },
             success: function (res) {
                 var data = JSON.parse(res);
@@ -408,7 +413,8 @@ $(document).ready(function () {
             type: "POST",
             url: site_url + "lokasikerja/get_all",
             data: {
-                id_poh: idLokterima
+                id_poh: idLokterima,
+                token: token
             },
             success: function (res) {
                 var data = JSON.parse(res);
@@ -432,15 +438,15 @@ $(document).ready(function () {
     function fetch_statustinggal() {
         $.ajax({
             type: "POST",
-            url: site_url+"karyawan/get_resident",
-            success: function(data) {
+            url: site_url + "karyawan/get_resident",
+            success: function (data) {
                 var data = JSON.parse(data);
                 $("#editStatusResidence").html(data.tgl);
                 $("#refreshEditResidence").removeAttr('disabled');
                 $("#txtEditStatResidence").LoadingOverlay("hide");
                 get_initial_value("statResidence");
             },
-            error: function(xhr, ajaxOptions, thrownError) {
+            error: function (xhr, ajaxOptions, thrownError) {
                 $(".errormsg").removeClass('d-none');
                 $(".errormsg").removeClass('alert-info');
                 $(".errormsg").addClass('alert-danger');
@@ -632,7 +638,6 @@ $(document).ready(function () {
                         tgl_edit: tgl_edit,
                     },
                     success: function (res) {
-                        console.log(res);
                         var data = JSON.parse(res);
                         if (data.statusCode == 204) {
                             swal("Berhasil", data.pesan, data.status);
