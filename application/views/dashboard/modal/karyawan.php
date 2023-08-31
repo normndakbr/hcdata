@@ -60,7 +60,7 @@
      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document" style="margin-left: auto; margin-right: auto;max-width:80%;">
           <div class="modal-content">
                <div class="modal-header bg-c-blue">
-                    <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-asterisk"></i><span id="jdlDetailStrPer"> DETAIL IZIN KARYAWAN</span></h5>
+                    <h5 class="modal-title text-white" id="exampleModalLabel"><i class="fas fa-address-card mr-1"></i><span id="jdlDetailStrPer"> DETAIL IZIN KARYAWAN</span></h5>
                </div>
                <div class="modal-body">
                     <div class="row mx-3">
@@ -70,7 +70,7 @@
                          <div class="col-lg-6 col-md-12 col-sm-12">
                               <div class="form-group">
                                    <label for="kodeMperusahaan">Jenis Izin :</label>
-                                   <h5 id="mainCon"><?= $data_izin->jenis_izin_tambang == 'MP' ? "Mine Permit" : "SIMPER" ?></h5>
+                                   <h5 id="mainCon"><?= $data_izin->jenis_izin_tambang == 'MP' ? "MINE PERMIT" : "SIMPER" ?></h5>
                               </div>
                          </div>
                          <div class="col-lg-6 col-md-12 col-sm-12">
@@ -83,7 +83,7 @@
                               <hr>
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
-                              <label for="" class="text-danger font-italic font-weight-bold">Rencana Keselamatan, Kesehatan Kerja dan Lingkungan (RK3L) :</label>
+                              <label for="" class="text-danger font-italic font-weight-bold">Unit yang diizinkan :</label>
                               <div class="row">
                                    <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="form-group">
