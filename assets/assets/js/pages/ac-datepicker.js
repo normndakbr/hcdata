@@ -25,7 +25,7 @@ $(document).ready(function() {
 		maxYear: parseInt(moment().format('YYYY'),10)
 	  }, function(start, end, label) {
 		var years = moment().diff(start, 'years');
-		alert("You are " + years + " years old!");
+		console.log("You are " + years + " years old!");
 	  });
 	});
 	$(function() {

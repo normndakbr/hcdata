@@ -76,7 +76,8 @@
                          ket: ket
                     },
                     success: function(data) {
-                         alert(data);
+                         console.log("Success POST on 'base_url('perjanjian/edit_stat_perjanjian');'");
+                         console.log(data);
                          var data = JSON.parse(data);
                          if (data.statusCode == 200) {
                               tbmStatJanji.draw();

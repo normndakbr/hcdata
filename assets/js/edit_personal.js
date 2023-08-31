@@ -73,10 +73,11 @@ $(document).ready(function () {
 
     $.ajax({
         type: "POST",
-        url: site_url + "daerah/get_prov?authtoken="+$("#token").val(),
+        url: site_url + "daerah/get_prov?authtoken=" + $("#token").val(),
         data: {},
         success: function (data) {
-            alert(data);
+            console.log("Success POST on " + site_url + "daerah/get_prov?authtoken=" + $("#token").val());
+            // alert(data);
             var data = JSON.parse(data);
             $("#editProvData").html(data.prov);
             if (idProvinsi != "" && flagProv) {
@@ -227,7 +228,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_prov?authtoken="+$("#token").val(),
+            url: site_url + "daerah/get_prov?authtoken=" + $("#token").val(),
             data: {},
             success: function (data) {
                 idProvinsi = "";
@@ -269,7 +270,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kab?authtoken="+$("#token").val(),
+            url: site_url + "daerah/get_kab?authtoken=" + $("#token").val(),
             data: {
                 id_prov: idProv
             },
@@ -367,7 +368,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kec?authtoken="+$("#token").val(),
+            url: site_url + "daerah/get_kec?authtoken=" + $("#token").val(),
             data: {
                 id_kab: idKab
             },
@@ -447,7 +448,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kel?authtoken="+$("#token").val(),
+            url: site_url + "daerah/get_kel?authtoken=" + $("#token").val(),
             data: {
                 id_kec: idKec
             },
@@ -488,7 +489,7 @@ $(document).ready(function () {
             $("#txtEditKel").LoadingOverlay("show");
             $.ajax({
                 type: "POST",
-                url: site_url + "daerah/get_kel?authtoken="+$("#token").val(),
+                url: site_url + "daerah/get_kel?authtoken=" + $("#token").val(),
                 data: {
                     id_kec: idKecamatan
                 },

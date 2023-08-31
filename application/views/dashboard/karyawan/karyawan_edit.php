@@ -628,7 +628,7 @@
                                                                                 <button id='" . $auth_m_per . "' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button>
                                                                                 <button id='" . $auth_m_per . "' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button>
                                                                            </td>
-                                                                           <td style="text-align:center;"><?= $data_izin->jenis_izin_tambang == "MP" ? "MINE PERMIT" : $data_izin->jenis_izin_tambang == "SP" ? "SIMPER" : "No Data" ?></td>
+                                                                           <td style="text-align:center;"><?= $data_izin->jenis_izin_tambang == "MP" ? "MINE PERMIT" : "SIMPER" ?></td>
                                                                            <td style="text-align:center;"><?= $data_izin->no_reg ?></td>
                                                                            <td style="text-align:center;"><?= $data_izin->tgl_expired ?></td>
                                                                       </tbody>
@@ -1250,7 +1250,6 @@
                                    <li><b>Terampil</b> : Operator</li>
                                    <li><b>Tidak terampil</b> : Tenaga informal, Pekerja harian lepas dan lain-lain</li>
                               </ul>
-
                          </div>
                     </div>
                </div>

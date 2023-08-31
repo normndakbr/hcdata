@@ -875,6 +875,7 @@
                                              sesi: sandibaru
                                         },
                                         success: function(data) {
+                                             console.log("Success POST on 'base_url('user/ganti_sandi')'");
                                              // alert(data);
                                              data = JSON.parse(data)
                                              if (data.statusCode == 200) {
