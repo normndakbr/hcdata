@@ -3152,6 +3152,7 @@ $(document).ready(function () {
     });
 
     $("#addSimpanPekerjaan").click(function () {
+        $.LoadingOverlay("show");
         let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_alamat = $(".150b3427b97bb43ac2fb3e5c687e384c").text();
@@ -3264,14 +3265,12 @@ $(document).ready(function () {
                 success: function (data) {
                     var data = JSON.parse(data);
                     if (data.statusCode == 200) {
-
                         if (auth_ver === "") {
                             $('.0c09efa8ccb5e0114e97df31736ce2e3').text(data.auth_person);
                             $('.150b3427b97bb43ac2fb3e5c687e384c').text(data.auth_alamat);
                             $(".9d56835ae6e4d20993874daf592f6aca").text(data.no_ktp);
                             $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text(data.no_kk);
                         }
-
                         $('.a6b73b5c154d3540919ddf46edf3b84e').text(data.auth_kary);
                         $(".c1492f38214db699dfd3574b2644271d").text(data.nik);
                         $(".asdas9asd").text(data.auth_kontrak);
@@ -3323,6 +3322,7 @@ $(document).ready(function () {
                     }
                 }
             });
+            $.LoadingOverlay("hide");
         } else {
             swal({
                 title: "Simpan Data",
@@ -3335,7 +3335,6 @@ $(document).ready(function () {
                 cancelButtonText: 'Batalkan'
             }).then(function (result) {
                 if (result.value) {
-                    // $.LoadingOverlay("show");
                     $.ajax({
                         type: "POST",
                         url: site_url + "karyawan/addkaryawan",
@@ -3452,6 +3451,7 @@ $(document).ready(function () {
                             }
                         }
                     });
+                    $.LoadingOverlay("hide");
                 }
             });
         }
@@ -3581,6 +3581,7 @@ $(document).ready(function () {
     });
 
     $("#addSimpanIzinUnit").click(function () {
+        $.LoadingOverlay("show");
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
         let auth_simpol = $(".j8234234b").text();
@@ -3590,6 +3591,7 @@ $(document).ready(function () {
         let jenissim = $("#addJenisSIM").val();
         let tglexpsim = $("#addTglExpSIM").val();
 
+        // append form data
         let formData = new FormData();
         formData.append('jenisizin', jenisizin);
         formData.append('noreg', noreg);
@@ -3609,6 +3611,7 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
+                console.log("Success POST on " + site_url + "karyawan/addsimper");
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     if (auth_izin == "") {
@@ -3626,19 +3629,23 @@ $(document).ready(function () {
                     $('.erroraddTglExpSIM').html('');
                     $('.errorFilesimpolisi').html('');
                     $('.erroraddTglExp').html('');
+                    $.LoadingOverlay("hide");
                 } else if (data.statusCode == 201) {
                     $(".errormsgizin").removeClass('d-none');
                     $(".errormsgizin").removeClass('alert-primary');
                     $(".errormsgizin").addClass('alert-danger');
                     $(".errormsgizin").html(data.pesan);
+                    $.LoadingOverlay("hide");
                 } else {
                     $(".erroraddJenisIzin").html(data.jenisizin);
                     $(".erroraddNoReg").html(data.noreg);
                     $(".erroraddTglExp").html(data.tglexp);
                     $(".erroraddJenisSIM").html(data.jenissim);
                     $(".erroraddTglExpSIM").html(data.tglexpsim);
+                    $.LoadingOverlay("hide");
                     swal("Error", "Tidak dapat melanjutkan, lengkapi data SIMPER/Mine Permit.", "error");
                 }
+                $.LoadingOverlay("hide");
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $.LoadingOverlay("hide");
@@ -3649,6 +3656,7 @@ $(document).ready(function () {
                 }
             }
         });
+        $.LoadingOverlay("hide");
 
         $(".errormsgizin").fadeTo(5000, 500).slideUp(500, function () {
             $(".errormsgizin").slideUp(500);
@@ -3758,6 +3766,7 @@ $(document).ready(function () {
     });
 
     $("#addLanjutSertifikasi").click(function () {
+        $.LoadingOverlay("show");
         $('#colPersonal').collapse("hide");
         $('#colKaryawan').collapse("hide");
         $('#colIzinTambang').collapse("hide");
@@ -3765,6 +3774,7 @@ $(document).ready(function () {
         $('#colMCU').collapse("show");
         $('#imgSertifikasi').removeClass("d-none");
         aktifMCU();
+        $.LoadingOverlay("hide");
     });
 
     $("#addbtnkembaliSertifikat").click(function () {
@@ -3853,6 +3863,7 @@ $(document).ready(function () {
     });
 
     $("#addLanjutMCU").click(function () {
+        $.LoadingOverlay("show");
         let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
         let auth_mcu = $(".90dea748042796037c02b4cf2b388b03").text();
 
@@ -3869,17 +3880,21 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
+                console.log("Success on POST " + site_url + "karyawan/cek_mcu");
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     $("#colVaksin").collapse("show");
                     $("#colMCU").collapse("hide");
                     aktifVaksin();
+                    $.LoadingOverlay("hide");
                 } else {
                     $(".errormsgmcu").removeClass('d-none');
                     $(".errormsgmcu").removeClass('alert-primary');
                     $(".errormsgmcu").addClass('alert-danger');
                     $(".errormsgmcu").html(data.pesan);
+                    $.LoadingOverlay("hide");
                 }
+                $.LoadingOverlay("hide");
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $.LoadingOverlay("hide");
@@ -3890,6 +3905,7 @@ $(document).ready(function () {
                 }
             }
         });
+        $.LoadingOverlay("hide");
 
         $(".errormsgmcu").fadeTo(5000, 500).slideUp(500, function () {
             $(".errormsgmcu").slideUp(500);
@@ -4080,6 +4096,7 @@ $(document).ready(function () {
     });
 
     $('#addUploadFileSelesai').click(function () {
+        $.LoadingOverlay("show");
         let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
@@ -4109,6 +4126,7 @@ $(document).ready(function () {
                         token: token,
                     },
                     success: function (data) {
+                        console.log("Success on POST" + site_url + "karyawan/cek_file");
                         var data = JSON.parse(data);
                         if (data.statusCode == 200) {
                             $.LoadingOverlay("hide");
@@ -4121,25 +4139,30 @@ $(document).ready(function () {
                                 confirmButtonText: 'Ok'
                             }).then(function (result) {
                                 if (result.value) {
+                                    $.LoadingOverlay("hide");
                                     $(".errorFilePendukung").html("");
                                     $("#fileUpload").val("");
                                     $('.noktpshow').val('');
                                     $('.namalengkapshow').val('');
                                     window.location.href = site_url + "karyawan/new";
                                 } else {
+                                    $.LoadingOverlay("hide");
                                     $(".errorFilePendukung").html("");
                                     $("#fileUpload").val("");
                                     $('.noktpshow').val('');
                                     $('.namalengkapshow').val('');
                                     window.location.href = site_url + "karyawan/new";
                                 }
+                                $.LoadingOverlay("hide");
                             });
                         } else if (data.statusCode == 201) {
+                            $.LoadingOverlay("hide");
                             $(".errmsgfilependukung").removeClass('d-none');
                             $(".errmsgfilependukung").removeClass('alert-primary');
                             $(".errmsgfilependukung").addClass('alert-danger');
                             $(".errmsgfilependukung").html(data.pesan);
                         }
+                        $.LoadingOverlay("hide");
                     },
                     error: function (xhr, ajaxOptions, thrownError) {
                         $.LoadingOverlay("hide");
@@ -4150,6 +4173,7 @@ $(document).ready(function () {
                         }
                     }
                 });
+                $.LoadingOverlay("hide");
 
                 $(".errmsgfilependukung").fadeTo(5000, 500).slideUp(500, function () {
                     $(".errmsgfilependukung").slideUp(500);
