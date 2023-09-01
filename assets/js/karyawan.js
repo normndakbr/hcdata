@@ -2975,6 +2975,7 @@ $(document).ready(function () {
     function lanjutpersonal() {
         $(".btnlanjutpersonal").append('<a id="addSimpanPersonal" data-scroll href="#clKaryawan" class="btn btn-primary font-weight-bold ml-1">Lanjutkan</a>');
         $("#addSimpanPersonal").click(function () {
+            $.LoadingOverlay("show");
             let auth_per = $("#addPerKary").val();
             let noktp_old = $(".9d56835ae6e4d20993874daf592f6aca").text();
             let nokk_old = $(".9100fd1e98da52ac823c5fdc6d3e4ff1").text();
@@ -3021,7 +3022,7 @@ $(document).ready(function () {
                     id_kab: id_kab,
                     id_kec: id_kec,
                     id_kel: id_kel,
-                    tmp_lahir: tmp_lahir,
+                    tmp_lahir: tmp_lahir.toUppercase(),
                     tgl_lahir: tgl_lahir,
                     email: email,
                     notelp: notelp,
@@ -3077,6 +3078,7 @@ $(document).ready(function () {
                         swal("Error", data.pesan, "error");
                         window.scrollTo(0, 0);
                     }
+                    $.LoadingOverlay("hide");
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
                     $.LoadingOverlay("hide");
