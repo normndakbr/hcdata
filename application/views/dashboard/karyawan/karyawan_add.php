@@ -226,7 +226,7 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="tempatLahir">Tempat Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='tempatLahir' name='tempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
+                                                                 <input style="text-transform:uppercase" id='tempatLahir' name='tempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required disabled>
                                                                  <small class="errorTempatLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
