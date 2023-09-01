@@ -827,7 +827,7 @@
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div>
-                                                                 <h6 class="text-danger font-italic">Catatan : Upload file MCU dalam format pdf, ukuran file MCUf maksimal 200 kb.</h6>
+                                                                 <h6 class="text-danger font-italic">Catatan : Upload file MCU dalam format pdf, ukuran file MCU maksimal 200 kb.</h6>
                                                             </div>
                                                             <div class="form-group">
                                                                  <label for="fileMCU">Upload file MCU :</label>
