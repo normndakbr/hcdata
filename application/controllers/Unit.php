@@ -115,8 +115,8 @@ class Unit extends My_Controller
                     echo json_encode($error);
                     return;
                } else {
-                    $kode_unit = htmlspecialchars($this->input->post("kode_unit", true));
-                    $unit = htmlspecialchars($this->input->post("unit", true));
+                    $kode_unit = strtoupper(htmlspecialchars($this->input->post("kode_unit", true)));
+                    $unit = strtoupper(htmlspecialchars($this->input->post("unit", true)));
                     $ket_unit = htmlspecialchars($this->input->post("ket"));
 
                     $cekkodeunit = $this->unt->cek_kode_unit($kode_unit);
@@ -252,8 +252,8 @@ class Unit extends My_Controller
                          return;
                     }
 
-                    $kode_unit = htmlspecialchars($this->input->post("kode_unit", true));
-                    $unit = htmlspecialchars($this->input->post("unit", true));
+                    $kode_unit = strtoupper(htmlspecialchars($this->input->post("kode_unit", true)));
+                    $unit = strtoupper(htmlspecialchars($this->input->post("unit", true)));
                     $ket_unit = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
                          $status = "T";

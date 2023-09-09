@@ -161,7 +161,7 @@ class Posisi extends My_Controller
                } else {
                     $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
                     $auth_depart = htmlspecialchars($this->input->post("depart", true));
-                    $posisi = htmlspecialchars($this->input->post("posisi", true));
+                    $posisi = strtoupper(htmlspecialchars($this->input->post("posisi", true)));
                     $ket_posisi = htmlspecialchars($this->input->post("ket"));
                     $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
@@ -331,7 +331,7 @@ class Posisi extends My_Controller
                          return;
                     }
 
-                    $posisi = htmlspecialchars($this->input->post("posisi", true));
+                    $posisi = strtoupper(htmlspecialchars($this->input->post("posisi", true)));
                     $depart = htmlspecialchars($this->input->post("depart", true));
                     $ket_posisi = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {

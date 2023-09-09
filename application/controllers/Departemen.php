@@ -170,8 +170,8 @@ class Departemen extends My_Controller
                     $valid_token = $this->session->csrf_token;
                     $email = $this->session->email_hcdata;
                     $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-                    $kd_depart = strip_tags($this->input->post("kode", true));
-                    $depart = strip_tags($this->input->post("depart", true));
+                    $kd_depart = strtoupper(strip_tags($this->input->post("kode", true)));
+                    $depart = strtoupper(strip_tags($this->input->post("depart", true)));
                     $ket_depart = strip_tags($this->input->post("ket"));
                     $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
@@ -340,8 +340,8 @@ class Departemen extends My_Controller
                          return;
                     }
 
-                    $kd_depart = strip_tags($this->input->post("kode", true));
-                    $depart = strip_tags($this->input->post("depart", true));
+                    $kd_depart = strtoupper(strip_tags($this->input->post("kode", true)));
+                    $depart = strtoupper(strip_tags($this->input->post("depart", true)));
                     $ket_depart = strip_tags($this->input->post("ket", true));
 
                     if (strip_tags($this->input->post("status", true)) == "AKTIF") {

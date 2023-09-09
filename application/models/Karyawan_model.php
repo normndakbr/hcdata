@@ -1138,4 +1138,16 @@ class Karyawan_model extends CI_Model
             return false;
         }
     }
+
+    public function read_all_data($query)
+    {
+        $result = $this->db->query($query);
+        return $result->result_array();
+    }
+    
+    public function read_data_by_id($query)
+    {
+        $result = $this->db->query($query);
+        return $result->row_array();
+    }
 }

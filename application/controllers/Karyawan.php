@@ -696,7 +696,7 @@ class Karyawan extends My_Controller
                          'nama_lengkap' => $nama,
                          'nama_alias' => '',
                          'jk' => $jk,
-                         'tmp_lahir' => $tmp_lahir,
+                         'tmp_lahir' => strtoupper($tmp_lahir),
                          'tgl_lahir' => $tgl_lahir,
                          'id_stat_nikah' => $stat_nikah,
                          'id_agama' => $id_agama,
@@ -831,7 +831,7 @@ class Karyawan extends My_Controller
                                    'id_poh' => $id_poh,
                                    'id_klasifikasi' => $id_klasifikasi,
                                    'id_tipe' => $id_tipe,
-                                   'stat_tinggal' => $stat_tinggal,
+                                   'id_stat_tinggal' => $stat_tinggal,
                                    'email_kantor' => $email_kantor,
                                    'tgl_permanen' => $tgl_permanen,
                                    'id_stat_perjanjian' => $stat_kerja,
@@ -2154,7 +2154,7 @@ class Karyawan extends My_Controller
                $output = "<option value=''>-- PILIH PERNIKAHAN --</option>";
                $output = $output . "<option value='0'>-- WAJIB DIPILIH --</option>";
                foreach ($list as $stt) {
-                    $output = $output . "<option value=" . $stt->id_stat_nikah . ">" . $stt->kode_stat_nikah . "</option>";
+                    $output = $output . "<option value=" . $stt->id_stat_nikah . ">" . $stt->stat_nikah . "</option>";
                }
           } else {
                $output = "<option value=''>-- Status pernikahan tidak ditemukan --</option>";

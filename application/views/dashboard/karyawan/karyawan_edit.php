@@ -60,59 +60,58 @@
                                    </div>
                               </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
-                              <input id="editTglBuat" class="d-none" value="<?= $data_kary->tgl_buat ?>"></input>
-                              <input id="editTglEdit" class="d-none" value="<?= date("Y-m-d H:i:s"); ?>"></input>
-                              <input id="currentNoKTP" class="d-none" value=""></input>
-                              <input id="currentNoKK" class="d-none" value=""></input>
                               <input id="idUser" class="d-none" value="<?= $this->session->userdata("id_menu") ?>"></input>
-                              <input id="valueIDKaryawan" class="d-none" value="<?= $data_kary->id_kary ?>"></input>
+                              <input id="editTglEdit" class="d-none" value="<?= date("Y-m-d H:i:s"); ?>"></input>
+                              <input id="editTglBuat" class="d-none" value="<?= isset($data_kary->tgl_buat) ? $data_kary->tgl_buat : '-' ?>"></input>
+                              <input id="valueIDKaryawan" class="d-none" value="<?= isset($data_kary->id_kary) ? $data_kary->id_kary : '-' ?>"></input>
 
                               <!-- Auth -->
-                              <input id="valueAuthPersonal" class="d-none" value="<?= $data_kary->auth_personal ?>"></input>
-                              <input id="valueAuthKaryawan" class="d-none" value="<?= $data_kary->auth_karyawan ?>"></input>
-                              <input id="valueAuthPerusahaan" class="d-none" value="<?= $data_kary->auth_perusahaan ?>"></input>
-                              <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
+                              <input id="valueAuthPerusahaan" class="d-none" value="<?= isset($data_kary->auth_perusahaan) ? $data_kary->auth_perusahaan : '-' ?>"></input>
+                              <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= isset($data_kary->auth_m_perusahaan) ? $data_kary->auth_m_perusahaan : '-' ?>"></input>
+                              <input id="valueAuthPersonal" class="d-none" value="<?= isset($data_kary->auth_personal) ? $data_kary->auth_personal : '-' ?>"></input>
+                              <input id="valueAuthKaryawan" class="d-none" value="<?= isset($data_kary->auth_karyawan) ? $data_kary->auth_karyawan : '-' ?>"></input>
+                              <input id="valueAuthIzin" class="d-none" value="<?= isset($data_izin->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
 
                               <!-- Data Personal -->
-                              <input id="editIdPersonal" class="d-none" value="<?= $data_kary->id_personal ?>"></input>
-                              <input id="valueNoKTPOld" class="d-none" value="<?= $data_kary->no_ktp ?>"></input>
-                              <input id="valueNoKKOld" class="d-none" value="<?= $data_kary->no_kk ?>"></input>
-                              <input id="valueJenisKelamin" class="d-none" value="<?= $data_kary->jk ?>"></input>
-                              <input id="valueWargaNegara" class="d-none" value="<?= $data_kary->warga_negara ?>"></input>
-                              <input id="valueAgama" class="d-none" value="<?= $data_kary->id_agama ?>"></input>
-                              <input id="valueStatNikah" class="d-none" value="<?= $data_kary->id_stat_nikah ?>"></input>
-                              <input id="valueStatPendidikan" class="d-none" value="<?= $data_kary->id_pendidikan ?>"></input>
+                              <input id="editIdPersonal" class="d-none" value="<?= isset($data_kary->id_personal) ? $data_kary->id_personal : '-' ?>"></input>
+                              <input id="valueNoKTPOld" class="d-none" value="<?= isset($data_kary->no_ktp) ? $data_kary->no_ktp : '-' ?>"></input>
+                              <input id="valueNoKKOld" class="d-none" value="<?= isset($data_kary->no_kk) ? $data_kary->no_kk : '-' ?>"></input>
+                              <input id="valueJenisKelamin" class="d-none" value="<?= isset($data_kary->jk) ? $data_kary->jk : '-' ?>"></input>
+                              <input id="valueWargaNegara" class="d-none" value="<?= isset($data_kary->warga_negara) ? $data_kary->warga_negara : '-' ?>"></input>
+                              <input id="valueAgama" class="d-none" value="<?= isset($data_kary->id_agama) ? $data_kary->id_agama : '-' ?>"></input>
+                              <input id="valueStatNikah" class="d-none" value="<?= isset($data_kary->id_stat_nikah) ? $data_kary->id_stat_nikah : '-' ?>"></input>
+                              <input id="valueStatPendidikan" class="d-none" value="<?= isset($data_kary->id_pendidikan) ? $data_kary->id_pendidikan : ''  ?>"></input>
 
                               <!-- Data Alamat -->
-                              <input id="valueIdAlamatKTP" class="d-none" value="<?= $data_alamat->id_alamat_ktp ?>"></input>
-                              <input id="alamat_ktp" class="d-none" value="<?= $data_alamat->alamat_ktp ?>"></input>
-                              <input id="valueProvinsi" class="d-none" value="<?= $data_alamat->prov_ktp ?>"></input>
-                              <input id="valueKabupaten" class="d-none" value="<?= $data_alamat->kab_ktp ?>"></input>
-                              <input id="valueKecamatan" class="d-none" value="<?= $data_alamat->kec_ktp ?>"></input>
-                              <input id="valueKelurahan" class="d-none" value="<?= $data_alamat->kel_ktp ?>"></input>
+                              <input id="valueIdAlamatKTP" class="d-none" value="<?= isset($data_alamat->id_alamat_ktp) ? $data_alamat->id_alamat_ktp : '-' ?>"></input>
+                              <input id="alamat_ktp" class="d-none" value="<?= isset($data_alamat->alamat_ktp) ? $data_alamat->alamat_ktp : '-' ?>"></input>
+                              <input id="valueProvinsi" class="d-none" value="<?= isset($data_alamat->prov_ktp) ? $data_alamat->prov_ktp : '' ?>"></input>
+                              <input id="valueKabupaten" class="d-none" value="<?= isset($data_alamat->kab_ktp) ? $data_alamat->kab_ktp : '-' ?>"></input>
+                              <input id="valueKecamatan" class="d-none" value="<?= isset($data_alamat->kec_ktp) ? $data_alamat->kec_ktp : '-' ?>"></input>
+                              <input id="valueKelurahan" class="d-none" value="<?= isset($data_alamat->kel_ktp) ? $data_alamat->kel_ktp : '-' ?>"></input>
 
                               <!-- Data Karyawan -->
-                              <input id="valuePerusahaan" class="d-none" value="<?= $data_kary->auth_m_perusahaan ?>"></input>
-                              <input id="valueDepart" class="d-none" value="<?= $data_kary->id_depart ?>"></input>
-                              <input id="valuePosisi" class="d-none" value="<?= $data_kary->id_posisi ?>"></input>
-                              <input id="valueKlasifikasi" class="d-none" value="<?= $data_kary->id_klasifikasi ?>"></input>
-                              <input id="valueTipe" class="d-none" value="<?= $data_kary->id_tipe ?>"></input>
-                              <input id="valueLevel" class="d-none" value="<?= $data_kary->id_level ?>"></input>
-                              <input id="valuePOH" class="d-none" value="<?= $data_kary->id_poh ?>"></input>
-                              <input id="valueLokterima" class="d-none" value="<?= $data_kary->id_lokterima ?>"></input>
-                              <input id="valueLokker" class="d-none" value="<?= $data_kary->id_lokker ?>"></input>
-                              <input id="valueStatTinggal" class="d-none" value="<?= $data_kary->stat_tinggal ?>"></input>
-                              <input id="valueIDStatTinggal" class="d-none" value="<?= $data_kary->id_stat_tinggal ?>"></input>
-                              <input id="valueStatPerjanjian" class="d-none" value="<?= $data_kontrak->id_stat_perjanjian ?>"></input>
-                              <input id="valueKontrakKary" class="d-none" value="<?= $data_kontrak->auth_kontrak_kary ?>"></input>
+                              <input id="valuePerusahaan" class="d-none" value="<?= isset($data_kary->auth_m_perusahaan) ? $data_kary->auth_m_perusahaan : '-' ?>"></input>
+                              <input id="valueDepart" class="d-none" value="<?= isset($data_kary->id_depart) ? $data_kary->id_depart : '-' ?>"></input>
+                              <input id="valuePosisi" class="d-none" value="<?= isset($data_kary->id_posisi) ? $data_kary->id_posisi : '-' ?>"></input>
+                              <input id="valueKlasifikasi" class="d-none" value="<?= isset($data_kary->id_klasifikasi) ? $data_kary->id_klasifikasi : '' ?>"></input>
+                              <input id="valueTipe" class="d-none" value="<?= isset($data_kary->id_tipe) ? $data_kary->id_tipe : '-' ?>"></input>
+                              <input id="valueLevel" class="d-none" value="<?= isset($data_kary->id_level) ? $data_kary->id_level : '-' ?>"></input>
+                              <input id="valuePOH" class="d-none" value="<?= isset($data_kary->id_poh) ? $data_kary->id_poh : '-' ?>"></input>
+                              <input id="valueLokterima" class="d-none" value="<?= isset($data_kary->id_lokterima) ? $data_kary->id_lokterima : '-' ?>"></input>
+                              <input id="valueLokker" class="d-none" value="<?= isset($data_kary->id_lokker) ? $data_kary->id_lokker : '-' ?>"></input>
+                              <input id="valueStatTinggal" class="d-none" value="<?= isset($data_kary->stat_tinggal) ? $data_kary->stat_tinggal : '-' ?>"></input>
+                              <input id="valueIDStatTinggal" class="d-none" value="<?= isset($data_kary->id_stat_tinggal) ? $data_kary->id_stat_tinggal : '' ?>"></input>
+                              <input id="valueStatPerjanjian" class="d-none" value="<?= isset($data_kontrak->id_stat_perjanjian) ? $data_kontrak->id_stat_perjanjian : '' ?>"></input>
+                              <input id="valueKontrakKary" class="d-none" value="<?= isset($data_kontrak->auth_kontrak_kary) ? $data_kontrak->auth_kontrak_kary : '-' ?>"></input>
 
                               <!-- data SIMPER/Mine Permit -->
-                              <input id="valueJenisIzinTambang" class="d-none" value="<?= !$data_izin->jenis_izin_tambang ? "" : $data_izin->jenis_izin_tambang ?>"></input>
-                              <input id="valueNoRegIzin" class="d-none" value="<?= !$data_izin->no_reg ? "" : $data_izin->no_reg ?>"></input>
-                              <input id="valueTglExpired" class="d-none" value="<?= !$data_izin->tgl_expired ? "" : $data_izin->tgl_expired ?>"></input>
-                              <input id="valueIDSim" class="d-none" value="<?= !$data_izin->id_sim ? "" : $data_izin->id_sim ?>"></input>
-                              <input id="valueSim" class="d-none" value="<?= !$data_izin->sim ? "" : $data_izin->sim ?>"></input>
-                              <input id="valueTglExpiredSimKary" class="d-none" value="<?= !$data_sim_kary ? "" : $data_sim_kary->tgl_exp ?>"></input>
+                              <input id="valueJenisIzinTambang" class="d-none" value="<?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang : '-' ?>"></input>
+                              <input id="valueNoRegIzin" class="d-none" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>"></input>
+                              <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
+                              <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
+                              <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
+                              <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
 
                               <div class="row pt-2">
                                    <?php
@@ -280,7 +279,7 @@
                                                        <div class="col-lg-6 col-md-6 col-sm-12">
                                                             <div class="form-group">
                                                                  <label for="editTempatLahir">Tempat Lahir <span class="text-danger">*</span></label>
-                                                                 <input id='editTempatLahir' name='editTempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= $data_kary->tmp_lahir ?>" required>
+                                                                 <input id='editTempatLahir' name='editTempatLahir' type="text" autocomplete="off" spellcheck="false" class="form-control" value="<?= isset($data_kary->tmp_lahir) ? $data_kary->tmp_lahir : '' ?>" required>
                                                                  <small class="errorEditTempatLahir text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
@@ -392,7 +391,6 @@
                                                                  <label for="editNIKKary">Nomor Register Pokok (NRP) <span class="text-danger">*</span></label>
                                                                  <input id="editNIKKary" name="editNIK" type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="<?= $data_kary->no_nik ?>">
                                                                  <small class="errorEditNIKKary text-danger font-italic font-weight-bold"></small>
-                                                                 <!-- <span class="a6b73b5c154d3540919ddf46edf3b84e d-none"></span> -->
                                                             </div>
                                                        </div>
                                                        <div class="col-lg-5 col-md-12 col-sm-12">
@@ -561,21 +559,21 @@
                                                        <div id="editFieldPermanen" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalPermanen">Tanggal Permanen <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalPermanen' name='editTanggalPermanen' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;">
+                                                                 <input id='editTanggalPermanen' name='editTanggalPermanen' type="date" class="form-control" value="<?= isset($data_kontrak->tgl_mulai) ? $data_kontrak->tgl_mulai : '' ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalPermanen text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
                                                        <div id="editFieldKontrakAwal" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalKontrakAwal">Tanggal Awal <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalKontrakAwal' name='editTanggalKontrakAwal' type="date" class="form-control" value="<?= $data_kontrak->tgl_mulai ?>" style="background-color:transparent;">
+                                                                 <input id='editTanggalKontrakAwal' name='editTanggalKontrakAwal' type="date" class="form-control" value="<?= isset($data_kontrak->tgl_mulai) ? $data_kontrak->tgl_mulai : '' ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalKontrakAwal text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
                                                        <div id="editFieldKontrakAkhir" class="col-lg-4 col-md-4 col-sm-12 d-none">
                                                             <div class="form-group">
                                                                  <label for="editTanggalKontrakAkhir">Tanggal Berakhir <span class="text-danger">*</span></label>
-                                                                 <input id='editTanggalKontrakAkhir' name='editTanggalKontrakAkhir' type="date" class="form-control" value="<?= $data_kontrak->tgl_akhir ?>" style="background-color:transparent;">
+                                                                 <input id='editTanggalKontrakAkhir' name='editTanggalKontrakAkhir' type="date" class="form-control" value="<?= isset($data_kontrak->tgl_akhir) ? $data_kontrak->tgl_akhir : '' ?>" style="background-color:transparent;">
                                                                  <small class="errorEditTanggalKontrakAkhir text-danger font-italic font-weight-bold" style="font-size:13px;"></small>
                                                             </div>
                                                        </div>
@@ -597,7 +595,7 @@
                                              <div class="card card-body">
                                                   <div class="card-body row mt-3">
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <div class="alert alert-danger errormsgizin animate__animated animate__bounce d-none"></div>
+                                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none"></div>
                                                        </div>
                                                        <div class="col-lg-4 col-md-4 col-sm-12">
                                                             <div class="form-group">
@@ -611,33 +609,96 @@
                                                                  <input id='namalengkapshow' name='namalengkapshow' autocomplete="off" spellcheck="false" class="namalengkapshow form-control bg-white" value="<?= $data_kary->nama_lengkap ?>" disabled>
                                                             </div>
                                                        </div>
-                                                       <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <div class="table-responsive my-4">
-                                                                 <table id="tbmStruktur" class="table table-striped table-bordered table-hover text-black" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                                      <thead>
-                                                                           <tr class="font-weight-bold text-white">
-                                                                                <th style="text-align:center;">AKSI</th>
-                                                                                <th style="text-align:center;">JENIS IZIN</th>
-                                                                                <th style="text-align:center;">NO. REGISTRASI</th>
-                                                                                <th style="text-align:center;">TANGGAL EXPIRED IZIN</th>
-                                                                           </tr>
-                                                                      </thead>
-                                                                      <tbody>
-                                                                           <td style="text-align:center;">
-                                                                                <button type='button' class='btn btn-primary btn-sm btnDetailIzinKaryawan' aria-haspopup='true' title='Aksi' aria-expanded='false'> ... </button>
-                                                                                <button id='" . $auth_m_per . "' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button>
-                                                                                <button id='" . $auth_m_per . "' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button>
-                                                                           </td>
-                                                                           <td style="text-align:center;"><?= $data_izin->jenis_izin_tambang == "MP" ? "MINE PERMIT" : "SIMPER" ?></td>
-                                                                           <td style="text-align:center;"><?= $data_izin->no_reg ?></td>
-                                                                           <td style="text-align:center;"><?= $data_izin->tgl_expired ?></td>
-                                                                      </tbody>
-                                                                 </table>
+
+                                                       <div class="card-body row">
+                                                            <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <label for="jenisIzin"> Jenis Izin <span class="text-danger">*</span></label>
+                                                                      <select id='editJenisIzin' name='editJenisIzin' class="form-control form-control-user">
+                                                                           <option value="">-- WAJIB DIPILIH --</option>
+                                                                           <option value="SP">SIMPER</option>
+                                                                           <option value="MP">MINE PERMIT</option>
+                                                                      </select>
+                                                                      <small class="errorEditJenisIzin text-danger font-italic font-weight-bold"></small>
+                                                                      <span class="ecb14fe704e08d9df8e343030bbbafcb d-none"></span>
+                                                                 </div>
                                                             </div>
+                                                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <label for="editNoReg">No. Registrasi <span class="text-danger">*</span></label>
+                                                                      <input id="editNoReg" name="editNoReg" type="text" class="form-control form-control-user" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>">
+                                                                      <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="col-lg-2 col-md-2 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <label for="editTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
+                                                                      <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>">
+                                                                      <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
+                                                                 </div>
+                                                            </div>
+
+                                                            <?php if (isset($data_izin->jenis_izin_tambang) == "SP") { ?>
+                                                                 <div class="col-lg-4 col-md-4 col-sm-12">
+                                                                      <div class="form-group">
+                                                                           <label for="editTglExp">Jenis SIM <span class="text-danger">*</span></label>
+                                                                           <!-- <input type="text" class="form-control" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled> -->
+                                                                           <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
+                                                                                <option value="">-- TIDAK ADA DATA --</option>
+                                                                           </select>
+                                                                           <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
+                                                                      </div>
+                                                                 </div>
+                                                                 <div class="col-lg-2 col-md-2 col-sm-12">
+                                                                      <div class="form-group">
+                                                                           <label for="editTglExp">Tanggal Expired SIM <span class="text-danger">*</span></label>
+                                                                           <input id='editTglExpSim' name='editTglExpSim' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '-' ?>">
+                                                                           <small class="errorEditTglExpSim text-danger font-italic font-weight-bold"></small>
+                                                                      </div>
+                                                                 </div>
+                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                                      <div class="form-group">
+                                                                           <h5 class="mb-3">Unit yang diizinkan</h5>
+                                                                           <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                                <thead>
+                                                                                     <tr>
+                                                                                          <th style="text-align:center; width: 1%;">No.</th>
+                                                                                          <th style="text-align:center; width: 80%;">Unit</th>
+                                                                                          <th style="text-align:center; width: 19%;">Akses</th>
+                                                                                          <th style="text-align:center; width: 19%;">Aksi</th>
+                                                                                     </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                     <?php
+                                                                                     $no = 1;
+                                                                                     if (!empty($data_unit)) {
+                                                                                          foreach ($data_unit as $list) {
+                                                                                               echo '<tr>';
+                                                                                               echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                               echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
+                                                                                               echo '<td class="align-middle" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
+                                                                                               echo "<td>";
+                                                                                               echo "<button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
+                                                                                               echo "<button id='' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button> ";
+                                                                                               echo "</td>";
+                                                                                               echo '</tr>';
+                                                                                          }
+                                                                                     } else {
+                                                                                          echo '<tr>';
+                                                                                          echo '<td colspan=3 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                          echo '</tr>';
+                                                                                     }
+                                                                                     ?>
+                                                                                </tbody>
+                                                                           </table>
+                                                                      </div>
+                                                                 </div>
+                                                            <?php } ?>
                                                        </div>
+
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                            <a id="editKembaliIzinUnit" data-scroll href="#clKaryawan" class="btn btn-warning font-weight-bold disabled">Kembali</a>
-                                                            <a id="editSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold disabled" style="margin-left:30px;">Lanjutkan</a>
+                                                            <a id="editTambahUnit" data-scroll href="#clSertifikasi" class="btn btn-success font-weight-bold" style="margin-left:30px;">Tambah Data Unit</a>
+                                                            <a id="editSimpanIzinUnit" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold" style="margin-left:30px;">Simpan Data</a>
                                                        </div>
                                                   </div>
                                              </div>
@@ -990,43 +1051,7 @@
           </div>
      </div>
 </div>
-<div class="modal fade" id="mdlunitsimper" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
-          <div class="modal-content">
-               <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Tambah Unit SIMPER</h5>
-               </div>
 
-               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                         <div class="col-lg-12">
-                              <div class="alert errormdlsimper alert-danger animate__animated animate__bounce d-none" role="alert"></div>
-                              <div class="row p-2">
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="jenisUnitSimper">Unit :</label><br>
-                                        <select id='jenisUnitSimper' class="form-control form-control-user" required>
-                                             <option value="">-- WAJIB DIPILIH --</option>
-                                        </select>
-                                        <small class="errorjenisUnitSimper text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-6 col-md-6 col-sm-12">
-                                        <label for="tipeAksesUnit">Izin Akses Unit :</label><br>
-                                        <select id='tipeAksesUnit' class="form-control form-control-user" required>
-                                             <option value="">-- WAJIB DIPILIH --</option>
-                                        </select>
-                                        <small class="errortipeAksesUnit text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                              </div>
-                         </div>
-                    </div>
-               </div>
-               <div class="modal-footer m-3">
-                    <button type="button" name="btnsimpanunitsimper" id="btnsimpanunitsimper" class="btn font-weight-bold btn-primary">Simpan Data</button>
-                    <button name="btnbatalunitsimper" id="btnbatalunitsimper" data-dismiss="modal" class="btn font-weight-bold btn-warning">Selesai</button>
-               </div>
-          </div>
-     </div>
-</div>
 <div class="modal fade" id="mdleditsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">

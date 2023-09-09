@@ -116,8 +116,8 @@ class Poh extends My_Controller
                     echo json_encode($error);
                     return;
                } else {
-                    $kd_poh = htmlspecialchars($this->input->post("kode", true));
-                    $poh = htmlspecialchars($this->input->post("poh", true));
+                    $kd_poh = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $poh = strtoupper(htmlspecialchars($this->input->post("poh", true)));
                     $ket_poh = htmlspecialchars($this->input->post("ket", true));
 
                     $cekkode = $this->pho->cek_kode($kd_poh);
@@ -255,8 +255,8 @@ class Poh extends My_Controller
                          return;
                     }
 
-                    $kd_poh = htmlspecialchars($this->input->post("kode", true));
-                    $poh = htmlspecialchars($this->input->post("poh", true));
+                    $kd_poh = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $poh = strtoupper(htmlspecialchars($this->input->post("poh", true)));
                     $ket_poh = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
                          $status = "T";

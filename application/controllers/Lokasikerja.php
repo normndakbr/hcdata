@@ -114,8 +114,8 @@ class Lokasikerja extends My_Controller
                     echo json_encode($error);
                     return;
                } else {
-                    $kd_lokker = htmlspecialchars($this->input->post("kode", true));
-                    $lokker = htmlspecialchars($this->input->post("lokker", true));
+                    $kd_lokker = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $lokker = strtoupper(htmlspecialchars($this->input->post("lokker", true)));
                     $ket_lokker = htmlspecialchars($this->input->post("ket"));
 
                     $cekkode = $this->lkr->cek_kode($kd_lokker);
@@ -252,8 +252,8 @@ class Lokasikerja extends My_Controller
                          return;
                     }
 
-                    $kd_lokker = htmlspecialchars($this->input->post("kode", true));
-                    $lokker = htmlspecialchars($this->input->post("lokker", true));
+                    $kd_lokker = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $lokker = strtoupper(htmlspecialchars($this->input->post("lokker", true)));
                     $ket_lokker = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
                          $status = "T";
