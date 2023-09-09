@@ -152,8 +152,8 @@ class Level extends My_Controller
                     return;
                } else {
                     $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-                    $kd_level = htmlspecialchars($this->input->post("kode", true));
-                    $level = htmlspecialchars($this->input->post("level", true));
+                    $kd_level = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $level = strtoupper(htmlspecialchars($this->input->post("level", true)));
                     $ket_level = htmlspecialchars($this->input->post("ket", true));
                     $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
 
@@ -306,8 +306,8 @@ class Level extends My_Controller
                          return;
                     }
 
-                    $kd_level = htmlspecialchars($this->input->post("kode", true));
-                    $level = htmlspecialchars($this->input->post("level", true));
+                    $kd_level = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+                    $level = strtoupper(htmlspecialchars($this->input->post("level", true)));
                     $ket_level = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
                          $status = "T";
@@ -357,6 +357,34 @@ class Level extends My_Controller
                }
           }
      }
+
+     public function get_all_m()
+     {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $cekauth = $this->cek_auth($auth);
+
+          if ($cekauth == 501) {
+               echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+          } else {
+
+               $auth = htmlspecialchars($this->input->post("token", true));
+               $this->cek_auth($auth);
+
+               $auth_m_per = htmlspecialchars($this->input->post('auth_per', true));
+               $query = $this->lvl->get_all_m($auth_m_per);
+               $output = "<option value=''>-- PILIH LEVEL --</option>";
+               if (!empty($query)) {
+                    foreach ($query as $list) {
+                         $output = $output . "<option value='" . $list->auth_level . "'>" . $list->level . "</option>";
+                    }
+                    echo json_encode(array("statusCode" => 200, "lvl" => $output));
+               } else {
+                    $output = "<option value=''>-- LEVEL TIDAK DITEMUKAN --</option>";
+                    echo json_encode(array("statusCode" => 201, "lvl" => $output));
+               }
+          }
+     }
+
 
      public function get_by_authper()
      {

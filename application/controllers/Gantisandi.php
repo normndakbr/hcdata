@@ -11,7 +11,6 @@ class Gantisandi extends My_Controller
 
      public function index()
      {
-
           $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama_hcdata");

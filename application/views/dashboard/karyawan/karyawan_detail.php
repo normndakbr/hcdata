@@ -242,7 +242,7 @@
                                                                  <input type="text" class="form-control" value="<?= isset($data_kontrak->stat_perjanjian) ? $data_kontrak->stat_perjanjian : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                             </div>
                                                        </div>
-                                                       <?php if ($data_kontrak->stat_waktu == "T") { ?>
+                                                       <?php if (isset($data_kontrak->stat_waktu) == "T") { ?>
                                                             <div class="col-lg-3 col-md-3 col-sm-12">
                                                                  <div class="form-group">
                                                                       <h6>Tanggal Awal</h6>
@@ -255,7 +255,7 @@
                                                                       <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
                                                                  </div>
                                                             </div>
-                                                       <?php } else { ?>
+                                                       <?php } else if (isset($data_kontrak->stat_waktu) == "F") { ?>
                                                             <div class="col-lg-3 col-md-3 col-sm-12">
                                                                  <div class="form-group">
                                                                       <h6>Tanggal <?php echo $data_kontrak->stat_perjanjian ?></h6>

@@ -109,7 +109,7 @@ class Tipe extends My_Controller
                     echo json_encode($error);
                     return;
                } else {
-                    $tipe = htmlspecialchars($this->input->post("tipe", true));
+                    $tipe = strtoupper(htmlspecialchars($this->input->post("tipe", true)));
                     $ket_tipe = htmlspecialchars($this->input->post("ket", true));
 
                     $cektipe = $this->tpe->cek_tipe($tipe);
@@ -231,7 +231,7 @@ class Tipe extends My_Controller
                          return;
                     }
 
-                    $tipe = htmlspecialchars($this->input->post("tipe", true));
+                    $tipe = strtoupper(htmlspecialchars($this->input->post("tipe", true)));
                     $ket_tipe = htmlspecialchars($this->input->post("ket", true));
                     if (htmlspecialchars($this->input->post("status", true)) == "AKTIF") {
                          $status = "T";

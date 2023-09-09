@@ -3022,7 +3022,7 @@ $(document).ready(function () {
                     id_kab: id_kab,
                     id_kec: id_kec,
                     id_kel: id_kel,
-                    tmp_lahir: tmp_lahir.toUppercase(),
+                    tmp_lahir: tmp_lahir,
                     tgl_lahir: tgl_lahir,
                     email: email,
                     notelp: notelp,
@@ -3049,8 +3049,10 @@ $(document).ready(function () {
                         $('.noktpshow').val(noktp);
                         $('.namalengkapshow').val(nama);
                         $(".89kjm78ujki782m4x787909h3").text(cek_log);
+                        $.LoadingOverlay("hide");
                         aktifKaryawan();
                     } else if (data.statusCode == 201) {
+                        $.LoadingOverlay("hide");
                         swal("Error", data.pesan, "error");
                     } else {
                         $(".errorNoKTP").html(data.noktp);
@@ -3077,6 +3079,7 @@ $(document).ready(function () {
                         $(".errorPendidikanAkhir").html(data.pddakhir);
                         swal("Error", data.pesan, "error");
                         window.scrollTo(0, 0);
+                        $.LoadingOverlay("hide");
                     }
                     $.LoadingOverlay("hide");
                 },
@@ -4201,7 +4204,6 @@ $(document).ready(function () {
                 $(".errmsgfilependukung").addClass("d-none");
                 $(".errmsgfilependukung").html('');
             });
-
             return;
         }
 

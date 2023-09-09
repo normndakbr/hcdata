@@ -92,7 +92,7 @@ class Izin_tambang extends My_Controller
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
                $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
                $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
-               $auth_simpol = htmlspecialchars($this->input->post("auth_simpol", true));
+               // $auth_simpol = htmlspecialchars($this->input->post("auth_simpol", true));
                $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
                $noreg = htmlspecialchars($this->input->post("noreg", true));
                $tglexp = htmlspecialchars($this->input->post("tglexp", true));
