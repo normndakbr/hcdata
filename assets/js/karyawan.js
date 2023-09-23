@@ -860,7 +860,9 @@ $(document).ready(function () {
         $("#tipeAksesUnit").val('').trigger("change");
         $("#mdlunitsimper").modal("hide");
     });
+
     $("#btnsimpanunitsimper").click(function () {
+        console.log("btnsimpanunitsimper is fired!");
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
         let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
@@ -874,6 +876,19 @@ $(document).ready(function () {
         let tipeakses = $("#tipeAksesUnit").val();
         let filesim = $("#filesimpolisi").val();
         const flsim = $('#filesimpolisi').prop('files')[0];
+
+        console.log(auth_kary);
+        console.log(auth_izin);
+        console.log(auth_person);
+        console.log(auth_simpol);
+        console.log(jenisizin);
+        console.log(noreg);
+        console.log(tglexp);
+        console.log(jenissim);
+        console.log(tglexpsim);
+        console.log(jenisunit);
+        console.log(tipeakses);
+        console.log(filesim);
 
         let formData = new FormData();
         formData.append('filesimpolisi', flsim);
@@ -899,6 +914,8 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
+                console.log(data);
+                console.log("Success POST on " + site_url + "izin_tambang/add_unit_izin_tambang");
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     $("#jenisUnitSimper").val('').trigger('change');
@@ -910,15 +927,17 @@ $(document).ready(function () {
                     $(".ecb14fe704e08d9df8e343030bbbafcb").text(data.auth_izin);
                     $("#idizintambang").load(site_url + "izin_tambang/izin_tambang?auth_izin=" + data.auth_izin);
                     swal('Berhasil', data.pesan, 'success');
-                } else if (data.statusCode == 201) {
-                    swal('Error', data.pesan, 'error');
+                } else if (data.statusCode == 400) {
+                    swal('Error', data.message, 'error');
                 } else {
                     $(".errorjenisUnitSimper").html(data.jenisunit);
                     $(".errortipeAksesUnit").html(data.tipeakses);
-                    $(".errorFilesimpolisi").html(data.tipeakses);
+                    $(".errorFilesimpolisi").html(data.filesim);
+                    swal('Error', data.pesan, 'error');
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "izin_tambang/add_unit_izin_tambang");
                 $.LoadingOverlay("hide");
                 $(".errormsg").removeClass('d-none');
                 $(".errormsg").removeClass('alert-info');
