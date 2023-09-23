@@ -391,13 +391,13 @@ class Karyawan extends My_Controller
                               }
                          }
 
-                         if ($no_kk != $nokk) {
-                              $query = $this->kry->cek_noKK($nokk);
-                              if ($query) {
-                                   echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
-                                   return;
-                              }
-                         }
+                         // if ($no_kk != $nokk) {
+                         //      $query = $this->kry->cek_noKK($nokk);
+                         //      if ($query) {
+                         //           echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
+                         //           return;
+                         //      }
+                         // }
                     }
                } else {
                     $query = $this->kry->cek_noKTP($noktp);
@@ -406,11 +406,11 @@ class Karyawan extends My_Controller
                          return;
                     }
 
-                    $query = $this->kry->cek_noKK($nokk);
-                    if ($query) {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
-                         return;
-                    }
+                    // $query = $this->kry->cek_noKK($nokk);
+                    // if ($query) {
+                    //      echo json_encode(array("statusCode" => 201, "pesan" => "No. Kartu Keluarga sudah digunakan"));
+                    //      return;
+                    // }
                }
 
                echo json_encode(array("statusCode" => 200, "pesan" => "Sukses"));
@@ -2774,14 +2774,15 @@ class Karyawan extends My_Controller
                          echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. KTP sudah digunakan"));
                          return;
                     }
-               } else if ($no_kk != $no_kk_old) {
-                    // verif no. KK
-                    $query = $this->kry->cek_noKK($no_kk);
-                    if ($query) {
-                         echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. Kartu Keluarga sudah digunakan"));
-                         return;
-                    }
-               }
+               } 
+               // else if ($no_kk != $no_kk_old) {
+               //      // verif no. KK
+               //      $query = $this->kry->cek_noKK($no_kk);
+               //      if ($query) {
+               //           echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. Kartu Keluarga sudah digunakan"));
+               //           return;
+               //      }
+               // }
 
                $save_dtPersonal = $this->kry->update_dtPersonal($id_personal, $data_personal);
                $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
