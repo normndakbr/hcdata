@@ -143,9 +143,6 @@ class Izin_tambang extends My_Controller
                          if (!$this->upload->do_upload('filesimpolisi')) {
                               $err = $this->upload->display_errors();
 
-                              // echo json_encode(array($err));
-                              // return;
-
                               if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
                                    $errorMessage = "File SIM melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50kb.";
                               } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
@@ -177,7 +174,6 @@ class Izin_tambang extends My_Controller
 
 
                               $this->smp->input_izin_tambang($data_izin_tambang);
-
 
                               $data_sim_polisi = [
                                    'id_personal' => $id_personal,
