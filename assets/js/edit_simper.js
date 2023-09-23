@@ -4,9 +4,30 @@ $(document).ready(function () {
     let authIzinTambang = $("#valueAuthIzin").val();
     let authPerson = $("#valueAuthPerson").val();
     let flag_SIM = false;
-    let jenis_izin_tambang = $("#valueJenisIzinTambang").val();
+    let initial_jenis_izin = $("#valueJenisIzinTambang").val();
+    let jenis_izin_tambang = $("#editJenisIzin").val();
+    let flag_izin_tambang = false;
     let id_sim = $("#valueIDSim").val();
     let auth_sim = "";
+
+    if (!flag_izin_tambang) {
+        jenis_izin_tambang = $("#editJenisIzin").val();
+        $("#editJenisIzin").val(initial_jenis_izin).trigger('change');
+        flag_izin_tambang = !flag_izin_tambang;
+
+        if ($("#editJenisIzin").val() == "SP") {
+            $("#fieldEditJenisSim").removeClass("d-none");
+            $("#fieldEditExpiredSIM").removeClass("d-none");
+            $("#fieldEditFileSimPolisi").removeClass("d-none");
+            $("#tabelListUnit").removeClass("d-none");
+            fetch_sim();
+        } else if ($("#editJenisIzin").val() == "MP") {
+            $("#fieldEditJenisSim").addClass("d-none");
+            $("#fieldEditExpiredSIM").addClass("d-none");
+            $("#fieldEditFileSimPolisi").addClass("d-none");
+            $("#tabelListUnit").addClass("d-none");
+        }
+    }
 
     $.ajax({
         type: "POST",
@@ -70,6 +91,7 @@ $(document).ready(function () {
                     url: site_url + "sim/get_auth_sim_by_id",
                     data: { id_sim: id_sim },
                     success: function (res) {
+                        console.log("Success POST on " + site_url + "sim/get_auth_sim_by_id");
                         let data = JSON.parse(res);
                         auth_sim = data.auth_sim;
                         if (!flag_SIM) {
@@ -96,7 +118,8 @@ $(document).ready(function () {
     }
 
     function add_unit_baru() {
-        if (jenis_izin_tambang == "SP") {
+        console.log("Jenis izin tambang = " + $("#editJenisIzin").val());
+        if ($("#editJenisIzin").val() == "SP") {
             let jenisIzin = $("#editJenisIzin").val();
             let noReg = $("#editNoReg").val();
             let tglExp = $("#editTglExp").val();
@@ -157,6 +180,8 @@ $(document).ready(function () {
                 $(".errorEditTglExpSIM").html(errTglExpSim);
                 $(".errorEditTglExp").html(errTglExp);
             }
+        } else {
+            $("#groupTbmUnitDetail").addClass("d-none");
         }
     }
 
@@ -230,22 +255,24 @@ $(document).ready(function () {
         // });
     }
 
-    $("#editJenisIzin").change(() => {
-        if ($("#editJenisIzin").val() == "SP") {
-            $("#txtEditSIM").removeClass("d-none");
+    $("#editJenisIzin").change(function () {
+        let temp = $("#editJenisIzin").val();
+
+        if (temp == "SP") {
+            $("#fieldEditJenisSim").removeClass("d-none");
+            $("#fieldEditExpiredSIM").removeClass("d-none");
+            $("#tabelListUnit").removeClass("d-none");
             fetch_sim();
-        } else {
-            $("#txtEditSIM").addClass("d-none");
+        } else if (temp == "MP") {
+            $("#fieldEditJenisSim").addClass("d-none");
+            $("#fieldEditExpiredSIM").addClass("d-none");
+            $("#tabelListUnit").addClass("d-none");
         }
     });
 
-    if (jenis_izin_tambang != "") {
-        $("#editJenisIzin").val(jenis_izin_tambang).trigger("change");
-    }
-
-    $("#refreshEditJenisSIM").click(() => {
-        fetch_sim();
-    });
+    // if (jenis_izin_tambang != "") {
+    //     $("#editJenisIzin").val(jenis_izin_tambang).trigger("change");
+    // }
 
     $(document).on('click', '.btnDetailIzinKaryawan', function () {
         console.log("btnDetailIzinKaryawan clicked!");
@@ -253,10 +280,6 @@ $(document).ready(function () {
     });
 
     $("#editTambahUnit").click(() => {
-        add_unit();
-    });
-
-    $("#btnsimpanunitsimper").click(() => {
-        save_unit_baru();
+        add_unit_baru();
     });
 });
