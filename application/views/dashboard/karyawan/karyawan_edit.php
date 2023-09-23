@@ -111,7 +111,8 @@
                               <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                               <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                               <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
-                              <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
+                              <input id="valueUrlSIMPolisi" class="" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
+                              <input id="valueTglExpiredSimKary" class="" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
 
                               <div class="row pt-2">
                                    <?php
@@ -614,7 +615,7 @@
                                                             <div class="col-lg-4 col-md-4 col-sm-12">
                                                                  <div class="form-group">
                                                                       <label for="jenisIzin"> Jenis Izin <span class="text-danger">*</span></label>
-                                                                      <select id='editJenisIzin' name='editJenisIzin' class="form-control form-control-user">
+                                                                      <select id="editJenisIzin" name="editJenisIzin" class="form-control form-control-user">
                                                                            <option value="">-- WAJIB DIPILIH --</option>
                                                                            <option value="SP">SIMPER</option>
                                                                            <option value="MP">MINE PERMIT</option>
@@ -638,62 +639,75 @@
                                                                  </div>
                                                             </div>
 
-                                                            <?php if (isset($data_izin->jenis_izin_tambang) == "SP") { ?>
-                                                                 <div class="col-lg-4 col-md-4 col-sm-12">
-                                                                      <div class="form-group">
-                                                                           <label for="editTglExp">Jenis SIM <span class="text-danger">*</span></label>
-                                                                           <!-- <input type="text" class="form-control" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled> -->
-                                                                           <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
-                                                                                <option value="">-- TIDAK ADA DATA --</option>
-                                                                           </select>
-                                                                           <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
-                                                                      </div>
+
+                                                            <div id="fieldEditJenisSim" class="col-lg-4 col-md-4 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <label for="editTglExp">Jenis SIM <span class="text-danger">*</span></label>
+                                                                      <!-- <input type="text" class="form-control" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled> -->
+                                                                      <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
+                                                                           <option value="">-- TIDAK ADA DATA --</option>
+                                                                      </select>
+                                                                      <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
                                                                  </div>
-                                                                 <div class="col-lg-2 col-md-2 col-sm-12">
-                                                                      <div class="form-group">
-                                                                           <label for="editTglExp">Tanggal Expired SIM <span class="text-danger">*</span></label>
-                                                                           <input id='editTglExpSim' name='editTglExpSim' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '-' ?>">
-                                                                           <small class="errorEditTglExpSim text-danger font-italic font-weight-bold"></small>
-                                                                      </div>
+                                                            </div>
+                                                            <div id="fieldEditExpiredSIM" class="col-lg-2 col-md-2 col-sm-12">
+                                                                 <div class="form-group">
+                                                                      <label for="editTglExp">Tanggal Expired SIM <span class="text-danger">*</span></label>
+                                                                      <input id='editTglExpSim' name='editTglExpSim' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '-' ?>">
+                                                                      <small class="errorEditTglExpSim text-danger font-italic font-weight-bold"></small>
                                                                  </div>
-                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                                                      <div class="form-group">
-                                                                           <h5 class="mb-3">Unit yang diizinkan</h5>
-                                                                           <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                                                <thead>
-                                                                                     <tr>
-                                                                                          <th style="text-align:center; width: 1%;">No.</th>
-                                                                                          <th style="text-align:center; width: 80%;">Unit</th>
-                                                                                          <th style="text-align:center; width: 19%;">Akses</th>
-                                                                                          <th style="text-align:center; width: 19%;">Aksi</th>
-                                                                                     </tr>
-                                                                                </thead>
-                                                                                <tbody>
-                                                                                     <?php
-                                                                                     $no = 1;
-                                                                                     if (!empty($data_unit)) {
-                                                                                          foreach ($data_unit as $list) {
-                                                                                               echo '<tr>';
-                                                                                               echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                                               echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
-                                                                                               echo '<td class="align-middle" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
-                                                                                               echo "<td>";
-                                                                                               echo "<button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
-                                                                                               echo "<button id='' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button> ";
-                                                                                               echo "</td>";
-                                                                                               echo '</tr>';
-                                                                                          }
-                                                                                     } else {
+                                                            </div>
+
+                                                            <div id="fieldEditFileSimPolisi" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                                 <a href="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>" target="_blank"><?= isset($data_sim_kary) ? $data_sim_kary->url_file : ' ' ?></a>
+                                                                 <div>
+                                                                      <h6 class="text-danger font-italic">Catatan : Upload SIM Polisi dalam format pdf, ukuran file SIM Polisi maksimal 50 kb.</h6>
+                                                                 </div>
+                                                                 <div class="form-group">
+                                                                      <label for="editFileSimPolisi"><b>Upload SIM Polisi</b> <span class="text-danger">*</span></label>
+                                                                      <input type="file" class="form-control-file" id="editFileSimPolisi">
+                                                                      <small class="errorEditFileSimPolisi text-danger font-italic font-weight-bold"></small>
+                                                                      <span class="h52k342 j8234234b n234b5b7 kl234nn d-none"></span>
+                                                                 </div>
+                                                            </div>
+
+                                                            <div id="tabelListUnit" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                                 <div id="groupTbmUnitDetail" class="form-group">
+                                                                      <h5 class="mb-3">Unit yang diizinkan</h5>
+                                                                      <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                           <thead>
+                                                                                <tr>
+                                                                                     <th style="text-align:center; width: 1%;">No.</th>
+                                                                                     <th style="text-align:center; width: 80%;">Unit</th>
+                                                                                     <th style="text-align:center; width: 19%;">Akses</th>
+                                                                                     <th style="text-align:center; width: 19%;">Aksi</th>
+                                                                                </tr>
+                                                                           </thead>
+                                                                           <tbody>
+                                                                                <?php
+                                                                                $no = 1;
+                                                                                if (!empty($data_unit)) {
+                                                                                     foreach ($data_unit as $list) {
                                                                                           echo '<tr>';
-                                                                                          echo '<td colspan=3 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
+                                                                                          echo "<td>";
+                                                                                          echo "<button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
+                                                                                          echo "<button id='' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button> ";
+                                                                                          echo "</td>";
                                                                                           echo '</tr>';
                                                                                      }
-                                                                                     ?>
-                                                                                </tbody>
-                                                                           </table>
-                                                                      </div>
+                                                                                } else {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td colspan=3 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                                ?>
+                                                                           </tbody>
+                                                                      </table>
                                                                  </div>
-                                                            <?php } ?>
+                                                            </div>
                                                        </div>
 
                                                        <div class="col-lg-12 col-md-12 col-sm-12 text-right">
