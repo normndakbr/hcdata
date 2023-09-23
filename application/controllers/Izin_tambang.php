@@ -143,21 +143,20 @@ class Izin_tambang extends My_Controller
                          if (!$this->upload->do_upload('filesimpolisi')) {
                               $err = $this->upload->display_errors();
 
-                              echo json_encode(array($err));
-                              return;
+                              // echo json_encode(array($err));
+                              // return;
+
                               if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $error = "<p>Ukuran file maksimal 50 kb.</p>";
+                                   $errorMessage = "File SIM melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50kb.";
                               } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                                   $error = "<p>Format file nya dalam bentuk pdf</p>";
+                                   $errorMessage = "Format file yang diupload wajib dalam bentuk pdf.";
                               } else {
-                                   $error = $err;
+                                   $errorMessage = $err;
                               }
 
                               $error = [
-                                   'statusCode' => 202,
-                                   'jenisunit' => '',
-                                   'tipeakses' => '',
-                                   "filesim" =>  $err
+                                   'statusCode' => 400,
+                                   'message' =>  $errorMessage
                               ];
 
                               echo json_encode($error);
