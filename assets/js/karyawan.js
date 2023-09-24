@@ -837,6 +837,8 @@ $(document).ready(function () {
                                 }
                             }
                         });
+                    } else {
+                        swal.close();
                     }
                 });
             } else {
@@ -2206,6 +2208,8 @@ $(document).ready(function () {
                             $("#addPerKary").val(auth_per_old).trigger('change');
                             $('#addDepartKary').removeAttr('disabled');
                             $('#addPosisiKary').removeAttr('disabled');
+                        } else {
+                            swal.close();
                         }
                     });
                 }
@@ -2299,6 +2303,8 @@ $(document).ready(function () {
             } else if (result.dismiss == 'cancel') {
                 swal('Batal', 'Data unit batal disimpan', 'warning');
                 return false;
+            } else {
+                swal.close();
             }
         });
     });
@@ -2357,6 +2363,8 @@ $(document).ready(function () {
             } else if (result.dismiss == 'cancel') {
                 swal('Batal', 'Data unit batal disimpan', 'warning');
                 return false;
+            } else {
+                swal.close();
             }
         });
 
@@ -2489,6 +2497,8 @@ $(document).ready(function () {
                         }
                     }
                 });
+            } else {
+                swal.close();
             }
         });
     });
@@ -2571,6 +2581,8 @@ $(document).ready(function () {
                         }
                     }
                 });
+            } else {
+                swal.close();
             }
         });
     });
@@ -3474,6 +3486,8 @@ $(document).ready(function () {
                         }
                     });
                     $.LoadingOverlay("hide");
+                } else {
+                    swal.close();
                 }
             });
         }
@@ -3539,6 +3553,8 @@ $(document).ready(function () {
                             });
                         } else if (result.dismiss == 'cancel') {
                             $("#addJenisIzin").val('SP').trigger('change');
+                        } else {
+                            swal.close();
                         }
                     });
                 }
@@ -3996,6 +4012,8 @@ $(document).ready(function () {
                             }
                         }
                     });
+                } else {
+                    swal.close();
                 }
             });
         } else {
@@ -4202,6 +4220,8 @@ $(document).ready(function () {
                     $(".errmsgfilependukung").addClass("d-none");
                 });
 
+            } else {
+                swal.close();
             }
         });
     });
@@ -4269,6 +4289,8 @@ $(document).ready(function () {
                         }
                     }
                 });
+            } else {
+                swal.close();
             }
         });
     });
@@ -4326,6 +4348,8 @@ $(document).ready(function () {
                             }
                         }
                     });
+                } else {
+                    swal.close();
                 }
             });
         } else {
@@ -4405,7 +4429,7 @@ $(document).ready(function () {
             cancelButtonText: 'Batalkan'
         }).then(function (result) {
             if (result.value) {
-                // $.LoadingOverlay("show");
+                $.LoadingOverlay("show");
                 $.ajax({
                     type: "POST",
                     url: site_url + "karyawan/hapus_karyawan",
@@ -4436,6 +4460,8 @@ $(document).ready(function () {
                         }
                     }
                 });
+            } else {
+                swal.close();
             }
         });
     });
@@ -4596,6 +4622,8 @@ $(document).ready(function () {
                             }
                         }
                     });
+                } else {
+                    swal.close();
                 }
             });
         } else {
@@ -4754,6 +4782,8 @@ $(document).ready(function () {
                             }
                         }
                     });
+                } else {
+                    swal.close();
                 }
             });
         } else {
@@ -4850,6 +4880,8 @@ $(document).ready(function () {
                             }
                         }
                     });
+                } else {
+                    swal.close();
                 }
             });
         } else {
