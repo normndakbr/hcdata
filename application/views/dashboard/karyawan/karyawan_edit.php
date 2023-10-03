@@ -54,13 +54,8 @@
                               </div>
                          </div>
                          <div class="card-body">
-                              <div class="mt-3">
-                                   <div class="mb-2">
-                                        <button id="addbtn" class="btnrespage btn btn-warning font-weight-bold mb-3 d-none">Reset</button>
-                                   </div>
-                              </div>
                               <div class="alert alert-danger errormsg animate__animated animate__bounce d-none mb-2"></div>
-                              <input id="idUser" class="d-none" value="<?= $this->session->userdata("id_menu") ?>"></input>
+                              <input id="idUser" class="" value="<?= $this->session->userdata("id_menu") ?>"></input>
                               <input id="editTglEdit" class="d-none" value="<?= date("Y-m-d H:i:s"); ?>"></input>
                               <input id="editTglBuat" class="d-none" value="<?= isset($data_kary->tgl_buat) ? $data_kary->tgl_buat : '-' ?>"></input>
                               <input id="valueIDKaryawan" class="d-none" value="<?= isset($data_kary->id_kary) ? $data_kary->id_kary : '-' ?>"></input>
@@ -111,8 +106,8 @@
                               <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                               <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                               <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
-                              <input id="valueUrlSIMPolisi" class="" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
-                              <input id="valueTglExpiredSimKary" class="" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
+                              <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
+                              <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
 
                               <div class="row pt-2">
                                    <?php
@@ -671,7 +666,32 @@
                                                                  </div>
                                                             </div>
 
-                                                            <div id="tabelListUnit" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                            <!-- <div id="tabelSIMPOL" class="col-lg-6 col-md-6 col-sm-12 mt-3">
+                                                                 <div id="groupTbmSIMPOL" class="form-group">
+                                                                      <h5 class="mb-3">List SIM Polisi</h5>
+                                                                      <table id="tbmSIMPOL" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                           <thead>
+                                                                                <tr>
+                                                                                     <th style="text-align:center; width: 80%;">Jenis SIM</th>
+                                                                                     <th style="text-align:center; width: 19%;">Tanggal Expired</th>
+                                                                                     <th style="text-align:center; width: 19%;">Aksi</th>
+                                                                                </tr>
+                                                                           </thead>
+                                                                           <tbody>
+                                                                                <tr>
+                                                                                     <td class="align-middle" style="width: 80%;"> <?= isset($data_izin->sim) ? $data_izin->sim : '-' ?></td>
+                                                                                     <td class="align-middle" style="width: 19%;"> <?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?> </td>
+                                                                                     <td>
+                                                                                          <button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button>
+                                                                                          <button id='' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button>
+                                                                                     </td>
+                                                                                </tr>
+                                                                           </tbody>
+                                                                      </table>
+                                                                 </div>
+                                                            </div> -->
+
+                                                            <div id="tabelListUnit" class="col-lg-6 col-md-6 col-sm-12 mt-3">
                                                                  <div id="groupTbmUnitDetail" class="form-group">
                                                                       <h5 class="mb-3">Unit yang diizinkan</h5>
                                                                       <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
@@ -1044,8 +1064,7 @@
           </div>
      </div>
 </div>
-</div>
-</div>
+
 <div class="modal fade" id="logoutmdl" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
      <div class="modal-dialog">
           <div class="modal-content">
@@ -1138,6 +1157,7 @@
           </div>
      </div>
 </div>
+
 <div class="modal fade" id="mdldetailsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
@@ -1188,6 +1208,7 @@
           </div>
      </div>
 </div>
+
 <div class="modal fade" id="mdluploadulangser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
           <div class="modal-content">
@@ -1220,6 +1241,7 @@
           </div>
      </div>
 </div>
+
 <div class="modal fade" id="mdlAddKaryawan" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:60%;">
           <div class="modal-content">
@@ -1268,6 +1290,7 @@
           </div>
      </div>
 </div>
+
 <div class="modal fade" id="mdlinfoklasifikasi" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
      <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:60%;">
           <div class="modal-content">

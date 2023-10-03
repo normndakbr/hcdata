@@ -16,11 +16,11 @@ $(document).ready(function () {
         flag_izin_tambang = !flag_izin_tambang;
 
         if ($("#editJenisIzin").val() == "SP") {
+            fetch_sim();
             $("#fieldEditJenisSim").removeClass("d-none");
             $("#fieldEditExpiredSIM").removeClass("d-none");
             $("#fieldEditFileSimPolisi").removeClass("d-none");
             $("#tabelListUnit").removeClass("d-none");
-            fetch_sim();
         } else if ($("#editJenisIzin").val() == "MP") {
             $("#fieldEditJenisSim").addClass("d-none");
             $("#fieldEditExpiredSIM").addClass("d-none");
@@ -259,13 +259,11 @@ $(document).ready(function () {
         let temp = $("#editJenisIzin").val();
 
         if (temp == "SP") {
-            $("#fieldEditJenisSim").removeClass("d-none");
-            $("#fieldEditExpiredSIM").removeClass("d-none");
+            $("#tabelSIMPOL").removeClass("d-none");
             $("#tabelListUnit").removeClass("d-none");
             fetch_sim();
         } else if (temp == "MP") {
-            $("#fieldEditJenisSim").addClass("d-none");
-            $("#fieldEditExpiredSIM").addClass("d-none");
+            $("#tabelSIMPOL").addClass("d-none");
             $("#tabelListUnit").addClass("d-none");
         }
     });

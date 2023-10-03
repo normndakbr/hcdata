@@ -1,0 +1,176 @@
+$(document).ready(function () {
+    var token = $("#token").val();
+    let auth_person = $("#valueAuthPersonal").val();
+
+    $("#idEditSertifikat").load(site_url + "karyawan/sertifikasi?auth_person=" + auth_person);
+
+    $(document).on('click', '.detail_sertifikasi', function () {
+        let auth_sertifikat = $(this).attr("id");
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "sertifikasi/get_sertifikasi",
+            data: {
+                auth_sertifikat: auth_sertifikat
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                $("#mdldetailsertifikat").modal("show");
+                $("#jdldetailsertifikat").text(data.no_sertifikat + " | " + data.jenis_sertifikasi);
+                $("#jenisSertifikasiDetail").val(data.jenis_sertifikasi);
+                $("#noSertifikatDetail").val(data.no_sertifikasi);
+                $("#namaLembagaDetail").val(data.lembaga);
+                $("#tanggalSertifikasiDetail").val(data.tgl_sertifikasi_show);
+                $("#tanggalSertifikasiAkhirDetail").val(data.tgl_berakhir_sertifikasi_show);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $.LoadingOverlay("hide");
+                $(".errsertifikatdetail").removeClass('d-none');
+                $(".errsertifikatdetail").removeClass('alert-info');
+                $(".errsertifikatdetail").addClass('alert-danger');
+                if (thrownError != "") {
+                    $(".errsertifikatdetail").html("Terjadi kesalahan saat load data sertifikasi, hubungi administrator");
+                }
+            }
+        });
+    });
+
+    $("#btnEditReuploadSertifikat").click(function () {
+        let auth_ser = $(".9f7fjmuj8ik2js4n8k66g3hjl323").text();
+        let auth_person = $("#valueAuthPersonal").val();
+        let filesrt = $("#fileSertifikasiUlang").val();
+        const flsert = $('#fileSertifikasiUlang').prop('files')[0];
+
+        if (filesrt == "") {
+            $(".errorFileSertifikasiUlang").text('File sertifikat wajib dipilih');
+            return false;
+        }
+
+        swal({
+            title: "Upload Ulang Sertifikat",
+            text: "Yakin sertifikat akan di-upload ulang",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#36c6d3',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, upload',
+            cancelButtonText: 'Batalkan'
+        }).then(function (result) {
+            if (result.value) {
+                let formData = new FormData();
+                formData.append('filesertifikat', flsert);
+                formData.append('filesrt', filesrt);
+                formData.append('auth_ser', auth_ser);
+                formData.append('auth_person', auth_person);
+                $.LoadingOverlay("show");
+                $.ajax({
+                    type: 'POST',
+                    url: site_url + "sertifikasi/upload_ulang_ser",
+                    data: formData,
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#mdluploadulangser").modal("hide");
+                            $("#fileSertifikasiUlang").val('');
+                            $(".errorFileSertifikasiUlang").text('');
+                            $(".9f7fjmuj8ik2js4n8k66g3hjl323").text('');
+                            $.LoadingOverlay("hide");
+                            $("#idsertifikat").LoadingOverlay("show");
+                            $("#idsertifikat").load(site_url + "karyawan/sertifikasi?auth_person=" + auth_person);
+                        } else if (data.statusCode == 201) {
+                            $(".erruploadulangser").removeClass('d-none');
+                            $(".erruploadulangser").removeClass('alert-primary');
+                            $(".erruploadulangser").addClass('alert-danger');
+                            $(".erruploadulangser").html(data.pesan);
+                            $.LoadingOverlay("hide");
+                        } else {
+                            $(".errorFileSertifikasiUlang").html(data.pesan);
+                            $.LoadingOverlay("hide");
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".erruploadulangser").removeClass('d-none');
+                        $(".erruploadulangser").addClass('alert-danger');
+                        if (thrownError != "") {
+                            $(".erruploadulangser").html("Terjadi kesalahan saat meng-upload data sertifikat, hubungi administrator");
+                        }
+                    }
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
+
+    $("#masaBerlakuSertifikatEdit").change(function () {
+        let tglsrt = $("#tanggalSertifikasiEdit").val();
+        let masa = $("#masaBerlakuSertifikatEdit").val();
+
+        $.ajax({
+            type: "post",
+            url: site_url + "sertifikasi/getdateexpmasa",
+            data: {
+                tglsrt: tglsrt,
+                masa: masa
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data.statusCode == 200) {
+                    $("#tanggalSertifikasiAkhirEdit").val(data.tglexp);
+                }
+            }
+        })
+    });
+
+    $("#btnSimpanEditSertifikat").click(function () {
+        let auth_ser = $(".7u67u834hs7dg4haj231hh67ju7a2").text();
+        let jenis_ser = $("#jenisSertifikasiEdit").val();
+        let no_ser = $("#noSertifikatEdit").val();
+        let lembaga = $("#namaLembagaEdit").val();
+        let tgl_ser = $("#tanggalSertifikasiEdit").val();
+        let tgl_akhir = $("#tanggalSertifikasiAkhirEdit").val();
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "sertifikasi/update_sertifikasi",
+            data: {
+                auth_ser: auth_ser,
+                jenis_ser: jenis_ser,
+                no_ser: no_ser,
+                lembaga: lembaga,
+                tgl_ser: tgl_ser,
+                tgl_akhir: tgl_akhir,
+                token: token,
+            },
+            success: function (data) {
+                var data = JSON.parse(data);
+                if (data.statusCode == 202) {
+                    $(".errorjenisSertifikasiEdit").html(data.jenis_ser);
+                    $(".errorNoSertifikatEdit").html(data.no_ser);
+                    $(".errorNamaLembagaEdit").html(data.lembaga);
+                    $(".errorTanggalSertifikasiEdit").html(data.tgl_ser);
+                    $(".errorTanggalSertifikasiAkhir").html(data.tgl_akhir);
+                } else {
+                    $("#mdleditsertifikat").modal("hide");
+                    $("#idEditSertifikat").LoadingOverlay("show");
+                    $("#idEditSertifikat").load(site_url + "karyawan/sertifikasi?auth_person=" + auth_person);
+                    $("#idEditSertifikat").LoadingOverlay("hide");
+                    swal('Berhasil', data.pesan, 'success');
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                $.LoadingOverlay("hide");
+                $(".erreditsertifikat").removeClass('d-none');
+                $(".erreditsertifikat").removeClass('alert-info');
+                $(".erreditsertifikat").addClass('alert-danger');
+                if (thrownError != "") {
+                    $(".erreditsertifikat").html("Terjadi kesalahan saat update sertifikat, hubungi administrator");
+                }
+            }
+        });
+    });
+});

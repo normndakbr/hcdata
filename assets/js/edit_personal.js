@@ -708,7 +708,7 @@ $(document).ready(function () {
                         if (data.statusCode == 204) {
                             swal("Sukses", data.pesan, "success");
                             $(".noktpshow").val(new_no_ktp);
-                            $(".namalengkapshow").val(new_nama_lengkap);
+                            $(".namalengkapshow").text(new_nama_lengkap);
                             $("#currentNoKTP").val(new_no_ktp);
                             $("#currentNoKK").val(new_no_kk);
                             $.LoadingOverlay("hide");
@@ -718,7 +718,7 @@ $(document).ready(function () {
                             $.LoadingOverlay("hide");
                         } else {
                             $('.noktpshow').val(noktp);
-                            $('.namalengkapshow').val(nama);
+                            $('.namalengkapshow').text(nama);
                             $(".errorEditNoKTP").html(data.noktp);
                             $(".errorEditNamaLengkap").html(data.nama);
                             $(".errorEditAlamatKTP").html(data.alamat);
