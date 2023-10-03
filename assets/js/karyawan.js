@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var token = $("#token").val();
 
     $("#logout").click(function () {
@@ -2383,6 +2382,7 @@ $(document).ready(function () {
             },
             success: function (data) {
                 var data = JSON.parse(data);
+                console.log(data);
                 $("#mdleditsertifikat").modal("show");
                 $(".7u67u834hs7dg4haj231hh67ju7a2").text(data.auth_sertifikat);
                 $("#jenisSertifikasiEdit").val(data.id_jenis_sertifikasi).trigger('change');
@@ -2415,10 +2415,11 @@ $(document).ready(function () {
                 auth_sertifikat: auth_sertifikat
             },
             success: function (data) {
+                console.log("Success on POST " + site_url + "sertifikasi/get-sertifikasi");
                 var data = JSON.parse(data);
                 $("#mdluploadulangser").modal("show");
+                $("#jdluploadulangser").text("Upload Ulang File Sertifikat - " + data.no_sertifikasi);
                 $(".9f7fjmuj8ik2js4n8k66g3hjl323").text(data.auth_sertifikat);
-                $("#jdluploadulangser").text(data.no_sertifikat + " | " + data.jenis_sertifikasi);
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 $.LoadingOverlay("hide");
@@ -2513,9 +2514,11 @@ $(document).ready(function () {
                 auth_sertifikat: auth_sertifikat
             },
             success: function (data) {
+                console.log("Success POST on " + site_url + "sertifikasi/get_sertifikasi");
+                console.log(data);
                 var data = JSON.parse(data);
                 $("#mdldetailsertifikat").modal("show");
-                $("#jdldetailsertifikat").text(data.no_sertifikat + " | " + data.jenis_sertifikasi);
+                $("#jdldetailsertifikat").text("Detail Sertifikasi - " + data.no_sertifikasi);
                 $("#jenisSertifikasiDetail").val(data.jenis_sertifikasi);
                 $("#noSertifikatDetail").val(data.no_sertifikasi);
                 $("#namaLembagaDetail").val(data.lembaga);
@@ -2782,6 +2785,7 @@ $(document).ready(function () {
             }
         })
     });
+
     $("#tanggalSertifikasi").change(function () {
         let tglsrt = $("#tanggalSertifikasi").val();
         let masa = $("#masaBerlakuSertifikat").val();

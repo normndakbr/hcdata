@@ -1,4 +1,5 @@
 <?php
+// header('Content-Type: application/json');
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class Karyawan extends My_Controller
@@ -122,6 +123,7 @@ class Karyawan extends My_Controller
      public function edit_karyawan($id_kary)
      {
           $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+
           $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
           $data['nama'] = $this->session->userdata("nama_hcdata");
           $data['email'] = $this->session->userdata("email_hcdata");
@@ -136,8 +138,11 @@ class Karyawan extends My_Controller
           $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
           $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($id_kary);
           $data['get_menu'] = $this->dsmod->get_menu();
+
+          $data['jsonData'] = json_encode($data);
+
           $this->load->view('dashboard/template/header', $data);
-          $this->load->view('dashboard/karyawan/karyawan_edit', $data);
+          $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
           $this->load->view('dashboard/modal/karyawan', $data);
           $this->load->view('dashboard/template/footer', $data);
           $this->load->view('dashboard/code/karydetail');
@@ -162,7 +167,6 @@ class Karyawan extends My_Controller
                echo json_encode(array("statusCode" => 202, "pesan" => "Data MCU tidak ditemukan"));
                return;
           }
-
 
           $query = $this->kry->hapus_mcu($auth_mcu);
           if ($query == 200) {
@@ -2774,7 +2778,7 @@ class Karyawan extends My_Controller
                          echo json_encode(array("statusCode" => 403, "status" => "Unauthorized", "pesan" => "No. KTP sudah digunakan"));
                          return;
                     }
-               } 
+               }
                // else if ($no_kk != $no_kk_old) {
                //      // verif no. KK
                //      $query = $this->kry->cek_noKK($no_kk);

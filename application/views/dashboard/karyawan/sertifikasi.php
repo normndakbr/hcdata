@@ -3,12 +3,12 @@
           <table id="tbmSertifikasi" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                <thead>
                     <tr>
-                         <td style="text-align:center;width:1%;">NO.</td>
-                         <td style="text-align:center;width:35%;">JENIS SERTIFIKASI</td>
-                         <td style="text-align:center;width:35%;">NO. SERTIFIKAT</td>
-                         <td style="text-align:center;width:10%;">TGL. SERTIFIKASI</td>
-                         <td style="text-align:center;width:10%;">TGL. EXPIRED</td>
-                         <td style="text-align:center;width:9%;">PROSES</td>
+                         <th style="text-align:center;width:1%;">NO.</th>
+                         <th style="text-align:center;width:35%;">JENIS SERTIFIKASI</th>
+                         <th style="text-align:center;width:35%;">NO. SERTIFIKAT</th>
+                         <th style="text-align:center;width:10%;">TGL. SERTIFIKASI</th>
+                         <th style="text-align:center;width:10%;">TGL. EXPIRED</th>
+                         <th style="text-align:center;width:9%;">PROSES</th>
                     </tr>
                </thead>
                <tbody>
@@ -43,6 +43,5 @@
                     ?>
                </tbody>
           </table>
-          <hr>
      </div>
 </div>

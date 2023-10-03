@@ -7,7 +7,7 @@ File: style.css
 =========================================================================
 =================================================================================== */
 /* cyrillic-ext */
-@import url(plugins/animate.min.css);
+@import url(./animate.min.css);
 
 @font-face {
     font-family: 'Open Sans';
