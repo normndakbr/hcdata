@@ -434,7 +434,8 @@ class Karyawan_model extends CI_Model
         $auth_m_per = $postData['auth_m_per'];
         // $id_per = $this->prs->get_idp_by_auth($auth_m_per);
         if (isset($postData['search'])) {
-            $records = $this->db->query("SELECT auth_karyawan, auth_m_perusahaan, no_ktp, no_nik, nama_lengkap, depart FROM vw_karyawan WHERE auth_m_perusahaan = '" . $auth_m_per .
+            $records = $this->db->query("SELECT auth_karyawan, auth_m_perusahaan, no_ktp, no_nik, nama_lengkap, depart" .
+                ", posisi, doh FROM vw_karyawan WHERE auth_m_perusahaan = '" . $auth_m_per .
                 "' AND tgl_nonaktif is null AND (no_ktp LIKE '%" . $postData['search'] .
                 "%' OR no_nik like '%" . $postData['search'] .
                 "%' OR nama_lengkap like '%" . $postData['search'] . "%') ORDER BY nama_lengkap ASC")->result();
@@ -445,6 +446,74 @@ class Karyawan_model extends CI_Model
                     "nik" => $row->no_nik,
                     "nama" => $row->nama_lengkap,
                     "depart" => $row->depart,
+                    "posisi" => $row->posisi,
+                    "doh" => $row->doh,
+                    "dohshow" => date('d-M-Y', strtotime($row->doh)),
+                    "label" => $row->no_ktp . " | " . $row->nama_lengkap . " | " . $row->no_nik . " | " . $row->depart
+                );
+            }
+        }
+        return $response;
+    }
+
+    function getKaryawanIzin($postData)
+    {
+        $response = array();
+        $auth_m_per = $postData['auth_m_per'];
+        $jenisizinadd = $postData['jenisizinadd'];
+        $prosesizinadd = $postData['prosesizinadd'];
+
+        if ($jenisizinadd == 1) { // jika mine permit
+            $lbljenisizin = "Tgl. Exp. Mine Permit Lama :";
+            if ($prosesizinadd == 2) { // jika perpanjangan
+                $query = " AND auth_karyawan IN (SELECT auth_karyawan FROM vw_izin_tambang " .
+                    "WHERE id_jenis_izin_tambang = " . $jenisizinadd . ")";
+            } else { // jika proses baru
+                $query = " AND auth_karyawan IN (SELECT auth_karyawan FROM vw_izin_tambang " .
+                    "WHERE id_jenis_izin_tambang <> " . $jenisizinadd . ")";
+            }
+        } else if ($jenisizinadd == 2) { // jika simper
+            $lbljenisizin = "Tgl. Exp. SIMPER Lama :";
+            if ($prosesizinadd == 2) { // jika perpanjangan
+                $query = " AND auth_karyawan IN (SELECT auth_karyawan FROM vw_izin_tambang " .
+                    "WHERE id_jenis_izin_tambang = " . $jenisizinadd . ")";
+            } else { // jika proses baru
+                $query = " AND auth_karyawan IN (SELECT auth_karyawan FROM vw_izin_tambang " .
+                    "WHERE id_jenis_izin_tambang <> " . $jenisizinadd . ")";
+            }
+        }
+
+        if (isset($postData['search'])) {
+            $records = $this->db->query("SELECT auth_karyawan, auth_m_perusahaan, no_ktp, no_nik, nama_lengkap, depart " .
+                ", posisi, doh FROM vw_karyawan WHERE auth_m_perusahaan = '" . $auth_m_per .
+                "' AND tgl_nonaktif is null AND (no_ktp LIKE '%" . $postData['search'] .
+                "%' OR no_nik like '%" . $postData['search'] .
+                "%' OR nama_lengkap like '%" . $postData['search'] . "%') " .
+                $query . " AND tgl_nonaktif is null ORDER BY nama_lengkap ASC")->result();
+
+            foreach ($records as $row) {
+                $query = $this->db->query("SELECT tgl_expired FROM vw_izin_tambang where auth_karyawan = '" . $row->auth_karyawan .
+                    "' AND id_jenis_izin_tambang = " . $jenisizinadd . " ORDER BY tgl_expired desc limit 1");
+
+                if (!empty($query->result())) {
+                    foreach ($query->result() as $lstkry) {
+                        $tgl_expired = date('d-M-Y', strtotime($lstkry->tgl_expired));
+                    }
+                } else {
+                    $tgl_expired = "";
+                }
+
+                $response[] = array(
+                    "value" => $row->auth_karyawan,
+                    "ktp" => $row->no_ktp,
+                    "nik" => $row->no_nik,
+                    "nama" => $row->nama_lengkap,
+                    "depart" => $row->depart,
+                    "posisi" => $row->posisi,
+                    "doh" => $row->doh,
+                    "dohshow" => date('d-M-Y', strtotime($row->doh)),
+                    "labeljenis" => $lbljenisizin,
+                    "tglexpiredshow" => $tgl_expired,
                     "label" => $row->no_ktp . " | " . $row->nama_lengkap . " | " . $row->no_nik . " | " . $row->depart
                 );
             }

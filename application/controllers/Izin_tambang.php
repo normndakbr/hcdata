@@ -178,7 +178,7 @@ class Izin_tambang extends My_Controller
                               $data_sim_polisi = [
                                    'id_personal' => $id_personal,
                                    'id_sim' => $jenissim,
-                                   'tgl_exp' => $tglexpsim,
+                                   'tgl_exp_sim' => $tglexpsim,
                                    'ket_sim_kary' => '',
                                    'url_file' => $nama_file,
                                    'tgl_buat' => date('Y-m-d H:i:s'),

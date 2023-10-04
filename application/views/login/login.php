@@ -39,8 +39,6 @@
 
                               if (!$this->session->csrf_token) {
                                    $this->session->csrf_token = hash("sha1", time());
-                              } else {
-                                   $this->session->csrf_token = hash("sha1", time());
                               }
 
                               ?>
