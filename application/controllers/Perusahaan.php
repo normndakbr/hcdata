@@ -101,23 +101,7 @@ class Perusahaan extends My_Controller
           if ($cekauth == 501) {
                echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
           } else {
-               $auth_valid =  $this->session->csrf_token;
-               $auth = htmlspecialchars($this->input->post("token", true));
                $email = $this->session->email_hcdata;
-               if ($auth !== $auth_valid) {
-                    $data_err = [
-                         'email_error' => $email,
-                         'ip_error' => $_SERVER['REMOTE_ADDR'],
-                         'ip_akses' => $_SERVER['REMOTE_ADDR'],
-                         'msg_error' => 'Token tidak valid : ' . $auth . " - valid token : " . $auth_valid,
-                         'tgl_buat' => date('Y-m-d H:i:s'),
-                    ];
-
-                    $err = $this->lgn->get_err_log($data_err);
-
-                    redirect(base_url('errauth'));
-                    die;
-               }
 
                $this->form_validation->set_rules("kode", "kode", "required|trim|max_length[8]", [
                     'required' => 'Kode wajib diisi',
@@ -241,6 +225,18 @@ class Perusahaan extends My_Controller
 
                     $perusahaan = $this->prs->input_perusahaan($data);
                     if ($perusahaan) {
+                         $data = [
+                              "id_user" => $this->session->userdata('id_user_hcdata'),
+                              "jenis_proses" => "BARU",
+                              "data_proses" => "PERUSAHAAN",
+                              "nama_data" => $nama_perusahaan,
+                              "id_m_perusahaan" => 1,
+                              "id_perusahaan" => 1,
+                              "tgl_edit" => date('Y-m-d H:i:s'),
+                              "tgl_buat" => date('Y-m-d H:i:s'),
+                         ];
+
+                         $this->save_audit($data);
                          echo json_encode(array("statusCode" => 200, "kode_pesan" => "Berhasil", "pesan" => "Perusahaan berhasil disimpan", "tipe_pesan" => "success"));
                     } else {
                          echo json_encode(array("statusCode" => 201, "kode_pesan" => "Gagal", "pesan" => "Perusahaan gagal disimpan", "tipe_pesan" => "error"));

@@ -30,6 +30,9 @@ class My_Controller extends CI_Controller
           $this->load->model('Izin_tambang_model', 'smp');
           $this->load->model('Sertifikasi_model', 'srt');
           $this->load->model('Vaksin_model', 'vks');
+          $this->load->model('Audit_model', 'adt');
+          $this->load->model('Pengajuansm_model', 'psm');
+          $this->load->model('Karyizin_model', 'kryizn');
           $this->load->model('NonaktifKary_model', 'nakary');
           $this->load->helper('url', 'form', 'captcha');
           $this->load->library('form_validation', 'session', 'user_agent');
@@ -85,8 +88,13 @@ class My_Controller extends CI_Controller
           }
 
           if (in_array($agent2, $OSblock)) {
-               redirect(base_url('errauth'));
+               redirect(base_url('erraccess'));
                die;
           }
+     }
+
+     public function save_audit($data)
+     {
+          return $this->adt->input_audit($data);
      }
 }
