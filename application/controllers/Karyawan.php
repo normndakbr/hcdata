@@ -82,8 +82,10 @@ class Karyawan extends My_Controller
      public function vaksin()
      {
           $auth_person = $this->input->get('auth_person');
+          $status = $this->input->get('status');
           $id_personal = $this->kry->get_id_personal($auth_person);
           $data['vaks'] = $this->vks->tabel_vaksin($id_personal);
+          $data['status'] = $status;
           $this->load->view('dashboard/karyawan/vaksin', $data);
      }
 
