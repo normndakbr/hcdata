@@ -3,6 +3,7 @@ $(document).ready(function () {
     let auth_person = $("#valueAuthPersonal").val();
 
     $("#idEditSertifikat").load(site_url + "karyawan/sertifikasi?auth_person=" + auth_person);
+    $("#idEditVaccine").load(site_url + "karyawan/vaksin?auth_person=" + auth_person + "&status=edit");
 
     $(document).on('click', '.detail_sertifikasi', function () {
         let auth_sertifikat = $(this).attr("id");
@@ -170,6 +171,61 @@ $(document).ready(function () {
                 if (thrownError != "") {
                     $(".erreditsertifikat").html("Terjadi kesalahan saat update sertifikat, hubungi administrator");
                 }
+            }
+        });
+    });
+
+    $(document).on('click', '.editHapusVaccine', function () {
+        let auth_vaksin = $(this).attr("id");
+
+        swal({
+            title: "Sukses",
+            text: "Hapus data vaksin?",
+            type: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#36c6d3',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Ya, hapus',
+            cancelButtonText: 'Batalkan'
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: site_url + "karyawan/hapus_vaksin",
+                    data: {
+                        auth_vaksin: auth_vaksin,
+                        token: token,
+                    },
+                    success: function (data) {
+                        console.log(data);
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#idEditVaccine").LoadingOverlay("show");
+                            $("#idEditVaccine").load(site_url + "karyawan/vaksin?auth_person=" + auth_person + "&status=edit");
+                            $("#idEditVaccine").LoadingOverlay("hide");
+                            swal('Berhasil', data.pesan, 'success');
+                        } else if (data.statusCode == 201) {
+                            swal('Error', data.pesan, 'error');
+                        } else {
+                            $.LoadingOverlay("hide");
+                            $(".errormsgvaksin").removeClass('d-none');
+                            $(".errormsgvaksin").removeClass('alert-info');
+                            $(".errormsgvaksin").addClass('alert-danger');
+                            $(".errormsgvaksin").html(data.pesan);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsgvaksin").removeClass('d-none');
+                        $(".errormsgvaksin").removeClass('alert-info');
+                        $(".errormsgvaksin").addClass('alert-danger');
+                        if (thrownError != "") {
+                            $(".errormsgvaksin").html("Terjadi kesalahan saat menghapus vaksin, hubungi administrator");
+                        }
+                    }
+                });
+            } else {
+                swal.close();
             }
         });
     });
