@@ -373,6 +373,7 @@
                                         </div>
                                         <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
                                             <h6 class="font-weight-bold" for="editPerKary"><span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span></h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Karyawan</h6>
                                             <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
                                             <hr style="height: 3px; background: #404443;">
                                         </div>
@@ -716,7 +717,6 @@
                                         </div>
 
                                         <div id="idEditSertifikat" class="mb-3 col-lg-12 col-md-12 col-sm-12">
-
                                         </div>
                                     </div>
                                 </div>
@@ -787,45 +787,25 @@
                                             <hr style="height: 3px; background: #404443;">
                                         </div>
 
+                                        <div id="idEditVaccine" class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="fileTab" role="tabpanel">
+                                    <div class="card-body row">
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none"></div>
+                                        </div>
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <h6 class="font-weight-bold" for="editPerKary"><span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span></h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data File Pendukung</h6>
+                                            <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
+                                            <hr style="height: 3px; background: #404443;">
+                                        </div>
+
                                         <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
                                             <table id="tbmSertifikasi" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="text-align:center;width:1%;">No.</th>
-                                                        <th style="text-align:center;width:10%;">Jenis Vaksin</th>
-                                                        <th style="text-align:center;width:10%;">Nama Vaksin</th>
-                                                        <th style="text-align:center;width:10%;">Tanggal Vaksinasi</th>
-                                                        <th style="text-align:center;width:9%;">Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
 
-                                                    if (!empty($data_vaksin)) {
-                                                        $n = 1;
-                                                        foreach ($data_vaksin as $list) {
-                                                            echo "<tr>";
-                                                            echo "<td class='align-middle' style='text-align:center;width:1%;'>" . $n++ . "</td>";
-                                                            echo "<td class='align-middle' style='width:35%;'>" . $list->vaksin_jenis . "</td>";
-                                                            echo "<td class='align-middle' style='width:35%;'>" . $list->vaksin_nama . "</td>";
-                                                            echo "<td class='align-middle text-center' style='width:35%;'>" . $list->tgl_vaksin . "</td>";
-                                                            echo "<td class='align-middle' style='width:9%;'>";
-                                                            echo "<button id=" . $list->auth_vaksin . " class='btn btn-primary btn-sm detail_sertifikasi' value='" . $list->id_vaksin . "'><i class='fas fa-asterisk'></i></button> ";
-                                                            echo "<button id=" . $list->auth_vaksin . " class='btn btn-warning btn-sm edit_sertifikasi' value='" . $list->id_vaksin . "'><i class='fas fa-edit'></i></button> ";
-                                                            echo "<button id=" . $list->auth_vaksin . " class='btn btn-danger btn-sm hapus_sertifikasi' value='" . $list->id_vaksin . "'><i class='fas fa-trash'></i></button> ";
-                                                            echo "</td>";
-                                                            echo "<tr>";
-                                                        }
-                                                    } else {
-                                                        echo  "<tr>";
-                                                        echo "<td colspan='6' style='text-align:center;'> Tidak ada data</td>";
-                                                        echo "</tr>";
-                                                    }
-
-                                                    echo '<script>$("#idsertifikat").LoadingOverlay("hide");</script>';
-
-                                                    ?>
-                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
