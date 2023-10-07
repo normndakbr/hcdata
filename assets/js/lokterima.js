@@ -5,11 +5,13 @@ $(document).ready(function () {
     });
 
     $('#perLokterima').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+        width: '100%'
     });
 
     $('#perLokterimaData').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+        width: '100%'
     });
 
     $.ajax({

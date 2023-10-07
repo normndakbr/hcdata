@@ -5,37 +5,45 @@
         });
 
         $('#perIzinData').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#perIzinDataAdd').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#lstJenisIzinAdd').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#lstProsesIzinAdd').select2({
             theme: 'bootstrap4',
+            width: '100%',
             dropdownParent: $('#mdllstkaryizin')
         });
 
         window.addEventListener('resize', function(event) {
             $('#perIzinData').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+            width: '100%'
             });
     
             $('#perIzinDataAdd').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+            width: '100%'
             });
     
             $('#lstJenisIzinAdd').select2({
-                theme: 'bootstrap4'
+                theme: 'bootstrap4',
+            width: '100%'
             });
     
             $('#lstProsesIzinAdd').select2({
                 theme: 'bootstrap4',
+            width: '100%',
                 dropdownParent: $('#mdllstkaryizin')
             });
         }, true);
