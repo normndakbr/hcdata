@@ -5,20 +5,24 @@ $(document).ready(function () {
     });
 
     $('#perLevelData').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
 
     $('#perLevel').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
 
     window.addEventListener('resize', function (event) {
         $('#perLevelData').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#perLevel').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
     }, true);

@@ -70,31 +70,39 @@ $(document).ready(function () {
     });
 
     $('#depPosisi').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
     $('#perPosisi').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
     $('#perPosisiData').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
     $('#editPosisiDepart').select2({
         theme: 'bootstrap4',
+            width: '100%',
         dropdownParent: $('#editPosisimdl')
     });
 
     window.addEventListener('resize', function (event) {
         $('#depPosisi').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
         $('#perPosisi').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
         $('#perPosisiData').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
         $('#editPosisiDepart').select2({
             theme: 'bootstrap4',
+            width: '100%',
             dropdownParent: $('#editPosisimdl')
         });
     }, true);

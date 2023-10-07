@@ -252,15 +252,18 @@ $(document).ready(function () {
     });
 
     $('#provData').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
 
     $('#lokkerpjo').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
 
     $('#perJenis').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+            width: '100%'
     });
 
 
@@ -270,15 +273,18 @@ $(document).ready(function () {
 
     window.addEventListener('resize', function (event) {
         $('#provData').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#lokkerpjo').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#perJenis').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
 
@@ -1696,6 +1702,7 @@ $(document).ready(function () {
                                 $("#lokkerpjonew").html(data.pjoo);
                                 $('#lokkerpjonew').select2({
                                     theme: 'bootstrap4',
+                                    width: '100%',
                                     dropdownParent: $("#mdlUploadPJO")
                                 });
                             },

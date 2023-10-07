@@ -13,32 +13,40 @@
 
           $(function() {
                $("#provPerusahaan").select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#kabPerusahaan").select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#kecPerusahaan").select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#kelPerusahaan").select2({
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#editPerusahaanProv").select2({
                     dropdownParent: $('#editPerusahaanmdl'),
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#editPerusahaanKab").select2({
                     dropdownParent: $('#editPerusahaanmdl'),
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#editPerusahaanKec").select2({
                     dropdownParent: $('#editPerusahaanmdl'),
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
                $("#editPerusahaanKel").select2({
                     dropdownParent: $('#editPerusahaanmdl'),
-                    theme: 'bootstrap4'
+                    theme: 'bootstrap4',
+            width: '100%'
                });
 
                $.ajax({

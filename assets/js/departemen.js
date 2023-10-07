@@ -6,21 +6,25 @@ $(document).ready(function () {
     });
 
     $('#perDepartData').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+        width: '100%'
     });
 
     $('#perDepart').select2({
-        theme: 'bootstrap4'
+        theme: 'bootstrap4',
+        width: '100%'
     });
 
     window.addEventListener('resize', function (event) {
 
         $('#perDepartData').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
 
         $('#perDepart').select2({
-            theme: 'bootstrap4'
+            theme: 'bootstrap4',
+            width: '100%'
         });
     }, true);
 
