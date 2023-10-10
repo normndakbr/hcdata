@@ -587,6 +587,28 @@
                                                                  <small class="erroraddNoReg text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
+                                                       <div class="col-lg-8 col-md-8 col-sm-12 mb-3">
+                                                            <div class="row">
+                                                                 <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                                      <div>
+                                                                           <h6 class="text-danger font-italic">Catatan : Upload SIMPER/MINE PERMIT dalam format pdf, ukuran file SIMPER/MINE PERMIT maksimal 50 kb.</h6>
+                                                                      </div>
+                                                                      <div class="form-group">
+                                                                           <label for="simpermp"><b>Upload SIMPER/MINE PERMIT </b> <span class="text-danger">*</span></label>
+                                                                           <input type="file" class="form-control-file" id="simpermp">
+                                                                           <small class="errorsimpermp text-danger font-italic font-weight-bold"></small>
+                                                                           <span class="erroraddSpupload d-none"></span>
+                                                                      </div>
+                                                                 </div>
+                                                            </div>
+                                                       </div>
+                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <label for="addTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
+                                                                 <input id='addTglExp' name='addTglExp' type="date" class="form-control form-control-user" disabled>
+                                                                 <small class="erroraddTglExp text-danger font-italic font-weight-bold"></small>
+                                                            </div>
+                                                       </div>
                                                        <div id="txtsim" class="col-lg-12 col-md-12 col-sm-12 mb-3 d-none">
                                                             <div class="row">
                                                                  <div class="col-lg-6 col-md-6 col-sm-12">
@@ -622,13 +644,6 @@
                                                                            <span class="h52k342 j8234234b n234b5b7 kl234nn d-none"></span>
                                                                       </div>
                                                                  </div>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <label for="addTglExp">Tanggal Expired Izin <span class="text-danger">*</span></label>
-                                                                 <input id='addTglExp' name='addTglExp' type="date" class="form-control form-control-user" disabled>
-                                                                 <small class="erroraddTglExp text-danger font-italic font-weight-bold"></small>
                                                             </div>
                                                        </div>
                                                        <div id="txtunit" class="col-lg-12 col-md-12 col-sm-12 mb-3">

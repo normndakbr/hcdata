@@ -86,6 +86,25 @@ class Karyawan_model extends CI_Model
         $this->db->where('stat_alamat_ktp', 'T');
         $query = $this->db->get();
 
+        if (!empty($query->result())) {
+            foreach ($query->result() as $list) {
+                $id_sim_kary = $list->id_sim_kary;
+            }
+
+            return $id_sim_kary;
+        } else {
+            return 0;
+        }
+    }
+
+    public function get_sim_kary_by_idkary($id)
+    {
+        $now = date('Y-m-d');
+        $this->db->from('vw_sim_karyawan');
+        $this->db->where('id_karyawan', $id);
+        $this->db->where('tgl_exp_sim >', $now);
+        $query = $this->db->get();
+
         return $query->row();
     }
 
@@ -172,6 +191,15 @@ class Karyawan_model extends CI_Model
         return $query->row();
     }
 
+    public function get_all_izin_by_auth($auth_karyawan)
+    {
+        $this->db->from('vw_izin_tambang');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     public function get_sim_by_auth($auth_personal)
     {
 
@@ -206,6 +234,16 @@ class Karyawan_model extends CI_Model
         $this->db->where('id_personal', $id_personal);
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function get_pelanggaran_by_auth($auth_karyawan)
+    {
+        $query = $this->db->get_where('vw_langgar', ['auth_kary' => $auth_karyawan])->result();
+        if (!empty($query)) {
+            return $query;
+        } else {
+            return;
+        }
     }
 
     public function get_mcu_by_auth($auth_karyawan)
@@ -812,9 +850,13 @@ class Karyawan_model extends CI_Model
         return $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
     }
 
+    public function get_dt_izin($auth_izin_tambang)
+    {
+        return $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin_tambang])->result();
+    }
+
     public function hapus_mcu($auth_mcu)
     {
-
         $cek_id = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
         if (!empty($cek_id)) {
             foreach ($cek_id as $list) {
@@ -1213,7 +1255,7 @@ class Karyawan_model extends CI_Model
         $result = $this->db->query($query);
         return $result->result_array();
     }
-    
+
     public function read_data_by_id($query)
     {
         $result = $this->db->query($query);

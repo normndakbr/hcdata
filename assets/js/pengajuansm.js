@@ -299,6 +299,13 @@
                 $('#txtDohKaryIzinAdd').text('');
                 $('#txtExpMPKaryIzinAdd').text('');
                 $("#txtCariKaryIzinAdd").val('');
+                $("#txtKetDetKaryIzinAdd").val('');
+                $(".errorkry1").text('');
+                $(".errorkry2").text('');
+                $(".errorkry3").text('');
+                $(".errorkry4").text('');
+                $(".errorkry5").text('');
+                $(".errorkry6").text('');
             } else {
                 swal('Error','Proses Izin wajib dipilih','error');
             }
@@ -327,16 +334,25 @@
 
         $("#btnSimpanKaryAddIzinDet").click(function() {
             let authpengajuansm = $("#authPengajuanIzinAdd").val();
+            let jenisizin = $("#lstJenisIzinAdd :selected").text();
+            let prosizin = $("#lstProsesIzinAdd :selected").text();
             let authkary = $("#authKaryIzinAdd").val();
             let nik = $("#txtNikKaryIzinAdd").text();
             let nama = $("#txtNamaKaryIzinAdd").text();
             let prosesizin = $("#lstProsesIzinAdd").val();
             let ketdet = $("#txtKetDetKaryIzinAdd").val();
-            let tabel = $("#tbldata").val();
+            let fileidprs = $("#idPrs").val();
+            const flidprs = $('#idPrs').prop('files')[0];
+            let filesrtsehat = $("#srtSehatKlinik").val();
+            const flsrtsehat = $('#srtSehatKlinik').prop('files')[0];
+            let fileinduksi = $("#lbrInduksi").val();
+            const flinduksi = $('#lbrInduksi').prop('files')[0];
+            let filemplama = $("#mpLama").val();
+            const flmplama = $('#mpLama').prop('files')[0];
 
             swal({
-                title: "Data Karyawan",
-                text: "Yakin data karyawan NIK : " + nik + ", Nama : " + nama + " akan diambil?",
+                title: "Pengajuan MINE PERMIT",
+                text: "Yakin " + prosizin + jenisizin + " akan dibuat?",
                 type: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#36c6d3',
@@ -345,20 +361,32 @@
                 cancelButtonText: 'Batalkan'
             }).then(function(result) {
                 if (result.value) {
-                    $.LoadingOverlay("show");
+                    // $.LoadingOverlay("show");
+                    let formData = new FormData();
+                    formData.append('flidprs', flidprs);
+                    formData.append('fileidprs', fileidprs);
+                    formData.append('filesrtsehat', filesrtsehat);
+                    formData.append('flsrtsehat', flsrtsehat);
+                    formData.append('fileinduksi', fileinduksi);
+                    formData.append('flinduksi', flinduksi);
+                    formData.append('filemplama', filemplama);
+                    formData.append('flmplama', flmplama);
+                    formData.append('authpengajuansm', authpengajuansm);
+                    formData.append('authkary', authkary);
+                    formData.append('nik', nik);
+                    formData.append('nama', nama);
+                    formData.append('prosesizin', prosesizin);
+                    formData.append('ketdet', ketdet);
+
                     $.ajax({
-                        type: "POST",
+                        type: 'POST',
                         url: site_url + "pengajuansm/input_karypengajuansm",
-                        data: {
-                            authpengajuansm: authpengajuansm,
-                            authkary: authkary,
-                            prosesizin: prosesizin,
-                            ketdet: ketdet,
-                            nik: nik,
-                            nama: nama,
-                        },
-                        timeout: 20000,
-                        success: function(data, textStatus, xhr) {
+                        data: formData,
+                        cache: false,
+                        processData: false,
+                        contentType: false,
+                        timeout: 10000,
+                        success: function(data) {
                             var data = JSON.parse(data);
                             if (data.statusCode == 200) {
                                 $.LoadingOverlay("hide");
@@ -371,16 +399,27 @@
                                 $('#txtDohKaryIzinAdd').text('');
                                 $('#txtExpMPKaryIzinAdd').text('');
                                 $("#txtCariKaryIzinAdd").val('');
+                                $("#idPrs").val('');
+                                $("#srtSehatKlinik").val('');
+                                $("#lbrInduksi").val('');
+                                $("#mpLama").val('');
                                 $(".err_kary_izin_add").removeClass("alert-danger");
                                 $(".err_kary_izin_add").addClass("alert-primary");
                                 $(".err_kary_izin_add").removeClass("d-none");
                                 $(".err_kary_izin_add").html(data.pesan);
+                            } else if (data.statusCode == 202) {
+                                $(".errorkry1").html(data.authkary);
+                                $(".errorkry2").html(data.ketdet);
+                                $(".errorkry3").html(data.fileidprs);
+                                $(".errorkry4").html(data.filesrtsehat);
+                                $(".errorkry5").html(data.fileinduksi);
+                                $(".errorkry6").html(data.filemplama);
+                                $.LoadingOverlay("hide");
                             } else {
-                                $(".err_kary_izin_add").removeClass("alert-primary");
-                                $(".err_kary_izin_add").addClass("alert-danger");
+                                $(".err_kary_izin_add").removeClass("alert-danger");
+                                $(".err_kary_izin_add").addClass("alert-primary");
                                 $(".err_kary_izin_add").removeClass("d-none");
                                 $(".err_kary_izin_add").html(data.pesan);
-                                $.LoadingOverlay("hide");
                             }
                         },
                         error: function(xhr, ajaxOptions, thrownError) {
@@ -426,6 +465,13 @@
             $('#txtDohKaryIzinAdd').text('');
             $('#txtExpMPKaryIzinAdd').text('');
             $("#txtCariKaryIzinAdd").val('');
+            $("#txtKetDetKaryIzinAdd").val('');
+            $(".errorkry1").text('');
+            $(".errorkry2").text('');
+            $(".errorkry3").text('');
+            $(".errorkry4").text('');
+            $(".errorkry5").text('');
+            $(".errorkry6").text('');
             $.LoadingOverlay("hide");
         });
 

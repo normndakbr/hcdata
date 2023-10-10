@@ -98,6 +98,15 @@ class Karyawan extends My_Controller
           echo json_encode($list);
      }
 
+     public function getKaryawanIzin()
+     {
+          // POST data
+          $data = $this->input->post();
+          $list = $this->kry->getKaryawanIzin($data);
+
+          echo json_encode($list);
+     }
+
      public function detail_karyawan($auth_kary)
      {
           $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
@@ -110,10 +119,11 @@ class Karyawan extends My_Controller
           $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
           $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
           $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
+          $data["data_izin"] = $this->kry->get_all_izin_by_auth($auth_kary);
+          $data["data_langgar"] = $this->kry->get_pelanggaran_by_auth($auth_kary);
           $data["data_mcu"] = $this->kry->get_mcu_by_auth($auth_kary);
           $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($auth_kary);
           $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
-
           $data['get_menu'] = $this->dsmod->get_menu();
           $this->load->view('dashboard/template/header', $data);
           $this->load->view('dashboard/karyawan/karyawan_detail', $data);
@@ -1143,6 +1153,7 @@ class Karyawan extends My_Controller
                $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
                $tglexp = htmlspecialchars($this->input->post("tglexp", true));
                $filesim = htmlspecialchars($this->input->post("filesim", true));
+               $filesmp = htmlspecialchars($this->input->post("filesmp", true));
 
                if ($jenisizin == "SP") {
                     if ($jenissim == "") {
@@ -1168,6 +1179,12 @@ class Karyawan extends My_Controller
                     $errsim = "";
                }
 
+               if ($filesmp == "") {
+                    $errsmp = "<p>SIMPER /MINE PERMIT wajib diupload</p>";
+               } else {
+                    $errsmp = "";
+               }
+
                $error = [
                     'statusCode' => 202,
                     'jenisizin' => form_error("jenisizin"),
@@ -1175,7 +1192,8 @@ class Karyawan extends My_Controller
                     'tglexp' => form_error("tglexp"),
                     'jenissim' => $errjenis,
                     'tglexpsim' => $errtglsim,
-                    'filesim' => $errsim
+                    'filesim' => $errsim,
+                    'filesmp' => $errsmp
                ];
 
                echo json_encode($error);
@@ -1191,10 +1209,39 @@ class Karyawan extends My_Controller
                $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
                $filesim = htmlspecialchars($this->input->post("filesim", true));
                $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+               $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+               $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
+               $url_izin = date('YmdHis') . '-SMP.pdf';
+               $foldername = md5($id_personal);
 
                if ($auth_kary == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
                     return;
+               }
+
+               $smpname = $_FILES['filesmpkary']['name'];
+               $smptipe = $_FILES['filesmpkary']['type'];
+               $smpsize = $_FILES['filesmpkary']['size'];
+
+               if ($smpname == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "SIMPER / MINE PERMIT wajib diupload."));
+                    return;
+               }
+
+               if ($smptipe == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
+                    return;
+               }
+
+               if ($smpsize == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "File SIMPER / MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50kb."));
+                    return;
+               }
+
+               if ($jenisizin == 'SP') {
+                    $idjenisizin = 2;
+               } else if ($jenisizin == 'MP') {
+                    $idjenisizin = 1;
                }
 
                if ($jenisizin == "SP") {
@@ -1206,10 +1253,11 @@ class Karyawan extends My_Controller
                          } else {
                               $id_izin = $this->kry->get_id_izin($auth_izin);
                               $dtizin = array(
-                                   'jenis_izin_tambang' => $jenisizin,
+                                   'id_jenis_izin_tambang' => $idjenisizin,
                                    'no_reg' => $noreg,
                                    'tgl_expired' => $tglexp,
-                                   'id_sim' => $jenissim,
+                                   'id_sim_kary' => $id_sim_kary,
+                                   'url_izin_tambang' => $id_sim_kary,
                                    'tgl_exp_sim' => $tglexpsim,
                                    'ket_izin_tambang' => ''
                               );
@@ -1219,13 +1267,21 @@ class Karyawan extends My_Controller
 
                               $data_sim_polisi = [
                                    'id_sim' => $jenissim,
-                                   'tgl_exp' => $tglexpsim,
+                                   'tgl_exp_sim' => $tglexpsim,
                                    'ket_sim_kary' => '',
                               ];
 
-                              // echo json_encode($data_sim_polisi);
-                              // return;
                               $this->kry->update_sim($id_sim_kary, $data_sim_polisi);
+
+                              $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                              $config['allowed_types'] = 'pdf';
+                              $config['max_size'] = 50;
+                              $config['file_name'] = $url_izin;
+
+                              $this->load->library('upload', $config);
+                              $this->load->initialize($config);
+                              $this->upload->do_upload('filesmpkary');
+
                               echo json_encode(array("statusCode" => 200, "pesan" => "Data SIMPER/Mine Permite berhasil diupdate"));
                          }
                     } else {
@@ -1233,7 +1289,7 @@ class Karyawan extends My_Controller
                          return;
                     }
                } else if ($jenisizin == "MP") {
-                    $jenissim = 0;
+                    $id_sim_kary = 0;
                     $tglexpsim = "1970-01-01";
 
                     $cek_noreg = $this->kry->cek_no_simper($noreg);
@@ -1246,16 +1302,26 @@ class Karyawan extends My_Controller
                          $id_izin = $this->kry->get_id_izin($auth_izin);
 
                          $dtizin = array(
-                              'jenis_izin_tambang' => $jenisizin,
+                              'id_jenis_izin_tambang' => $idjenisizin,
                               'no_reg' => $noreg,
                               'tgl_expired' => $tglexp,
-                              'id_sim' => $jenissim,
+                              'id_sim_kary' => $id_sim_kary,
                               'tgl_exp_sim' => $tglexpsim,
                               'ket_izin_tambang' => ''
                          );
 
                          $upt_izin = $this->smp->update_izin($id_izin, $dtizin);
                          if ($upt_izin == 200) {
+
+                              $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                              $config['allowed_types'] = 'pdf';
+                              $config['max_size'] = 50;
+                              $config['file_name'] = $url_izin;
+
+                              $this->load->library('upload', $config);
+                              $this->load->initialize($config);
+                              $this->upload->do_upload('filesmpkary');
+
                               echo json_encode(array("statusCode" => 200, "pesan" => "Data SIMPER/Mine Permite berhasil diupdate"));
                               return;
                          } else {
@@ -1266,11 +1332,11 @@ class Karyawan extends My_Controller
                          if ($auth_kary !== "") {
                               $data_izin_tambang = [
                                    'id_kary' => $id_karyawan,
-                                   'jenis_izin_tambang' => $jenisizin,
+                                   'id_jenis_izin_tambang' => $idjenisizin,
                                    'no_Reg' => $noreg,
                                    'tgl_expired' => $tglexp,
-                                   'id_sim' => $jenissim,
-                                   'tgl_exp_sim' => $tglexpsim,
+                                   'id_sim_kary' => $id_sim_kary,
+                                   'url_izin_tambang' => $url_izin,
                                    'ket_izin_tambang' => '',
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
@@ -1280,6 +1346,15 @@ class Karyawan extends My_Controller
                               $izin = $this->smp->input_izin_tambang($data_izin_tambang);
 
                               if ($izin) {
+                                   $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                                   $config['allowed_types'] = 'pdf';
+                                   $config['max_size'] = 50;
+                                   $config['file_name'] = $url_izin;
+
+                                   $this->load->library('upload', $config);
+                                   $this->load->initialize($config);
+                                   $this->upload->do_upload('filesmpkary');
+
                                    $last_izin = $this->smp->last_row_izin($auth_kary);
                                    if (!empty($last_izin)) {
                                         foreach ($last_izin as $list) {
@@ -2248,12 +2323,33 @@ class Karyawan extends My_Controller
           $dtmcu = $this->kry->get_dt_mcu($auth_mcu);
           if (!empty($dtmcu)) {
                foreach ($dtmcu as $list) {
-                    $url_file = $list->url_file;
+                    $url_izin_tambang = $list->url_izin_tambang;
                     $id_personal = $list->id_personal;
                }
                $foldername = md5($id_personal);
-               if (is_file("berkas/karyawan/" . $foldername . "/" . $url_file)) {
-                    $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_file);
+               if (is_file("berkas/karyawan/" . $foldername . "/" . $url_izin_tambang)) {
+                    $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_izin_tambang);
+                    header('Content-Type: application/pdf');
+                    readfile($tofile);
+               } else {
+                    redirect('karyawan/error404');
+               }
+          } else {
+               redirect('karyawan/error404');
+          }
+     }
+
+     function berkasizin($auth_izin_tambang)
+     {
+          $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
+          if (!empty($dtizin)) {
+               foreach ($dtizin as $list) {
+                    $url_izin_tambang = $list->url_izin_tambang;
+                    $id_personal = $list->id_personal;
+               }
+               $foldername = md5($id_personal);
+               if (is_file("berkas/karyawan/" . $foldername . "/" . $url_izin_tambang)) {
+                    $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_izin_tambang);
                     header('Content-Type: application/pdf');
                     readfile($tofile);
                } else {

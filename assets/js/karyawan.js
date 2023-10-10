@@ -258,6 +258,12 @@ $(document).ready(function () {
                 errtglexp = "";
             }
 
+            if (tglexp == "") {
+                errtglexp = "Tanggal expired izin wajib diisi";
+            } else {
+                errtglexp = "";
+            }
+
             if (errjenisizin == "" && errnoreg == "" && errtglexp == "" && errjenissim == "" && errtglexpsim == "") {
                 $("#mdlunitsimper").modal("show");
                 $("#refreshjenisUnitSimper").removeAttr('disabled');
@@ -863,7 +869,6 @@ $(document).ready(function () {
     });
 
     $("#btnsimpanunitsimper").click(function () {
-        console.log("btnsimpanunitsimper is fired!");
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
         let auth_person = $(".0c09efa8ccb5e0114e97df31736ce2e3").text();
@@ -877,23 +882,14 @@ $(document).ready(function () {
         let tipeakses = $("#tipeAksesUnit").val();
         let filesim = $("#filesimpolisi").val();
         const flsim = $('#filesimpolisi').prop('files')[0];
-
-        console.log(auth_kary);
-        console.log(auth_izin);
-        console.log(auth_person);
-        console.log(auth_simpol);
-        console.log(jenisizin);
-        console.log(noreg);
-        console.log(tglexp);
-        console.log(jenissim);
-        console.log(tglexpsim);
-        console.log(jenisunit);
-        console.log(tipeakses);
-        console.log(filesim);
+        let filesmp = $("#simpermp").val();
+        const flsmp = $('#simpermp').prop('files')[0];
 
         let formData = new FormData();
         formData.append('filesimpolisi', flsim);
         formData.append('filesim', filesim);
+        formData.append('filesmpkary', flsmp);
+        formData.append('filesmp', filesmp);
         formData.append('jenisizin', jenisizin);
         formData.append('noreg', noreg);
         formData.append('tglexpsim', tglexpsim);
@@ -915,8 +911,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
-                console.log(data);
-                console.log("Success POST on " + site_url + "izin_tambang/add_unit_izin_tambang");
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     $("#jenisUnitSimper").val('').trigger('change');
@@ -2402,7 +2396,6 @@ $(document).ready(function () {
                 }
             }
         });
-
     });
 
     $(document).on('click', '.upload_sertifikasi', function () {
@@ -3623,7 +3616,7 @@ $(document).ready(function () {
     });
 
     $("#addSimpanIzinUnit").click(function () {
-        $.LoadingOverlay("show");
+        // $.LoadingOverlay("show");
         let auth_kary = $(".a6b73b5c154d3540919ddf46edf3b84e").text();
         let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
         let auth_simpol = $(".j8234234b").text();
@@ -3632,9 +3625,13 @@ $(document).ready(function () {
         let tglexp = $("#addTglExp").val();
         let jenissim = $("#addJenisSIM").val();
         let tglexpsim = $("#addTglExpSIM").val();
+        let filesmp = $("#simpermp").val();
+        const flsmp = $('#simpermp').prop('files')[0];
 
         // append form data
         let formData = new FormData();
+        formData.append('filesmpkary', flsmp);
+        formData.append('filesmp', filesmp);
         formData.append('jenisizin', jenisizin);
         formData.append('noreg', noreg);
         formData.append('tglexpsim', tglexpsim);
@@ -3653,7 +3650,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
-                console.log("Success POST on " + site_url + "karyawan/addsimper");
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                     if (auth_izin == "") {

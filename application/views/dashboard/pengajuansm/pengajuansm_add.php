@@ -160,7 +160,8 @@
                               <div class="row p-2">
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="txtCariKaryIzinAdd">Cari Karyawan :</label>
-                                        <input id='txtCariKaryIzinAdd' autocomplete="off" spellcheck="false" class="form-control" value=""><br>
+                                        <input id='txtCariKaryIzinAdd' autocomplete="off" spellcheck="false" class="form-control bg-white" value="">
+                                        <small class="errorkry1 text-danger font-weight-bold font-italic"></small><br>
                                    </div>
                                    <div class="col-lg-2 col-md-2 col-sm-12">
                                         <label for="txtNikKaryIzinAdd">NIK :</label>
@@ -189,7 +190,8 @@
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="txtKetDetKaryIzinAdd">Keterangan : </label>
-                                        <textarea id='txtKetDetKaryIzinAdd' class="form-control" value=""></textarea><br>
+                                        <textarea id='txtKetDetKaryIzinAdd' class="form-control"></textarea>
+                                        <small class="errorkry2 text-danger font-weight-bold font-italic"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <h4>Berkas Upload :</h4>
@@ -198,11 +200,13 @@
                                                   <div class="row">
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <label for="">1. ID Card Internal Perusahaan/Surat Keterangan Bekerja</label>
-                                                            <input type="file" class="form-control"><br>
+                                                            <input type="file" id="idPrs" name="idPrs" class="form-control" accept=".pdf">
+                                                            <small class="errorkry3 text-danger font-weight-bold font-italic"></small><br>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
-                                                            <label for="">2. Surat Keterangan Sehat dari Clinic PT.IC</label>
-                                                            <input type="file" class="form-control"><br>
+                                                            <label for="">2. Surat Keterangan Sehat dari Klinik PT.IC</label>
+                                                            <input type="file" id="srtSehatKlinik" name="srtSehatKlinik" class="form-control" accept=".pdf">
+                                                            <small class="errorkry4 text-danger font-weight-bold font-italic"></small><br>
                                                        </div>
                                                   </div>
                                              </div>
@@ -210,11 +214,13 @@
                                                   <div class="row">
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <label for="">3. Lembar Pengenalan Umum Tambang ( Induksi )</label>
-                                                            <input type="file" class="form-control"><br>
+                                                            <input type="file" id="lbrInduksi" name="lbrInduksi" class="form-control" accept=".pdf">
+                                                            <small class="errorkry5 text-danger font-weight-bold font-italic"></small><br>
                                                        </div>
                                                        <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <label for="">4. Mine Permit Lama ( Untuk Perpanjangan )</label>
-                                                            <input type="file" class="form-control"><br>
+                                                            <input type="file" id="mpLama" name="mpLama" class="form-control" accept=".pdf">
+                                                            <small class="errorkry6 text-danger font-weight-bold font-italic"></small><br>
                                                        </div>
                                                   </div>
                                              </div>
