@@ -66,6 +66,7 @@ class Izin_tambang extends My_Controller
 
           if ($this->form_validation->run() == false) {
                $filesim = htmlspecialchars($this->input->post("filesim", true));
+               $filesmp = htmlspecialchars($this->input->post("filesmp", true));
                $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
 
                if ($jenisizin == "SP") {
@@ -78,11 +79,18 @@ class Izin_tambang extends My_Controller
                     $errsim = "";
                }
 
+               if ($filesmp == "") {
+                    $errsmp = "<p>SIMPER /MINE PERMIT wajib diupload</p>";
+               } else {
+                    $errsmp = "";
+               }
+
                $error = [
                     'statusCode' => 202,
                     'jenisunit' => form_error("jenisunit"),
                     'tipeakses' => form_error("tipeakses"),
-                    "filesim" =>  $errsim
+                    "filesim" =>  $errsim,
+                    "filesmp" =>  $errsmp
                ];
 
                echo json_encode($error);
@@ -105,11 +113,31 @@ class Izin_tambang extends My_Controller
                $id_personal = $this->kry->get_id_personal($auth_person);
                $foldername = md5($id_personal);
                $now = date('YmdHis');
+               $fileSMP = $now . "-SMP.pdf";
                $nama_file = $now . "-SIMPOL.pdf";
-
+               $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
                $akses = $this->smp->get_akses($tipe_akses);
                if ($akses === 0) {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Izin akses tidak ditemukan"));
+                    return;
+               }
+
+               $smpname = $_FILES['filesmpkary']['name'];
+               $smptipe = $_FILES['filesmpkary']['type'];
+               $smpsize = $_FILES['filesmpkary']['size'];
+
+               if ($smpname == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "SIMPER / MINE PERMIT wajib diupload."));
+                    return;
+               }
+
+               if ($smptipe == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
+                    return;
+               }
+
+               if ($smpsize == "") {
+                    echo json_encode(array("statusCode" => 202, "filesmp" => "File SIMPER / MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50kb."));
                     return;
                }
 
@@ -128,6 +156,12 @@ class Izin_tambang extends My_Controller
                          }
                     }
 
+                    if ($jenisizin == 'SP') {
+                         $jenisizin = 2;
+                    } else if ($jenisizin == 'MP') {
+                         $jenisizin = 1;
+                    }
+
                     if (is_dir('./berkas/karyawan/' . $foldername) == false) {
                          mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
                     }
@@ -136,15 +170,20 @@ class Izin_tambang extends My_Controller
                          $config['upload_path'] = './berkas/karyawan/' . $foldername;
                          $config['allowed_types'] = 'pdf';
                          $config['max_size'] = 50;
-                         $config['file_name'] = $nama_file;
+                         $config['file_name'] = $fileSMP;
 
                          $this->load->library('upload', $config);
+                         $this->load->initialize($config);
+                         $this->upload->do_upload('filesmpkary');
 
+                         $config['file_name'] = $nama_file;
+                         $this->load->library('upload', $config);
+                         $this->load->initialize($config);
                          if (!$this->upload->do_upload('filesimpolisi')) {
                               $err = $this->upload->display_errors();
 
                               if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                   $errorMessage = "File SIM melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50kb.";
+                                   $errorMessage = "File SIM melebihi batas ukuran file maksimal. Batas ukuran file maksimal 50 kb.";
                               } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                                    $errorMessage = "Format file yang diupload wajib dalam bentuk pdf.";
                               } else {
@@ -158,20 +197,19 @@ class Izin_tambang extends My_Controller
 
                               echo json_encode($error);
                          } else {
-
                               $data_izin_tambang = [
                                    'id_kary' => $id_karyawan,
-                                   'jenis_izin_tambang' => $jenisizin,
+                                   'id_jenis_izin_tambang' => $jenisizin,
                                    'no_Reg' => $noreg,
                                    'tgl_expired' => $tglexp,
-                                   'id_sim' => $jenissim,
+                                   'id_sim_kary' => $id_sim_kary,
+                                   'url_izin_tambang' => $fileSMP,
                                    'tgl_exp_sim' => $tglexpsim,
                                    'ket_izin_tambang' => '',
                                    'tgl_buat' => date('Y-m-d H:i:s'),
                                    'tgl_edit' => date('Y-m-d H:i:s'),
                                    'id_user' => $this->session->userdata('id_user_hcdata'),
                               ];
-
 
                               $this->smp->input_izin_tambang($data_izin_tambang);
 

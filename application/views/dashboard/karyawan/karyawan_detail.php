@@ -70,6 +70,7 @@
                                              <li><a class="nav-link text-left has-ripple" id="v-pills-dtMCU-tab" data-toggle="pill" href="#v-pills-dtMCU" role="tab" aria-controls="v-pills-dtMCU" aria-selected="false">Medical Check Up (MCU)<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
                                              <li><a class="nav-link text-left has-ripple" id="v-pills-dtVaksin-tab" data-toggle="pill" href="#v-pills-dtVaksin" role="tab" aria-controls="v-pills-dtVaksin" aria-selected="false">Vaksin<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
                                              <li><a class="nav-link text-left has-ripple" id="v-pills-dtFilePendukung-tab" data-toggle="pill" href="#v-pills-dtFilePendukung" role="tab" aria-controls="v-pills-dtFilePendukung" aria-selected="false">File Pendukung<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
+                                             <li><a class="nav-link text-left has-ripple" id="v-pills-dtPelanggaran-tab" data-toggle="pill" href="#v-pills-dtPelanggaran" role="tab" aria-controls="v-pills-dtPelanggaran" aria-selected="false">Data Pelanggaran<span class="ripple ripple-animate" style="height: 373.25px; width: 373.25px; animation-duration: 0.7s; animation-timing-function: linear; background: rgb(70, 128, 255); opacity: 0.4; top: -168.188px; left: -119.625px;"></span></a></li>
                                         </ul>
                                    </div>
                                    <div class="col-lg-9 col-md-9 col-sm-12">
@@ -267,71 +268,48 @@
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtSIMPER" role="tabpanel" aria-labelledby="v-pills-dtSIMPER-tab">
                                                   <div class="card-body row">
-                                                       <div class="col-lg-4 col-md-4 col-sm-12">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
                                                             <div class="form-group">
-                                                                 <h6>Jenis Izin</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->jenis_izin) ? $data_izin->jenis_izin : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-6 col-md-6 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>No. Registrasi</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-2 col-md-2 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tgl. Akhir</h6>
-                                                                 <input type="text" class="form-control" value="<?= isset($data_izin->tgl_expired) ? date('d-M-Y', strtotime($data_izin->tgl_expired)) : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                            </div>
-                                                       </div>
-
-                                                       <?php if (isset($data_izin->jenis_izin_tambang) == "SP") { ?>
-                                                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Jenis SIM</h6>
-                                                                      <input type="text" class="form-control" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-2 col-md-2 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Tgl. Expired SIM</h6>
-                                                                      <input type="text" class="form-control" value="<?= date('d-M-Y', strtotime($data_izin->tgl_exp_sim)) ?>" style="background-color:transparent;margin-top:-10px;" disabled>
-                                                                 </div>
-                                                            </div>
-                                                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                                                 <div class="form-group">
-                                                                      <h6>Unit yang diizinkan</h6>
-                                                                      <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                                           <thead>
-                                                                                <tr>
-                                                                                     <th style="text-align:center;width: 1%;">NO.</th>
-                                                                                     <th style="width: 80%;">UNIT</th>
-                                                                                     <th style="width: 19%;">AKSES</th>
-                                                                                </tr>
-                                                                           </thead>
-                                                                           <tbody>
-                                                                                <?php
-                                                                                $no = 1;
-                                                                                if (!empty($data_unit)) {
-                                                                                     foreach ($data_unit as $list) {
-                                                                                          echo '<tr>';
-                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                                          echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
-                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
-                                                                                          echo '</tr>';
-                                                                                     }
-                                                                                } else {
+                                                                 <table id="tbmSertifikasiDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                      <thead>
+                                                                           <tr>
+                                                                                <th style="text-align:center;width: 1%;">NO.</th>
+                                                                                <th style="width: 55%;">JENIS IZIN</th>
+                                                                                <th style="width: 19%;">NO. REGISTRASI</th>
+                                                                                <th style="width: 10%;">TGL. EXPIRED</th>
+                                                                                <th style="width: 5%;">PROSES</th>
+                                                                           </tr>
+                                                                      </thead>
+                                                                      <tbody>
+                                                                           <?php
+                                                                           $no = 1;
+                                                                           if (!empty($data_izin)) {
+                                                                                foreach ($data_izin as $list) {
                                                                                      echo '<tr>';
-                                                                                     echo '<td colspan=3 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_izin_tambang . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 19%;">' . $list->no_reg . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_expired)) . '</td>';
+                                                                                     echo '<td style="text-align:center;">';
+                                                                                     echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
+                                                                                     if ($list->url_izin_tambang != "") {
+                                                                                          echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                     } else {
+                                                                                          echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                     }
+                                                                                     echo '</td>';
                                                                                      echo '</tr>';
                                                                                 }
-                                                                                ?>
-                                                                           </tbody>
-                                                                      </table>
-                                                                 </div>
+                                                                           } else {
+                                                                                echo '<tr>';
+                                                                                echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                           ?>
+                                                                      </tbody>
+                                                                 </table>
                                                             </div>
-                                                       <?php } ?>
+                                                       </div>
                                                   </div>
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtSertifikasi" role="tabpanel" aria-labelledby="v-pills-dtSertifikasi-tab">
@@ -362,7 +340,7 @@
                                                                                      echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_berakhir_sertifikasi)) . '</td>';
                                                                                      echo '<td style="text-align:center;">';
                                                                                      if ($list->file_sertifikasi != "") {
-                                                                                          echo '<a href ="' . base_url('karyawan/sertifikat/') . $list->auth_sertifikat . '" target="-blank" class="btn btn-primary btn-sm" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                          echo '<a href ="' . base_url('karyawan/sertifikat/') . $list->auth_sertifikat . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
                                                                                      } else {
                                                                                           echo '<a class="btn btn-danger btn-sm" title="File sertifikasi tidak ada"><i class="fas fa-ban"></i></a>';
                                                                                      }
@@ -408,7 +386,7 @@
                                                                                 echo '<td style="text-align:center;">';
 
                                                                                 if ($list->url_file != "") {
-                                                                                     echo '<a href ="' . base_url('karyawan/mcu/') . $list->auth_mcu . '" target="-blank" class="btn btn-primary btn-sm" title="Tampilkan Hasil MCU"><i class="far fa-file-pdf"></i></a>';
+                                                                                     echo '<a href ="' . base_url('karyawan/mcu/') . $list->auth_mcu . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Hasil MCU"><i class="far fa-file-pdf"></i></a>';
                                                                                 } else {
                                                                                      echo '<a class="btn btn-danger btn-sm" title="File MCU tidak ada"><i class="fas fa-ban"></i></a>';
                                                                                 }
@@ -488,6 +466,54 @@
                                                                  }
 
                                                                  ?>
+                                                            </div>
+                                                       </div>
+                                                  </div>
+                                             </div>
+                                             <div class="tab-pane fade" id="v-pills-dtPelanggaran" role="tabpanel" aria-labelledby="v-pills-dtPelanggaran-tab">
+                                                  <div class="card-body row">
+                                                       <div class="col-lg-12 col-md-12 col-sm-12">
+                                                            <div class="form-group">
+                                                                 <table id="tbmPelanggaranDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                                      <thead>
+                                                                           <tr>
+                                                                                <th style="text-align:center;width: 1%;">NO.</th>
+                                                                                <th style="width: 10%;">Tgl. Pelanggaran</th>
+                                                                                <th style="width: 55%;">Punistment</th>
+                                                                                <th style="width: 19%;">Tgl. Punishment</th>
+                                                                                <th style="width: 10%;">Tgl. Akhir Punishment</th>
+                                                                                <th style="width: 5%;">PROSES</th>
+                                                                           </tr>
+                                                                      </thead>
+                                                                      <tbody>
+                                                                           <?php
+                                                                           $no = 1;
+                                                                           if (!empty($data_langgar)) {
+                                                                                foreach ($data_langgar as $list) {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 60%;">' . date('d-M-Y', strtotime($list->tgl_langgar)) . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 19%;">' . $list->langgar_jenis . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_punishment)) . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_akhir_langgar)) . '</td>';
+                                                                                     echo '<td style="text-align:center;">';
+                                                                                     echo '<button class="btn btn-info btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
+                                                                                     if ($list->url_langgar != "") {
+                                                                                          echo '<a href ="' . base_url('pelanggaran/berkas/') . $list->auth_langgar . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                     } else {
+                                                                                          echo '<a class="btn btn-danger btn-sm text-white" title="File pelanggaran tidak ada"><i class="fas fa-ban "></i></a>';
+                                                                                     }
+                                                                                     echo '</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           } else {
+                                                                                echo '<tr>';
+                                                                                echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                           ?>
+                                                                      </tbody>
+                                                                 </table>
                                                             </div>
                                                        </div>
                                                   </div>

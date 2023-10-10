@@ -32,6 +32,7 @@ class My_Controller extends CI_Controller
           $this->load->model('Vaksin_model', 'vks');
           $this->load->model('Audit_model', 'adt');
           $this->load->model('Pengajuansm_model', 'psm');
+          $this->load->model('Pelanggaran_model', 'lgr');
           $this->load->model('Karyizin_model', 'kryizn');
           $this->load->model('NonaktifKary_model', 'nakary');
           $this->load->helper('url', 'form', 'captcha');

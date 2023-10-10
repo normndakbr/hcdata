@@ -209,14 +209,23 @@ class Pengajuansm extends My_Controller
 
      public function input_karypengajuansm()
      {
-          $this->form_validation->set_rules("authpengajuansm", "authpengajuansm", "required|trim", [
-               'required' => 'Pengajuan utama tidak ditemukan',
-          ]);
           $this->form_validation->set_rules("authkary", "authkary", "required|trim", [
                'required' => 'Karywan wajib dipilih',
           ]);
           $this->form_validation->set_rules("prosesizin", "prosesizin", "required|trim", [
                'required' => 'Proses izin wajib dipilih',
+          ]);
+          $this->form_validation->set_rules("fileidprs", "fileidprs", "required|trim", [
+               'required' => 'ID perusahaan wajib di upload',
+          ]);
+          $this->form_validation->set_rules("filesrtsehat", "filesrtsehat", "required|trim", [
+               'required' => 'Surat keterangans sehat wajib di upload',
+          ]);
+          $this->form_validation->set_rules("fileinduksi", "fileinduksi", "required|trim", [
+               'required' => 'Lembar induksi wajib di upload',
+          ]);
+          $this->form_validation->set_rules("filemplama", "filemplama", "required|trim", [
+               'required' => 'MINE PERMIT lama wajib di upload untuk perpanjangan MINE PERMIT',
           ]);
           $this->form_validation->set_rules("ketdet", "ketdet", "trim|max_length[2000],[
                'max_length' => 'Keterangan maksimal 2000 karakter'
@@ -225,10 +234,13 @@ class Pengajuansm extends My_Controller
           if ($this->form_validation->run() == false) {
                $error = [
                     'statusCode' => 202,
-                    'authpengajuansm' => form_error("authpengajuansm"),
                     'authkary' => form_error("authkary"),
                     'prosesizin' => form_error("prosesizin"),
-                    'ketdet' => form_error("ketdet")
+                    'ketdet' => form_error("ketdet"),
+                    'fileidprs' => form_error("fileidprs"),
+                    'filesrtsehat' => form_error("filesrtsehat"),
+                    'fileinduksi' => form_error("fileinduksi"),
+                    'filemplama' => form_error("filemplama"),
                ];
 
                echo json_encode($error);
@@ -242,6 +254,12 @@ class Pengajuansm extends My_Controller
                $ketdet = htmlspecialchars($this->input->post("ketdet"));
                $idpengajuansm = $this->psm->get_id_pengajuan($authpengajuansm);
                $idkary = $this->kry->get_id_karyawan($authkary);
+               $foldername = md5($idpengajuansm);
+               $folderkary = md5($idkary);
+               $nama_file_idp = date('YmdHis') . "-IDP.pdf";
+               $nama_file_sht = date('YmdHis') . "-SKS.pdf";
+               $nama_file_ins = date('YmdHis') . "-INS.pdf";
+               $nama_file_mp = date('YmdHis') . "-MP.pdf";
 
                $cekkary = $this->psm->cek_kary($idkary, $idpengajuansm);
                if ($cekkary) {
@@ -255,23 +273,132 @@ class Pengajuansm extends My_Controller
                     return;
                }
 
-               $data = [
-                    'id_pengajuan_sm' => $idpengajuansm,
-                    'id_karyawan' => $idkary,
-                    'id_proses_izin_tambang' => $prosesizin,
-                    'ket_pengajuan_sm_detail' => $ketdet,
-                    'stat_pengajuan_sm_detail' => 'F',
-                    'tgl_cetak' => '1970-01-01 00:00:00',
-                    'tgl_buat' => date('Y-m-d H:i:s'),
-                    'tgl_edit' => date('Y-m-d H:i:s'),
-                    'id_user' => $this->session->userdata('id_user_hcdata'),
-               ];
+               if (is_dir('./berkas/pengajuanizin/' . $foldername) == false) {
+                    mkdir('./berkas/pengajuanizin/' . $foldername, 0775, TRUE);
+                    mkdir('./berkas/pengajuanizin/' . $foldername . "/" . $folderkary, 0775, TRUE);
+               }
 
-               $karypengajuansm = $this->psm->input_kary_pengajuan_sm($data);
-               if ($karypengajuansm) {
-                    echo json_encode(array("statusCode" => 200, "pesan" => "Data karyawan berhasil diambil"));
+               if (is_dir('./berkas/pengajuanizin/' . $foldername . "/" . $folderkary)) {
+
+                    $nmfile = $_FILES['flidprs']['name'];
+                    $tipe = $_FILES['flidprs']['type'];
+                    $size = $_FILES['flidprs']['size'] / 1000;
+
+                    if ($nmfile == "") {
+                         echo json_encode(array("statusCode" => 202, "fileidprs" =>  'File ID karyawan / Surat Keterangan Bekerja wajib dipilih'));
+                         return;
+                    }
+
+                    if ($tipe != "application/pdf") {
+                         echo json_encode(array("statusCode" => 202, "fileidprs" =>  'Format file nya dalam bentuk pdf'));
+                         return;
+                    }
+
+                    if ($size > 100) {
+                         echo json_encode(array("statusCode" => 202, "fileidprs" =>  'Ukuran file maksimal 100 kb.'));
+                         return;
+                    }
+
+
+                    $nmfile = $_FILES['flsrtsehat']['name'];
+                    $tipe = $_FILES['flsrtsehat']['type'];
+                    $size = $_FILES['flsrtsehat']['size'] / 1000;
+
+                    if ($nmfile == "") {
+                         echo json_encode(array("statusCode" => 202, "filesrtsehat" =>  'Surat Keterangan Kesehatan wajib dipilih'));
+                         return;
+                    }
+
+                    if ($tipe != "application/pdf") {
+                         echo json_encode(array("statusCode" => 202, "filesrtsehat" =>  'Format file nya dalam bentuk pdf'));
+                         return;
+                    }
+
+                    if ($size > 100) {
+                         echo json_encode(array("statusCode" => 202, "filesrtsehat" =>  'Ukuran file maksimal 100 kb.'));
+                         return;
+                    }
+
+
+                    $nmfile = $_FILES['flinduksi']['name'];
+                    $tipe = $_FILES['flinduksi']['type'];
+                    $size = $_FILES['flinduksi']['size'] / 1000;
+
+                    if ($nmfile == "") {
+                         echo json_encode(array("statusCode" => 202, "fileinduksi" =>  'Lembar Induksi wajib dipilih'));
+                         return;
+                    }
+
+                    if ($tipe != "application/pdf") {
+                         echo json_encode(array("statusCode" => 202, "fileinduksi" =>  'Format file nya dalam bentuk pdf'));
+                         return;
+                    }
+
+                    if ($size > 100) {
+                         echo json_encode(array("statusCode" => 202, "fileinduksi" =>  'Ukuran file maksimal 100 kb.'));
+                         return;
+                    }
+
+                    $nmfile = $_FILES['flmplama']['name'];
+                    $tipe = $_FILES['flmplama']['type'];
+                    $size = $_FILES['flmplama']['size'] / 1000;
+
+                    if ($nmfile == "") {
+                         echo json_encode(array("statusCode" => 202, "filemplama" =>  'Lembar Induksi wajib dipilih'));
+                         return;
+                    }
+
+                    if ($tipe != "application/pdf") {
+                         echo json_encode(array("statusCode" => 202, "filemplama" =>  'Format file nya dalam bentuk pdf'));
+                         return;
+                    }
+
+                    if ($size > 100) {
+                         echo json_encode(array("statusCode" => 202, "filemplama" =>  'Ukuran file maksimal 100 kb.'));
+                         return;
+                    }
+
+                    $data = [
+                         'id_pengajuan_sm' => $idpengajuansm,
+                         'id_karyawan' => $idkary,
+                         'id_proses_izin_tambang' => $prosesizin,
+                         'ket_pengajuan_sm_detail' => $ketdet,
+                         'stat_pengajuan_sm_detail' => 'F',
+                         'tgl_cetak' => '1970-01-01 00:00:00',
+                         'tgl_buat' => date('Y-m-d H:i:s'),
+                         'tgl_edit' => date('Y-m-d H:i:s'),
+                         'id_user' => $this->session->userdata('id_user_hcdata'),
+                    ];
+
+                    $karypengajuansm = $this->psm->input_kary_pengajuan_sm($data);
+                    if ($karypengajuansm) {
+                         $config['upload_path'] = './berkas/pengajuanizin/' . $foldername  . "/" . $folderkary;
+                         $config['allowed_types'] = 'pdf';
+                         $config['max_size'] = 100;
+                         $config['file_name'] = $nama_file_idp;
+                         $this->load->library('upload', $config);
+                         $this->upload->initialize($config);
+                         $this->upload->do_upload('flidprs');
+
+                         $config['file_name'] = $nama_file_sht;
+                         $this->load->library('upload', $config);
+                         $this->upload->initialize($config);
+                         $this->upload->do_upload('flsrtsehat');
+
+                         $config['file_name'] = $nama_file_ins;
+                         $this->load->library('upload', $config);
+                         $this->upload->initialize($config);
+                         $this->upload->do_upload('flinduksi');
+
+                         $config['file_name'] = $nama_file_mp;
+                         $this->load->library('upload', $config);
+                         $this->upload->initialize($config);
+                         $this->upload->do_upload('flmplama');
+                         echo json_encode(array("statusCode" => 200, "pesan" => "Data karyawan berhasil diambil"));
+                    } else {
+                         echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan gagal diambil"));
+                    }
                } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan gagal diambil"));
                }
           }
      }
