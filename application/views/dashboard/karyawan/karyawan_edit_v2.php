@@ -107,7 +107,7 @@
                         <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                         <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
                         <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
-                        <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp : '-' ?>"></input>
+                        <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp_sim : '-' ?>"></input>
 
                         <div class="row p-3">
                             <?php
@@ -974,6 +974,40 @@
             </div>
             <div class="modal-footer p-3">
                 <button type="button" name="btnSimpanEditSertifikat" id="btnSimpanEditSertifikat" class="btn font-weight-bold btn-primary">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlDetailMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
+                <h5 class="modal-title text-white align-middle" id="jdldetailsertifikat">Detail Medical Check Up</h5>
+                <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-slash"></i></button>
+            </div>
+
+            <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="jenisSertifikasiDetail">Tanggal Medical Check Up :</label>
+                            <input style="background-color: none;" id='jenisSertifikasiDetail' name='jenisSertifikasiDetail' class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="noSertifikatDetail">Hasil Medical Check Up :</label>
+                            <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="namaLembagaDetail">Keterangan :</label>
+                            <input style="background-color: none;" id='namaLembagaDetail' name='namaLembagaDetail' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
