@@ -301,6 +301,7 @@ $(document).ready(function () {
         $("#namaIbu").removeAttr('disabled');
         $('#noNPWP').removeAttr('disabled');
         $('#pendidikanTerakhir').removeAttr('disabled');
+        $('#pasfoto').removeAttr('disabled');
         $('#refreshProv').removeAttr('disabled');
         $('#refreshKota').removeAttr('disabled');
         $('#refreshKec').removeAttr('disabled');
@@ -334,6 +335,7 @@ $(document).ready(function () {
         $("#namaIbu").removeAttr('disabled');
         $('#noNPWP').removeAttr('disabled');
         $('#pendidikanTerakhir').removeAttr('disabled');
+        $('#pasfoto').removeAttr('disabled');
         $('#refreshProv').removeAttr('disabled');
         $('#refreshKota').removeAttr('disabled');
         $('#refreshKec').removeAttr('disabled');
