@@ -35,16 +35,20 @@
                               <h5>Departemen</h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
-                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
                                              <i class="feather icon-more-horizontal"></i>
                                         </button>
                                         <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
                                              <li class="dropdown-item full-card">
                                                   <a href="#!"><span><i class="feather icon-maximize"></i>
-                                                            Perbesar</span><span style="display: none"><i class="feather icon-minimize"></i> Restore</span></a>
+                                                            Perbesar</span><span style="display: none"><i
+                                                                 class="feather icon-minimize"></i> Restore</span></a>
                                              </li>
                                              <li class="dropdown-item minimize-card">
-                                                  <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
+                                                  <a href="#!"><span><i class="feather icon-minus"></i>
+                                                            collapse</span><span style="display: none"><i
+                                                                 class="feather icon-plus"></i> expand</span></a>
                                              </li>
                                              <li class="dropdown-item reload-card">
                                                   <a href="#!"><i class="feather icon-refresh-cw"></i> reload</a>
@@ -56,7 +60,9 @@
                          <div class="card-body">
                               <div class="mt-3">
                                    <div class="mb-4">
-                                        <a href="<?= base_url('departemen'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
+                                        <a href="<?= base_url('departemen'); ?>"
+                                             class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i>
+                                             Refresh / Data</a>
                                    </div>
                               </div>
                               <div class="row ">
@@ -68,7 +74,8 @@
 
                                    ?>
 
-                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+                                   <input type="hidden" id="token" name="token"
+                                        value="<?= $this->session->csrf_token ?>">
 
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="perDepart">Perusahaan :</label><br>
@@ -83,23 +90,30 @@
                                    </div>
                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <label for="kodeDepart">Kode <span class="text-danger">*</span></label>
-                                        <input style="text-transform:uppercase" id='kodeDepart' name='kodeDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <input style="text-transform:uppercase" id='kodeDepart' name='kodeDepart'
+                                             type="text" autocomplete="off" spellcheck="false"
+                                             class="form-control form-control-user" value="" required>
                                         <small class="error2 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-9 col-md-8 col-sm-12">
                                         <label for="Depart">Departemen <span class="text-danger">*</span></label>
-                                        <input style="text-transform:uppercase" id='Depart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>
+                                        <input style="text-transform:uppercase" id='Depart' type="text"
+                                             autocomplete="off" spellcheck="false"
+                                             class="form-control form-control-user" value="" required>
                                         <small class="error3 text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <label for="ketDepart">Keterangan </label><br>
-                                        <textarea id='ketDepart' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user"></textarea>
+                                        <textarea id='ketDepart' type="text" autocomplete="off" spellcheck="false"
+                                             class="form-control form-control-user"></textarea>
                                         <small id="error4" class="text-danger font-italic font-weight-bold"></small><br>
                                    </div>
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <hr class="mb-2">
-                                        <button type="button" name="btnTambahDepart" id="btnTambahDepart" class="btn font-weight-bold btn-primary">Simpan</button>
-                                        <button type="button" name="btnBatalDepart" id="btnBatalDepart" class="btn font-weight-bold btn-danger">Batal</button>
+                                        <button type="button" name="btnTambahDepart" id="btnTambahDepart"
+                                             class="btn font-weight-bold btn-primary">Simpan</button>
+                                        <button type="button" name="btnBatalDepart" id="btnBatalDepart"
+                                             class="btn font-weight-bold btn-danger">Batal</button>
                                    </div>
                               </div>
                          </div>
