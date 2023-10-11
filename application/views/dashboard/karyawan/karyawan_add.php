@@ -298,7 +298,7 @@
                                                             <div class="form-group">
                                                                  <label class="font-weight-bold" for="pasfoto">Pasfoto</label>
                                                                  <div class="custom-file">
-                                                                      <input type="file" class="custom-file-input" id="pasfoto" required>
+                                                                      <input type="file" class="custom-file-input" id="pasfoto" required disabled>
                                                                       <label class="custom-file-label" for="pasfoto">Pilih file pasfoto...</label>
                                                                       <small class="errorspasfoto text-danger font-italic font-weight-bold"></small>
                                                                  </div>
