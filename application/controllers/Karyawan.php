@@ -109,27 +109,32 @@ class Karyawan extends My_Controller
 
     public function detail($auth_kary)
     {
-        $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
-        $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-        $data['nama'] = $this->session->userdata("nama_hcdata");
-        $data['email'] = $this->session->userdata("email_hcdata");
-        $data['menu'] = $this->session->userdata("id_menu_hcdata");
-        $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
-        $data["data_alamat"] = $this->kry->get_alamat_by_auth($auth_kary);
-        $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
-        $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
-        $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
-        $data["data_izin"] = $this->kry->get_all_izin_by_auth($auth_kary);
-        $data["data_langgar"] = $this->kry->get_pelanggaran_by_auth($auth_kary);
-        $data["data_mcu"] = $this->kry->get_mcu_by_auth($auth_kary);
-        $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($auth_kary);
-        $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
-        $data['get_menu'] = $this->dsmod->get_menu();
-        $this->load->view('dashboard/template/header', $data);
-        $this->load->view('dashboard/karyawan/karyawan_detail', $data);
-        $this->load->view('dashboard/modal/karyawan');
-        $this->load->view('dashboard/template/footer', $data);
-        $this->load->view('dashboard/code/karydetail');
+        $cekauth = $this->kry->get_by_auth($auth_kary);
+        if (!empty($cekauth)) {
+            $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+            $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+            $data['nama'] = $this->session->userdata("nama_hcdata");
+            $data['email'] = $this->session->userdata("email_hcdata");
+            $data['menu'] = $this->session->userdata("id_menu_hcdata");
+            $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
+            $data["data_alamat"] = $this->kry->get_alamat_by_auth($auth_kary);
+            $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
+            $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
+            $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
+            $data["data_izin"] = $this->kry->get_all_izin_by_auth($auth_kary);
+            $data["data_langgar"] = $this->kry->get_pelanggaran_by_auth($auth_kary);
+            $data["data_mcu"] = $this->kry->get_mcu_by_auth($auth_kary);
+            $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($auth_kary);
+            $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
+            $data['get_menu'] = $this->dsmod->get_menu();
+            $this->load->view('dashboard/template/header', $data);
+            $this->load->view('dashboard/karyawan/karyawan_detail', $data);
+            $this->load->view('dashboard/modal/karyawan');
+            $this->load->view('dashboard/template/footer', $data);
+            $this->load->view('dashboard/code/karydetail');
+        } else {
+            $this->load->view('errors/errnotfound');
+        }
     }
 
     public function edit_karyawan($id_kary)
