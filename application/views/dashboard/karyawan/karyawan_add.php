@@ -9,16 +9,6 @@
                               </div>
                               <ul class="breadcrumb">
                                    <li class="breadcrumb-item">
-                                        <a href="<?=base_url('dash');?>">
-                                             <i class="feather icon-home"></i>
-                                        </a>
-                                   </li>
-                                   <li class="breadcrumb-item">
-                                        <a href="#">
-                                             Karyawan
-                                        </a>
-                                   </li>
-                                   <li class="breadcrumb-item">
                                         <a id="bc2">
                                              Tambah Karyawan
                                         </a>

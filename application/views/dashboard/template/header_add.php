@@ -99,9 +99,11 @@ foreach ($get_menu as $lsmenu) {
         echo '<ul class="pcoded-submenu">';
 
         foreach ($get_menu as $lsmenu) {
-            $id_parent = $lsmenu->IdParent;
-            if ($id_parent > 0 && $id_modul == $id_parent) {
-                echo '<li id="mnuperusahaan"><a href="' . base_url($lsmenu->UrlModule) . '">' . $lsmenu->LabelMenu . '</a></li>';
+            if ($lsmenu->id_modul_role != 2) {
+                $id_parent = $lsmenu->IdParent;
+                if ($id_parent > 0 && $id_modul == $id_parent) {
+                    echo '<li id="mnuperusahaan"><a href="' . base_url($lsmenu->UrlModule) . '">' . $lsmenu->LabelMenu . '</a></li>';
+                }
             }
         }
 

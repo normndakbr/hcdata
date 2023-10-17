@@ -57,3 +57,4 @@ $route['karyawan/detail/(:any)'] = 'karyawan/detail/$1';
 $route['karyawan/edit_karyawan/(:any)'] = 'karyawan/edit_karyawan/$1';
 $route['level'] = 'level';
 $route['tambahlevel'] = 'level/new';
+$route['new'] = 'dash/tambahkaryawan';

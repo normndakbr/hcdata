@@ -59,7 +59,7 @@
                                                   class="fas fa-eraser"></i> Reset</a>
                                         <a id="addRefreshKary" href="#!" class="btn btn-primary font-weight-bold"><i
                                                   class="fas fa-sync-alt"></i> Refresh</a>
-                                        <a id="addTambahKary" href="<?=base_url('karyawan/new');?>" target="_blank"
+                                        <a id="addTambahKary" href="<?=base_url('new');?>" target="_blank"
                                              class=" btn btn-success font-weight-bold"><i class="fas fa-plus"></i>
                                              Tambah Data</a>
                                    </div>
