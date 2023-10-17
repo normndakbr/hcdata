@@ -6,7 +6,7 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <title>OneDB - Not Allowed</title>
+     <title>ODBsys - Not Allowed</title>
 
      <!-- Google font -->
      <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
@@ -25,7 +25,7 @@
                     <h1>403</h1>
                </div>
                <h2>uups! Akses tidak diperbolehkan</h2>
-               <p>Mohon Maaf, user ini tidak diperkenankan untuk membuka aplikasi OneDB System</p>
+               <p>Mohon Maaf, user ini tidak diperkenankan untuk membuka aplikasi ODBsys System</p>
                <a href="<?=base_url('login');?>" class="btn btn-primary font-weight-bold text-white">Login</a>
           </div>
      </div>
