@@ -91,6 +91,12 @@ if (!$this->session->csrf_token) {
                                         </select>
                                         <small class="error1str text-danger font-italic font-weight-bold"></small><br>
                                    </div>
+                                   <div class="col-lg-12 col-md-12 col-sm-12">
+                                        <label class="font-weight-bold">Struktur
+                                             Perusahaan :</label><br>
+                                        <label id="lblhirarkiper" for="lblhirarkiper"
+                                             class="form-control font-weight-bold"></label><br>
+                                   </div>
                                    <div class="col-lg-6 col-md-8 col-sm-12 ml-4 mb-3">
                                         <input type="checkbox" class="form-check-input" id="krycekNonaktif">
                                         <label for="krycekNonaktif" class="form-check-label">Tampilkan karyawan

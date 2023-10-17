@@ -3275,6 +3275,15 @@ class Karyawan extends My_Controller
         }
     }
 
+    public function hirarki()
+    {
+        $prs = htmlspecialchars($this->input->post("prs", true));
+        $id_m_per = $this->str->get_id_per($prs);
+
+        $query = $this->kry->getHirarki($id_m_per);
+        echo $query;
+    }
+
     public function update_karyawan()
     {
         $this->form_validation->set_rules("no_nik", "no_nik", "required|trim|numeric|max_length[25]", [
