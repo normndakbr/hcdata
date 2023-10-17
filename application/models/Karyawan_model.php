@@ -106,9 +106,16 @@ class Karyawan_model extends CI_Model
         $this->db->from('vw_sim_karyawan');
         $this->db->where('id_karyawan', $id);
         $this->db->where('tgl_exp_sim >', $now);
-        $query = $this->db->get();
+        $query = $this->db->get()->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_sim_kary = $list->id_sim_kary;
+            }
 
-        return $query->row();
+            return $id_sim_kary;
+        } else {
+            return;
+        }
     }
 
     public function get_alamat_by_id_person($id_personal)
@@ -816,6 +823,21 @@ class Karyawan_model extends CI_Model
         }
     }
 
+    public function get_foto_karyawan($auth_kary)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_kary])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $url_foto = $list->url_foto;
+            }
+
+            return $url_foto;
+        } else {
+            return;
+        }
+    }
+
     public function get_id_karyawan($auth_kary)
     {
         $query = $this->db->get_where('vw_karyawan', ['auth_karyawan' => $auth_kary])->result();
@@ -851,9 +873,29 @@ class Karyawan_model extends CI_Model
         return $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
     }
 
+    public function get_id_m_per($id_personal)
+    {
+        $query = $this->db->get_where('vw_karyawan', ['id_personal' => $id_personal])->result();
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $id_m_perusahaan = $list->id_m_perusahaan;
+            }
+
+            return $id_m_perusahaan;
+        } else {
+            return 0;
+        }
+
+    }
+
     public function get_dt_izin($auth_izin_tambang)
     {
         return $this->db->get_where('vw_izin_tambang', ['auth_izin_tambang' => $auth_izin_tambang])->result();
+    }
+
+    public function get_dt_sim($auth_simpol)
+    {
+        return $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_simpol])->result();
     }
 
     public function hapus_mcu($auth_mcu)
@@ -1088,6 +1130,16 @@ class Karyawan_model extends CI_Model
     {
         $query = $this->db->get_where('tb_izin_tambang', ['no_reg' => $no_reg])->result();
         if (!empty($query)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function cek_no_simper_ada($no_reg, $id_izin)
+    {
+        $query = $this->db->query("SELECT * FROM vw_izin_tambang WHERE no_reg = '" . $no_reg . "' AND id_izin_tambang <> " . $id_izin);
+        if (!empty($query->result())) {
             return true;
         } else {
             return false;
