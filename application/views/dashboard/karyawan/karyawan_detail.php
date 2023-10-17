@@ -130,7 +130,7 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                                                             <div class="m-b-25">
                                                                  <img style="border: 10px solid #3c3c3c;"
-                                                                      src="<?=isset($data_kary->url_foto) ? base_url() . 'berkas/foto/1/' . $data_kary->url_foto : '../../berkas/pasphoto/pasphoto.jpg'?>"
+                                                                      src="<?=isset($data_kary->url_foto) ? $data_kary->id_perusahaan == 1 ? base_url() . 'berkas/foto/1/' . $data_kary->url_foto : base_url() . 'berkas/karyawan/' . md5($data_kary->id_personal) . "/" . $data_kary->url_foto : base_url() . 'berkas/pasphoto/pasphoto.jpg';?>"
                                                                       width="200" height="200" class="img-radius"
                                                                       alt="User-Profile-Image">
                                                             </div>
@@ -385,37 +385,34 @@
                                                                       disabled>
                                                             </div>
                                                        </div>
-                                                       <?php if (isset($data_kontrak->stat_waktu) == "T") {?>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tanggal Awal</h6>
-                                                                 <input type="text" class="form-control"
-                                                                      value="<?=date('d-M-Y', strtotime($data_kontrak->tgl_mulai))?>"
-                                                                      style="background-color:transparent;margin-top:-10px;"
-                                                                      disabled>
-                                                            </div>
-                                                       </div>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tanggal Akhir</h6>
-                                                                 <input type="text" class="form-control"
-                                                                      value="<?=date('d-M-Y', strtotime($data_kontrak->tgl_akhir))?>"
-                                                                      style="background-color:transparent;margin-top:-10px;"
-                                                                      disabled>
-                                                            </div>
-                                                       </div>
-                                                       <?php } else if (isset($data_kontrak->stat_waktu) == "F") {?>
-                                                       <div class="col-lg-3 col-md-3 col-sm-12">
-                                                            <div class="form-group">
-                                                                 <h6>Tanggal
-                                                                      <?php echo $data_kontrak->stat_perjanjian ?></h6>
-                                                                 <input type="text" class="form-control"
-                                                                      value="<?=date('d-M-Y', strtotime($data_kontrak->tgl_mulai))?>"
-                                                                      style="background-color:transparent;margin-top:-10px;"
-                                                                      disabled>
-                                                            </div>
-                                                       </div>
-                                                       <?php }?>
+
+                                                       <?php
+if (isset($data_kontrak->stat_waktu)) {
+    if ($data_kontrak->stat_waktu == "T") {
+        echo '<div class="col-lg-3 col-md-3 col-sm-12">';
+        echo '<div class="form-group">';
+        echo '<h6>Tgl. Awal ' . $data_kontrak->stat_perjanjian . '</h6>';
+        echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+        echo '</div>';
+        echo '</div>';
+        echo '<div class="col-lg-3 col-md-3 col-sm-12 ">';
+        echo '<div class="form-group">';
+        echo '<h6>Tgl. Akhir ' . $data_kontrak->stat_perjanjian . '</h6>';
+        echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+        echo '</div>';
+        echo '</div>';
+    } else if ($data_kontrak->stat_waktu == "F") {
+        echo '<div class="col-lg-3 col-md-3 col-sm-12">';
+        echo '<div class="form-group">';
+        echo '<h6>Tgl. Permanen</h6>';
+        echo '<input type="text" class="form-control"value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+        echo '</div>';
+        echo '</div>';
+    }
+}
+
+?>
+
                                                   </div>
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtSIMPER" role="tabpanel"
@@ -452,7 +449,9 @@ if (!empty($data_izin)) {
         echo '<td style="text-align:center;">';
         echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
         if ($list->url_izin_tambang != "") {
-            echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="far fa-file-pdf"></i></a>';
+            if ($list->id_jenis_izin_tambang == 2) {
+                echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-id-badge"></i></a> ';
+            }
             echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
         } else {
             echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';

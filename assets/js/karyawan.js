@@ -4688,7 +4688,7 @@ $(document).ready(function () {
         cancelButtonText: "Batalkan",
       }).then(function (result) {
         if (result.value) {
-          // $.LoadingOverlay("show");
+          $.LoadingOverlay("show");
           let formData = new FormData();
           formData.append("fldukung", fldukung);
           formData.append("filepdukung", filepdukung);
@@ -4708,7 +4708,6 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (data) {
-              alert(data);
               var data = JSON.parse(data);
               if (data.statusCode == 200) {
                 $.LoadingOverlay("hide");

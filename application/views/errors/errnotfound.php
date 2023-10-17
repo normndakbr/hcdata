@@ -6,7 +6,7 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <title>OneDB - Autentikasi</title>
+     <title>OneDB - Not Found</title>
 
      <!-- Google font -->
      <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
@@ -21,10 +21,10 @@
      <div id="notfound">
           <div class="notfound">
                <div class="notfound-404">
-                    <h1>403</h1>
+                    <h1>404</h1>
                </div>
-               <h2>Gagal Autentikasi</h2>
-               <p>Kode autentikasi tidak valid, hubungi administrator </p>
+               <h2>Tidak ditemukan</h2>
+               <p>Halaman tidak ditemukan, hubungi administrator </p>
           </div>
      </div>
 

@@ -259,7 +259,7 @@ $(document).ready(function() {
                          },
                          success: function(data) {
                               window.location.href =
-                                   "http://localhost:8080/hcdata/pelanggaran";
+                                   "https://arc.main-system.online/pelanggaran";
                          }
                     });
                }
@@ -707,9 +707,7 @@ $(document).ready(function() {
                          [1, 'desc']
                     ],
                     "ajax": {
-                         "url": "<?=base_url('pelanggaran/ajax_list?auth_per=');?>" + $(
-                                   "#perLanggarData").val() + "&authtoken=" + $("#token")
-                              .val(),
+                         "url": "<?=base_url('pelanggaran/ajax_list?auth_per=');?>" + $("#perLanggarData").val() + "&authtoken=" + $("#token").val(),
                          "type": "POST",
                          "error": function(xhr, error, code) {
                               if (code != "") {
@@ -719,12 +717,9 @@ $(document).ready(function() {
                                         "terjadi kesalahan saat melakukan load data pelanggaran, hubungi administrator"
                                    );
                                    $("#addbtn").addClass("disabled");
-                                   $(".err_psn_Langgar ").fadeTo(3000, 500).slideUp(
-                                        500,
-                                        function() {
-                                             $(".err_psn_Langgar ").slideUp(
-                                                  500);
-                                        });
+                                   $(".err_psn_Langgar ").fadeTo(3000, 500).slideUp(500,function() {
+                                             $(".err_psn_Langgar ").slideUp(500);
+                                   });
                               }
                          }
                     },
@@ -737,8 +732,7 @@ $(document).ready(function() {
                               data: 'no',
                               name: 'id_langgar',
                               render: function(data, type, row, meta) {
-                                   return meta.row + meta.settings
-                                        ._iDisplayStart + 1;
+                                   return meta.row + meta.settings._iDisplayStart + 1;
                               },
                               "className": "text-center  align-middle",
                               "width": "1%"

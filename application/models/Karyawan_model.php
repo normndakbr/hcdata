@@ -898,6 +898,11 @@ class Karyawan_model extends CI_Model
         return $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_simpol])->result();
     }
 
+    public function get_dt_sim_by_id($id_personal)
+    {
+        return $this->db->get_where('vw_sim_karyawan', ['id_personal' => $id_personal])->result();
+    }
+
     public function hapus_mcu($auth_mcu)
     {
         $cek_id = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();
