@@ -59,10 +59,18 @@
                                         <a href="<?= base_url('Level'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
                                         <a id="addbtn" href="<?= base_url('Level/new'); ?>" class="btn btn-success font-weight-bold"><i class="fas fa-plus"></i> Tambah Data</a>
                                    </div>
-                                   <div class="alert alert-danger err_psn_level animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
-                                   <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+                                   <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
                                         <label for="perLevelData">Pilih Perusahaan :</label><br>
                                         <select id='perLevelData' name='perLevelData' class="form-control form-control-user">
                                              <option value="">-- PILIH PERUSAHAAN --</option>

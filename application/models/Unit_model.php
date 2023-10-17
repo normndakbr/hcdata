@@ -149,7 +149,7 @@ class Unit_model extends CI_Model
 
      public function edit_unit($kode_unit, $unit, $ket_unit, $status)
      {
-          $id_unit = $this->session->userdata('id_unit');
+          $id_unit = $this->session->userdata('id_unit_hcdata');
 
           $query = $this->db->query("SELECT * FROM tb_unit WHERE unit='" . $unit . "' AND id_unit <> " . $id_unit);
           if (!empty($query->result())) {
@@ -163,11 +163,7 @@ class Unit_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_unit', $id_unit);
           $this->db->update('tb_unit');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all()

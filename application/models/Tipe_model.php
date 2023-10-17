@@ -137,7 +137,7 @@ class Tipe_model extends CI_Model
 
      public function edit_tipe($tipe, $ket_tipe, $status)
      {
-          $id_tipe = $this->session->userdata('id_tipe');
+          $id_tipe = $this->session->userdata('id_tipe_hcdt');
 
           $query = $this->db->query("SELECT * FROM tb_tipe WHERE tipe='" . $tipe . "' AND id_tipe <> " . $id_tipe);
           if (!empty($query->result())) {
@@ -150,11 +150,7 @@ class Tipe_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_tipe', $id_tipe);
           $this->db->update('tb_tipe');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all()

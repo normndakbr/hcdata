@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-     <title>ARC - Support</title>
+     <title>OneDB - Support</title>
      <meta charset="utf-8">
      <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -27,8 +27,8 @@
           <div class="auth-content" style="width:450px">
                <div class="row">
                     <div class="col-lg-12 text-center">
-                         <h3 class="mb-3 f-w-400 text-white font-weight-bold">Access Role Control</h3>
-                         <h4 class="mb-3 f-w-400 text-white font-weight-bold" style="margin-top: -10px;">Support System</h4>
+                         <h3 class="mb-3 f-w-400 text-white font-weight-bold">One DataBase System</h3>
+                         <h4 class="mb-3 f-w-400 text-white font-weight-bold" style="margin-top: -10px;">Support</h4>
                     </div>
                </div>
                <div class="card" style="border-radius: 2%;">
@@ -37,15 +37,17 @@
 
                               <?php
 
-                              if (!$this->session->csrf_token) {
-                                   $this->session->csrf_token = hash("sha1", time());
+                              if (!$this->session->userdata('csrf_token')) {
+                                  if ($this->session->userdata('csrf_token') == "") {
+					$this->session->set_userdata("csrf_token",hash("sha1", time()));
+				  } 
                               } else {
-                                   $this->session->csrf_token = hash("sha1", time());
-                              }
+				    $this->session->set_userdata("csrf_token", hash("sha1", time()));
+			      }
 
-                              ?>
+  			      ?>
 
-                              <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
+                              <input type="hidden" id="token" name="token" value="<?= $this->session->userdata("csrf_token"); ?>">
                               <div class="align-items-center text-center" style="margin-top: -35px;">
                                    <img src="<?= base_url('assets/assets/images/auth/idc.jpg'); ?>" alt="PT Indexim Coalindo" class="w-75 mt-1">
                                    <h4 class="text-black font-weight-bolder mt-2">PT INDEXIM COALINDO</h4>
@@ -89,7 +91,7 @@
      <script src="<?= base_url(); ?>assets/assets/js/ripple.js"></script>
      <script src="<?= base_url(); ?>assets/assets/js/pcoded.min.js"></script>
      <script>
-          let site_url = "http://localhost:8080/hcdata/";
+          let site_url = "https://arc.main-system.online/";
      </script>
      <script>
           if (window.history.replaceState) {

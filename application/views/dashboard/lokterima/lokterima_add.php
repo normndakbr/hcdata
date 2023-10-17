@@ -61,17 +61,6 @@
                                    <div class="alert alert-danger err_psn_lokterima animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row ">
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <label for="perLokterima">Perusahaan <span class="text-danger">*</span></label><br>
-                                        <select id='perLokterima' name='perLokterima' class="form-control form-control-user">
-                                             <option value="">-- PILIH PERUSAHAAN --</option>
-                                             <?= $permst . $perstr; ?>
-                                        </select>
-                                        <small class="error1 text-danger font-italic font-weight-bold"></small><br>
-                                   </div>
-                                   <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
-                                   </div>
                                    <div class="col-lg-3 col-md-3 col-sm-12">
                                         <label for="kodeLokterima">Kode <span class="text-danger">*</span></label>
                                         <input style="text-transform:uppercase" id='kodeLokterima' name='kodeLokterima' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>

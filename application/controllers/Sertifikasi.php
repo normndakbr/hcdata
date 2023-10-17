@@ -119,6 +119,9 @@ class Sertifikasi extends My_Controller
 
      public function hapus_sertifikasi()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $auth_sertifikasi = htmlspecialchars(trim($this->input->post('auth_Sertifikat', true)));
           $query = $this->srt->hps_sert($auth_sertifikasi);
 
@@ -136,6 +139,9 @@ class Sertifikasi extends My_Controller
 
      public function detail_sertifikasi()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $auth_sertifikasi = htmlspecialchars(trim($this->input->post("auth_sertifikasi", true)));
           $query = $this->srt->get_sertifikasi_id($auth_sertifikasi);
           if (!empty($query)) {
@@ -286,6 +292,9 @@ class Sertifikasi extends My_Controller
 
      public function update_sertifikasi()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $this->form_validation->set_rules("jenis_ser", "jenis_ser", "required|trim", [
                'required' => 'Jenis sertifikasi wajib diisi',
                'max_length' => 'Jenis sertifikasi maksimal 100 karakter'
@@ -372,6 +381,10 @@ class Sertifikasi extends My_Controller
 
      public function get_jenis_sertifikasi()
      {
+
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->srt->get_jenis_sertifikasi();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {

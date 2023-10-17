@@ -1,4 +1,7 @@
     $(document).ready(function() {
+
+        var token = $("#token").val();
+
         $("#logout").click(function() {
             $("#logoutmdl").modal("show");
         });
@@ -101,46 +104,16 @@
             $('#perNonkatifKary').select2({
                 theme: 'bootstrap4'
             });
+
             $('#perNonaktifData').select2({
                 theme: 'bootstrap4'
             });
+
             $('#alasanNonaktif').select2({
                 theme: 'bootstrap4'
             });
 
         }, true);
-
-        // $("#perNonkatifKary").change(function(){
-        //     let prs = $("#perNonkatifKary").val();
-
-        //     if(prs !== ""){
-        //         $.LoadingOverlay("show");
-        //         $.ajax({
-        //             type: "POST", 
-        //             url: site_url+"karyawan/get_kary_by_auth_m_per",
-        //             data: {
-        //                 auth_m_per :prs
-        //             },
-        //             success: function(data) {
-        //                 var data = JSON.parse(data);
-        //                 $("#cariKaryNonaktif").html(data.kary);
-        //                 $.LoadingOverlay("hide");
-        //             },
-        //             error: function(xhr, ajaxOptions, thrownError) {
-        //                 $.LoadingOverlay("hide");
-        //                 $(".err_psn_nonaktifkary").removeClass('d-none');
-        //                 $(".err_psn_nonaktifkary").removeClass('alert-info');
-        //                 $(".err_psn_nonaktifkary").addClass('alert-danger');
-        //                 if (thrownError != "") {
-        //                     $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat load alasan nonaktif, hubungi administrator");
-        //                     $("#btnNonaktifkanKary").attr("disabled", true);
-        //                 }
-        //             }
-        //         })
-        //     }
-
-        //     $("#tbmNonaktifKary").LoadingOverlay("hide");
-        // });
 
         $("#perNonkatifKary").change(function(){
             let prs = $("#perNonkatifKary").val();
@@ -154,43 +127,47 @@
             if(prs !== ""){
                 $.ajax({
                     type: "POST", 
-                    url: site_url+"karyawan/get_kary_by_auth_m_per",
+                    url: site_url+"perusahaan/get_m_by_auth",
                     data: {
-                        auth_m_per :prs
+                        auth_m_per :prs,
+                        token : token,
                     },
                     success: function(data) {
-                        $("#cariKaryNonaktif").autocomplete({
-                            source: function(request, response) {
-                                $.ajax({
-                                    url: site_url+"karyawan/getKaryawan",
-                                    type: 'post',
-                                    dataType: "json",
-                                    data: {
-                                        search: request.term,
-                                        auth_m_per: $("#perNonkatifKary").val(),
-                                    },
-                                    success: function(data) {
-                                        if($("#perNonkatifKary").val() == ""){
-                                            swal('Error','Pilih perusahaan','error');
-                                            $("#cariKaryNonaktif").val('');
-                                        } else {
-                                            response(data);
+                        var data = JSON.parse(data);
+                        if(data.statusCode==200){
+                            $("#cariKaryNonaktif").autocomplete({
+                                source: function(request, response) {
+                                    $.ajax({
+                                        url: site_url+"karyawan/getKaryawan",
+                                        type: 'post',
+                                        dataType: "json",
+                                        data: {
+                                            search: request.term,
+                                            auth_m_per: $("#perNonkatifKary").val(),
+                                        },
+                                        success: function(data) {
+                                            if($("#perNonkatifKary").val() == ""){
+                                                swal('Error','Pilih perusahaan','error');
+                                                $("#cariKaryNonaktif").val('');
+                                            } else {
+                                                response(data);
+                                            }
                                         }
+                                    });
+                                },
+                                select: function(event, ui) {
+                                    if (ui.item.value != "") {
+                                        $('.aj48ajg').text(ui.item.value);
+                                        $('#noKTPNonaktif').val(ui.item.ktp);
+                                        $('#noNIKNonaktif').val(ui.item.nik);
+                                        $('#namaKarytglNonaktif').val(ui.item.nama);
+                                        $('#DepttglNonaktif').val(ui.item.depart);
+                                        $("#cariKaryNonaktif").val('');
                                     }
-                                });
-                            },
-                            select: function(event, ui) {
-                                if (ui.item.value != "") {
-                                    $('.aj48ajg').text(ui.item.value);
-                                    $('#noKTPNonaktif').val(ui.item.ktp);
-                                    $('#noNIKNonaktif').val(ui.item.nik);
-                                    $('#namaKarytglNonaktif').val(ui.item.nama);
-                                    $('#DepttglNonaktif').val(ui.item.depart);
-                                    $("#cariKaryNonaktif").val('');
+                                    return false;
                                 }
-                                return false;
-                            }
-                        });
+                            });
+                        }
                     },
                     error: function(xhr, ajaxOptions, thrownError) {
                         $(".err_psn_nonaktifkary").removeClass('d-none');
@@ -198,7 +175,7 @@
                         $(".err_psn_nonaktifkary").addClass('alert-danger');
                         if (thrownError != "") {
                             $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat load perusahaan, hubungi administrator");
-                            $("#btnNonaktifkanKary").attr("disabled", true);
+                            $("#btnNonaktifkanKary").remove();
                         }
                     }
                 })
@@ -220,7 +197,7 @@
                 $(".err_psn_nonaktifkary").addClass('alert-danger');
                 if (thrownError != "") {
                     $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat load alasan nonaktif, hubungi administrator");
-                    $("#btnNonaktifkanKary").attr("disabled", true);
+                    $("#btnNonaktifkanKary").remove();
                 }
             }
         })
@@ -277,6 +254,8 @@
             var tglnonaktif = $("#tglNonaktif").val();
             var auth_alasan = $("#alasanNonaktif").val();
             var ket_alasan = $("#ketalasanNonaktif").val();
+            var no_ktp = $("#noKTPNonaktif").val();
+            var nama = $("#namaKarytglNonaktif").val();
             let file_nonaktif = $("#fileberkasalasan").val();
             const fl_nonaktif = $('#fileberkasalasan').prop('files')[0];
 
@@ -288,40 +267,86 @@
             formData.append('tglnonaktif', tglnonaktif);
             formData.append('ket_alasan', ket_alasan);
             formData.append('auth_kary', auth_kary);
+            formData.append('token', token);
 
             $.ajax({
                 type: 'POST',
-                url: site_url+"NonaktifKary/input_NonaktifKary",
+                url: site_url + "NonaktifKary/cek_data",
                 data: formData,
                 cache: false,
                 processData: false,
                 contentType: false,
-                success: function(data) {
-                    var data = JSON.parse(data);
-                    if (data.statusCode == 200) {
-                        $(".aj48ajg").text('');
-                        $("#perNonkatifKary").val('').trigger('change');
-                        $("#cariKaryNonaktif").val('');
-                        $("#noKTPNonaktif").val('');
-                        $("#namaKarytglNonaktif").val('');
-                        $("#DepttglNonaktif").val('');
-                        $("#tglNonaktif").val('');
-                        $("#alasanNonaktif").val('').trigger('change');
-                        $("#ketNonaktif").val('');
-                        $("#fileberkasalasan").val('');
-                        swal('Berhasil',data.pesan,'success');
-                    } else if (data.statusCode == 201) {
-                        $(".err_psn_nonaktifkary").removeClass('d-none');
-                        $(".err_psn_nonaktifkary").removeClass('alert-primary');
-                        $(".err_psn_nonaktifkary").addClass('alert-danger');
-                        $(".err_psn_nonaktifkary").html(data.pesan);
+                success: function(datacek) {
+                    var datacek = JSON.parse(datacek);
+                    if (datacek.statusCode == 200) {
+                        swal({
+                            title: "Non-Aktifkan Karyawan",
+                            text: "Yakin karyawan No. KTP : " + no_ktp + ", Nama : " + nama + ", akan di-Nonaktifkan?",
+                            type: 'question',
+                            showCancelButton: true,
+                            confirmButtonColor: '#36c6d3',
+                            cancelButtonColor: '#d33',
+                            confirmButtonText: 'Ya, nonaktfikan',
+                            cancelButtonText: 'Batalkan'
+                        }).then(function(result) {
+                            if (result.value) {
+                                $.ajax({
+                                    type: 'POST',
+                                    url: site_url+"NonaktifKary/input_NonaktifKary",
+                                    data: formData,
+                                    cache: false,
+                                    processData: false,
+                                    contentType: false,
+                                    success: function(data) {
+                                        var data = JSON.parse(data);
+                                        if (data.statusCode == 200) {
+                                            $(".aj48ajg").text('');
+                                            $("#perNonkatifKary").val('').trigger('change');
+                                            $("#cariKaryNonaktif").val('');
+                                            $("#noKTPNonaktif").val('');
+                                            $("#namaKarytglNonaktif").val('');
+                                            $("#DepttglNonaktif").val('');
+                                            $("#tglNonaktif").val('');
+                                            $("#alasanNonaktif").val('').trigger('change');
+                                            $("#ketNonaktif").val('');
+                                            $("#fileberkasalasan").val('');
+                                            $(".error1").html('');
+                                            $(".error2").html('');
+                                            $(".error3").html('');
+                                            $(".error4").html('');
+                                            $(".error5").html('');
+                                            $(".error6").html('');
+                                            swal('Berhasil',data.pesan,'success');
+                                        } else if (data.statusCode == 201) {
+                                            $(".err_psn_nonaktifkary").removeClass('d-none');
+                                            $(".err_psn_nonaktifkary").removeClass('alert-primary');
+                                            $(".err_psn_nonaktifkary").addClass('alert-danger');
+                                            $(".err_psn_nonaktifkary").html(data.pesan);
+                                        }
+                                    },
+                                    error: function(xhr, ajaxOptions, thrownError) {
+                                        $.LoadingOverlay("hide");
+                                        $(".err_psn_nonaktifkary").removeClass('d-none');
+                                        $(".err_psn_nonaktifkary").addClass('alert-danger');
+                                        if (thrownError != "") {
+                                            $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat menyimpan data nonaktif karyawan, hubungi administrator");
+                                        }
+                                    }
+                                });
+                    
+                                $(".err_psn_nonaktifkary").fadeTo(5000, 500).slideUp(500, function() {
+                                    $(".err_psn_nonaktifkary").slideUp(500);
+                                    $(".err_psn_nonaktifkary").addClass("d-none");
+                                }); 
+                            }
+                        });
                     } else {
-                        $(".error1").html(data.prs);
-                        $(".error2").html(data.kary);
-                        $(".error3").html(data.tglnonaktif);
-                        $(".error4").html(data.alasan);
-                        $(".error5").html(data.ket);
-                        $(".error6").html(data.fileup);
+                        $(".error1").html(datacek.prs);
+                        $(".error2").html(datacek.kary);
+                        $(".error3").html(datacek.tglnonaktif);
+                        $(".error4").html(datacek.alasan);
+                        $(".error5").html(datacek.ket);
+                        $(".error6").html(datacek.fileup);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -329,27 +354,22 @@
                     $(".err_psn_nonaktifkary").removeClass('d-none');
                     $(".err_psn_nonaktifkary").addClass('alert-danger');
                     if (thrownError != "") {
-                        $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat menyimpan data nonaktif karyawan, hubungi administrator");
+                        $(".err_psn_nonaktifkary").html("Terjadi kesalahan saat load data nonaktif karyawan, hubungi administrator");
                     }
                 }
             });
-
-            $(".err_psn_nonaktifkary").fadeTo(5000, 500).slideUp(500, function() {
-                $(".err_psn_nonaktifkary").slideUp(500);
-                $(".err_psn_nonaktifkary").addClass("d-none");
-            });
         });
 
-        $(document).on('click', '.hpsNonaktifKary', function() {
+        $(document).on('click', '.hpsnonaktif', function() {
             let authNonaktifKary = $(this).attr('id');
             let namaNonaktifKary = $(this).attr('value');
 
             if (authNonaktifKary == "") {
-                swal("Error", "NonaktifKary tidak ditemukan", "error");
+                swal("Error", "Data Nonaktif karyawan tidak ditemukan", "error");
             } else {
                 swal({
                     title: "Hapus",
-                    text: "Yakin NonaktifKary " + namaNonaktifKary + " akan dihapus?",
+                    text: "Yakin data nonaktif karyawan " + namaNonaktifKary + " akan dihapus?",
                     type: 'question',
                     showCancelButton: true,
                     confirmButtonColor: '#36c6d3',
@@ -363,48 +383,50 @@
                             type: "POST",
                             url: site_url+"NonaktifKary/hapus_NonaktifKary",
                             data: {
-                                authNonaktifKary: authNonaktifKary
+                                authNonaktifKary: authNonaktifKary,
+                                token : token,
                             },
                             timeout: 20000,
-                            success: function(data, textStatus, xhr) {
+                            success: function(data) {
+                                alert(data);
                                 var data = JSON.parse(data);
                                 if (data.statusCode == 200) {
-                                    tbmNonaktifKary.draw();
-                                    $(".err_psn_NonaktifKary").removeClass("d-none");
-                                    $(".err_psn_NonaktifKary").removeClass("alert-danger");
-                                    $(".err_psn_NonaktifKary").addClass("alert-primary");
-                                    $(".err_psn_NonaktifKary").html(data.pesan);
+                                    let m_prs = $("#perNonaktifData").val();
+                                    $("#tbmNonaktif").LoadingOverlay("hide");
+                                    $('#tbmNonaktif').DataTable().destroy();
+                                    // tb_nakary(m_prs);
+                                    $(".err_psn_nonaktifKary").removeClass("d-none");
+                                    $(".err_psn_nonaktifKary").removeClass("alert-danger");
+                                    $(".err_psn_nonaktifKary").addClass("alert-primary");
+                                    $(".err_psn_nonaktifKary").html(data.pesan);
                                 } else {
-                                    $(".err_psn_NonaktifKary").removeClass("d-none");
-                                    $(".err_psn_NonaktifKary").removeClass("alert-primary");
-                                    $(".err_psn_NonaktifKary").addClass("alert-danger");
-                                    $(".err_psn_NonaktifKary").html(data.pesan);
+                                    $(".err_psn_nonaktifKary").removeClass("d-none");
+                                    $(".err_psn_nonaktifKary").removeClass("alert-primary");
+                                    $(".err_psn_nonaktifKary").addClass("alert-danger");
+                                    $(".err_psn_nonaktifKary").html(data.pesan);
                                 }
 
                                 $.LoadingOverlay("hide");
                             },
                             error: function(xhr, ajaxOptions, thrownError) {
                                 $.LoadingOverlay("hide");
-                                $(".err_psn_NonaktifKary").removeClass("d-none");
-                                $(".err_psn_NonaktifKary").removeClass("alert-primary");
-                                $(".err_psn_NonaktifKary").addClass("alert-danger");
+                                $(".err_psn_nonaktifKary").removeClass("d-none");
+                                $(".err_psn_nonaktifKary").removeClass("alert-primary");
+                                $(".err_psn_nonaktifKary").addClass("alert-danger");
 
                                 if (xhr.status == 404) {
-                                    $(".err_psn_NonaktifKary").html("NonaktifKary gagal dihapus, , Link data tidak ditemukan");
+                                    $(".err_psn_nonaktifKary").html("Data nonaktif karyawan gagal dihapus, , Link data tidak ditemukan");
                                 } else if (xhr.status == 0) {
-                                    $(".err_psn_NonaktifKary").html("NonaktifKary gagal dihapus, Waktu koneksi habis");
+                                    $(".err_psn_nonaktifKary").html("Data nonaktif karyawan gagal dihapus, Waktu koneksi habis");
                                 } else {
-                                    $(".err_psn_NonaktifKary").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
+                                    $(".err_psn_nonaktifKary").html("Terjadi kesalahan saat menghapus data, hubungi administrator");
                                 }
                             }
                         });
 
-                        $(".err_psn_NonaktifKary").fadeTo(4000, 500).slideUp(500, function() {
-                            $(".err_psn_NonaktifKary").slideUp(500);
+                        $(".err_psn_nonaktifKary").fadeTo(4000, 500).slideUp(500, function() {
+                            $(".err_psn_nonaktifKary").slideUp(500);
                         });
-                    } else if (result.dismiss == 'cancel') {
-                        swal('Batal', 'NonaktifKary ' + namaNonaktifKary + ' batal dihapus', 'error');
-                        return false;
                     }
                 });
             }
@@ -566,7 +588,7 @@
                     [2, 'asc'],
                 ],
                 "ajax": {
-                    "url": site_url+"NonaktifKary/ajax_list?auth_m_per="+m_per,
+                    "url": site_url+"NonaktifKary/ajax_list?auth_m_per=" + m_per + "&authtoken=" + $("#token").val(),
                     "type": "POST",
                     "error": function(xhr, error, code) {
                         if (code != "") {

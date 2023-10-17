@@ -140,8 +140,8 @@ class Lokasipenerimaan extends My_Controller
                return;
           } else {
                $auth_perusahaan = htmlspecialchars($this->input->post("prs", true));
-               $kd_lokterima = htmlspecialchars($this->input->post("kode", true));
-               $lokterima = htmlspecialchars($this->input->post("lokterima", true));
+               $kd_lokterima = strtoupper(htmlspecialchars($this->input->post("kode", true)));
+               $lokterima = strtoupper(htmlspecialchars($this->input->post("lokterima", true)));
                $jenislokasi = htmlspecialchars($this->input->post("jenislokasi", true));
                $ket_lokterima = htmlspecialchars($this->input->post("ket", true));
                $id_perusahaan = $this->prs->get_by_auth($auth_perusahaan);
@@ -264,7 +264,7 @@ class Lokasipenerimaan extends My_Controller
                     echo json_encode(array("statusCode" => 201, "pesan" => "Perusahaan tidak terdaftar"));
                     return;
                }
-s
+
                if ($this->session->userdata('id_lokterima_hcdata') == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Lokasi penerimaan tidak ditemukan"));
                     return;
@@ -309,9 +309,10 @@ s
 
      public function get_by_authper()
      {
-          $auth_per = $this->input->post('auth_per');
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
 
-          $query = $this->lkt->get_by_authper($auth_per);
+          $query = $this->lkt->get_by_authper();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
                foreach ($query as $list) {

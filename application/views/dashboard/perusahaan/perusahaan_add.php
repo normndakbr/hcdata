@@ -58,9 +58,17 @@
                                    <div class="mb-4">
                                         <a href="<?= base_url('perusahaan'); ?>" class="btn btn-primary font-weight-bold"><i class="fas fa-sync-alt"></i> Refresh / Data</a>
                                    </div>
-                                   <div class="alert alert-danger err_psn_perusahaan animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <div class="form-group fill">
                                              <label for="kodePerusahaan">Kode Perusahaan <span class="text-danger">*</span></label>
@@ -86,7 +94,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="provPerusahaan">Provinsi <span class="text-danger">*</span></label><br>
-                                        <div class="input-group">
+                                        <div id="txtprovadd" class="input-group">
                                              <select id='provPerusahaan' name='provPerusahaan' class="form-control" required>
                                                   <option value="00">-- WAJIB DIPILIH --</option>
                                              </select>
@@ -96,7 +104,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12">
                                         <label for="kabPerusahaan">Kabupaten/Kota <span class="text-danger">*</span></label><br>
-                                        <div class="input-group">
+                                        <div id="txtkabadd" class="input-group">
                                              <select id='kabPerusahaan' name='kabPerusahaan' class="form-control" required>
                                                   <option value="0000">-- WAJIB DIPILIH --</option>
                                              </select>
@@ -106,7 +114,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
                                         <label for="kecPerusahaan">Kecamatan <span class="text-danger">*</span></label><br>
-                                        <div class="input-group">
+                                        <div id="txtkecadd" class="input-group">
                                              <select id='kecPerusahaan' name='kecPerusahaan' class="form-control" required>
                                                   <option value="000000">-- WAJIB DIPILIH --</option>
                                              </select>
@@ -116,7 +124,7 @@
                                    </div>
                                    <div class="col-lg-6 col-md-6 col-sm-12 mt-3">
                                         <label for="kelPerusahaan">Kelurahan <span class="text-danger">*</span></label><br>
-                                        <div class="input-group">
+                                        <div id="txtkeladd" class="input-group">
                                              <select id='kelPerusahaan' name='kelPerusahaan' class="form-control" required>
                                                   <option value="00000000">-- WAJIB DIPILIH --</option>
                                              </select>

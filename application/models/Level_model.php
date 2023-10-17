@@ -157,8 +157,8 @@ class Level_model extends CI_Model
 
      public function edit_level($kd_level, $level, $ket_level, $status)
      {
-          $id_perusahaan = $this->session->userdata('id_perusahaan');
-          $id_level = $this->session->userdata('id_level');
+          $id_perusahaan = $this->session->userdata('id_perusahaan_lvl');
+          $id_level = $this->session->userdata('id_level_hcdata');
 
           $query = $this->db->query("SELECT * FROM tb_level WHERE kd_level='" . $kd_level . "' AND id_perusahaan=" . $id_perusahaan . " AND id_level <> " . $id_level);
           if (!empty($query->result())) {
@@ -177,11 +177,7 @@ class Level_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_level', $id_level);
           $this->db->update('tb_level');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all($auth_m_per)
@@ -189,6 +185,13 @@ class Level_model extends CI_Model
           $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
           return $this->db->get_where('vw_lvl', ['id_perusahaan' => $id_per])->result();
      }
+
+     public function get_all_m($auth_m_per)
+     {
+          $id_per = $this->prs->get_id_per_by_auth_m($auth_m_per);
+          return $this->db->get_where('vw_level', ['auth_m_perusahaan' => $auth_m_per,'stat_level' => 'T'])->result();
+     }
+
 
      public function get_by_authper($auth_per)
      {

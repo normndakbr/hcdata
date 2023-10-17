@@ -61,6 +61,14 @@
                                    <div class="alert alert-danger err_psn_poh animate__animated animate__bounce d-none"></div>
                               </div>
                               <div class="row ">
+                                   <?php
+
+                                   if (!$this->session->csrf_token) {
+                                        $this->session->csrf_token = hash("sha1", time());
+                                   }
+                                   ?>
+
+                                   <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-3 col-md-4 col-sm-12">
                                         <label for="kodePoh">Kode <span class="text-danger">*</span></label>
                                         <input style="text-transform:uppercase" id='kodePoh' name='kodePoh' type="text" autocomplete="off" spellcheck="false" class="form-control form-control-user" value="" required>

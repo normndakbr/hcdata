@@ -15,7 +15,7 @@ class Depart_model extends CI_Model
           $this->load->database();
      }
 
-     private function _get_datatables_query($auth_per, $csrf_name, $csrf_hash)
+     private function _get_datatables_query($auth_per)
      {
           $dtper = $this->prs->get_by_authper($auth_per);
           if (!empty($dtper)) {
@@ -58,18 +58,18 @@ class Depart_model extends CI_Model
           }
      }
 
-     function get_datatables($auth_per, $csrf_name, $csrf_hash)
+     function get_datatables($auth_per)
      {
-          $this->_get_datatables_query($auth_per, $csrf_name, $csrf_hash);
+          $this->_get_datatables_query($auth_per);
           if ($_POST['length'] != -1)
                $this->db->limit($_POST['length'], $_POST['start']);
           $query = $this->db->get();
           return $query->result();
      }
 
-     function count_filtered($auth_per, $csrf_name, $csrf_hash)
+     function count_filtered($auth_per)
      {
-          $this->_get_datatables_query($auth_per, $csrf_name, $csrf_hash);
+          $this->_get_datatables_query($auth_per);
           $query = $this->db->get();
           return $query->num_rows();
      }
@@ -166,8 +166,10 @@ class Depart_model extends CI_Model
 
      public function edit_depart($kd_depart, $depart, $ket_depart, $status)
      {
-          $id_perusahaan = $this->session->userdata('id_perusahaan');
-          $id_depart = $this->session->userdata('id_depart');
+
+
+          $id_perusahaan = $this->session->userdata('id_perusahaan_hcdata');
+          $id_depart = $this->session->userdata('id_depart_hcdata');
 
           $query = $this->db->query("SELECT * FROM tb_depart WHERE kd_depart='" . $kd_depart . "' AND id_perusahaan=" . $id_perusahaan . " AND id_depart <> " . $id_depart);
           if (!empty($query->result())) {
@@ -179,6 +181,7 @@ class Depart_model extends CI_Model
                return 204;
           }
 
+
           $this->db->set('kd_depart', $kd_depart);
           $this->db->set('depart', $depart);
           $this->db->set('ket_depart', $ket_depart);
@@ -186,11 +189,7 @@ class Depart_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_depart', $id_depart);
           $this->db->update('tb_depart');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all()

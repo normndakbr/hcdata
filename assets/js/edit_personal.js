@@ -13,11 +13,71 @@ $(document).ready(function () {
     let statPernikahan = $("#valueStatNikah").val();
     let statPendidikan = $("#valueStatPendidikan").val();
 
+    $('#editProvData').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editKotaData').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editKecData').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editKelData').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editKewarganegaraan').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editAgama').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editJenisKelamin').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editStatPernikahan').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editPendidikanTerakhir').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editDepartKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editPosisiKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editKlasifikasiKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editTipeKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editLevelKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editPOHKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editLokterimaKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editLokkerKary').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editStatusResidence').select2({
+        theme: 'bootstrap4'
+    });
+    $('#editStatusKerjaKary').select2({
+        theme: 'bootstrap4'
+    });
+
     $.ajax({
         type: "POST",
-        url: site_url + "daerah/get_prov",
+        url: site_url + "daerah/get_prov?authtoken=" + $("#token").val(),
         data: {},
         success: function (data) {
+            console.log("Success POST on " + site_url + "daerah/get_prov?authtoken=" + $("#token").val());
+            // alert(data);
             var data = JSON.parse(data);
             $("#editProvData").html(data.prov);
             if (idProvinsi != "" && flagProv) {
@@ -168,7 +228,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_prov",
+            url: site_url + "daerah/get_prov?authtoken=" + $("#token").val(),
             data: {},
             success: function (data) {
                 idProvinsi = "";
@@ -210,7 +270,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kab",
+            url: site_url + "daerah/get_kab?authtoken=" + $("#token").val(),
             data: {
                 id_prov: idProv
             },
@@ -308,7 +368,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kec",
+            url: site_url + "daerah/get_kec?authtoken=" + $("#token").val(),
             data: {
                 id_kab: idKab
             },
@@ -388,7 +448,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: site_url + "daerah/get_kel",
+            url: site_url + "daerah/get_kel?authtoken=" + $("#token").val(),
             data: {
                 id_kec: idKec
             },
@@ -429,7 +489,7 @@ $(document).ready(function () {
             $("#txtEditKel").LoadingOverlay("show");
             $.ajax({
                 type: "POST",
-                url: site_url + "daerah/get_kel",
+                url: site_url + "daerah/get_kel?authtoken=" + $("#token").val(),
                 data: {
                     id_kec: idKecamatan
                 },

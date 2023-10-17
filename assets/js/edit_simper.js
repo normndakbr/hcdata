@@ -1,8 +1,58 @@
 $(document).ready(function () {
+    let token = $("#token").val();
+    let authKary = $("#valueAuthKaryawan").val();
+    let authIzinTambang = $("#valueAuthIzin").val();
+    let authPerson = $("#valueAuthPerson").val();
     let flag_SIM = false;
     let jenis_izin_tambang = $("#valueJenisIzinTambang").val();
     let id_sim = $("#valueIDSim").val();
     let auth_sim = "";
+
+    $.ajax({
+        type: "POST",
+        url: site_url + "izin_tambang/get_all_unit",
+        data: {
+            token: token
+        },
+        success: function (res) {
+            console.log("Success POST on " + site_url + "izin_tambang/get_all_unit");
+            var data = JSON.parse(res);
+            $("#jenisUnitSimper").html(data.unit);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $.LoadingOverlay("hide");
+            $(".errormdlsimper").removeClass('d-none');
+            $(".errormdlsimper").removeClass('alert-info');
+            $(".errormdlsimper").addClass('alert-danger');
+            if (thrownError != "") {
+                $(".errormdlsimper").html("Terjadi kesalahan saat load data unit simper, hubungi administrator");
+                // $("#btnsimpanunitsimper").remove();
+            }
+        }
+    });
+
+    $.ajax({
+        type: "POST",
+        url: site_url + "izin_tambang/get_all_akses",
+        data: {
+            token: token,
+        },
+        success: function (res) {
+            console.log("Success POST on " + site_url + "izin_tambang/get_all_akses");
+            var data = JSON.parse(res);
+            $("#tipeAksesUnit").html(data.akses);
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            $.LoadingOverlay("hide");
+            $(".errormdlsimper").removeClass('d-none');
+            $(".errormdlsimper").removeClass('alert-info');
+            $(".errormdlsimper").addClass('alert-danger');
+            if (thrownError != "") {
+                $(".errormdlsimper").html("Terjadi kesalahan saat load data unit simper, hubungi administrator");
+                $("#btnsimpanunitsimper").remove();
+            }
+        }
+    });
 
     function fetch_sim() {
         $.ajax({
@@ -10,6 +60,7 @@ $(document).ready(function () {
             url: site_url + "sim/get_all",
             data: {},
             success: function (res) {
+                console.log("Success POST on " + site_url + "sim/get_all");
                 var data = JSON.parse(res);
                 $("#editJenisSIM").html(data.smm);
                 $("#refreshEditJenisSIM").removeAttr('disabled');
@@ -44,7 +95,141 @@ $(document).ready(function () {
         });
     }
 
-    // Ketika permasalahan dunia bertumpu dalam perspektif masing-masing.
+    function add_unit_baru() {
+        if (jenis_izin_tambang == "SP") {
+            let jenisIzin = $("#editJenisIzin").val();
+            let noReg = $("#editNoReg").val();
+            let tglExp = $("#editTglExp").val();
+            let jenisSim = $("#editJenisSIM").val();
+            let tglExpSim = $("#editTglExpSIM").val();
+            let jenisUnit = $("#jenisUnitSimper").val();
+            let tipeAkses = $("#tipeAksesUnit").val();
+
+            if (authKary == "") {
+                $(".errorMsgEditIzin").removeClass('d-none');
+                $(".errorMsgEditIzin").removeClass('alert-info');
+                $(".errorMsgEditIzin").addClass('alert-danger');
+                $(".errorMsgEditIzin").html("Data karyawan tidak ditemukan");
+            }
+
+            if (jenisIzin == "") {
+                errJenisIzin = "Jenis izin wajib dipilih";
+            } else {
+                errJenisIzin = "";
+            }
+
+            if (noReg == "") {
+                errNoReg = "No. Registrasi izin wajib diisi";
+            } else {
+                errNoReg = "";
+            }
+
+            if (jenis_izin_tambang == "SP") {
+                if (jenisSim == "") {
+                    errJenisSim = "Jenis SIM wajib dipilih";
+                } else {
+                    errJenisSim = "";
+                }
+            } else {
+                errJenisSim = "";
+            }
+
+            if (tglExpSim == "") {
+                errTglExpSim = "Tanggal expired SIM wajib diisi";
+            } else {
+                errTglExpSim = "";
+            }
+
+            if (tglExp == "") {
+                errTglExp = "Tanggal expired izin wajib diisi";
+            } else {
+                errTglExp = "";
+            }
+
+            if (errJenisIzin == "" && errNoReg == "" && errTglExp == "" && errJenisSim == "" && errTglExpSim == "") {
+                $("#mdlunitsimper").modal("show");
+                $("#refreshjenisUnitSimper").removeAttr('disabled');
+                $("#refreshtipeAksesUnit").removeAttr('disabled');
+            } else {
+                $(".errorEditJenisIzin").html(errJenisIzin);
+                $(".errorEditNoReg").html(errNoReg);
+                $(".errorEditJenisSIM").html(errJenisSim);
+                $(".errorEditTglExpSIM").html(errTglExpSim);
+                $(".errorEditTglExp").html(errTglExp);
+            }
+        }
+    }
+
+    function save_unit_baru() {
+        let auth_kary = authKary;
+        let auth_izin = authIzinTambang;
+        let auth_person = authPerson;
+        // let auth_simpol = $(".j8234234b").text();
+        let jenisizin = $("#addJenisIzin").val();
+        let noreg = $("#addNoReg").val();
+        let tglexp = $("#addTglExp").val();
+        let jenissim = $("#addJenisSIM").val();
+        let tglexpsim = $("#addTglExpSIM").val();
+        let jenisunit = $("#jenisUnitSimper").val();
+        let tipeakses = $("#tipeAksesUnit").val();
+        let filesim = $("#filesimpolisi").val();
+        const flsim = $('#filesimpolisi').prop('files')[0];
+
+        // let formData = new FormData();
+        // formData.append('filesimpolisi', flsim);
+        // formData.append('filesim', filesim);
+        // formData.append('jenisizin', jenisizin);
+        // formData.append('noreg', noreg);
+        // formData.append('tglexpsim', tglexpsim);
+        // formData.append('tglexp', tglexp);
+        // formData.append('jenissim', jenissim);
+        // formData.append('jenisunit', jenisunit);
+        // formData.append('auth_izin', auth_izin);
+        // formData.append('auth_kary', auth_kary);
+        // formData.append('auth_simpol', auth_simpol);
+        // formData.append('auth_person', auth_person);
+        // formData.append('tipeakses', tipeakses);
+        // formData.append('token', token);
+
+        // $.ajax({
+        //     type: 'POST',
+        //     url: site_url + "izin_tambang/add_unit_izin_tambang",
+        //     data: formData,
+        //     cache: false,
+        //     processData: false,
+        //     contentType: false,
+        //     success: function (data) {
+        //         var data = JSON.parse(data);
+        //         if (data.statusCode == 200) {
+        //             $("#jenisUnitSimper").val('').trigger('change');
+        //             $("#tipeAksesUnit").val('').trigger('change');
+        //             $(".errorjenisUnitSimper").text('');
+        //             $(".errortipeAksesUnit").text('');
+        //             $("#idizintambang").LoadingOverlay("show");
+        //             $(".j8234234b").text(data.auth_simpol);
+        //             $(".ecb14fe704e08d9df8e343030bbbafcb").text(data.auth_izin);
+        //             $("#idizintambang").load(site_url + "izin_tambang/izin_tambang?auth_izin=" + data.auth_izin);
+        //             swal('Berhasil', data.pesan, 'success');
+        //         } else if (data.statusCode == 201) {
+        //             swal('Error', data.pesan, 'error');
+        //         } else {
+        //             $(".errorjenisUnitSimper").html(data.jenisunit);
+        //             $(".errortipeAksesUnit").html(data.tipeakses);
+        //             $(".errorFilesimpolisi").html(data.tipeakses);
+        //         }
+        //     },
+        //     error: function (xhr, ajaxOptions, thrownError) {
+        //         $.LoadingOverlay("hide");
+        //         $(".errormsg").removeClass('d-none');
+        //         $(".errormsg").removeClass('alert-info');
+        //         $(".errormsg").addClass('alert-danger');
+        //         if (thrownError != "") {
+        //             $(".errormsg").html("Terjadi kesalahan saat menyimpan unit hubungi administrator");
+        //         }
+        //     }
+        // });
+    }
+
     $("#editJenisIzin").change(() => {
         if ($("#editJenisIzin").val() == "SP") {
             $("#txtEditSIM").removeClass("d-none");
@@ -62,124 +247,16 @@ $(document).ready(function () {
         fetch_sim();
     });
 
-    $("#editSimpanPekerjaan").click(function () {
-        // auth
-        let auth_person = $("#valueAuthPersonal").val();
-        let auth_kary = $("#valueAuthKaryawan").val();
-        let id_kary = $("#valueIDKaryawan").val();
-        let auth_ktr = $("#valueKontrakKary").val();
+    $(document).on('click', '.btnDetailIzinKaryawan', function () {
+        console.log("btnDetailIzinKaryawan clicked!");
+        $("#mdlDetailIzinKaryawan").modal("show");
+    });
 
-        // data karyawan
-        let no_ktp = $("#editNoKTP").val();
-        let no_kk = $("#editNoKK").val();
-        let no_nik = $("#editNIKKary").val();
-        let doh = $("#editDOH").val();
-        let tgl_aktif = $("#editTanggalAktif").val();
-        let auth_depart = $("#editDepartKary").val();
-        let auth_posisi = $("#editPosisiKary").val();
-        let auth_level = $("#editLevelKary").val();
-        let auth_lokker = $("#editLokkerKary").val();
-        let auth_lokterima = $("#editLokterimaKary").val();
-        let auth_poh = $("#editPOHKary").val();
-        let id_klasifikasi = $("#editKlasifikasiKary").val();
-        let auth_tipe = $("#editTipeKary").val();
-        let stat_tinggal = $("#editStatusResidence").val();
-        let email_kantor = $("#editEmailKantor").val();
-        let tgl_permanen = $("#editTanggalPermanen").val();
-        let auth_m_perusahaan = $("#editPerKary").val();
-        let stat_kerja = $("#editStatusKerjaKary").val();
-        let tgl_mulai_kontrak = $("#editTanggalKontrakAwal").val();
-        let tgl_akhir_kontrak = $("#editTanggalKontrakAkhir").val();
-        let tgl_edit = $("#editTglEdit").val();
+    $("#editTambahUnit").click(() => {
+        add_unit();
+    });
 
-        swal({
-            title: "Simpan Data",
-            text: "Yakin data karyawan akan disimpan?",
-            type: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#36c6d3',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Ya, simpan',
-            cancelButtonText: 'Batalkan'
-        }).then(function (result) {
-            if (result.value) {
-                $.LoadingOverlay("show");
-                $.ajax({
-                    type: "POST",
-                    url: site_url + "karyawan/update_karyawan",
-                    data: {
-                        id_karyawan: id_kary,
-                        auth_person: auth_person,
-                        auth_kary: auth_kary,
-                        auth_ktr: auth_ktr,
-                        no_ktp: no_ktp,
-                        no_kk: no_kk,
-                        no_nik: no_nik,
-                        auth_depart: auth_depart,
-                        auth_posisi: auth_posisi,
-                        auth_lokker: auth_lokker,
-                        auth_lokterima: auth_lokterima,
-                        auth_poh: auth_poh,
-                        auth_tipe: auth_tipe,
-                        auth_level: auth_level,
-                        id_klasifikasi: id_klasifikasi,
-                        doh: doh,
-                        tgl_aktif: tgl_aktif,
-                        stat_tinggal: stat_tinggal,
-                        stat_kerja: stat_kerja,
-                        email_kantor: email_kantor,
-                        tgl_permanen: tgl_permanen,
-                        tgl_mulai_kontrak: tgl_mulai_kontrak,
-                        tgl_akhir_kontrak: tgl_akhir_kontrak,
-                        auth_m_perusahaan: auth_m_perusahaan,
-                        tgl_edit: tgl_edit,
-                    },
-                    success: function (res) {
-                        console.log(res);
-                        var data = JSON.parse(res);
-                        if (data.statusCode == 204) {
-                            swal("Berhasil", data.pesan, data.status);
-                            $.LoadingOverlay("hide");
-                            // } else if (data.statusCode == 201) {
-                            //     $(".errmsgKary").removeClass('d-none');
-                            //     $(".errmsgKary").removeClass('alert-primary');
-                            //     $(".errmsgKary").addClass('alert-danger');
-                            //     $(".errmsgKary").html(data.pesan);
-                            //     $.LoadingOverlay("hide");
-                        } else {
-                            $(".errorEditNIKKary").html(data.no_nik);
-                            $(".errorEditDepartKary").html(data.depart);
-                            $(".errorEditPosisiKary").html(data.posisi);
-                            $(".errorEditKlasifikasiKary").html(data.id_klasifikasi);
-                            $(".errorEditPOHKary").html(data.id_poh);
-                            $(".errorEditLokterimaKary").html(data.id_lokterima);
-                            $(".errorEditLokasiKerja").html(data.id_lokker);
-                            $(".errorEditLevelKary").html(data.id_level);
-                            $(".errorEditStatusResidence").html(data.stat_tinggal);
-                            $(".errorEditDOH").html(data.doh);
-                            $(".errorEditTanggalAktif").html(data.tgl_aktif);
-                            $(".errorEditTipeKaryawan").html(data.id_tipe);
-                            $(".errorEditJenisKaryawan").html(data.stat_kerja);
-                            $(".errorEditEmail").html(data.email_kantor);
-                            $(".errorEditTanggalPermanen").html(data.pesan);
-                            $(".errorEditTanggalKontrakAwal").html(data.pesan1);
-                            $(".errorEditTanggalKontrakAkhir").html(data.pesan2);
-
-                            swal("Error", data.pesan, data.status);
-                            $.LoadingOverlay("hide");
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log(thrownError);
-                        $.LoadingOverlay("hide");
-                        $(".errmsgKary").removeClass('d-none');
-                        $(".errmsgKary").addClass('alert-danger');
-                        if (thrownError != "") {
-                            $(".errmsgKary").html("Terjadi kesalahan saat memperbarui data karyawan, hubungi administrator");
-                        }
-                    }
-                });
-            }
-        });
+    $("#btnsimpanunitsimper").click(() => {
+        save_unit_baru();
     });
 });

@@ -39,6 +39,24 @@ class Izin_tambang extends My_Controller
 
      public function add_unit_izin_tambang()
      {
+          $auth_valid =  $this->session->csrf_token;
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $email = $this->session->email_hcdata;
+          if ($auth !== $auth_valid) {
+               $data_err = [
+                    'email_error' => $email,
+                    'ip_error' => $_SERVER['REMOTE_ADDR'],
+                    'ip_akses' => $_SERVER['REMOTE_ADDR'],
+                    'msg_error' => 'Token tidak valid : ' . $auth . " - valid token : " . $auth_valid,
+                    'tgl_buat' => date('Y-m-d H:i:s'),
+               ];
+
+               $err = $this->lgn->get_err_log($data_err);
+
+               redirect(base_url('errauth'));
+               die;
+          }
+
           $this->form_validation->set_rules("jenisunit", "jenisunit", "required|trim", [
                'required' => 'Jenis unit wajib dipilih',
           ]);
@@ -74,7 +92,7 @@ class Izin_tambang extends My_Controller
                $auth_person = htmlspecialchars($this->input->post("auth_person", true));
                $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
                $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
-               $auth_simpol = htmlspecialchars($this->input->post("auth_simpol", true));
+               // $auth_simpol = htmlspecialchars($this->input->post("auth_simpol", true));
                $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
                $noreg = htmlspecialchars($this->input->post("noreg", true));
                $tglexp = htmlspecialchars($this->input->post("tglexp", true));
@@ -110,12 +128,12 @@ class Izin_tambang extends My_Controller
                          }
                     }
 
-                    if (is_dir('./assets/berkas/karyawan/' . $foldername) == false) {
-                         mkdir('./assets/berkas/karyawan/' . $foldername, 0775, TRUE);
+                    if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                         mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
                     }
 
-                    if (is_dir('./assets/berkas/karyawan/' . $foldername)) {
-                         $config['upload_path'] = './assets/berkas/karyawan/' . $foldername;
+                    if (is_dir('./berkas/karyawan/' . $foldername)) {
+                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                          $config['allowed_types'] = 'pdf';
                          $config['max_size'] = 50;
                          $config['file_name'] = $nama_file;
@@ -253,6 +271,9 @@ class Izin_tambang extends My_Controller
 
      public function hapus_unit()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $id_unit =  htmlspecialchars($this->input->post("id_unit", true));
 
           if ($id_unit != "") {
@@ -270,6 +291,9 @@ class Izin_tambang extends My_Controller
 
      public function hapus_unit_all()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $auth_izin =  htmlspecialchars($this->input->post("auth_izin", true));
 
           if ($auth_izin != "") {
@@ -287,6 +311,9 @@ class Izin_tambang extends My_Controller
 
      public function cek_jenisizin()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
           $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
 
@@ -558,6 +585,9 @@ class Izin_tambang extends My_Controller
 
      public function get_all_unit()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->smp->get_all_unit();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {
@@ -573,6 +603,9 @@ class Izin_tambang extends My_Controller
 
      public function get_all_akses()
      {
+          $auth = htmlspecialchars($this->input->post("token", true));
+          $this->cek_auth($auth);
+
           $query = $this->smp->get_all_akses();
           $output = "<option value=''>-- WAJIB DIPILIH --</option>";
           if (!empty($query)) {

@@ -148,7 +148,7 @@ class Lokker_model extends CI_Model
 
      public function edit_lokker($kd_lokker, $lokker, $ket_lokker, $status)
      {
-          $id_lokker = $this->session->userdata('id_lokker');
+          $id_lokker = $this->session->userdata('id_lokker_hcdata');
 
           $query = $this->db->query("SELECT * FROM tb_lokker WHERE kd_lokker='" . $kd_lokker . "' AND id_lokker <> " . $id_lokker);
           if (!empty($query->result())) {
@@ -167,11 +167,7 @@ class Lokker_model extends CI_Model
           $this->db->set('tgl_edit', date('Y-m-d H:i:s'));
           $this->db->where('id_lokker', $id_lokker);
           $this->db->update('tb_lokker');
-          if ($this->db->affected_rows() > 0) {
-               return 200;
-          } else {
-               return 201;
-          }
+          return 200;
      }
 
      public function get_all()
