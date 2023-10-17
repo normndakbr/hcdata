@@ -130,7 +130,7 @@
                                                        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                                                             <div class="m-b-25">
                                                                  <img style="border: 10px solid #3c3c3c;"
-                                                                      src="../../berkas/pasphoto/pasphoto.jpg"
+                                                                      src="<?=isset($data_kary->url_foto) ? base_url() . 'berkas/foto/1/' . $data_kary->url_foto : '../../berkas/pasphoto/pasphoto.jpg'?>"
                                                                       width="200" height="200" class="img-radius"
                                                                       alt="User-Profile-Image">
                                                             </div>
@@ -438,7 +438,7 @@
                                                                                 </th>
                                                                                 <th style="width: 5%;">PROSES</th>
                                                                            </tr>
-                                                                      </thead>
+                                                                      </thead>sss
                                                                       <tbody>
                                                                            <?php
 $no = 1;
@@ -452,6 +452,7 @@ if (!empty($data_izin)) {
         echo '<td style="text-align:center;">';
         echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
         if ($list->url_izin_tambang != "") {
+            echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="far fa-file-pdf"></i></a>';
             echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
         } else {
             echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
