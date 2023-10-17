@@ -3,7 +3,7 @@
 <head>
      <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:400,400i,700,900&display=swap" rel="stylesheet">
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
-     <title>ARC - Terverifikasi</title>
+     <title>OneDB - Terverifikasi</title>
 </head>
 <style>
      body {
@@ -51,7 +51,7 @@
           </div>
           <h1>Success</h1>
           <p>Ip Address anda telah terverifikasi;<br /> klik tombol dibawah untuk login</p>
-          <a href="<?= base_url('login'); ?>" class="btn btn-primary font-weight-bold mt-4"> Login </a>
+          <a href="<?=base_url('login');?>" class="btn btn-primary font-weight-bold mt-4"> Login </a>
 
      </div>
 

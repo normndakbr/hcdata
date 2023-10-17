@@ -298,7 +298,7 @@ class Pelanggaran extends My_Controller
             if (is_dir('./berkas/karyawan/' . $foldername)) {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = '*';
-                $config['max_size'] = 100;
+                $config['max_size'] = 300;
                 $config['file_name'] = $nama_file;
 
                 $this->load->library('upload', $config);
@@ -353,7 +353,7 @@ class Pelanggaran extends My_Controller
                         'tgl_akhir_langgar' => $tglAkhirPunish,
                         'tgl_buat' => date('Y-m-d H:i:s'),
                         'tgl_edit' => date('Y-m-d H:i:s'),
-                        'id_user' => $this->session->userdata('id_user_main'),
+                        'id_user' => $this->session->userdata('id_user_hcdata'),
                     ];
 
                     $langgar = $this->lgr->input_langgar($data);
@@ -621,7 +621,7 @@ class Pelanggaran extends My_Controller
 
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 100;
+                    $config['max_size'] = 300;
                     $config['file_name'] = $namafile;
 
                     $this->load->library('upload', $config);

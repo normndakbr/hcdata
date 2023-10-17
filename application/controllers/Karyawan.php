@@ -68,7 +68,7 @@ class Karyawan extends My_Controller
 
     public function error404()
     {
-        $this->load->view('dashboard/errors/404err');
+        $this->load->view('errors/errnotfound');
     }
 
     public function sertifikasi()
@@ -107,7 +107,7 @@ class Karyawan extends My_Controller
         echo json_encode($list);
     }
 
-    public function detail_karyawan($auth_kary)
+    public function detail($auth_kary)
     {
         $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
         $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
@@ -2611,10 +2611,10 @@ class Karyawan extends My_Controller
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2625,21 +2625,26 @@ class Karyawan extends My_Controller
             foreach ($dtizin as $list) {
                 $url_izin_tambang = $list->url_izin_tambang;
                 $id_m_perusahaan = $list->id_m_perusahaan;
+                $id_personal = $list->id_personal;
             }
 
-            //   $foldername = md5($id_personal);
-            // echo json_encode(["berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang]);
-            // return;
+            $foldername = md5($id_personal);
 
-            if (is_file("berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang)) {
-                $tofile = realpath("berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang);
+            if ($id_m_perusahaan == 1) {
+                $fileizin = "berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang;
+            } else {
+                $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
+            }
+
+            if (is_file($fileizin)) {
+                $tofile = realpath($fileizin);
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2660,10 +2665,10 @@ class Karyawan extends My_Controller
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2683,10 +2688,10 @@ class Karyawan extends My_Controller
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2700,24 +2705,34 @@ class Karyawan extends My_Controller
                 $id_m_perusahaan = $list->id_m_perusahaan;
             }
 
-            $dtsim = $this->kry->get_dt_sim($id_personal);
-            if (!empty($dtsim)) {
-                $url_file = $list->url_file;
+            $dtsim = $this->kry->get_dt_sim_by_id($id_personal);
 
-                if (is_file("berkas/sim/" . $id_m_perusahaan . "/" . $url_file)) {
-                    $tofile = realpath("berkas/sim/" . $id_m_perusahaan . "/" . $url_file);
+            if (!empty($dtsim)) {
+                foreach ($dtsim as $list) {
+                    $url_file = $list->url_file;
+                }
+
+                $foldername = md5($id_personal);
+
+                if ($id_m_perusahaan == 1) {
+                    $fileizin = "berkas/sim/" . $id_m_perusahaan . "/" . $url_file;
+                } else {
+                    $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_file;
+                }
+
+                if (is_file($fileizin)) {
+                    $tofile = realpath($fileizin);
                     header('Content-Type: application/pdf');
                     readfile($tofile);
                 } else {
-                    redirect('karyawan/error404');
+                    $this->load->view('errors/errnotfound');
                 }
-
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
 
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2761,10 +2776,10 @@ class Karyawan extends My_Controller
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -2782,10 +2797,10 @@ class Karyawan extends My_Controller
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                redirect('karyawan/error404');
+                $this->load->view('errors/errnotfound');
             }
         } else {
-            redirect('karyawan/error404');
+            $this->load->view('errors/errnotfound');
         }
     }
 
@@ -3028,7 +3043,7 @@ class Karyawan extends My_Controller
                 $row['tgl_buat'] = date('d-M-Y', strtotime($kry->tgl_buat));
                 $row['proses'] = '<div class="dropdown dropleft"><button id="' . $kry->auth_karyawan . '" class="btn btn-success btn-sm font-weight-bold aksikary" aria-haspopup="true" title="Aksi" data-toggle="dropdown" aria-expanded="false" value="' . $kry->nama_lengkap . '"> ... </button>
                     <div class="dropdown-menu">
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail_karyawan/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>

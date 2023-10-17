@@ -53,7 +53,7 @@ $route['default_controller'] = 'login';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = false;
 
-$route['karyawan/detail_karyawan/(:any)'] = 'karyawan/detail_karyawan/$1';
+$route['karyawan/detail/(:any)'] = 'karyawan/detail/$1';
 $route['karyawan/edit_karyawan/(:any)'] = 'karyawan/edit_karyawan/$1';
 $route['level'] = 'level';
 $route['tambahlevel'] = 'level/new';

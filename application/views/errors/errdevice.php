@@ -6,14 +6,14 @@
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1">
 
-     <title>ARC - Not Allowed</title>
+     <title>OneDB - Not Allowed</title>
 
      <!-- Google font -->
      <link href="https://fonts.googleapis.com/css?family=Montserrat:500" rel="stylesheet">
      <link href="https://fonts.googleapis.com/css?family=Titillium+Web:700,900" rel="stylesheet">
 
      <!-- Custom stlylesheet -->
-     <link type="text/css" rel="stylesheet" href="<?= base_url(); ?>assets/css/style11.css" />
+     <link type="text/css" rel="stylesheet" href="<?=base_url();?>assets/css/style11.css" />
 
 </head>
 

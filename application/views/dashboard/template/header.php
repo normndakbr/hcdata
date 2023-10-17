@@ -133,7 +133,7 @@ foreach ($get_menu as $lsmenu) {
                                    <span aria-hidden="true">&times;</span>
                               </button>
                          </div>
-                    </li>ss
+                    </li>
                </ul>
                <ul class="navbar-nav ml-auto">
                     <li>
