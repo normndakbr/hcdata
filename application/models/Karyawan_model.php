@@ -903,6 +903,30 @@ class Karyawan_model extends CI_Model
         return $this->db->get_where('vw_sim_karyawan', ['id_personal' => $id_personal])->result();
     }
 
+    public function getHirarki($id_prs)
+    {
+        if ($id_prs == "") {
+            $hasil = "";
+        } else {
+            $hasil = "";
+            do {
+                $w = $this->db->query("SELECT * from vw_m_prs where id_m_perusahaan=" . $id_prs);
+                foreach ($w->result() as $h) {
+                    if ($hasil != "") {
+                        $hasil .= " / " . $h->nama_m_perusahaan . " (" . $h->kode_perusahaan . ")";
+                    } else {
+                        $hasil .= $h->nama_m_perusahaan . " (" . $h->kode_perusahaan . ")";
+                    }
+
+                    $id_prs = $h->id_parent;
+                    $id_parent = $h->id_parent;
+                }
+            } while ($id_parent > 0);
+        }
+
+        return $hasil;
+    }
+
     public function hapus_mcu($auth_mcu)
     {
         $cek_id = $this->db->get_where('vw_mcu', ['auth_mcu' => $auth_mcu])->result();

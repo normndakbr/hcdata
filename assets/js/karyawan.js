@@ -29,6 +29,18 @@ $(document).ready(function () {
   $("#perJenisData").change(function () {
     let prs = $("#perJenisData").val();
     $("#tbmKaryawan").LoadingOverlay("show");
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "karyawan/hirarki",
+      data: {
+        prs: prs,
+      },
+      success: function (data) {
+        $("#lblhirarkiper").text(data);
+      },
+    });
+
     $("#tbmKaryawan").DataTable().destroy();
     tbKary(prs);
   });
