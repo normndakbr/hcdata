@@ -427,43 +427,43 @@
                                                                                 <th
                                                                                      style="text-align:center;width: 1%;">
                                                                                      NO.</th>
-                                                                                <th style="width: 55%;">JENIS IZIN</th>
-                                                                                <th style="width: 19%;">NO. REGISTRASI
+                                                                                <th style="width: 20%;">JENIS IZIN</th>
+                                                                                <th style="width: 60%;">NO. REGISTRASI
                                                                                 </th>
                                                                                 <th style="width: 10%;">TGL. EXPIRED
                                                                                 </th>
-                                                                                <th style="width: 5%;">PROSES</th>
+                                                                                <th style="width: 9%;">PROSES</th>
                                                                            </tr>
                                                                       </thead>
                                                                       <tbody>
                                                                            <?php
-                                                                                $no = 1;
-                                                                                if (!empty($data_izin)) {
-                                                                                     foreach ($data_izin as $list) {
-                                                                                          echo '<tr>';
-                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                                          echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_izin_tambang . '</td>';
-                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->no_reg . '</td>';
-                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_expired)) . '</td>';
-                                                                                          echo '<td style="text-align:center;">';
-                                                                                          echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
-                                                                                          if ($list->url_izin_tambang != "") {
-                                                                                               if ($list->id_jenis_izin_tambang == 2) {
-                                                                                                    echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-id-badge"></i></a> ';
-                                                                                               }
-                                                                                               echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
-                                                                                          } else {
-                                                                                               echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
-                                                                                          }
-                                                                                          echo '</td>';
-                                                                                          echo '</tr>';
-                                                                                     }
-                                                                                } else {
-                                                                                     echo '<tr>';
-                                                                                     echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
-                                                                                     echo '</tr>';
-                                                                                }
-                                                                           ?>
+$no = 1;
+if (!empty($data_izin)) {
+    foreach ($data_izin as $list) {
+        echo '<tr>';
+        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+        echo '<td class="align-middle" style="width: 20%;">' . $list->jenis_izin_tambang . '</td>';
+        echo '<td class="align-middle" style="width: 60%;">' . $list->no_reg . '</td>';
+        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_expired)) . '</td>';
+        echo '<td style="text-align:center;">';
+        echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
+        if ($list->url_izin_tambang != "") {
+            if ($list->id_jenis_izin_tambang == 2) {
+                echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-id-badge"></i></a> ';
+            }
+            echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+        } else {
+            echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
+        }
+        echo '</td>';
+        echo '</tr>';
+    }
+} else {
+    echo '<tr>';
+    echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+    echo '</tr>';
+}
+?>
                                                                       </tbody>
                                                                  </table>
                                                             </div>

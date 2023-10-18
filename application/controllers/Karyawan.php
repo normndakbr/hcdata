@@ -1564,6 +1564,204 @@ class Karyawan extends My_Controller
         }
     }
 
+    public function addsimpernew()
+    {
+        $auth = htmlspecialchars($this->input->post("token", true));
+        $this->cek_auth($auth);
+
+        $this->form_validation->set_rules("jenisizin", "jenisizin", "required|trim", [
+            'required' => 'Jenis Izin wajib dipilih',
+        ]);
+        $this->form_validation->set_rules("noreg", "noreg", "required|trim|max_length[50]", [
+            'required' => 'No. Register wajib diisi',
+            'max_length' => 'No. Register maksimal 50 karakter',
+        ]);
+        $this->form_validation->set_rules("tglexp", "tglexp", "required|trim", [
+            'required' => 'Tanggal expired wajib diisi',
+        ]);
+        $this->form_validation->set_rules("jenissim", "jenissim", "trim");
+        $this->form_validation->set_rules("tglexpsim", "tglexpsim", "trim");
+
+        if ($this->form_validation->run() == false) {
+            $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
+            $jenissim = htmlspecialchars($this->input->post("jenissim", true));
+            $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
+            $tglexp = htmlspecialchars($this->input->post("tglexp", true));
+            $filesmp = htmlspecialchars($this->input->post("filesmp", true));
+
+            if ($jenisizin == 2) { // ================= jika simper ===========================
+                $filesim = htmlspecialchars($this->input->post("filesim", true));
+                if ($jenissim == "") {
+                    $errjenis = "<p>Jenis SIM wajib dipilih</p>";
+                } else {
+                    $errjenis = "";
+                }
+
+                if ($tglexpsim == "") {
+                    $errtglsim = "<p>Tanggal expired SIM wajib diisi</p>";
+                } else {
+                    $errtglsim = "";
+                }
+
+                if ($filesim == "") {
+                    $errsim = "<p>SIM Polisi wajib diupload</p>";
+                } else {
+                    $errsim = "";
+                }
+            } else {
+                $errjenis = "";
+                $errtglsim = "";
+                $errsim = "";
+            }
+
+            if ($filesmp == "") {
+                $errsmp = "<p>SIMPER / MINE PERMIT wajib diupload</p>";
+            } else {
+                $errsmp = "";
+            }
+
+            $error = [
+                'statusCode' => 202,
+                'jenisizin' => form_error("jenisizin"),
+                'noreg' => form_error("noreg"),
+                'tglexp' => form_error("tglexp"),
+                'jenissim' => $errjenis,
+                'tglexpsim' => $errtglsim,
+                'filesim' => $errsim,
+                'filesmp' => $errsmp,
+            ];
+
+            echo json_encode($error);
+            return;
+        } else {
+            $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
+            $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+            $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
+            $noreg = htmlspecialchars($this->input->post("noreg", true));
+            $tglexp = htmlspecialchars($this->input->post("tglexp", true));
+            $jenissim = htmlspecialchars($this->input->post("jenissim", true));
+            $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
+            $filesim = htmlspecialchars($this->input->post("filesim", true));
+            $filesmp = htmlspecialchars($this->input->post("filesmp", true));
+            $filesim = htmlspecialchars($this->input->post("filesim", true));
+            $filesmp = htmlspecialchars($this->input->post("filesmp", true));
+            $filesimnm = htmlspecialchars($this->input->post("filesimnm", true));
+            $filesimsv = htmlspecialchars($this->input->post("filesimsv", true));
+            $filesmpnm = htmlspecialchars($this->input->post("filesmpnm", true));
+            $filesmpsv = htmlspecialchars($this->input->post("filesmpsv", true));
+            $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+            $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+            $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
+            $url_izin = date('YmdHis') . '-SMP.pdf';
+            $url_sim = date('YmdHis') . '-SIMPOL.pdf';
+            $foldername = md5($id_personal);
+
+            if ($auth_kary == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
+                return;
+            }
+
+            if ($jenisizin == 2) { // ===================== jika simper ==============================
+                if($auth_izin == "") {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Data unit SIMPER belum dibuat"));
+                    return;
+                } else {
+                    echo json_encode(array(
+                        "statusCode" => 200,
+                        "pesan" => "Data SIMPER berhasil disimpan"
+                    ));
+                }
+            } else if ($jenisizin == 1) { // jika mine permit -------------------------------
+                $id_sim_kary = 0;
+                $tglexpsim = "1970-01-01";
+
+                $cek_noreg = $this->kry->cek_no_simper($noreg);
+                    if ($cek_noreg) {
+                        echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Mine Permit sudah digunakan"));
+                        return;
+                    }
+
+                    if ($auth_kary !== "") {
+                        $smpname = $_FILES['filesmpkary']['name'];
+                        $smptipe = $_FILES['filesmpkary']['type'];
+                        $smpsize = $_FILES['filesmpkary']['size'];
+
+                        if ($smpname == "" || $smpname == "Pilih file SIMPER/MINE PERMIT") {
+                            echo json_encode(array("statusCode" => 202, "filesmp" => "MINE PERMIT wajib diupload."));
+                            return;
+                        }
+
+                        if ($smptipe == "application\/pdf") {
+                            echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
+                            return;
+                        }
+
+                        if ($smpsize > 70000) {
+                            echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
+                            return;
+                        }
+
+                        $_FILES['filesmpkary']['name'] = $url_izin;
+                        $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                        $config['allowed_types'] = 'pdf';
+                        $config['max_size'] = 70;
+                        $config['overwrite'] = true;
+                        $this->load->library('upload', $config);
+                        $this->load->initialize($config);
+                        $this->upload->do_upload('filesmpkary');
+
+                        $data_izin_tambang = [
+                            'id_kary' => $id_karyawan,
+                            'id_jenis_izin_tambang' => $jenisizin,
+                            'no_Reg' => $noreg,
+                            'tgl_expired' => $tglexp,
+                            'id_sim_kary' => $id_sim_kary,
+                            'url_izin_tambang' => $url_izin,
+                            'ket_izin_tambang' => '',
+                            'tgl_buat' => date('Y-m-d H:i:s'),
+                            'tgl_edit' => date('Y-m-d H:i:s'),
+                            'id_user' => $this->session->userdata('id_user_hcdata'),
+                        ];
+
+                        $izin = $this->smp->input_izin_tambang($data_izin_tambang);
+
+                        if ($izin) {
+                            $last_izin = $this->smp->last_row_izin($auth_kary);
+
+                            if (!empty($last_izin)) {
+                                foreach ($last_izin as $list) {
+                                    $auth_izin = $list->auth_izin_tambang;
+                                }
+
+                                $linkizn = base_url('karyawan/berkasizinadd/' . $auth_izin);
+
+                                echo json_encode(array(
+                                    "statusCode" => 200,
+                                    "pesan" => "Data Mine Permit berhasil disimpan",
+                                    "auth_izin" => $auth_izin,
+                                    "filesmp" => $smpname,
+                                    "filesmpsv" => $url_izin,
+                                    "linkizin" => $linkizn,
+                                ));
+                            } else {
+                                echo json_encode(array(
+                                    "statusCode" => 201,
+                                    "pesan" => "Error saat mengambil data Mine Permit",
+                                ));
+                            }
+                        } else {
+                            echo json_encode(array("statusCode" => 201, "pesan" => "Data Mine Permit gagal disimpan"));
+                        }
+                    } else {
+                        echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data karyawan"));
+                    }
+            } else {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Kode jenis izin tidak diketahui"));
+                die;
+            }
+        }
+    }
+
     public function addsertifikasi()
     {
         $auth = htmlspecialchars($this->input->post("token", true));
@@ -3051,12 +3249,12 @@ class Karyawan extends My_Controller
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFotoKaryawan" title ="Foto Karyawan" href="#!">Foto Karyawan</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFotoKaryawan" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="Foto Karyawan" href="#!">Foto Karyawan</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" title ="Sertifikasi" href="#!">Sertifikasi</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" title ="MCU" href="#!">MCU</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnVaksin" title ="Vaksin" href="#!">Vaksin</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFilePendukung" title ="File Pendukung" href="#!">File Pendukung</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="Sertifikasi" href="#!">Sertifikasi</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="MCU" href="#!">MCU</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnVaksin" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="Vaksin" href="#!">Vaksin</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFilePendukung" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="File Pendukung" href="#!">File Pendukung</a>
                     </div>
                     </div>';
 

@@ -120,8 +120,16 @@ $(document).ready(function () {
     dropdownParent: $("#mdlunitsimper"),
     theme: "bootstrap4",
   });
+  $("#jenisUnitSimpernw").select2({
+    dropdownParent: $("#mdlunitsimpernw"),
+    theme: "bootstrap4",
+  });
   $("#tipeAksesUnit").select2({
     dropdownParent: $("#mdlunitsimper"),
+    theme: "bootstrap4",
+  });
+  $("#tipeAksesUnitnw").select2({
+    dropdownParent: $("#mdlunitsimpernw"),
     theme: "bootstrap4",
   });
   $("#jenisSertifikasi").select2({
@@ -315,6 +323,103 @@ $(document).ready(function () {
         $(".erroraddTglExp").html(errtglexp);
         $(".errorsimpermp").html(errfilesmp);
         $(".errorFilesimpolisi").html(errfilesim);
+      }
+    }
+  });
+
+  $("#addUnitSIMPERnew").click(function () {
+    let jenisizin = $("#addJenisIzinnew").val();
+
+    if (jenisizin == 2) {
+      let auth_kary = $(".ecb14fe704e08d9df8e343030bbb442344").text();
+      let noreg = $("#addNoRegnew").val();
+      let tglexp = $("#addTglExpnew").val();
+      let jenissim = $("#addJenisSIMnew").val();
+      let tglexpsim = $("#addTglExpSIMnew").val();
+      let jenisunit = $("#jenisUnitSimpernew").val();
+      let tipeakses = $("#tipeAksesUnitnew").val();
+      let filesim = $("#filesimpolisinew").val();
+      let filesmp = $("#simpermpnew").val();
+
+      if (auth_kary == "") {
+        $(".errormsgizinnew").removeClass("d-none");
+        $(".errormsgizinnew").removeClass("alert-info");
+        $(".errormsgizinnew").addClass("alert-danger");
+        $(".errormsgizinnew").html("Data karyawan tidak ditemukan");
+      }
+
+      if (filesim == "" || filesim == "Pilih file SIM Polisi") {
+        errfilesim = "SIM Polisi Wajib di upload";
+      } else {
+        errfilesim = "";
+      }
+
+      if (filesmp == "" || filesmp == "Pilih file SIMPER/MINE PERMIT") {
+        errfilesmp = "SIMPER Wajib di upload";
+      } else {
+        errfilesmp = "";
+      }
+
+      if (jenisizin == "") {
+        errjenisizin = "Jenis izin wajib dipilih";
+      } else {
+        errjenisizin = "";
+      }
+
+      if (noreg == "") {
+        errnoreg = "No. Registrasi wajib diisi";
+      } else {
+        errnoreg = "";
+      }
+
+      if (jenisizin == 2) {
+        if (jenissim == "") {
+          errjenissim = "Jenis SIM wajib dipilih";
+        } else {
+          errjenissim = "";
+        }
+      } else {
+        errjenissim = "";
+      }
+
+      if (tglexpsim == "") {
+        errtglexpsim = "Tanggal expired SIM wajib diisi";
+      } else {
+        errtglexpsim = "";
+      }
+
+      if (tglexp == "") {
+        errtglexp = "Tanggal expired izin wajib diisi";
+      } else {
+        errtglexp = "";
+      }
+
+      if (tglexp == "") {
+        errtglexp = "Tanggal expired izin wajib diisi";
+      } else {
+        errtglexp = "";
+      }
+
+      if (
+        errjenisizin == "" &&
+        errnoreg == "" &&
+        errtglexp == "" &&
+        errjenissim == "" &&
+        errtglexpsim == "" &&
+        errfilesim == "" &&
+        errfilesmp == ""
+      ) {
+        $("#mdlunitsimpernw").modal("show");
+        $("#refreshjenisUnitSimpernw").removeAttr("disabled");
+        $("#refreshtipeAksesUnitnw").removeAttr("disabled");
+      } else {
+        $(".erroraddJenisIzinnew").html(errjenisizin);
+        $(".erroraddNoRegnew").html(errnoreg);
+        $(".erroraddJenisSIMnew").html(errjenissim);
+        $(".erroraddTglExpSIMnew").html(errtglexpsim);
+        $(".erroraddTglExpnew").html(errtglexp);
+        $(".errorsimpermpnew").html(errfilesmp);
+        $(".errorFilesimpolisinew").html(errfilesim);
       }
     }
   });
@@ -1058,6 +1163,108 @@ $(document).ready(function () {
     });
   });
 
+  $("#btnsimpanunitsimpernw").click(function () {
+    let auth_izin = $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text();
+    let auth_kary = $(".ecb14fe704e08d9df8e343030bbb442344").text();
+    let auth_simpol = $(".ecb14fe704e08d95j32k4jn98sdfvj3o45").text();
+    let jenisizin = $("#addJenisIzinnew").val();
+    let noreg = $("#addNoRegnew").val();
+    let tglexp = $("#addTglExpnew").val();
+    let jenissim = $("#addJenisSIMnew").val();
+    let tglexpsim = $("#addTglExpSIMnew").val();
+    let jenisunit = $("#jenisUnitSimpernw").val();
+    let tipeakses = $("#tipeAksesUnitnw").val();
+    let filesim = $("#filesimpolisinew").val();
+    const flsim = $("#filesimpolisinew").prop("files")[0];
+    let filesmp = $("#simpermpnew").val();
+    const flsmp = $("#simpermpnew").prop("files")[0];
+    let filesimnm = $("#nmfilesimpolnew").val();
+    let filesimsv = $("#nmfilesimpolsvnew").val();
+    let filesmpnm = $("#nmfilesimpernew").val();
+    let filesmpsv = $("#nmfilesimpersvnew").val();
+
+    let formData = new FormData();
+    formData.append("filesimpolisi", flsim);
+    formData.append("filesim", filesim);
+    formData.append("filesmpkary", flsmp);
+    formData.append("filesmp", filesmp);
+    formData.append("jenisizin", jenisizin);
+    formData.append("noreg", noreg);
+    formData.append("tglexpsim", tglexpsim);
+    formData.append("tglexp", tglexp);
+    formData.append("jenissim", jenissim);
+    formData.append("jenisunit", jenisunit);
+    formData.append("auth_izin", auth_izin);
+    formData.append("auth_kary", auth_kary);
+    formData.append("auth_simpol", auth_simpol);
+    formData.append("tipeakses", tipeakses);
+    formData.append("filesimnm", filesimnm);
+    formData.append("filesimsv", filesimsv);
+    formData.append("filesmpnm", filesmpnm);
+    formData.append("filesmpsv", filesmpsv);
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "izin_tambang/add_unit_izin_tambang_new",
+      data: formData,
+      cache: false,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        var data = JSON.parse(data);
+        if (data.statusCode == 200) {
+          $("#jenisUnitSimpernw").val("").trigger("change");
+          $("#tipeAksesUnitnw").val("").trigger("change");
+          $("#idizintambangnew").LoadingOverlay("show");
+          $(".j8234234b").text(data.auth_simpol);
+          $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text(data.auth_izin);
+          $(".ecb14fe704e08d95j32k4jn98sdfvj3o45").text(data.auth_simpol);
+          if (data.auth_unit == "j78uh5yg") {
+            $("#nmfilesimpolnew").val(flsim.name);
+            $("#nmfilesimpolsvnew").val(data.filesimsv);
+            $("#nmfilesimpernew").val(flsmp.name);
+            $("#nmfilesimpersvnew").val(data.filesmpsv);
+            $("#btnshowsimpernew").attr("href", data.linkizin);
+            $("#btnshowsimpolnew").attr("href", data.linksim);
+            $("#btnshowsimpolnew").removeClass("disabled");
+            $("#btnshowsimpernew").removeClass("disabled");
+          }
+          $(".errorjenisUnitSimpernw").text("");
+          $(".errortipeAksesUnitnw").text("");
+          $(".erroraddJenisIzinnew").html("");
+          $(".erroraddNoRegnew").html("");
+          $(".erroraddJenisSIMnew").html("");
+          $(".erroraddTglExpSIMnew").html("");
+          $(".errorFilesimpolisinew").html("");
+          $(".erroraddTglExpnew").html("");
+          $(".errorsimpermpnew").html("");
+          $(".errorFilesimpolisinew").html("");
+          $("#idizintambangnew").load(
+            site_url + "izin_tambang/izin_tambang?auth_izin=" + data.auth_izin
+          );
+          swal("Berhasil", data.pesan, "success");
+        } else if (data.statusCode == 201) {
+          swal("Error", data.message, "error");
+        } else {
+          $(".errorjenisUnitSimpernw").html(data.jenisunit);
+          $(".errortipeAksesUnitnw").html(data.tipeakses);
+          swal("Error", data.pesan, "error");
+        }
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $.LoadingOverlay("hide");
+        $(".errormdlsimpernw").removeClass("d-none");
+        $(".errormdlsimpernw").removeClass("alert-info");
+        $(".errormdlsimpernw").addClass("alert-danger");
+        if (thrownError != "") {
+          $(".errormdlsimpernw").html(
+            "Terjadi kesalahan saat menyimpan unit hubungi administrator"
+          );
+        }
+      },
+    });
+  });
+
   $("#filesimpolisi").change(function () {
     const filee = $("#filesimpolisi").prop("files")[0];
     if (filee.name === "") {
@@ -1070,9 +1277,27 @@ $(document).ready(function () {
   $("#simpermp").change(function () {
     const filee = $("#simpermp").prop("files")[0];
     if (filee.name === "") {
-      $("#lblsimpermp").text("Pilih file SIM Polisi");
+      $("#lblsimpermp").text("Pilih SIMPER/MINE PERMIT");
     } else {
       $("#lblsimpermp").text(filee.name);
+    }
+  });
+
+  $("#filesimpolisinew").change(function () {
+    const filee = $("#filesimpolisinew").prop("files")[0];
+    if (filee.name === "") {
+      $("#lblsimpolisinew").text("Pilih file SIM Polisi");
+    } else {
+      $("#lblsimpolisinew").text(filee.name);
+    }
+  });
+
+  $("#simpermpnew").change(function () {
+    const filee = $("#simpermpnew").prop("files")[0];
+    if (filee.name === "") {
+      $("#lblsimpermpnew").text("Pilih file SIMPER/MINE PERMIT");
+    } else {
+      $("#lblsimpermpnew").text(filee.name);
     }
   });
 
@@ -1231,6 +1456,29 @@ $(document).ready(function () {
   });
   $.ajax({
     type: "POST",
+    url: site_url + "izin_tambang/get_all_unit",
+    data: {
+      token: token,
+    },
+    success: function (data) {
+      var data = JSON.parse(data);
+      $("#jenisUnitSimpernw").html(data.unit);
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      $.LoadingOverlay("hide");
+      $(".errormdlsimpernw").removeClass("d-none");
+      $(".errormdlsimpernw").removeClass("alert-info");
+      $(".errormdlsimpernw").addClass("alert-danger");
+      if (thrownError != "") {
+        $(".errormdlsimpernw").html(
+          "Terjadi kesalahan saat load data unit simper, hubungi administrator"
+        );
+        $("#btnsimpanunitsimpernw").remove();
+      }
+    },
+  });
+  $.ajax({
+    type: "POST",
     url: site_url + "vaksin/get_vaksin_jenis_all",
     data: {
       token: token,
@@ -1288,6 +1536,29 @@ $(document).ready(function () {
       $(".errormdlsimper").removeClass("d-none");
       $(".errormdlsimper").removeClass("alert-info");
       $(".errormdlsimper").addClass("alert-danger");
+      if (thrownError != "") {
+        $(".errormdlsimper").html(
+          "Terjadi kesalahan saat load data unit simper, hubungi administrator"
+        );
+        $("#btnsimpanunitsimper").remove();
+      }
+    },
+  });
+  $.ajax({
+    type: "POST",
+    url: site_url + "izin_tambang/get_all_akses",
+    data: {
+      token: token,
+    },
+    success: function (data) {
+      var data = JSON.parse(data);
+      $("#tipeAksesUnitnw").html(data.akses);
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      $.LoadingOverlay("hide");
+      $(".errormdlsimpernw").removeClass("d-none");
+      $(".errormdlsimpernw").removeClass("alert-info");
+      $(".errormdlsimpernw").addClass("alert-danger");
       if (thrownError != "") {
         $(".errormdlsimper").html(
           "Terjadi kesalahan saat load data unit simper, hubungi administrator"
@@ -1556,6 +1827,34 @@ $(document).ready(function () {
     });
   });
 
+  $("#refreshJenisSIMnew").click(function () {
+    $("#txtizinSIMnew").LoadingOverlay("show");
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "karyawan/get_sim",
+      data: {
+        token: token,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        $("#addJenisSIMnew").html(data.siim);
+        $("#txtizinSIMnew").LoadingOverlay("hide");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $.LoadingOverlay("hide");
+        $(".errormsgizinnew").removeClass("d-none");
+        $(".errormsgizinnew").removeClass("alert-info");
+        $(".errormsgizinnew").addClass("alert-danger");
+        if (thrownError != "") {
+          $(".errormsgizinnew").html(
+            "Terjadi kesalahan saat load data jenis SIM, hubungi administrator"
+          );
+        }
+      },
+    });
+  });
+
   $("#refreshJenisSertifikat").click(function () {
     $("#txtjenisSertifkat").LoadingOverlay("show");
 
@@ -1704,6 +2003,36 @@ $(document).ready(function () {
     });
   });
 
+  $("#refreshjenisUnitSimpernw").click(function () {
+    $("#txtjenisUnitSimpernw").LoadingOverlay("show");
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "izin_tambang/get_all_unit",
+      data: {
+        token: token,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        $("#jenisUnitSimpernw").html(data.unit);
+        $("#txtjenisUnitSimpernw").LoadingOverlay("hide");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $("#txtjenisUnitSimpernw").LoadingOverlay("hide");
+        $.LoadingOverlay("hide");
+        $(".errormdlsimpernw").removeClass("d-none");
+        $(".errormdlsimpernw").removeClass("alert-info");
+        $(".errormdlsimpernw").addClass("alert-danger");
+        if (thrownError != "") {
+          $(".errormdlsimpernw").html(
+            "Terjadi kesalahan saat load data unit SIMPER, hubungi administrator"
+          );
+          $("#btnsimpanunitsimpernw").remove();
+        }
+      },
+    });
+  });
+
   $("#refreshtipeAksesUnit").click(function () {
     $("#txttipeAksesUnit").LoadingOverlay("show");
 
@@ -1729,6 +2058,36 @@ $(document).ready(function () {
             "Terjadi kesalahan saat load data unit simper, hubungi administrator"
           );
           $("#btnsimpanunitsimper").remove();
+        }
+      },
+    });
+  });
+
+  $("#refreshtipeAksesUnitnw").click(function () {
+    $("#txttipeAksesUnitnw").LoadingOverlay("show");
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "izin_tambang/get_all_akses",
+      data: {
+        token: token,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        $("#tipeAksesUnitnw").html(data.akses);
+        $("#txttipeAksesUnitnw").LoadingOverlay("hide");
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $("#txttipeAksesUnitnw").LoadingOverlay("hide");
+        $.LoadingOverlay("hide");
+        $(".errormdlsimpernw").removeClass("d-none");
+        $(".errormdlsimpernw").removeClass("alert-info");
+        $(".errormdlsimpernw").addClass("alert-danger");
+        if (thrownError != "") {
+          $(".errormdlsimpernw").html(
+            "Terjadi kesalahan saat load data unit simper, hubungi administrator"
+          );
+          $("#btnsimpanunitsimpernw").remove();
         }
       },
     });
@@ -4062,7 +4421,7 @@ $(document).ready(function () {
 
   $("#addJenisIzinnew").change(function () {
     let jenisizin = $("#addJenisIzinnew").val();
-    let auth_izin = $(".ecb14fe704e08d9df8e343030bbb442344").text();
+    let auth_izin = $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text();
 
     if (auth_izin != "") {
       $.ajax({
@@ -4107,7 +4466,8 @@ $(document).ready(function () {
                       $("#idizintambangnew").load(
                         site_url + "izin_tambang/izin_tambang?auth_izin=0"
                       );
-                      $(".ecb14fe704e08d9df8e343030bbb442344").text("");
+                      $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text("");
+                      $(".ecb14fe704e08d95j32k4jn98sdfvj3o45").text("");
                       $("#addNoRegnew").val("");
                       $("#addTglExpnew").val("");
                       $("#addTglExpSIMnew").val("");
@@ -4156,7 +4516,8 @@ $(document).ready(function () {
                       $("#idizintambangnew").load(
                         site_url + "izin_tambang/izin_tambang?auth_izin=0"
                       );
-                      $(".ecb14fe704e08d9df8e343030bbb442344").text("");
+                      $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text("");
+                      $(".ecb14fe704e08d95j32k4jn98sdfvj3o45").text("");
                       $("#addNoRegnew").val("");
                       $("#addTglExpnew").val("");
                       $("#addTglExpSIMnew").val("");
@@ -4254,6 +4615,51 @@ $(document).ready(function () {
         }
       },
     });
+  });
+
+  $("#addTglExpSIMnew").change(function () {
+    let tglsim = $("#addTglExpSIMnew").val();
+
+    $.ajax({
+      type: "POST",
+      url: site_url + "izin_tambang/tgl_exp_izin",
+      data: {
+        tglsim: tglsim,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        if (data.statusCode == 200) {
+          $("#addTglExpnew").val(data.tglexpizin);
+          $("#addTglExpnew").removeAttr("disabled");
+          $(".errormsgizinnew").addClass("d-none");
+        } else {
+          $(".errormsgizinnew").removeClass("d-none");
+          $(".errormsgizinnew").removeClass("alert-info");
+          $(".errormsgizinnew").addClass("alert-danger");
+          $(".errormsgizinnew").html(data.pesan);
+          $("#addTglExpnew").val("");
+          $("#addTglExpnew").attr("disabled", true);
+        }
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $.LoadingOverlay("hide");
+        $(".errormsgizinnew").removeClass("d-none");
+        $(".errormsgizinnew").removeClass("alert-info");
+        $(".errormsgizinnew").addClass("alert-danger");
+        if (thrownError != "") {
+          $(".errormsgizinnew").html(
+            "Terjadi kesalahan saat membuat tanggal expired izin"
+          );
+        }
+      },
+    });
+
+    $(".errormsgizinnew")
+      .fadeTo(5000, 500)
+      .slideUp(500, function () {
+        $(".errormsgizinnew").slideUp(500);
+        $(".errormsgizinnew").addClass("d-none");
+      });
   });
 
   $("#addSimpanIzinUnit").click(function () {
@@ -4375,25 +4781,24 @@ $(document).ready(function () {
   });
 
   $("#addSimpanIzinUnitnew").click(function () {
-    // $.LoadingOverlay("show");
     let auth_kary = $(".ecb14fe704e08d9df8e343030bbb442344").text();
-    let auth_izin = $(".ecb14fe704e08d9df8e343030bbbafcb").text();
-    let auth_simpol = $(".j8234234b").text();
-    let jenisizin = $("#addJenisIzin").val();
-    let noreg = $("#addNoReg").val();
-    let tglexp = $("#addTglExp").val();
-    let jenissim = $("#addJenisSIM").val();
-    let tglexpsim = $("#addTglExpSIM").val();
-    let filesmp = $("#simpermp").val();
-    const flsmp = $("#simpermp").prop("files")[0];
-    let filesim = $("#filesimpolisi").val();
-    const flsim = $("#filesimpolisi").prop("files")[0];
-    let nmsimper = $("#nmfilesimper").val();
-    let nmsimpol = $("#nmfilesimpol").val();
-    let filesimnm = $("#nmfilesimpol").val();
-    let filesimsv = $("#nmfilesimpolsv").val();
-    let filesmpnm = $("#nmfilesimper").val();
-    let filesmpsv = $("#nmfilesimpersv").val();
+    let auth_izin = $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text();
+    let auth_simpol = $(".ecb14fe704e08d95j32k4jn98sdfvj3o45").text();
+    let jenisizin = $("#addJenisIzinnew").val();
+    let noreg = $("#addNoRegnew").val();
+    let tglexp = $("#addTglExpnew").val();
+    let jenissim = $("#addJenisSIMnew").val();
+    let tglexpsim = $("#addTglExpSIMnew").val();
+    let filesmp = $("#simpermpnew").val();
+    const flsmp = $("#simpermpnew").prop("files")[0];
+    let filesim = $("#filesimpolisinew").val();
+    const flsim = $("#filesimpolisinew").prop("files")[0];
+    let nmsimper = $("#nmfilesimpernew").val();
+    let nmsimpol = $("#nmfilesimpolnew").val();
+    let filesimnm = $("#nmfilesimpolnew").val();
+    let filesimsv = $("#nmfilesimpolsvnew").val();
+    let filesmpnm = $("#nmfilesimpernew").val();
+    let filesmpsv = $("#nmfilesimpersvnew").val();
 
     // append form data
     let formData = new FormData();
@@ -4406,8 +4811,8 @@ $(document).ready(function () {
     formData.append("tglexpsim", tglexpsim);
     formData.append("tglexp", tglexp);
     formData.append("jenissim", jenissim);
-    formData.append("auth_izin", auth_izin);
     formData.append("auth_kary", auth_kary);
+    formData.append("auth_izin", auth_izin);
     formData.append("auth_simpol", auth_simpol);
     formData.append("token", token);
     formData.append("nmsimper", nmsimper);
@@ -4417,9 +4822,10 @@ $(document).ready(function () {
     formData.append("filesmpnm", filesmpnm);
     formData.append("filesmpsv", filesmpsv);
 
+    $.LoadingOverlay("show");
     $.ajax({
       type: "POST",
-      url: site_url + "karyawan/addsimper",
+      url: site_url + "karyawan/addsimpernew",
       data: formData,
       cache: false,
       processData: false,
@@ -4427,45 +4833,53 @@ $(document).ready(function () {
       success: function (data) {
         var data = JSON.parse(data);
         if (data.statusCode == 200) {
-          if (auth_izin == "") {
-            $(".ecb14fe704e08d9df8e343030bbbafcb").text(data.auth_izin);
-          }
-          aktifSertifikat();
-          $("#colPersonal").collapse("hide");
-          $("#colKaryawan").collapse("hide");
-          $("#colIzinTambang").collapse("hide");
-          $("#colSertifikasi").collapse("show");
-          $("#imgIzinTambang").removeClass("d-none");
-          $("#nmfilesimper").val(data.filesmp);
-          $("#nmfilesimpersv").val(data.filesmpsv);
-          $("#btnshowsimper").attr("href", data.linkizin);
-          $(".erroraddJenisIzin").html("");
-          $(".erroraddNoReg").html("");
-          $(".erroraddJenisSIM").html("");
-          $(".erroraddTglExpSIM").html("");
-          $(".errorFilesimpolisi").html("");
-          $(".erroraddTglExp").html("");
-          $(".errorsimpermp").html("");
-          $(".errorFilesimpolisi").html("");
+          $(".ecb14fe704e08d9df8e343030bbb442344").text("");
+          $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text("");
+          $("#btnshowsimpolnew").addClass("disabled");
+          $("#btnshowsimpernew").addClass("disabled");
+          $("#addJenisIzinnew").val("").trigger("change");
+          $("#addNoRegnew").val("");
+          $("#addJenisSIMnew").val("");
+          $("#addTglExpSIMnew").val("");
+          $("#nmfilesimpolnew").val("");
+          $("#nmfilesimpolsvnew").val("");
+          $("#filesimpolisinew").val("");
+          $("#simpermpnew").val("");
+          $("#nmfilesimpernew").val("");
+          $("#nmfilesimpersvnew").val("");
+          $("#addTglExpnew").val("");
+          $("#lblsimpermpnew").text("Pilih file SIMPER/MINE PERMIT");
+          $("#lblsimpolisinew").text("Pilih file SIM Polisi");
+          $(".h52k342").text("");
+          $(".erroraddJenisIzinnew").text("");
+          $(".erroraddNoRegnew").text("");
+          $(".erroraddJenisSIMnew").text("");
+          $(".erroraddTglExpSIMnew").text("");
+          $(".errorFilesimpolisinew").text("");
+          $(".erroraddTglExpnew").text("");
+          $(".errorsimpermpnew").text("");
+          $(".errorFilesimpolisinew").text("");
+          $("#mdlnewSMP").modal("hide");
+          swal("Sukses", data.pesan, "info");
           $.LoadingOverlay("hide");
         } else if (data.statusCode == 201) {
-          $(".errormsgizin").removeClass("d-none");
-          $(".errormsgizin").removeClass("alert-primary");
-          $(".errormsgizin").addClass("alert-danger");
-          $(".errormsgizin").html(data.pesan);
+          $(".errormsgizinnew").removeClass("d-none");
+          $(".errormsgizinnew").removeClass("alert-primary");
+          $(".errormsgizinnew").addClass("alert-danger");
+          $(".errormsgizinnew").html(data.pesan);
           $.LoadingOverlay("hide");
         } else {
-          $(".erroraddJenisIzin").html(data.jenisizin);
-          $(".erroraddNoReg").html(data.noreg);
-          $(".erroraddTglExp").html(data.tglexp);
-          $(".erroraddJenisSIM").html(data.jenissim);
-          $(".erroraddTglExpSIM").html(data.tglexpsim);
-          $(".errorsimpermp").html(data.filesmp);
-          $(".errorFilesimpolisi").html(data.filesmp);
+          $(".erroraddJenisIzinnew").html(data.jenisizin);
+          $(".erroraddNoRegnew").html(data.noreg);
+          $(".erroraddTglExpnew").html(data.tglexp);
+          $(".erroraddJenisSIMnew").html(data.jenissim);
+          $(".erroraddTglExpSIMnew").html(data.tglexpsim);
+          $(".errorsimpermpnew").html(data.filesmp);
+          $(".errorFilesimpolisinew").html(data.filesmp);
           $.LoadingOverlay("hide");
           swal(
             "Error",
-            "Tidak dapat melanjutkan, lengkapi data SIMPER/Mine Permit.",
+            "Tidak dapat melanjutkan, lengkapi data SIMPER/MINE PERMIT.",
             "error"
           );
         }
@@ -4473,22 +4887,22 @@ $(document).ready(function () {
       },
       error: function (xhr, ajaxOptions, thrownError) {
         $.LoadingOverlay("hide");
-        $(".errormsgizin").removeClass("d-none");
-        $(".errormsgizin").addClass("alert-danger");
+        $(".errormsgizinnew").removeClass("d-none");
+        $(".errormsgizinnew").addClass("alert-danger");
         if (thrownError != "") {
-          $(".errormsgizin").html(
-            "Terjadi kesalahan saat menyimpan data SIMPER/Mine Permit, hubungi administrator"
+          $(".errormsgizinnew").html(
+            "Terjadi kesalahan saat menyimpan data SIMPER/MINE PERMIT, hubungi administrator"
           );
         }
       },
     });
     $.LoadingOverlay("hide");
 
-    $(".errormsgizin")
+    $(".errormsgizinnew")
       .fadeTo(5000, 500)
       .slideUp(500, function () {
-        $(".errormsgizin").slideUp(500);
-        $(".errormsgizin").addClass("d-none");
+        $(".errormsgizinnew").slideUp(500);
+        $(".errormsgizinnew").addClass("d-none");
       });
   });
 
@@ -5303,6 +5717,13 @@ $(document).ready(function () {
   $(document).on("click", ".btnSertifikasi ", function () {
     let auth_kary = $(this).attr("id");
     $(".8k23jnm89d56jl123mn90bv542ll").text(auth_kary);
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
+
+    $("#jdlmdlnewsertifikat").text(
+      "Tambah Sertifikasi - " + nonik + " | " + nama + " | " + prs
+    );
 
     $.ajax({
       type: "POST",
@@ -5352,15 +5773,43 @@ $(document).ready(function () {
 
   $(document).on("click", ".btnSIMPER ", function () {
     let auth_kary = $(this).attr("id");
-    $(".ecb14fe704e08d9df8e343030bbbafcb").text(auth_kary);
+    $(".ecb14fe704e08d9df8e343030bbb442344").text(auth_kary);
     let nonik = $(this).attr("dt1");
     let nama = $(this).attr("dt2");
     let prs = $(this).attr("dt3");
 
+    $(".ecb14fe704e08d9df8e343073455ffrdfdfg").text("");
+    $("#btnshowsimpolnew").addClass("disabled");
+    $("#btnshowsimpernew").addClass("disabled");
+    $("#addJenisIzinnew").val("").trigger("change");
+    $("#addNoRegnew").val("");
+    $("#addJenisSIMnew").val("");
+    $("#addTglExpSIMnew").val("");
+    $("#nmfilesimpolnew").val("");
+    $("#nmfilesimpolsvnew").val("");
+    $("#filesimpolisinew").val("");
+    $("#simpermpnew").val("");
+    $("#nmfilesimpernew").val("");
+    $("#nmfilesimpersvnew").val("");
+    $("#addTglExpnew").val("");
+    $("#lblsimpermpnew").text("Pilih file SIMPER/MINE PERMIT");
+    $("#lblsimpolisinew").text("Pilih file SIM Polisi");
+    $(".h52k342").text("");
+    $(".erroraddJenisIzinnew").text("");
+    $(".erroraddNoRegnew").text("");
+    $(".erroraddJenisSIMnew").text("");
+    $(".erroraddTglExpSIMnew").text("");
+    $(".errorFilesimpolisinew").text("");
+    $(".erroraddTglExpnew").text("");
+    $(".errorsimpermpnew").text("");
+    $(".errorFilesimpolisinew").text("");
     $("#jdlmdlnewSMP").text(
       "Tambah SIMPER/MINE PERMIT - " + nonik + " | " + nama + " | " + prs
     );
     $("#mdlnewSMP").modal("show");
+    $("#idizintambangnew").load(
+      site_url + "izin_tambang/izin_tambang?auth_izin=0"
+    );
   });
 
   $(document).on("click", ".btnHapusKary", function () {
@@ -5611,6 +6060,13 @@ $(document).ready(function () {
   $(document).on("click", ".btnMCU ", function () {
     let auth_kary = $(this).attr("id");
     $(".890123hjn34267xcxvbj7234hh").text(auth_kary);
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
+
+    $("#jdlmdlnewmcu").text(
+      "Tambah MCU - " + nonik + " | " + nama + " | " + prs
+    );
 
     $.ajax({
       type: "POST",
@@ -5774,19 +6230,42 @@ $(document).ready(function () {
 
   $(document).on("click", ".btnFotoKaryawan ", function () {
     let auth_kary = $(this).attr("id");
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
+
+    $("#jdlmdlnewSMP").text(
+      "Tambah SIMPER/MINE PERMIT - " + nonik + " | " + nama + " | " + prs
+    );
+
     $(".76235ft67gfrubf12").text(auth_kary);
     $("#mdlnewfotokaryawan").modal("show");
   });
 
   $(document).on("click", ".btnFilePendukung ", function () {
     let auth_kary = $(this).attr("id");
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
     $(".12390lkjj4234bn12j28j4nc9").text(auth_kary);
+
+    $("#jdlmdlnewfilependukung").text(
+      "Update File Pendukung - " + nonik + " | " + nama + " | " + prs
+    );
     $("#mdlnewfilependukung").modal("show");
   });
 
   $(document).on("click", ".btnVaksin", function () {
     let auth_kary = $(this).attr("id");
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
     $(".t9018htg2398th259").text(auth_kary);
+
+    $("#jdlmdlnewvaksin").text(
+      "Tambah Data Vaksin - " + nonik + " | " + nama + " | " + prs
+    );
+
     $("#mdlnewvaksin").modal("show");
     $('#jenisVaksin option[value="0"]').hide();
     $('#namaVaksin option[value="0"]').hide();
@@ -5894,6 +6373,10 @@ $(document).ready(function () {
     const fl_pendukung = $("#filePendukungnew").prop("files")[0];
     let fileExtension = file_pendukung.split(".").pop().toLowerCase();
     let sizeFile = fl_pendukung["size"];
+    let nonik = $(this).attr("dt1");
+    let nama = $(this).attr("dt2");
+    let prs = $(this).attr("dt3");
+
     if (fileExtension != "pdf") {
       swal({
         title: "Informasi",
@@ -5973,6 +6456,8 @@ $(document).ready(function () {
           $(".errnewfilependukung").addClass("d-none");
           $(".errnewfilependukung").html("");
         }
+
+        $.LoadingOverlay("hide");
 
         $(".errnewfilependukung")
           .fadeTo(5000, 500)

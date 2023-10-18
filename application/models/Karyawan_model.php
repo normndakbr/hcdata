@@ -772,6 +772,21 @@ class Karyawan_model extends CI_Model
         }
     }
 
+    public function get_auth_personal($id_personal)
+    {
+        $query = $this->db->get_where('vw_personal', ['id_personal' => $id_personal])->result();
+
+        if (!empty($query)) {
+            foreach ($query as $list) {
+                $auth_personal = $list->auth_personal;
+            }
+
+            return $auth_personal;
+        } else {
+            return;
+        }
+    }
+
     public function get_id_personal_by_kary($auth_kary)
     {
         $query = $this->db->get_where('vw_kry', ['auth_karyawan' => $auth_kary])->result();
