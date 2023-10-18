@@ -3052,7 +3052,7 @@ class Karyawan extends My_Controller
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFotoKaryawan" title ="Foto Karyawan" href="#!">Foto Karyawan</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" title ="Sertifikasi" href="#!">Sertifikasi</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" title ="MCU" href="#!">MCU</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnVaksin" title ="Vaksin" href="#!">Vaksin</a>
