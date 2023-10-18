@@ -335,16 +335,22 @@ class Perusahaan_model extends CI_Model
 
      public function get_kode_per_by_parent($id_m_per)
      {
-          $query = $this->db->get_where('tb_m_perusahaan', ['id_m_perusahaan' => $id_m_per], 1, 1);
+          $query = $this->db->get_where('tb_m_perusahaan', ['id_m_perusahaan' => $id_m_per]);
           if (!empty($query->result())) {
                foreach ($query->result() as $list) {
                     $id_parent = $list->id_parent;
                }
 
-               $dtper = $this->db->get_where('tb_perusahaan', ['id_perusahaan' => $id_parent]);
-               foreach ($dtper as $ls) {
-                    return $ls->kode_perusahaan;
+               $dtper = $this->db->get_where('vw_m_per', ['id_m_perusahaan' => $id_parent]);
+               if(!empty($dtper->result())){
+                    foreach ($dtper->result() as $ls) {
+                         $kode_per = $ls->kode_perusahaan;
+                    }
+               } else{
+                    $kode_per ="";
                }
+               
+               return $kode_per;
           } else {
                return;
           }

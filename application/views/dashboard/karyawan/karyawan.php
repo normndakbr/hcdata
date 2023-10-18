@@ -69,10 +69,13 @@
                               </div>
                               <div class="row">
                                    <?php
+
                                    if (!$this->session->csrf_token) {
-                                   $this->session->csrf_token = hash("sha1", time());
+                                        $this->session->csrf_token = hash("sha1", time());
                                    }
+                                   
                                    ?>
+
                                    <input type="hidden" id="token" name="token" value="<?=$this->session->csrf_token?>">
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div
@@ -132,7 +135,7 @@
           style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Update Foto Karyawan</h5>
+                    <h5 class="modal-title text-white" id="jdlmdlnewfotokaryawan">Update Foto Karyawan</h5>
                </div>
                <form action="javascript:void(0)" id="gantiFotoKaryawan" method="post" data-parsley-validate>
                     <div style="background-color:rgba(240,240,240,1);" class="modal-body">
@@ -203,6 +206,8 @@
                                    </select>
                                    <small class="erroraddJenisIzinnew text-danger font-italic font-weight-bold"></small>
                                    <span class="ecb14fe704e08d9df8e343030bbb442344 d-none"></span>
+                                   <span class="ecb14fe704e08d9df8e343073455ffrdfdfg d-none"></span>
+                                   <span class="ecb14fe704e08d95j32k4jn98sdfvj3o45 d-none"></span>
                               </div>
                          </div>
                          <div class="col-lg-9 col-md-9 col-sm-12">
@@ -220,14 +225,14 @@
                                         <div class="form-group">
                                              <label class="font-weight-bold" for="addJenisSIMnew">Jenis SIM <span
                                                        class="text-danger">*</span></label>
-                                             <div id="txtizinSIM" class="input-group mt-2">
+                                             <div id="txtizinSIM" class="input-group">
                                                   <select id='addJenisSIMnew' name='addJenisSIMnew'
                                                        class="form-control form-control-user">
                                                        <option value="">-- SIM TIDAK ADA
                                                             --</option>
                                                   </select>
                                                   <div class="input-group-prepend">
-                                                       <button id="refreshJenisSIM" name="refreshJenisSIM"
+                                                       <button id="refreshJenisSIMnew" name="refreshJenisSIMnew"
                                                             class="btn btn-primary btn-sm"><i
                                                                  class="fas fa-sync-alt"></i></button>
                                                   </div>
@@ -256,13 +261,13 @@
                                              <div class="custom-file">
                                                   <input type="file" class="custom-file-input " id="filesimpolisinew"
                                                        accept=".pdf">
-                                                  <label class="custom-file-label" id='lblsimpolisi'
+                                                  <label class="custom-file-label" id='lblsimpolisinew'
                                                        for="filesimpolisinew" aria-describedby="UploadFIleSIM">Pilih
                                                        file SIM Polisi</label>
                                              </div>
                                              <div class="input-group-append">
                                                   <a href="#!" id="btnshowsimpolnew" target="_blank"
-                                                       class="btn btn-success font-weight-bold"
+                                                       class="btn btn-success font-weight-bold disabled"
                                                        title="Tampilkan file"><i class="fas fa-file-pdf"></i></a>
                                              </div>
                                         </div>
@@ -289,7 +294,7 @@
                                    </div>
                                    <div class="input-group-append">
                                         <a href='#!' id="btnshowsimpernew" target="_blank"
-                                             class="btn btn-success font-weight-bold text-white "
+                                             class="btn btn-success font-weight-bold text-white disabled"
                                              title="Tampilkan file"><i class="fas fa-file-pdf"></i></a>
                                    </div>
                               </div>
@@ -307,15 +312,14 @@
                                    <small class="erroraddTglExpnew text-danger font-italic font-weight-bold"></small>
                               </div>
                          </div>
-                         <div id="txtunitnew" class="col-lg-12 col-md-12 col-sm-12">
+                         <div id="txtunitnew" class="col-lg-12 col-md-12 col-sm-12 d-none">
                               <div class="row">
                                    <div class="col-lg-12 col-md-12 col-sm-12">
                                         <hr>
                                    </div>
-                                   <div class="collapse col-lg-12 col-md-12 col-sm-12 simperunit">
+                                   <div class="collapse col-lg-12 col-md-12 col-sm-12 simperunitnew">
                                         <a id="addUnitSIMPERnew" href="#!"
-                                             class="btn btn-primary font-weight-bold mb-4">Tambah
-                                             Unit</a>
+                                             class="btn btn-primary font-weight-bold mb-4">Tambah Unit</a>
                                         <div id="idizintambangnew" class="data"></div>
                                    </div>
                               </div>
@@ -337,7 +341,7 @@
           style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Tambah Sertifikat</h5>
+                    <h5 class="modal-title text-white" id="jdlmdlnewsertifikat">Tambah Sertifikasi</h5>
                </div>
 
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
@@ -437,7 +441,7 @@
           style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Tambah Data Vaksin</h5>
+                    <h5 class="modal-title text-white" id="jdlmdlnewvaksin">Tambah Data Vaksin</h5>
                </div>
                <form action="javascript:void(0)" id="tambahDataVaksin" method="post" data-parsley-validate>
                     <span class="t9018htg2398th259 d-none"></span>
@@ -502,7 +506,7 @@
           style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Tambah MCU</h5>
+                    <h5 class="modal-title text-white" id="jdlmdlnewmcu">Tambah MCU</h5>
                </div>
 
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
@@ -568,7 +572,7 @@
           style="margin-left: auto; margin-right: auto;max-width:70%;">
           <div class="modal-content">
                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="exampleModalLabel">Update File Pendukung</h5>
+                    <h5 class="modal-title text-white" id="jdlmdlnewfilependukung">Update File Pendukung</h5>
                </div>
                <form action="javascript:void(0)" id="gantiFilePendukung" method="post" data-parsley-validate>
                     <div style="background-color:rgba(240,240,240,1);" class="modal-body">
@@ -614,6 +618,67 @@
                               class="btn font-weight-bold btn-warning">Batal</button>
                     </div>
                </form>
+          </div>
+     </div>
+</div>
+<div class="modal fade" id="mdlunitsimpernw" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+     <div class="modal-dialog modal-dialog-centered" role="document"
+          style="margin-left: auto; margin-right: auto;max-width:50%;">
+          <div class="modal-content">
+               <div class="modal-header bg-c-yellow">
+                    <h5 class="modal-title text-white" id="exampleModalLabel">Tambah Unit SIMPER</h5>
+               </div>
+
+               <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                         <div class="col-lg-12">
+                              <div class="alert errormdlsimpernw alert-danger animate__animated animate__bounce d-none"
+                                   role="alert"></div>
+                              <div class="row p-2">
+                                   <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <label class="font-weight-bold" for="jenisUnitSimpernw">Unit :</label><br>
+                                        <div id="txtjenisUnitSimpernw" class="input-group">
+                                             <select id='jenisUnitSimpernw' class="form-control form-control-user"
+                                                  required>
+                                                  <option value="">-- WAJIB DIPILIH --</option>
+                                             </select>
+                                             <div class="input-group-prepend">
+                                                  <button id="refreshjenisUnitSimpernw" name="refreshjenisUnitSimpernw"
+                                                       class="btn btn-primary btn-sm" disabled><i
+                                                            class="fas fa-sync-alt"></i></button>
+                                             </div>
+                                        </div>
+                                        <small
+                                             class="errorjenisUnitSimpernw text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                                   <div class="col-lg-6 col-md-6 col-sm-12">
+                                        <label class="font-weight-bold" for="tipeAksesUnit">Izin Akses Unit
+                                             :</label><br>
+                                        <div id="txttipeAksesUnitnw" class="input-group">
+                                             <select id='tipeAksesUnitnw' class="form-control form-control-user"
+                                                  required>
+                                                  <option value="">-- WAJIB DIPILIH --</option>
+                                             </select>
+                                             <div class="input-group-prepend">
+                                                  <button id="refreshtipeAksesUnitnw" name="refreshtipeAksesUnitnw"
+                                                       class="btn btn-primary btn-sm" disabled><i
+                                                            class="fas fa-sync-alt"></i></button>
+                                             </div>
+                                        </div>
+                                        <small
+                                             class="errortipeAksesUnitnw text-danger font-italic font-weight-bold"></small><br>
+                                   </div>
+                              </div>
+                         </div>
+                    </div>
+               </div>
+               <div class="modal-footer m-3">
+                    <button type="button" name="btnsimpanunitsimpernw" id="btnsimpanunitsimpernw"
+                         class="btn font-weight-bold btn-primary">Simpan Data</button>
+                    <button name="btnbatalunitsimpernw" id="btnbatalunitsimpernw" data-dismiss="modal"
+                         class="btn font-weight-bold btn-warning">Selesai</button>
+               </div>
           </div>
      </div>
 </div>
