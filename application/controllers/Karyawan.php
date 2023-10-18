@@ -3051,9 +3051,11 @@ class Karyawan extends My_Controller
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFotoKaryawan" title ="Foto Karyawan" href="#!">Foto Karyawan</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" title ="Sertifikasi" href="#!">Sertifikasi</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnMCU" title ="MCU" href="#!">MCU</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnVaksin" title ="Vaksin" href="#!">Vaksin</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFilePendukung" title ="File Pendukung" href="#!">File Pendukung</a>
                     </div>
                     </div>';
@@ -3478,6 +3480,233 @@ class Karyawan extends My_Controller
                 "status" => "success",
                 "pesan" => "Data karyawan berhasil diperbarui",
             ));
+        }
+    }
+
+    public function newfilependukung()
+    {
+        $auth_kary = $this->input->post("auth_kary");
+        $idpersonal = $this->kry->get_by_auth($auth_kary);
+        if ($idpersonal->id_m_perusahaan != '1') {
+            $foldername = md5($idpersonal->id_personal);
+            if ($auth_kary == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+                return;
+            }
+            $nama_file = $idpersonal->url_pendukung;
+            if ($nama_file == "") {
+                $now = date('YmdHis');
+                $nama_file = $now . "-SUPPORT.pdf";
+            }
+
+            $alamat = './berkas/karyawan/' . $foldername . "/" . $nama_file;
+            //   if (!is_file($alamat)) {
+            if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+            } else {
+                $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                $config['allowed_types'] = 'pdf';
+                $config['max_size'] = 500;
+                $config['file_name'] = $nama_file;
+                $config['overwrite'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('fl_pendukung')) {
+                    $error = $this->upload->display_errors();
+                    echo json_encode(array("statusCode" => 201, "pesan" => $error));
+                    return;
+                } else {
+                    $dt_personal = array(
+                        'url_pendukung' => $nama_file,
+                    );
+                    $id_personal = $idpersonal->id_personal;
+                    $this->kry->update_dtPersonal($id_personal, $dt_personal);
+                    echo json_encode(array(
+                        "statusCode" => 200,
+                        "pesan" => "File pendukung berhasil diupload",
+                    ));
+                }
+            }
+            //   } else {
+            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
+            //   }
+        } else {
+            if ($auth_kary == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+                return;
+            }
+            $nama_file = $idpersonal->url_pendukung;
+            if ($nama_file == "") {
+                //  $now = date('YmdHis');
+                //  $nama_file = $now . "-SUPPORT.pdf";
+                $nik = $idpersonal->no_nik;
+                $nama_file = strval($nik) . "-SUPPORT.pdf";
+            }
+
+            $alamat = './berkas/pendukung/1/' . $nama_file;
+            //   if (!is_file($alamat)) {
+            if (is_dir('./berkas/pendukung/1') == false) {
+                mkdir('./berkas/pendukung/1', 0775, true);
+            } else {
+                $config['upload_path'] = './berkas/pendukung/1';
+                $config['allowed_types'] = 'pdf';
+                $config['max_size'] = 500;
+                $config['file_name'] = $nama_file;
+                $config['overwrite'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('fl_pendukung')) {
+                    $error = $this->upload->display_errors();
+                    echo json_encode(array("statusCode" => 201, "pesan" => $error));
+                    return;
+                } else {
+                    $dt_personal = array(
+                        'url_pendukung' => $nama_file,
+                    );
+                    $id_personal = $idpersonal->id_personal;
+                    $this->kry->update_dtPersonal($id_personal, $dt_personal);
+                    echo json_encode(array(
+                        "statusCode" => 200,
+                        "pesan" => "File pendukung berhasil diupload",
+                    ));
+                }
+            }
+            //   } else {
+            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
+            //   }
+        }
+    }
+
+    public function newvaksin()
+    {
+        $jenisVaksin = $this->input->post("jenisVaksin");
+        $namaVaksin = $this->input->post("namaVaksin");
+        $tanggalVaksin = $this->input->post("tanggalVaksin");
+        $auth_kary = $this->input->post("auth_kary");
+        $dataKaryawan = $this->kry->get_by_auth($auth_kary);
+        $id_personal = $dataKaryawan->id_personal;
+        $now = date("Y-m-d");
+
+        if ($auth_kary == "") {
+            echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+            die;
+        }
+
+        if ($dataKaryawan != "") {
+            $data_vaksin = [
+                'id_personal' => $id_personal,
+                'id_vaksin_jenis' => $jenisVaksin,
+                'tgl_vaksin' => $tanggalVaksin,
+                'id_vaksin_nama' => $namaVaksin,
+                'tgl_buat' => date('Y-m-d H:i:s'),
+                'tgl_edit' => date('Y-m-d H:i:s'),
+                'id_user' => $this->session->userdata('id_user_hcdata'),
+            ];
+
+            $vaksin = $this->vks->input_vaksin_kary($data_vaksin);
+            if ($vaksin) {
+                echo json_encode(array("statusCode" => 200, "pesan" => "Data vaksin berhasil disimpan"));
+            } else {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data vaksin gagal disimpan"));
+            }
+        } else {
+            echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data karyawan"));
+        }
+    }
+
+    public function newfotokaryawan()
+    {
+        $auth_kary = $this->input->post("auth_kary");
+        $idpersonal = $this->kry->get_by_auth($auth_kary);
+        if ($idpersonal->id_m_perusahaan != '1') {
+            $foldername = md5($idpersonal->id_personal);
+            if ($auth_kary == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+                return;
+            }
+            $nama_file = $idpersonal->url_foto;
+            if ($nama_file == "" || $nama_file == null) {
+                $now = date('YmdHis');
+                $nama_file = $now . "-FOTO.jpg";
+            }
+
+            $alamat = './berkas/karyawan/' . $foldername . "/" . $nama_file;
+            //   if (!is_file($alamat)) {
+            if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+            } else {
+                $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                $config['allowed_types'] = 'jpg';
+                $config['max_size'] = 100;
+                $config['file_name'] = $nama_file;
+                $config['overwrite'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('file_foto')) {
+                    $error = $this->upload->display_errors();
+                    echo json_encode(array("statusCode" => 201, "pesan" => $error));
+                    return;
+                } else {
+                    $dt_personal = array(
+                        'url_foto' => $nama_file,
+                    );
+                    $id_karyawan = $idpersonal->id_kary;
+                    $this->kry->update_dtkary($id_karyawan, $dt_personal);
+                    echo json_encode(array(
+                        "statusCode" => 200,
+                        "pesan" => "Foto Karyawan berhasil diupload",
+                    ));
+                }
+            }
+            //   } else {
+            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
+            //   }
+        } else {
+            if ($auth_kary == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+                return;
+            }
+            $nama_file = $idpersonal->url_foto;
+            if ($nama_file == "" || $nama_file == null) {
+                $nama = $idpersonal->nama_lengkap;
+                $nama_file = strval($nama) . "-FOTO.jpg";
+            }
+
+            $alamat = './berkas/foto/1/' . $nama_file;
+            //   if (!is_file($alamat)) {
+            if (is_dir('./berkas/foto/1') == false) {
+                mkdir('./berkas/foto/1', 0775, true);
+            } else {
+                $config['upload_path'] = './berkas/foto/1';
+                $config['allowed_types'] = 'jpg';
+                $config['max_size'] = 100;
+                $config['file_name'] = $nama_file;
+                $config['overwrite'] = true;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('file_foto')) {
+                    $error = $this->upload->display_errors();
+                    echo json_encode(array("statusCode" => 201, "pesan" => $error));
+                    return;
+                } else {
+                    $dt_personal = array(
+                        'url_foto' => $nama_file,
+                    );
+                    $id_karyawan = $idpersonal->id_kary;
+                    $this->kry->update_dtkary($id_karyawan, $dt_personal);
+                    echo json_encode(array(
+                        "statusCode" => 200,
+                        "pesan" => "Foto Karyawan berhasil diupload",
+                    ));
+                }
+            }
+            //   } else {
+            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
+            //   }
         }
     }
 }

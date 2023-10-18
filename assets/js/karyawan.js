@@ -5460,98 +5460,277 @@ $(document).ready(function () {
     }
   });
 
+  $(document).on("click", ".btnFotoKaryawan ", function () {
+    let auth_kary = $(this).attr("id");
+    $(".76235ft67gfrubf12").text(auth_kary);
+    $("#mdlnewfotokaryawan").modal("show");
+  });
+
   $(document).on("click", ".btnFilePendukung ", function () {
     let auth_kary = $(this).attr("id");
     $(".12390lkjj4234bn12j28j4nc9").text(auth_kary);
     $("#mdlnewfilependukung").modal("show");
   });
 
-  $("#btnnewfilependukung").click(function () {
+  $(document).on("click", ".btnVaksin", function () {
+    let auth_kary = $(this).attr("id");
+    $(".t9018htg2398th259").text(auth_kary);
+    $("#mdlnewvaksin").modal("show");
+    $('#jenisVaksin option[value="0"]').hide();
+    $('#namaVaksin option[value="0"]').hide();
+  });
+
+  $("#gantiFotoKaryawan").submit(function () {
+    let auth_kary = $(".76235ft67gfrubf12").text();
+    let foto_karyawan = $("#fotoKaryawanNew").val();
+    const file_foto = $("#fotoKaryawanNew").prop("files")[0];
+    let fileExtension = foto_karyawan.split(".").pop().toLowerCase();
+    let sizeFile = file_foto["size"];
+    if (fileExtension != "jpg") {
+      swal({
+        title: "Informasi",
+        text: "File foto yang dipilih bukan JPG",
+        type: "info",
+      });
+    } else if (sizeFile > 100000) {
+      swal({
+        title: "Peringatan",
+        text: "Ukuran File foto yang dipilih melebihi 100kb",
+        type: "warning",
+      });
+    } else {
+      if (auth_kary == "") {
+        errkary = "Data karyawan tidak ditemukan";
+      } else {
+        errkary = "";
+      }
+
+      if (errkary == "") {
+        swal({
+          title: "Upload Foto Karyawan",
+          text: "Yakin foto akan di-upload?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#36c6d3",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, upload",
+          cancelButtonText: "Batalkan",
+        }).then(function (result) {
+          if (result.value) {
+            $.LoadingOverlay("show");
+            let formData = new FormData();
+            formData.append("foto_karyawan", foto_karyawan);
+            formData.append("file_foto", file_foto);
+            formData.append("auth_kary", auth_kary);
+            $.ajax({
+              type: "POST",
+              url: site_url + "karyawan/newfotokaryawan",
+              data: formData,
+              cache: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                console.log(data);
+                var data = JSON.parse(data);
+                if (data.statusCode == 200) {
+                  $("#mdlnewfotokaryawan").modal("hide");
+                  $(".76235ft67gfrubf12").text("");
+                  $("#fotoKaryawanNew").val("");
+                  $.LoadingOverlay("hide");
+                  swal({
+                    title: "Berhasil",
+                    text: data.pesan,
+                    type: "success",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                } else if (data.statusCode == 201) {
+                  $.LoadingOverlay("hide");
+                  $(".errnewfotokaryawan").removeClass("d-none");
+                  $(".errnewfotokaryawan").removeClass("alert-primary]");
+                  $(".errnewfotokaryawan").addClass("alert-danger");
+                  $(".errnewfotokaryawan").html(data.pesan);
+                }
+              },
+            });
+          }
+        });
+      } else {
+        if (errkary != "") {
+          $(".errnewfotokaryawan").removeClass("d-none");
+          $(".errnewfotokaryawan").removeClass("alert-primary]");
+          $(".errnewfotokaryawan").addClass("alert-danger");
+          $(".errnewfotokaryawan").html(errkary);
+        } else {
+          $(".errnewfotokaryawan").addClass("d-none");
+          $(".errnewfotokaryawan").html("");
+        }
+
+        $(".errnewfotokaryawan")
+          .fadeTo(5000, 500)
+          .slideUp(500, function () {
+            $(".errnewfotokaryawan").slideUp(500);
+            $(".errnewfotokaryawan").addClass("d-none");
+          });
+      }
+    }
+  });
+
+  $("#gantiFilePendukung").submit(function () {
     let auth_kary = $(".12390lkjj4234bn12j28j4nc9").text();
     let file_pendukung = $("#filePendukungnew").val();
     const fl_pendukung = $("#filePendukungnew").prop("files")[0];
+    let fileExtension = file_pendukung.split(".").pop().toLowerCase();
+    let sizeFile = fl_pendukung["size"];
+    if (fileExtension != "pdf") {
+      swal({
+        title: "Informasi",
+        text: "File yang dipilih bukan PDF",
+        type: "info",
+      });
+    } else if (sizeFile > 500000) {
+      swal({
+        title: "Peringatan",
+        text: "Ukuran file yang dipilih melebihi 500kb",
+        type: "warning",
+      });
+    } else {
+      if (auth_kary == "") {
+        errkary = "Data karyawan tidak ditemukan";
+      } else {
+        errkary = "";
+      }
 
+      if (errkary == "") {
+        swal({
+          title: "Upload File Pendukung",
+          text: "Yakin file pendukung akan di-upload?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#36c6d3",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, upload",
+          cancelButtonText: "Batalkan",
+        }).then(function (result) {
+          if (result.value) {
+            $.LoadingOverlay("show");
+            let formData = new FormData();
+            formData.append("file_pendukung", file_pendukung);
+            formData.append("fl_pendukung", fl_pendukung);
+            formData.append("auth_kary", auth_kary);
+            $.ajax({
+              type: "POST",
+              url: site_url + "karyawan/newfilependukung",
+              data: formData,
+              cache: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                var data = JSON.parse(data);
+                if (data.statusCode == 200) {
+                  $("#mdlnewfilependukung").modal("hide");
+                  $(".12390lkjj4234bn12j28j4nc9").text("");
+                  $("#filePendukungnew").val("");
+                  swal({
+                    title: "Berhasil",
+                    text: data.pesan,
+                    type: "success",
+                    showConfirmButton: false,
+                    timer: 2000,
+                  });
+                } else if (data.statusCode == 201) {
+                  $.LoadingOverlay("hide");
+                  $(".errnewfilependukung").removeClass("d-none");
+                  $(".errnewfilependukung").removeClass("alert-primary]");
+                  $(".errnewfilependukung").addClass("alert-danger");
+                  $(".errnewfilependukung").html(data.pesan);
+                }
+              },
+            });
+          }
+        });
+      } else {
+        if (errkary != "") {
+          $(".errnewfilependukung").removeClass("d-none");
+          $(".errnewfilependukung").removeClass("alert-primary]");
+          $(".errnewfilependukung").addClass("alert-danger");
+          $(".errnewfilependukung").html(errkary);
+        } else {
+          $(".errnewfilependukung").addClass("d-none");
+          $(".errnewfilependukung").html("");
+        }
+
+        $(".errnewfilependukung")
+          .fadeTo(5000, 500)
+          .slideUp(500, function () {
+            $(".errnewfilependukung").slideUp(500);
+            $(".errnewfilependukung").addClass("d-none");
+          });
+      }
+    }
+  });
+
+  $("#tambahDataVaksin").submit(function () {
+    let auth_kary = $(".t9018htg2398th259").text();
+    let jenisVaksin = $("#jenisVaksin").val();
+    let namaVaksin = $("#namaVaksin").val();
+    let tanggalVaksin = $("#tanggalVaksin").val();
     if (auth_kary == "") {
       errkary = "Data karyawan tidak ditemukan";
     } else {
       errkary = "";
     }
 
-    if (file_pendukung == "") {
-      errfile_pendukung = "File pendukung wajib diupload";
-    } else {
-      errfile_pendukung = "";
-    }
-
-    if (errkary == "" && errfile_pendukung == "") {
-      swal({
-        title: "Upload File Pendukung",
-        text: "Yakin file pendukung akan di-upload?",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#36c6d3",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, upload",
-        cancelButtonText: "Batalkan",
-      }).then(function (result) {
-        if (result.value) {
-          $.LoadingOverlay("show");
-          let formData = new FormData();
-          formData.append("file_pendukung", file_pendukung);
-          formData.append("fl_pendukung", fl_pendukung);
-          formData.append("auth_kary", auth_kary);
-          formData.append("token", token);
-
-          $.ajax({
-            type: "POST",
-            url: site_url + "karyawan/newfilependukung",
-            data: formData,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-              var data = JSON.parse(data);
-              if (data.statusCode == 200) {
-                $("#mdlnewfilependukung").modal("hide");
-                $(".12390lkjj4234bn12j28j4nc9").text("");
-                $("#hasilMCUnew").val("").trigger("change");
-                $("#filePendukungnew").val("");
-                swal("Berhasil", data.pesan, "success");
-                $.LoadingOverlay("hide");
-              } else if (data.statusCode == 201) {
-                $.LoadingOverlay("hide");
-                $(".errnewfilependukung").removeClass("d-none");
-                $(".errnewfilependukung").removeClass("alert-primary]");
-                $(".errnewfilependukung").addClass("alert-danger");
-                $(".errnewfilependukung").html(data.pesan);
-              } else {
-                $(".errorFilePendukungnew").html(data.file_MCU);
-                $.LoadingOverlay("hide");
-              }
-            },
-          });
-        } else {
-          swal.close();
-        }
+    if (errkary == "") {
+      $.ajax({
+        type: "post",
+        url: site_url + "karyawan/newvaksin",
+        data: {
+          auth_kary: auth_kary,
+          jenisVaksin: jenisVaksin,
+          namaVaksin: namaVaksin,
+          tanggalVaksin: tanggalVaksin,
+        },
+        success: function (data) {
+          var data = JSON.parse(data);
+          if (data.statusCode == 200) {
+            $("#mdlnewvaksin").modal("hide");
+            $(".t9018htg2398th259").text("");
+            $("#jenisVaksin").val("").trigger("change");
+            $("#namaVaksin").val("").trigger("change");
+            $("#tanggalVaksin").val("");
+            swal({
+              title: "Berhasil",
+              text: data.pesan,
+              type: "success",
+              showConfirmButton: false,
+              timer: 2000,
+            });
+          } else if (data.statusCode == 201) {
+            $.LoadingOverlay("hide");
+            $(".errornewvaksin").removeClass("d-none");
+            $(".errornewvaksin").removeClass("alert-primary]");
+            $(".errornewvaksin").addClass("alert-danger");
+            $(".errornewvaksin").html(data.pesan);
+          }
+        },
       });
     } else {
       if (errkary != "") {
-        $(".errnewfilependukung").removeClass("d-none");
-        $(".errnewfilependukung").removeClass("alert-primary]");
-        $(".errnewfilependukung").addClass("alert-danger");
-        $(".errnewfilependukung").html(errkary);
+        $(".errornewvaksin").removeClass("d-none");
+        $(".errornewvaksin").removeClass("alert-primary]");
+        $(".errornewvaksin").addClass("alert-danger");
+        $(".errornewvaksin").html(errkary);
       } else {
-        $(".errnewfilependukung").addClass("d-none");
-        $(".errnewfilependukung").html("");
+        $(".errornewvaksin").addClass("d-none");
+        $(".errornewvaksin").html("");
       }
 
-      $(".errorFilePendukungnew").html(errfile_pendukung);
-
-      $(".errnewfilependukung")
+      $(".errornewvaksin")
         .fadeTo(5000, 500)
         .slideUp(500, function () {
-          $(".errnewfilependukung").slideUp(500);
-          $(".errnewfilependukung").addClass("d-none");
+          $(".errornewvaksin").slideUp(500);
+          $(".errornewvaksin").addClass("d-none");
         });
     }
   });
