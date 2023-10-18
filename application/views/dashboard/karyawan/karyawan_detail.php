@@ -371,7 +371,7 @@
                                                             <div class="form-group">
                                                                  <h6>Status Residence</h6>
                                                                  <input type="text" class="form-control"
-                                                                      value="<?=isset($data_kary->stat_tinggal) ? ($data_kary->stat_tinggal == "R" ? "Residence" : "Non Residence") : '-'?>"
+                                                                      value="<?=$data_kary->stat_tinggal?>"
                                                                       style="background-color:transparent;margin-top:-10px;"
                                                                       disabled>
                                                             </div>
@@ -387,32 +387,31 @@
                                                        </div>
 
                                                        <?php
-if (isset($data_kontrak->stat_waktu)) {
-    if ($data_kontrak->stat_waktu == "T") {
-        echo '<div class="col-lg-3 col-md-3 col-sm-12">';
-        echo '<div class="form-group">';
-        echo '<h6>Tgl. Awal ' . $data_kontrak->stat_perjanjian . '</h6>';
-        echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
-        echo '</div>';
-        echo '</div>';
-        echo '<div class="col-lg-3 col-md-3 col-sm-12 ">';
-        echo '<div class="form-group">';
-        echo '<h6>Tgl. Akhir ' . $data_kontrak->stat_perjanjian . '</h6>';
-        echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
-        echo '</div>';
-        echo '</div>';
-    } else if ($data_kontrak->stat_waktu == "F") {
-        echo '<div class="col-lg-3 col-md-3 col-sm-12">';
-        echo '<div class="form-group">';
-        echo '<h6>Tgl. Permanen</h6>';
-        echo '<input type="text" class="form-control"value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
-        echo '</div>';
-        echo '</div>';
-    }
-}
+                                                            if (isset($data_kontrak->stat_waktu)) {
+                                                                 if ($data_kontrak->stat_waktu == "T") {
+                                                                      echo '<div class="col-lg-3 col-md-3 col-sm-12">';
+                                                                      echo '<div class="form-group">';
+                                                                      echo '<h6>Tgl. Awal ' . $data_kontrak->stat_perjanjian . '</h6>';
+                                                                      echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      echo '</div>';
+                                                                      echo '</div>';
+                                                                      echo '<div class="col-lg-3 col-md-3 col-sm-12 ">';
+                                                                      echo '<div class="form-group">';
+                                                                      echo '<h6>Tgl. Akhir ' . $data_kontrak->stat_perjanjian . '</h6>';
+                                                                      echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      echo '</div>';
+                                                                      echo '</div>';
+                                                                 } else if ($data_kontrak->stat_waktu == "F") {
+                                                                      echo '<div class="col-lg-3 col-md-3 col-sm-12">';
+                                                                      echo '<div class="form-group">';
+                                                                      echo '<h6>Tgl. Permanen</h6>';
+                                                                      echo '<input type="text" class="form-control"value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      echo '</div>';
+                                                                      echo '</div>';
+                                                                 }
+                                                            }
 
-?>
-
+                                                            ?>
                                                   </div>
                                              </div>
                                              <div class="tab-pane fade" id="v-pills-dtSIMPER" role="tabpanel"
@@ -438,33 +437,33 @@ if (isset($data_kontrak->stat_waktu)) {
                                                                       </thead>
                                                                       <tbody>
                                                                            <?php
-$no = 1;
-if (!empty($data_izin)) {
-    foreach ($data_izin as $list) {
-        echo '<tr>';
-        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-        echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_izin_tambang . '</td>';
-        echo '<td class="align-middle" style="width: 19%;">' . $list->no_reg . '</td>';
-        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_expired)) . '</td>';
-        echo '<td style="text-align:center;">';
-        echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
-        if ($list->url_izin_tambang != "") {
-            if ($list->id_jenis_izin_tambang == 2) {
-                echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-id-badge"></i></a> ';
-            }
-            echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
-        } else {
-            echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
-        }
-        echo '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr>';
-    echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
-    echo '</tr>';
-}
-?>
+                                                                                $no = 1;
+                                                                                if (!empty($data_izin)) {
+                                                                                     foreach ($data_izin as $list) {
+                                                                                          echo '<tr>';
+                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_izin_tambang . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->no_reg . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_expired)) . '</td>';
+                                                                                          echo '<td style="text-align:center;">';
+                                                                                          echo '<button id="' . $list->auth_izin_tambang . '" class="btn btn-primary btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
+                                                                                          if ($list->url_izin_tambang != "") {
+                                                                                               if ($list->id_jenis_izin_tambang == 2) {
+                                                                                                    echo '<a href ="' . base_url('karyawan/berkassim/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-success btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-id-badge"></i></a> ';
+                                                                                               }
+                                                                                               echo '<a href ="' . base_url('karyawan/berkasizin/') . $list->auth_izin_tambang . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                          } else {
+                                                                                               echo '<a class="btn btn-danger btn-sm text-white" title="File tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                          }
+                                                                                          echo '</td>';
+                                                                                          echo '</tr>';
+                                                                                     }
+                                                                                } else {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           ?>
                                                                       </tbody>
                                                                  </table>
                                                             </div>
@@ -497,30 +496,30 @@ if (!empty($data_izin)) {
                                                                       </thead>
                                                                       <tbody>
                                                                            <?php
-$no = 1;
-if (!empty($data_sertifikasi)) {
-    foreach ($data_sertifikasi as $list) {
-        echo '<tr>';
-        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-        echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_sertifikasi . '</td>';
-        echo '<td class="align-middle" style="width: 19%;">' . $list->no_sertifikasi . '</td>';
-        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_sertifikasi)) . '</td>';
-        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_berakhir_sertifikasi)) . '</td>';
-        echo '<td style="text-align:center;">';
-        if ($list->file_sertifikasi != "") {
-            echo '<a href ="' . base_url('karyawan/sertifikat/') . $list->auth_sertifikat . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
-        } else {
-            echo '<a class="btn btn-danger btn-sm" title="File sertifikasi tidak ada"><i class="fas fa-ban"></i></a>';
-        }
-        echo '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr>';
-    echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
-    echo '</tr>';
-}
-?>
+                                                                                $no = 1;
+                                                                                if (!empty($data_sertifikasi)) {
+                                                                                     foreach ($data_sertifikasi as $list) {
+                                                                                          echo '<tr>';
+                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 60%;">' . $list->jenis_sertifikasi . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->no_sertifikasi . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_sertifikasi)) . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_berakhir_sertifikasi)) . '</td>';
+                                                                                          echo '<td style="text-align:center;">';
+                                                                                          if ($list->file_sertifikasi != "") {
+                                                                                               echo '<a href ="' . base_url('karyawan/sertifikat/') . $list->auth_sertifikat . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                          } else {
+                                                                                               echo '<a class="btn btn-danger btn-sm" title="File sertifikasi tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                          }
+                                                                                          echo '</td>';
+                                                                                          echo '</tr>';
+                                                                                     }
+                                                                                } else {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           ?>
                                                                       </tbody>
                                                                  </table>
                                                             </div>
@@ -547,30 +546,30 @@ if (!empty($data_sertifikasi)) {
                                                                  <tbody>
 
                                                                       <?php
-$no = 1;
-if (!empty($data_mcu)) {
-    foreach ($data_mcu as $list) {
-        echo '<tr>';
-        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-        echo '<td class="align-middle" style="width: 15%;">' . date('d-M-Y', strtotime($list->tgl_mcu)) . '</td>';
-        echo '<td class="align-middle" style="width: 25%;">' . $list->mcu_jenis . '</td>';
-        echo '<td class="align-middle" style="width: 54%;">' . $list->ket_mcu . '</td>';
-        echo '<td style="text-align:center;">';
+                                                                           $no = 1;
+                                                                           if (!empty($data_mcu)) {
+                                                                                foreach ($data_mcu as $list) {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 15%;">' . date('d-M-Y', strtotime($list->tgl_mcu)) . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 25%;">' . $list->mcu_jenis . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 54%;">' . $list->ket_mcu . '</td>';
+                                                                                     echo '<td style="text-align:center;">';
 
-        if ($list->url_file != "") {
-            echo '<a href ="' . base_url('karyawan/mcu/') . $list->auth_mcu . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Hasil MCU"><i class="far fa-file-pdf"></i></a>';
-        } else {
-            echo '<a class="btn btn-danger btn-sm" title="File MCU tidak ada"><i class="fas fa-ban"></i></a>';
-        }
-        echo '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr>';
-    echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
-    echo '</tr>';
-}
-?>
+                                                                                     if ($list->url_file != "") {
+                                                                                          echo '<a href ="' . base_url('karyawan/mcu/') . $list->auth_mcu . '" target="_blank" class="btn btn-primary btn-sm" title="Tampilkan Hasil MCU"><i class="far fa-file-pdf"></i></a>';
+                                                                                     } else {
+                                                                                          echo '<a class="btn btn-danger btn-sm" title="File MCU tidak ada"><i class="fas fa-ban"></i></a>';
+                                                                                     }
+                                                                                     echo '</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           } else {
+                                                                                echo '<tr>';
+                                                                                echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                      ?>
                                                                  </tbody>
                                                             </table>
                                                        </div>
@@ -593,24 +592,23 @@ if (!empty($data_mcu)) {
                                                                       </tr>
                                                                  </thead>
                                                                  <tbody>
-
                                                                       <?php
-$no = 1;
-if (!empty($data_vaksin)) {
-    foreach ($data_vaksin as $list) {
-        echo '<tr>';
-        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-        echo '<td class="align-middle" style="width: 30%;">' . $list->vaksin_jenis . '</td>';
-        echo '<td class="align-middle" style="width: 39%;">' . $list->vaksin_nama . '</td>';
-        echo '<td class="align-middle" style="width: 30%;">' . date('d-M-Y', strtotime($list->tgl_vaksin)) . '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr>';
-    echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
-    echo '</tr>';
-}
-?>
+                                                                           $no = 1;
+                                                                           if (!empty($data_vaksin)) {
+                                                                                foreach ($data_vaksin as $list) {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 30%;">' . $list->vaksin_jenis . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 39%;">' . $list->vaksin_nama . '</td>';
+                                                                                     echo '<td class="align-middle" style="width: 30%;">' . date('d-M-Y', strtotime($list->tgl_vaksin)) . '</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           } else {
+                                                                                echo '<tr>';
+                                                                                echo '<td colspan=4 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                echo '</tr>';
+                                                                           }
+                                                                      ?>
                                                                  </tbody>
                                                             </table>
                                                        </div>
@@ -642,13 +640,13 @@ if (!empty($data_vaksin)) {
                                                                  <h6>File Pendukung</h6>
                                                                  <?php
 
-if ($data_kary->url_pendukung != "") {
-    echo '<a href ="' . base_url('karyawan/support/') . $data_kary->auth_personal . '" target="_blank" class="btn btn-primary">Tampilkan File Pendukung</a>';
-} else {
-    echo '<a target="_blank" class="btn btn-danger">File Tidak Ada</a>';
-}
+                                                                      if ($data_kary->url_pendukung != "") {
+                                                                           echo '<a href ="' . base_url('karyawan/support/') . $data_kary->auth_personal . '" target="_blank" class="btn btn-primary">Tampilkan File Pendukung</a>';
+                                                                      } else {
+                                                                           echo '<a target="_blank" class="btn btn-danger">File Tidak Ada</a>';
+                                                                      }
 
-?>
+                                                                 ?>
                                                             </div>
                                                        </div>
                                                   </div>
@@ -678,31 +676,31 @@ if ($data_kary->url_pendukung != "") {
                                                                       </thead>
                                                                       <tbody>
                                                                            <?php
-$no = 1;
-if (!empty($data_langgar)) {
-    foreach ($data_langgar as $list) {
-        echo '<tr>';
-        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-        echo '<td class="align-middle" style="width: 60%;">' . date('d-M-Y', strtotime($list->tgl_langgar)) . '</td>';
-        echo '<td class="align-middle" style="width: 19%;">' . $list->langgar_jenis . '</td>';
-        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_punishment)) . '</td>';
-        echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_akhir_langgar)) . '</td>';
-        echo '<td style="text-align:center;">';
-        echo '<button class="btn btn-info btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
-        if ($list->url_langgar != "") {
-            echo '<a href ="' . base_url('pelanggaran/berkas/') . $list->auth_langgar . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
-        } else {
-            echo '<a class="btn btn-danger btn-sm text-white" title="File pelanggaran tidak ada"><i class="fas fa-ban "></i></a>';
-        }
-        echo '</td>';
-        echo '</tr>';
-    }
-} else {
-    echo '<tr>';
-    echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
-    echo '</tr>';
-}
-?>
+                                                                                $no = 1;
+                                                                                if (!empty($data_langgar)) {
+                                                                                     foreach ($data_langgar as $list) {
+                                                                                          echo '<tr>';
+                                                                                          echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 60%;">' . date('d-M-Y', strtotime($list->tgl_langgar)) . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 19%;">' . $list->langgar_jenis . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_punishment)) . '</td>';
+                                                                                          echo '<td class="align-middle" style="width: 10%;">' . date('d-M-Y', strtotime($list->tgl_akhir_langgar)) . '</td>';
+                                                                                          echo '<td style="text-align:center;">';
+                                                                                          echo '<button class="btn btn-info btn-sm text-white" title="Detail"><i class="fas fa-asterisk"></i></button> ';
+                                                                                          if ($list->url_langgar != "") {
+                                                                                               echo '<a href ="' . base_url('pelanggaran/berkas/') . $list->auth_langgar . '" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan Sertifikasi"><i class="far fa-file-pdf"></i></a>';
+                                                                                          } else {
+                                                                                               echo '<a class="btn btn-danger btn-sm text-white" title="File pelanggaran tidak ada"><i class="fas fa-ban "></i></a>';
+                                                                                          }
+                                                                                          echo '</td>';
+                                                                                          echo '</tr>';
+                                                                                     }
+                                                                                } else {
+                                                                                     echo '<tr>';
+                                                                                     echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                                     echo '</tr>';
+                                                                                }
+                                                                           ?>
                                                                       </tbody>
                                                                  </table>
                                                             </div>
@@ -711,10 +709,6 @@ if (!empty($data_langgar)) {
                                              </div>
                                         </div>
                                    </div>
-                                   <!-- <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                        <a id="btnCetak" name="btnCetak" class="btn btn-primary font-weight-bold text-white">Cetak</a>
-                                        <a href="#!" id="btnSelesai" name="btnSelesai" class="btn btn-warning ml-1 font-weight-bold text-white">Selesai</a>
-                                   </div> -->
                               </div>
                          </div>
                     </div>

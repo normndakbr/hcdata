@@ -5943,6 +5943,7 @@ $(document).ready(function () {
                   $("#mdlnewfilependukung").modal("hide");
                   $(".12390lkjj4234bn12j28j4nc9").text("");
                   $("#filePendukungnew").val("");
+                  $.LoadingOverlay("hide");
                   swal({
                     title: "Berhasil",
                     text: data.pesan,
@@ -5962,6 +5963,7 @@ $(document).ready(function () {
           }
         });
       } else {
+        $.LoadingOverlay("hide");
         if (errkary != "") {
           $(".errnewfilependukung").removeClass("d-none");
           $(".errnewfilependukung").removeClass("alert-primary]");
@@ -5994,6 +5996,7 @@ $(document).ready(function () {
     }
 
     if (errkary == "") {
+      $.LoadingOverlay("show");
       $.ajax({
         type: "post",
         url: site_url + "karyawan/newvaksin",
@@ -6011,6 +6014,7 @@ $(document).ready(function () {
             $("#jenisVaksin").val("").trigger("change");
             $("#namaVaksin").val("").trigger("change");
             $("#tanggalVaksin").val("");
+            $.LoadingOverlay("hide");
             swal({
               title: "Berhasil",
               text: data.pesan,
@@ -6037,6 +6041,8 @@ $(document).ready(function () {
         $(".errornewvaksin").addClass("d-none");
         $(".errornewvaksin").html("");
       }
+
+      $.LoadingOverlay("hide");
 
       $(".errornewvaksin")
         .fadeTo(5000, 500)
