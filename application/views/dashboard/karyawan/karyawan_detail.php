@@ -435,7 +435,7 @@ if (isset($data_kontrak->stat_waktu)) {
                                                                                 </th>
                                                                                 <th style="width: 5%;">PROSES</th>
                                                                            </tr>
-                                                                      </thead>sss
+                                                                      </thead>
                                                                       <tbody>
                                                                            <?php
 $no = 1;
