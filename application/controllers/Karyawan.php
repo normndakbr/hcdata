@@ -2056,7 +2056,7 @@ class Karyawan extends My_Controller
             if (is_dir('./berkas/karyawan/' . $foldername)) {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 200;
+                $config['max_size'] = 300;
                 $config['file_name'] = $nama_file;
 
                 $this->load->library('upload', $config);
@@ -2065,7 +2065,7 @@ class Karyawan extends My_Controller
                     $err = $this->upload->display_errors();
 
                     if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                        $error = "<p>Ukuran file maksimal 200 kb.</p>";
+                        $error = "<p>Ukuran file maksimal 300 kb.</p>";
                     } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                         $error = "<p>Format file nya dalam bentuk pdf</p>";
                     } else {
@@ -2185,7 +2185,7 @@ class Karyawan extends My_Controller
                     if (is_dir('./berkas/karyawan/' . $foldername)) {
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 200;
+                        $config['max_size'] = 300;
                         $config['file_name'] = $nama_file;
 
                         $this->load->library('upload', $config);
@@ -2193,7 +2193,7 @@ class Karyawan extends My_Controller
                             $err = $this->upload->display_errors();
 
                             if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                $error = "<p>Ukuran file maksimal 200 kb.</p>";
+                                $error = "<p>Ukuran file maksimal 300 kb.</p>";
                             } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                                 $error = "<p>Format file nya dalam bentuk pdf</p>";
                             } else {
@@ -2487,7 +2487,7 @@ class Karyawan extends My_Controller
                     } else {
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 500;
+                        $config['max_size'] = 700;
                         $config['file_name'] = $nama_file;
                         $config['overwrite'] = true;
 
@@ -2584,10 +2584,10 @@ class Karyawan extends My_Controller
                 return;
             }
 
-            if ($fotosize > 70000) {
+            if ($fotosize > 100000) {
                 echo json_encode(array(
                     "statusCode" => 202,
-                    "filefoto" => "Ukuran file maksimal 70kb.",
+                    "filefoto" => "Ukuran file maksimal 100kb.",
                     "filedukung" => "",
                 ));
                 return;
@@ -2615,10 +2615,10 @@ class Karyawan extends My_Controller
                 return;
             }
 
-            if ($dukungsize > 500000) {
+            if ($dukungsize > 700000) {
                 echo json_encode(array(
                     "statusCode" => 202,
-                    "filedukung" => "Ukuran file maksimal 500kb.",
+                    "filedukung" => "Ukuran file maksimal 700kb.",
                     "filefoto" => ""));
                 return;
             }
@@ -3704,7 +3704,7 @@ class Karyawan extends My_Controller
             } else {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 500;
+                $config['max_size'] = 700;
                 $config['file_name'] = $nama_file;
                 $config['overwrite'] = true;
 
