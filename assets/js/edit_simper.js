@@ -36,7 +36,6 @@ $(document).ready(function () {
             token: token
         },
         success: function (res) {
-            console.log("Success POST on " + site_url + "izin_tambang/get_all_unit");
             var data = JSON.parse(res);
             $("#jenisUnitSimper").html(data.unit);
         },
@@ -59,7 +58,6 @@ $(document).ready(function () {
             token: token,
         },
         success: function (res) {
-            console.log("Success POST on " + site_url + "izin_tambang/get_all_akses");
             var data = JSON.parse(res);
             $("#tipeAksesUnit").html(data.akses);
         },
@@ -81,7 +79,6 @@ $(document).ready(function () {
             url: site_url + "sim/get_all",
             data: {},
             success: function (res) {
-                console.log("Success POST on " + site_url + "sim/get_all");
                 var data = JSON.parse(res);
                 $("#editJenisSIM").html(data.smm);
                 $("#refreshEditJenisSIM").removeAttr('disabled');
@@ -91,7 +88,6 @@ $(document).ready(function () {
                     url: site_url + "sim/get_auth_sim_by_id",
                     data: { id_sim: id_sim },
                     success: function (res) {
-                        console.log("Success POST on " + site_url + "sim/get_auth_sim_by_id");
                         let data = JSON.parse(res);
                         auth_sim = data.auth_sim;
                         if (!flag_SIM) {
@@ -118,7 +114,6 @@ $(document).ready(function () {
     }
 
     function add_unit_baru() {
-        console.log("Jenis izin tambang = " + $("#editJenisIzin").val());
         if ($("#editJenisIzin").val() == "SP") {
             let jenisIzin = $("#editJenisIzin").val();
             let noReg = $("#editNoReg").val();
@@ -273,7 +268,6 @@ $(document).ready(function () {
     // }
 
     $(document).on('click', '.btnDetailIzinKaryawan', function () {
-        console.log("btnDetailIzinKaryawan clicked!");
         $("#mdlDetailIzinKaryawan").modal("show");
     });
 

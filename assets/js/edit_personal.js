@@ -76,8 +76,6 @@ $(document).ready(function () {
         url: site_url + "daerah/get_prov?authtoken=" + $("#token").val(),
         data: {},
         success: function (data) {
-            console.log("Success POST on " + site_url + "daerah/get_prov?authtoken=" + $("#token").val());
-            // alert(data);
             var data = JSON.parse(data);
             $("#editProvData").html(data.prov);
             if (idProvinsi != "" && flagProv) {
@@ -484,7 +482,6 @@ $(document).ready(function () {
     }
 
     function refresh_kelurahan() {
-        console.log("refresh_kelurahan jalan!");
         if (idKecamatan != "") {
             $("#txtEditKel").LoadingOverlay("show");
             $.ajax({

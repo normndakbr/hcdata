@@ -82,11 +82,41 @@ class Karyawan extends My_Controller
     public function vaksin()
     {
         $auth_person = $this->input->get('auth_person');
-        $status = $this->input->get('status');
         $id_personal = $this->kry->get_id_personal($auth_person);
         $data['vaks'] = $this->vks->tabel_vaksin($id_personal);
-        $data['status'] = $status;
         $this->load->view('dashboard/karyawan/vaksin', $data);
+    }
+
+    public function vaksin_kary()
+    {
+        $auth_vaksin = $this->input->get('auth_vaksin');
+        $dataVaksin = $this->vks->get_vaksin_id2($auth_vaksin);
+        echo json_encode($dataVaksin);
+    }
+
+    public function update_vaksin()
+    {
+        $token = $this->input->post("token");
+        $this->cek_auth($token);
+
+        $id_vaksin = $this->input->post('id_vaksin');
+        $nama_vaksin = $this->input->post('nama_vaksin');
+        $tgl_vaksin = $this->input->post('tgl_vaksin');
+
+        $data = [
+            "id_vaksin_nama" => $nama_vaksin,
+            "tgl_vaksin" => $tgl_vaksin,
+        ];
+
+        $query = $this->vks->update_vaksin_kary($data, $id_vaksin);
+
+        if ($query) {
+            echo json_encode(array("statusCode" => 200, "pesan" => "Data Vaksin berhasil diubah"));
+            return;
+        } else {
+            echo json_encode(array("statusCode" => 201, "pesan" => "Data Vaksin gagal diubah"));
+            return;
+        }
     }
 
     public function getKaryawan()

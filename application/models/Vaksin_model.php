@@ -151,6 +151,12 @@ class Vaksin_model extends CI_Model
         return $query->result();
     }
 
+    public function get_vaksin_id2($auth_vaksin)
+    {
+        $query = $this->db->get_where('vw_vaksin_kary', ['auth_vaksin' => $auth_vaksin]);
+        return $query->row();
+    }
+
     public function get_vks_by_person($auth_personal)
     {
         $query = $this->db->get_where('vw_vaksin_kary', ['auth_personal' => $auth_personal]);
@@ -189,6 +195,17 @@ class Vaksin_model extends CI_Model
     public function input_vaksin_kary($data)
     {
         $this->db->insert('tb_vaksin_kary', $data);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_vaksin_kary($data, $id_vaksin)
+    {
+        $this->db->where('id_vaksin', $id_vaksin);
+        $this->db->update('tb_vaksin_kary', $data);
         if ($this->db->affected_rows() > 0) {
             return true;
         } else {

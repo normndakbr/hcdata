@@ -88,7 +88,7 @@ class Dash extends My_Controller
     public function logout()
     {
         $this->session->sess_destroy();
-        header("location: http://localhost:8080/hcdata");
+        redirect('login');
     }
 
     public function data_grafik()
