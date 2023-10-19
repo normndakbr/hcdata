@@ -137,10 +137,31 @@
                                                   <div class="card-body row">
                                                        <div class="col-lg-4 col-md-4 col-sm-12 text-center">
                                                             <div class="m-b-25">
+                                                                 <?php 
+
+                                                                 if(empty($data_kary->url_foto)) {
+                                                                      $linkfoto = base_url() . 'berkas/pasphoto/pasphoto.jpg';
+                                                                 } else {
+                                                                      if($data_kary->id_perusahaan == 1){
+                                                                           if(is_file('berkas/foto/1/' . $data_kary->url_foto)){
+                                                                                $linkfoto = base_url() . 'berkas/foto/1/' . $data_kary->url_foto;
+                                                                           } else {
+                                                                                $linkfoto = base_url() . 'berkas/pasphoto/pasphoto.jpg';
+                                                                           }
+                                                                      } else {
+                                                                           if(is_file('berkas/karyawan/' . md5($data_kary->id_personal) . "/" . $data_kary->url_foto)){
+                                                                                $linkfoto = base_url() . 'berkas/karyawan/' . md5($data_kary->id_personal) . "/" . $data_kary->url_foto;
+                                                                           } else {
+                                                                                $linkfoto = base_url() . 'berkas/pasphoto/pasphoto.jpg';
+                                                                           }
+                                                                      }
+                                                                 }
+
+                                                                 ?>
+
                                                                  <img style="border: 10px solid #3c3c3c;"
-                                                                      src="<?=isset($data_kary->url_foto) ? $data_kary->id_perusahaan == 1 ? base_url() . 'berkas/foto/1/' . $data_kary->url_foto : base_url() . 'berkas/karyawan/' . md5($data_kary->id_personal) . "/" . $data_kary->url_foto : base_url() . 'berkas/pasphoto/pasphoto.jpg';?>"
-                                                                      width="200" height="200" class="img-radius"
-                                                                      alt="User-Profile-Image">
+                                                                      src="<?= $linkfoto ?>" width="200" height="200"
+                                                                      class="img-radius" alt="User-Profile-Image">
                                                             </div>
                                                        </div>
                                                        <div

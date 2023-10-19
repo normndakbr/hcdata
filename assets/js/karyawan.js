@@ -5380,6 +5380,11 @@ $(document).ready(function () {
     const flfoto = $("#filePasFoto").prop("files")[0];
     let filepdukung = $("#filePendukung").val();
     const fldukung = $("#filePendukung").prop("files")[0];
+    let extfoto = flfoto.split(".").pop().toLowerCase();
+
+    if (extfoto != "jpg") {
+      swal("Error", "Format foto karyawan harus jpg", "error");
+    }
 
     if (filepdukung == "") {
       $errdukung = "File pendukung wajib di-upload";
