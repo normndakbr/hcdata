@@ -150,7 +150,7 @@ class Pelanggaran extends My_Controller
             $tgl_langgar = htmlspecialchars($this->input->post("tgl_langgar", true));
 
             if ($tgl_langgar > $tgl_punish) {
-                echo json_encode(array("statusCode" => 201, "pesan" => "Tanggal punishment tidak boleh lebih sebelum tanggal pelanggaran", "tgl_punish" => ""));
+                echo json_encode(array("statusCode" => 201, "pesan" => "Tanggal Disciplinary Action tidak boleh lebih sebelum tanggal pelanggaran", "tgl_punish" => ""));
                 return;
             }
 
@@ -162,7 +162,8 @@ class Pelanggaran extends My_Controller
                 }
 
                 $tgl_punish = strtotime($tgl_punish);
-                $tglakhirpunish = date('Y-m-d', strtotime("+" . $lamawaktu . " " . $satuan, $tgl_punish));
+                // $tglakhirpunish = date('Y-m-d', strtotime("+" . $lamawaktu . " " . $satuan, $tgl_punish));
+                $tglakhirpunish = "";
 
                 echo json_encode(array("statusCode" => 200, "pesan" => "Sukses", "tgl_akhir" => $tglakhirpunish));
             }
@@ -182,7 +183,7 @@ class Pelanggaran extends My_Controller
 
         if ($tglpunish != "") {
             if ($tgl > $tglpunish) {
-                echo json_encode(array("statusCode" => 201, "pesan" => "Tanggal pelanggaran tidak boleh setelah tanggal punishment"));
+                echo json_encode(array("statusCode" => 201, "pesan" => "Tanggal pelanggaran tidak boleh setelah tanggal Disciplinary Action"));
                 return;
             }
         }
@@ -200,13 +201,13 @@ class Pelanggaran extends My_Controller
             'required' => 'Tgl. pelanggaran wajib diisi',
         ]);
         $this->form_validation->set_rules("tglPunish", "tglPunish", "required|trim", [
-            'required' => 'Tgl. punishment wajib diisi',
+            'required' => 'Tgl. Disciplinary Action wajib diisi',
         ]);
         $this->form_validation->set_rules("jenisPunish", "jenisPunish", "required|trim", [
-            'required' => 'Jenis punishment wajib dipilih',
+            'required' => 'Jenis Disciplinary Action wajib dipilih',
         ]);
         $this->form_validation->set_rules("tglAkhirPunish", "tglAkhirPunish", "required|trim", [
-            'required' => 'Tgl. akhir punishment wajib diisi',
+            'required' => 'Tgl. akhir Disciplinary Action wajib diisi',
         ]);
         $this->form_validation->set_rules("ketLanggar", "ketLanggar", "required|trim|max_length[2500]", [
             'required' => 'Keterangan pelanggaran wajib diisi',
@@ -214,7 +215,7 @@ class Pelanggaran extends My_Controller
         ]);
         if (empty($_FILES['berkasPunish']['name'])) {
             $this->form_validation->set_rules("berkasPunish", "berkasPunish", "required|trim", [
-                'required' => 'Berkas punishment wajib diupload',
+                'required' => 'Berkas Disciplinary Action wajib diupload',
             ]);
         }
 
@@ -261,7 +262,7 @@ class Pelanggaran extends My_Controller
 
             $cekdata = $this->lgr->cek_data($id_kary, $id_jenis);
             if ($cekdata) {
-                $this->session->set_flashdata('msg', '<div class="err_psn_langgar_add alert alert-danger animate__animated animate__bounce"> Karyawan yang dipilih masih memiliki punishment yang aktif </div>');
+                $this->session->set_flashdata('msg', '<div class="err_psn_langgar_add alert alert-danger animate__animated animate__bounce"> Karyawan yang dipilih masih memiliki Disciplinary Action yang aktif </div>');
                 if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
                     $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
                     if ($idmper != "") {
@@ -526,13 +527,13 @@ class Pelanggaran extends My_Controller
             'required' => 'Tanggal pelanggaran wajib diisi',
         ]);
         $this->form_validation->set_rules("tglPunishLgrEdit", "tglPunishLgrEdit", "required|trim", [
-            'required' => 'Tanggal punishment wajib diisi',
+            'required' => 'Tanggal berlaku Disciplinary Action wajib diisi',
         ]);
         $this->form_validation->set_rules("jenisLgrEdit", "jenisLgrEdit", "required|trim", [
-            'required' => 'Jenis punishment wajib dipilih',
+            'required' => 'Jenis Disciplinary Action wajib dipilih',
         ]);
         $this->form_validation->set_rules("tglAkhirPunishLgrEdit", "tglAkhirPunishLgrEdit", "required|trim", [
-            'required' => 'Tanggal akhir punisment wajib diisi',
+            'required' => 'Tanggal akhir Disciplinary Action wajib diisi',
         ]);
         $this->form_validation->set_rules("ketLgrEdit", "ketLgrEdit", "required|trim|max_length[2500]", [
             'required' => 'Keterangan pelanggaran wajib diisi',
@@ -555,7 +556,7 @@ class Pelanggaran extends My_Controller
 
             $cekdata = $this->lgr->cek_data_edit($id_kary, $id_jenis, $authLgrEdit);
             if ($cekdata) {
-                $this->session->set_flashdata('msg', '<div class="err_psn_langgar_add alert alert-danger animate__animated animate__bounce"> Karyawan yang dipilih masih memiliki punishment yang aktif </div>');
+                $this->session->set_flashdata('msg', '<div class="err_psn_langgar_add alert alert-danger animate__animated animate__bounce"> Karyawan yang dipilih masih memiliki Disciplinary Action yang aktif </div>');
                 redirect(base_url('pelanggaran/edit/') . $authLgrEdit);
                 return;
             }
@@ -586,7 +587,7 @@ class Pelanggaran extends My_Controller
     {
 
         $this->form_validation->set_rules("berkaslgr", "berkaslgr", "required|trim", [
-            'required' => 'Berkas punishment wajib diupload',
+            'required' => 'Berkas Disciplinary Action wajib diupload',
         ]);
         $this->form_validation->set_rules("authlgr", "authlgr", "required|trim", [
             'required' => 'Karyawan tidak ditemukan',
@@ -648,10 +649,10 @@ class Pelanggaran extends My_Controller
                     } else {
                         $langgar = $this->lgr->edit_langgar($authlgr, $namafile);
                         if ($langgar) {
-                            echo json_encode(array("statusCode" => 200, "pesan" => "Berkas punishment berhasil diganti", "brks" => base_url('pelanggaran/berkas/') . $authlgr));
+                            echo json_encode(array("statusCode" => 200, "pesan" => "Berkas Disciplinary Action berhasil diganti", "brks" => base_url('pelanggaran/berkas/') . $authlgr));
                             return;
                         } else {
-                            echo json_encode(array("statusCode" => 201, "pesan" => "Berkas punishment gagal diganti"));
+                            echo json_encode(array("statusCode" => 201, "pesan" => "Berkas Disciplinary Action gagal diganti"));
                             return;
                         }
                     }

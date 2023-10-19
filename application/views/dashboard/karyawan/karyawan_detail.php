@@ -31,8 +31,16 @@
           <div class="row">
                <div class="col-xl-12 col-md-12">
                     <div class="card latest-update-card">
-                         <div class="card-header">
-                              <h5><?=$data_kary->no_ktp . " - " . $data_kary->nama_lengkap?></h5>
+                         <div class="card-header mt-3">
+
+                              <?php 
+                                   if(empty($data_kary->tgl_nonaktif)){
+                                        echo '<h4>'.$data_kary->no_ktp . ' - ' . $data_kary->nama_lengkap .' | <span class="text-success">AKTIF</span> </h4>';
+                                   } else {
+                                        echo '<h4>'.$data_kary->no_ktp . ' - ' . $data_kary->nama_lengkap .' | <span class="text-danger">NONAKTIF</span> </h4>';
+                                   }
+                              ?>
+
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
