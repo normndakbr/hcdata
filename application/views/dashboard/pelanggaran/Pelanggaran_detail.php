@@ -35,16 +35,20 @@
                               <h5>Detail Pelanggaran</h5>
                               <div class="card-header-right">
                                    <div class="btn-group card-option">
-                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
                                              <i class="feather icon-more-horizontal"></i>
                                         </button>
                                         <ul class="list-unstyled card-option dropdown-menu dropdown-menu-right">
                                              <li class="dropdown-item full-card">
                                                   <a href="#!"><span><i class="feather icon-maximize"></i>
-                                                            Perbesar</span><span style="display: none"><i class="feather icon-minimize"></i> Restore</span></a>
+                                                            Perbesar</span><span style="display: none"><i
+                                                                 class="feather icon-minimize"></i> Restore</span></a>
                                              </li>
                                              <li class="dropdown-item minimize-card">
-                                                  <a href="#!"><span><i class="feather icon-minus"></i> collapse</span><span style="display: none"><i class="feather icon-plus"></i> expand</span></a>
+                                                  <a href="#!"><span><i class="feather icon-minus"></i>
+                                                            collapse</span><span style="display: none"><i
+                                                                 class="feather icon-plus"></i> expand</span></a>
                                              </li>
                                              <li class="dropdown-item reload-card">
                                                   <a href="#!"><i class="feather icon-refresh-cw"></i> reload</a>
@@ -59,73 +63,110 @@
                                         <div class="row">
                                              <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                                   <label for="detaillanggarKode">Perusahaan :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['kode_perusahaan'] . " | " . $langgar['nama_perusahaan']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['kode_perusahaan'] . " | " . $langgar['nama_perusahaan']; ?>"
+                                                       readonly></small><br>
                                              </div>
                                              <div class="col-lg-3 col-md-3 col-sm-12">
                                                   <label for="detaillanggarKode">No. KTP :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['no_ktp']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['no_ktp']; ?>"
+                                                       readonly></small><br>
                                              </div>
                                              <div class="col-lg-3 col-md-3 col-sm-12">
                                                   <label for="detaillanggarKode">NIK :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['no_nik']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['no_nik']; ?>"
+                                                       readonly></small><br>
                                              </div>
                                              <div class="col-lg-6 col-md-6 col-sm-12">
                                                   <label for="detaillanggarKode">Nama Karyawan :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['nama_lengkap']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['nama_lengkap']; ?>" readonly></small><br>
                                              </div>
                                              <div class="col-lg-6 col-md-6 col-sm-12">
                                                   <label for="detaillanggarKode">Departemen :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['depart']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['depart']; ?>"
+                                                       readonly></small><br>
                                              </div>
                                              <div class="col-lg-6 col-md-6 col-sm-12">
                                                   <label for="detaillanggarKode">Posisi :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['posisi']; ?>" readonly></small><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['posisi']; ?>"
+                                                       readonly></small><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
                                                   <label for="detaillanggarKode">Tgl Pelanggaran :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['tgl_langgar']; ?>" readonly><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['tgl_langgar']; ?>" readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
-                                                  <label for="detaillanggar">Tgl. Punishment :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['tgl_punishment']; ?>" readonly><br>
+                                                  <label for="detaillanggar">Disciplinary Action :</label><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['kode_langgar_jenis'] . " | " . $langgar['langgar_jenis']; ?>"
+                                                       readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
-                                                  <label for="detaillanggar">Punishment :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['kode_langgar_jenis'] . " | " . $langgar['langgar_jenis']; ?>" readonly><br>
+                                                  <label for="detaillanggar">Tgl. berlaku Disciplinary Action
+                                                       :</label><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['tgl_punishment']; ?>" readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
-                                                  <label for="detaillanggar">Tgl. Akhir Punishment :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['tgl_akhir_langgar']; ?>" readonly><br>
+                                                  <label for="detaillanggar">Tgl. Akhir Disciplinary Action
+                                                       :</label><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['tgl_akhir_langgar']; ?>" readonly><br>
                                              </div>
                                              <div class="col-lg-12 col-md-12 col-sm-12 mb-4">
                                                   <label for="detaillanggarKet">Keterangan :</label><br>
-                                                  <textarea autocomplete="off" spellcheck="false" class="form-control bg-white" readonly><?= $langgar['ket_langgar']; ?></textarea>
+                                                  <textarea autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       readonly><?= $langgar['ket_langgar']; ?></textarea>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
                                                   <label for="detaillanggarStatus">Status :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['status']; ?>" readonly><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['status']; ?>"
+                                                       readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
                                                   <label for="detaillanggarStatus">Tgl Buat :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['tgl_buat']; ?>" readonly><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['tgl_buat']; ?>" readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
                                                   <label for="detaillanggarStatus">Tgl. Edit :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['tgl_edit']; ?>" readonly><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white"
+                                                       value="<?= $langgar['tgl_edit']; ?>" readonly><br>
                                              </div>
                                              <div class="col-lg-3 col-md-6 col-sm-12">
                                                   <label for="detaillanggarStatus">Pembuat :</label><br>
-                                                  <input type="text" autocomplete="off" spellcheck="false" class="form-control bg-white" value="<?= $langgar['pembuat']; ?>" readonly><br>
+                                                  <input type="text" autocomplete="off" spellcheck="false"
+                                                       class="form-control bg-white" value="<?= $langgar['pembuat']; ?>"
+                                                       readonly><br>
                                              </div>
                                              <div class="col-lg-12 col-md-12 col-sm-12 mt-2">
-                                                  <a href="<?= $langgar['url_berkas']; ?>" target="_blank" type="button" class="btn font-weight-bold btn-primary">Berkas Punishment</a>
+                                                  <a href="<?= $langgar['url_berkas']; ?>" target="_blank" type="button"
+                                                       class="btn font-weight-bold btn-primary">Berkas Disciplinary
+                                                       Action</a>
                                              </div>
                                         </div>
                                    </div>
                               </div>
                          </div>
                          <div class="modal-footer d-flex justify-align-content-end p-2" style="margin-top:5px;">
-                              <button id="btnSelesai" type="button" class="btn font-weight-bold btn-success">Selesai</button>
+                              <button id="btnSelesai" type="button"
+                                   class="btn font-weight-bold btn-success">Selesai</button>
                          </div>
                     </div>
                </div>
