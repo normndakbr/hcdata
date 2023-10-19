@@ -41,6 +41,6 @@
 <script src="//cdnjs.cloudflare.com/ajax/libs/chosen/1.4.2/chosen.jquery.min.js"></script>
 <script type='text/javascript' src="<?= base_url(); ?>assets/assets/js/jquery.inputmask.bundle.js"></script>
 <script>
-let site_url = "http://localhost:8080/hcdata/";
+let site_url = "<?= base_url() ?>";
 </script>
 </body>

@@ -3034,7 +3034,6 @@ $(document).ready(function () {
       },
       success: function (data) {
         var data = JSON.parse(data);
-        console.log(data);
         $("#mdleditsertifikat").modal("show");
         $(".7u67u834hs7dg4haj231hh67ju7a2").text(data.auth_sertifikat);
         $("#jenisSertifikasiEdit")
@@ -3070,9 +3069,6 @@ $(document).ready(function () {
         auth_sertifikat: auth_sertifikat,
       },
       success: function (data) {
-        console.log(
-          "Success on POST " + site_url + "sertifikasi/get-sertifikasi"
-        );
         var data = JSON.parse(data);
         $("#mdluploadulangser").modal("show");
         $("#jdluploadulangser").text(
@@ -3179,10 +3175,6 @@ $(document).ready(function () {
         auth_sertifikat: auth_sertifikat,
       },
       success: function (data) {
-        console.log(
-          "Success POST on " + site_url + "sertifikasi/get_sertifikasi"
-        );
-        console.log(data);
         var data = JSON.parse(data);
         $("#mdldetailsertifikat").modal("show");
         $("#jdldetailsertifikat").text(
@@ -5141,7 +5133,6 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: function (data) {
-        console.log("Success on POST " + site_url + "karyawan/cek_mcu");
         var data = JSON.parse(data);
         if (data.statusCode == 200) {
           $("#colVaksin").collapse("show");
@@ -6321,7 +6312,6 @@ $(document).ready(function () {
               processData: false,
               contentType: false,
               success: function (data) {
-                console.log(data);
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
                   $("#mdlnewfotokaryawan").modal("hide");

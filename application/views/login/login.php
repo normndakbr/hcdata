@@ -93,7 +93,7 @@ if (!$this->session->csrf_token) {
      <script src="<?=base_url();?>assets/assets/js/ripple.js"></script>
      <script src="<?=base_url();?>assets/assets/js/pcoded.min.js"></script>
      <script>
-     let site_url = "http://localhost:8080/hcdata/";
+     let site_url = "<?= base_url() ?>";
      </script>
      <script>
      if (window.history.replaceState) {
