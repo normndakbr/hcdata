@@ -2527,7 +2527,7 @@ $(document).ready(function () {
   $("#refreshLevel").click(function () {
     let auth_per = $("#addPerKary").val();
     $("#txtLevelkary").LoadingOverlay("show");
-
+    alert(auth_per);
     if (auth_per != "") {
       $.ajax({
         type: "POST",
@@ -2537,6 +2537,7 @@ $(document).ready(function () {
           token: token,
         },
         success: function (data) {
+          alert(data);
           var data = JSON.parse(data);
           $("#addLevelKary").html(data.lvl);
           $("#txtLevelkary").LoadingOverlay("hide");
@@ -6234,8 +6235,8 @@ $(document).ready(function () {
     let nama = $(this).attr("dt2");
     let prs = $(this).attr("dt3");
 
-    $("#jdlmdlnewSMP").text(
-      "Tambah SIMPER/MINE PERMIT - " + nonik + " | " + nama + " | " + prs
+    $("#jdlmdlnewfotokaryawan").text(
+      "Tambah Foto Karyawan - " + nonik + " | " + nama + " | " + prs
     );
 
     $(".76235ft67gfrubf12").text(auth_kary);

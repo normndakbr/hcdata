@@ -629,7 +629,7 @@ class Pelanggaran extends My_Controller
                     if (!$this->upload->do_upload('berkasPunishEdit')) {
                         $err = $this->upload->display_errors();
                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                            $error = "<p>Ukuran file maksimal 100 kb.</p>";
+                            $error = "<p>Ukuran file maksimal 300 kb.</p>";
                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                             $error = "<p>Format file nya dalam bentuk pdf</p>";
                         } else if ($err == "<p>You did not select a file to upload.</p>") {

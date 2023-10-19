@@ -2480,39 +2480,38 @@ class Karyawan extends My_Controller
                     $nama_file = $now . "-SUPPORT.pdf";
                 }
 
-                $alamat = './berkas/karyawan/' . $foldername . "/" . $nama_file;
-                if (!is_file($alamat)) {
-                    if (is_dir('./berkas/karyawan/' . $foldername) == false) {
-                        mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+                if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                    mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+                }
+
+                if (is_dir('./berkas/karyawan/' . $foldername)) {
+                    $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 1000;
+                    $config['file_name'] = $nama_file;
+                    $config['overwrite'] = true;
+
+                    $this->load->library('upload', $config);
+
+                    if (!$this->upload->do_upload('filePendukung')) {
+                        $error = $this->upload->display_errors();
+                        echo json_encode(array("statusCode" => 201, "pesan_muasd" => $error));
+                        die;
                     } else {
-                        $config['upload_path'] = './berkas/karyawan/' . $foldername;
-                        $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 700;
-                        $config['file_name'] = $nama_file;
-                        $config['overwrite'] = true;
+                        $dt_personal = array(
+                            'url_pendukung' => $nama_file,
+                        );
 
-                        $this->load->library('upload', $config);
-
-                        if (!$this->upload->do_upload('filePendukung')) {
-                            $error = $this->upload->display_errors();
-                            echo json_encode(array("statusCode" => 201, "pesan_muasd" => $error));
-                            die;
-                        } else {
-                            $dt_personal = array(
-                                'url_pendukung' => $nama_file,
-                            );
-
-                            $this->kry->update_dtPersonal($idpersonal, $dt_personal);
-                            $link = base_url('karyawan/support/') . $auth_person;
-                            echo json_encode(array(
-                                "statusCode" => 200,
-                                "pesan" => "File pendukung berhasil diupload",
-                                "link" => $link,
-                            ));
-                        }
+                        $this->kry->update_dtPersonal($idpersonal, $dt_personal);
+                        $link = base_url('karyawan/support/') . $auth_person;
+                        echo json_encode(array(
+                            "statusCode" => 200,
+                            "pesan" => "File pendukung berhasil diupload",
+                            "link" => $link,
+                        ));
                     }
                 } else {
-                    echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload file pendukung"));
                 }
             } else {
                 echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
@@ -3832,9 +3831,12 @@ class Karyawan extends My_Controller
 
             $alamat = './berkas/karyawan/' . $foldername . "/" . $nama_file;
             //   if (!is_file($alamat)) {
+                
             if (is_dir('./berkas/karyawan/' . $foldername) == false) {
                 mkdir('./berkas/karyawan/' . $foldername, 0775, true);
-            } else {
+            }
+
+            if (is_dir('./berkas/karyawan/' . $foldername)) {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'jpg';
                 $config['max_size'] = 100;
@@ -3858,10 +3860,10 @@ class Karyawan extends My_Controller
                         "pesan" => "Foto Karyawan berhasil diupload",
                     ));
                 }
+            } else {
+                  echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload foto karyawan"));
+                return;   
             }
-            //   } else {
-            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
-            //   }
         } else {
             if ($auth_kary == "") {
                 echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
