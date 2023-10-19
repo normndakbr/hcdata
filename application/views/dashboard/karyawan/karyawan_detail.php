@@ -203,7 +203,7 @@
                                                             <div class="form-group">
                                                                  <h6>Status Pernikahan</h6>
                                                                  <input type="text" class="form-control"
-                                                                      value="<?=isset($data_kary->kode_stat_nikah) ? $data_kary->kode_stat_nikah : '-'?>"
+                                                                      value="<?=isset($data_kary->stat_nikah) ? $data_kary->stat_nikah : '-'?>"
                                                                       style="background-color:transparent;margin-top:-10px;"
                                                                       disabled>
                                                             </div>
@@ -400,20 +400,35 @@
                                                                       echo '<div class="col-lg-3 col-md-3 col-sm-12">';
                                                                       echo '<div class="form-group">';
                                                                       echo '<h6>Tgl. Awal ' . $data_kontrak->stat_perjanjian . '</h6>';
-                                                                      echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      if($data_kontrak->tgl_mulai != '1970-01-01'){
+                                                                           $tglmulai = date('d-M-Y', strtotime($data_kontrak->tgl_mulai));
+                                                                      } else {
+                                                                           $tglmulai =="-";
+                                                                      }
+                                                                      echo '<input type="text" class="form-control" value="' . $tglmulai  . '" style="background-color:transparent;margin-top:-10px;" disabled>';
                                                                       echo '</div>';
                                                                       echo '</div>';
                                                                       echo '<div class="col-lg-3 col-md-3 col-sm-12 ">';
                                                                       echo '<div class="form-group">';
                                                                       echo '<h6>Tgl. Akhir ' . $data_kontrak->stat_perjanjian . '</h6>';
-                                                                      echo '<input type="text" class="form-control" value="' . date('d-M-Y', strtotime($data_kontrak->tgl_akhir)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      if($data_kontrak->tgl_akhir != '1970-01-01'){
+                                                                           $tglakhir = date('d-M-Y', strtotime($data_kontrak->tgl_akhir));
+                                                                      } else {
+                                                                           $tglakhir ="-";
+                                                                      }
+                                                                      echo '<input type="text" class="form-control" value="' . $tglakhir . '" style="background-color:transparent;margin-top:-10px;" disabled>';
                                                                       echo '</div>';
                                                                       echo '</div>';
                                                                  } else if ($data_kontrak->stat_waktu == "F") {
                                                                       echo '<div class="col-lg-3 col-md-3 col-sm-12">';
                                                                       echo '<div class="form-group">';
                                                                       echo '<h6>Tgl. Permanen</h6>';
-                                                                      echo '<input type="text" class="form-control"value="' . date('d-M-Y', strtotime($data_kontrak->tgl_mulai)) . '" style="background-color:transparent;margin-top:-10px;" disabled>';
+                                                                      if($data_kontrak->tgl_mulai != '1970-01-01'){
+                                                                           $tglmulai = date('d-M-Y', strtotime($data_kontrak->tgl_mulai));
+                                                                      } else {
+                                                                           $tglmulai ="-";
+                                                                      }
+                                                                      echo '<input type="text" class="form-control"value="' . $tglmulai . '" style="background-color:transparent;margin-top:-10px;" disabled>';
                                                                       echo '</div>';
                                                                       echo '</div>';
                                                                  }
