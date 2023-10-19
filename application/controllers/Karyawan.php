@@ -2604,7 +2604,7 @@ class Karyawan extends My_Controller
                 return;
             }
 
-            if ($fototype == "application\/pdf") {
+            if ($fototype != "image\/jpeg") {
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filefoto" => "Format file foto yang diupload wajib dalam bentuk jpg.",
@@ -2636,7 +2636,7 @@ class Karyawan extends My_Controller
                 return;
             }
 
-            if ($dukungtype == "application\/pdf") {
+            if ($dukungtype != "application\/pdf") {
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filedukung" => "Format file pendukung yang diupload wajib dalam bentuk jpg.",
@@ -2667,7 +2667,7 @@ class Karyawan extends My_Controller
 
                 if (is_dir('./berkas/karyawan/' . $foldername)) {
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
-                    $config['allowed_types'] = '*';
+                    $config['allowed_types'] = 'jpg';
                     $config['max_size'] = 70;
                     $this->load->library('upload', $config);
                     $this->load->initialize($config);
@@ -3847,6 +3847,8 @@ class Karyawan extends My_Controller
     {
         $auth_kary = $this->input->post("auth_kary");
         $idpersonal = $this->kry->get_by_auth($auth_kary);
+        $now = date('YmdHis');
+        $nama_file = $now . "-FOTO.jpg";
         if ($idpersonal->id_m_perusahaan != '1') {
             $foldername = md5($idpersonal->id_personal);
             if ($auth_kary == "") {
@@ -3905,11 +3907,11 @@ class Karyawan extends My_Controller
                 $nama_file = strval($nama) . "-FOTO.jpg";
             }
 
-            $alamat = './berkas/foto/1/' . $nama_file;
-            //   if (!is_file($alamat)) {
             if (is_dir('./berkas/foto/1') == false) {
                 mkdir('./berkas/foto/1', 0775, true);
-            } else {
+            }
+
+            if (is_dir('./berkas/foto/1')) {
                 $config['upload_path'] = './berkas/foto/1';
                 $config['allowed_types'] = 'jpg';
                 $config['max_size'] = 100;
@@ -3933,10 +3935,9 @@ class Karyawan extends My_Controller
                         "pesan" => "Foto Karyawan berhasil diupload",
                     ));
                 }
+            } else {
+                  echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload file foto karyawan"));
             }
-            //   } else {
-            //       echo json_encode(array("statusCode" => 201, "pesan" => "File sudah ada, gagal upload file"));
-            //   }
         }
     }
 }
