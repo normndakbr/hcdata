@@ -79,6 +79,21 @@ class Karyawan extends My_Controller
         $this->load->view('dashboard/karyawan/sertifikasi', $data);
     }
 
+    public function dataMCU()
+    {
+        $auth_person = $this->input->get('auth_person');
+        $id_personal = $this->kry->get_id_personal($auth_person);
+        $data['data_mcu'] = $this->mcu->dataMCU($id_personal);
+        $this->load->view('dashboard/karyawan/mcu', $data);
+    }
+
+    public function dataMCU_by_id()
+    {
+        $id = $this->input->get('id');
+        $data = $this->mcu->dataMCU_by_id($id);
+        echo json_encode($data);
+    }
+
     public function vaksin()
     {
         $auth_person = $this->input->get('auth_person');
@@ -181,8 +196,6 @@ class Karyawan extends My_Controller
         $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
         $data["data_unit"] = $this->kry->get_izin_unit_by_auth($id_kary);
         $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
-        $data["data_mcu"] = $this->kry->get_mcu_by_auth($id_kary);
-        $data["data_vaksin"] = $this->kry->get_vaksin_by_auth($id_kary);
         $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($id_kary);
         $data['get_menu'] = $this->dsmod->get_menu();
 
@@ -1692,13 +1705,13 @@ class Karyawan extends My_Controller
             }
 
             if ($jenisizin == 2) { // ===================== jika simper ==============================
-                if($auth_izin == "") {
+                if ($auth_izin == "") {
                     echo json_encode(array("statusCode" => 201, "pesan" => "Data unit SIMPER belum dibuat"));
                     return;
                 } else {
                     echo json_encode(array(
                         "statusCode" => 200,
-                        "pesan" => "Data SIMPER berhasil disimpan"
+                        "pesan" => "Data SIMPER berhasil disimpan",
                     ));
                 }
             } else if ($jenisizin == 1) { // jika mine permit -------------------------------
@@ -1706,85 +1719,85 @@ class Karyawan extends My_Controller
                 $tglexpsim = "1970-01-01";
 
                 $cek_noreg = $this->kry->cek_no_simper($noreg);
-                    if ($cek_noreg) {
-                        echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Mine Permit sudah digunakan"));
+                if ($cek_noreg) {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Mine Permit sudah digunakan"));
+                    return;
+                }
+
+                if ($auth_kary !== "") {
+                    $smpname = $_FILES['filesmpkary']['name'];
+                    $smptipe = $_FILES['filesmpkary']['type'];
+                    $smpsize = $_FILES['filesmpkary']['size'];
+
+                    if ($smpname == "" || $smpname == "Pilih file SIMPER/MINE PERMIT") {
+                        echo json_encode(array("statusCode" => 202, "filesmp" => "MINE PERMIT wajib diupload."));
                         return;
                     }
 
-                    if ($auth_kary !== "") {
-                        $smpname = $_FILES['filesmpkary']['name'];
-                        $smptipe = $_FILES['filesmpkary']['type'];
-                        $smpsize = $_FILES['filesmpkary']['size'];
+                    if ($smptipe == "application\/pdf") {
+                        echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
+                        return;
+                    }
 
-                        if ($smpname == "" || $smpname == "Pilih file SIMPER/MINE PERMIT") {
-                            echo json_encode(array("statusCode" => 202, "filesmp" => "MINE PERMIT wajib diupload."));
-                            return;
-                        }
+                    if ($smpsize > 70000) {
+                        echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
+                        return;
+                    }
 
-                        if ($smptipe == "application\/pdf") {
-                            echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
-                            return;
-                        }
+                    $_FILES['filesmpkary']['name'] = $url_izin;
+                    $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 70;
+                    $config['overwrite'] = true;
+                    $this->load->library('upload', $config);
+                    $this->load->initialize($config);
+                    $this->upload->do_upload('filesmpkary');
 
-                        if ($smpsize > 70000) {
-                            echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
-                            return;
-                        }
+                    $data_izin_tambang = [
+                        'id_kary' => $id_karyawan,
+                        'id_jenis_izin_tambang' => $jenisizin,
+                        'no_Reg' => $noreg,
+                        'tgl_expired' => $tglexp,
+                        'id_sim_kary' => $id_sim_kary,
+                        'url_izin_tambang' => $url_izin,
+                        'ket_izin_tambang' => '',
+                        'tgl_buat' => date('Y-m-d H:i:s'),
+                        'tgl_edit' => date('Y-m-d H:i:s'),
+                        'id_user' => $this->session->userdata('id_user_hcdata'),
+                    ];
 
-                        $_FILES['filesmpkary']['name'] = $url_izin;
-                        $config['upload_path'] = './berkas/karyawan/' . $foldername;
-                        $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 70;
-                        $config['overwrite'] = true;
-                        $this->load->library('upload', $config);
-                        $this->load->initialize($config);
-                        $this->upload->do_upload('filesmpkary');
+                    $izin = $this->smp->input_izin_tambang($data_izin_tambang);
 
-                        $data_izin_tambang = [
-                            'id_kary' => $id_karyawan,
-                            'id_jenis_izin_tambang' => $jenisizin,
-                            'no_Reg' => $noreg,
-                            'tgl_expired' => $tglexp,
-                            'id_sim_kary' => $id_sim_kary,
-                            'url_izin_tambang' => $url_izin,
-                            'ket_izin_tambang' => '',
-                            'tgl_buat' => date('Y-m-d H:i:s'),
-                            'tgl_edit' => date('Y-m-d H:i:s'),
-                            'id_user' => $this->session->userdata('id_user_hcdata'),
-                        ];
+                    if ($izin) {
+                        $last_izin = $this->smp->last_row_izin($auth_kary);
 
-                        $izin = $this->smp->input_izin_tambang($data_izin_tambang);
-
-                        if ($izin) {
-                            $last_izin = $this->smp->last_row_izin($auth_kary);
-
-                            if (!empty($last_izin)) {
-                                foreach ($last_izin as $list) {
-                                    $auth_izin = $list->auth_izin_tambang;
-                                }
-
-                                $linkizn = base_url('karyawan/berkasizinadd/' . $auth_izin);
-
-                                echo json_encode(array(
-                                    "statusCode" => 200,
-                                    "pesan" => "Data Mine Permit berhasil disimpan",
-                                    "auth_izin" => $auth_izin,
-                                    "filesmp" => $smpname,
-                                    "filesmpsv" => $url_izin,
-                                    "linkizin" => $linkizn,
-                                ));
-                            } else {
-                                echo json_encode(array(
-                                    "statusCode" => 201,
-                                    "pesan" => "Error saat mengambil data Mine Permit",
-                                ));
+                        if (!empty($last_izin)) {
+                            foreach ($last_izin as $list) {
+                                $auth_izin = $list->auth_izin_tambang;
                             }
+
+                            $linkizn = base_url('karyawan/berkasizinadd/' . $auth_izin);
+
+                            echo json_encode(array(
+                                "statusCode" => 200,
+                                "pesan" => "Data Mine Permit berhasil disimpan",
+                                "auth_izin" => $auth_izin,
+                                "filesmp" => $smpname,
+                                "filesmpsv" => $url_izin,
+                                "linkizin" => $linkizn,
+                            ));
                         } else {
-                            echo json_encode(array("statusCode" => 201, "pesan" => "Data Mine Permit gagal disimpan"));
+                            echo json_encode(array(
+                                "statusCode" => 201,
+                                "pesan" => "Error saat mengambil data Mine Permit",
+                            ));
                         }
                     } else {
-                        echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data karyawan"));
+                        echo json_encode(array("statusCode" => 201, "pesan" => "Data Mine Permit gagal disimpan"));
                     }
+                } else {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data karyawan"));
+                }
             } else {
                 echo json_encode(array("statusCode" => 201, "pesan" => "Kode jenis izin tidak diketahui"));
                 die;
@@ -2038,46 +2051,22 @@ class Karyawan extends My_Controller
 
     public function newMCU()
     {
-        $this->form_validation->set_rules("tglMCU", "tglMCU", "required|trim", [
-            'required' => 'Tanggal MCU wajib diisi',
-        ]);
-        $this->form_validation->set_rules("hasilMCU", "hasilMCU", "required|trim", [
-            'required' => 'Hasil MCU wajib dipilih',
+        $auth_kary = $this->input->post("auth_kary");
+        $tglMCU = $this->input->post("tglMCU");
+        $hasilMCU = $this->input->post("hasilMCU");
+        $ketMCU = trim($this->input->post("ketMCU"));
+        $result = $this->kry->get_by_auth($auth_kary);
+        $id_personal = $result->id_personal;
 
-        ]);
-        $this->form_validation->set_rules("ketMCU", "ketMCU", "required|trim|max_length[1000]", [
-            'required' => 'Keterangan MCU wajib diisi',
-            'max_length' => 'Keterangan MCU maksimal 1000 karakter',
-        ]);
-        $this->form_validation->set_rules("file_MCU", "file_MCU", "required|trim", [
-            'required' => 'File MCU wajib di-upload',
-        ]);
-
-        if ($this->form_validation->run() == false) {
-            $error = [
-                'statusCode' => 202,
-                'tglMCU' => form_error("tglMCU"),
-                'hasilMCU' => form_error("hasilMCU"),
-                'ketMCU' => form_error("ketMCU"),
-                'file_MCU' => form_error("file_MCU"),
-            ];
-
-            echo json_encode($error);
+        if ($auth_kary == "") {
+            echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
             return;
-        } else {
-            $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-            $tglMCU = htmlspecialchars($this->input->post("tglMCU", true));
-            $hasilMCU = htmlspecialchars($this->input->post("hasilMCU", true));
-            $ketMCU = htmlspecialchars($this->input->post("ketMCU", true));
-            $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+        }
+
+        if ($result->id_m_perusahaan != '1') {
             $foldername = md5($id_personal);
             $now = date('YmdHis');
             $nama_file = $now . "-SRT.pdf";
-
-            if ($auth_kary == "") {
-                echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
-                die;
-            }
 
             if (is_dir('./berkas/karyawan/' . $foldername) == false) {
                 mkdir('./berkas/karyawan/' . $foldername, 0775, true);
@@ -2086,7 +2075,7 @@ class Karyawan extends My_Controller
             if (is_dir('./berkas/karyawan/' . $foldername)) {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 300;
+                $config['max_size'] = 1000;
                 $config['file_name'] = $nama_file;
 
                 $this->load->library('upload', $config);
@@ -2104,11 +2093,7 @@ class Karyawan extends My_Controller
 
                     echo json_encode(array(
                         "statusCode" => 202,
-                        'tglMCU' => form_error("tglMCU"),
-                        'hasilMCU' => form_error("hasilMCU"),
-                        'ketMCU' => form_error("ketMCU"),
-                        'file_MCU' => form_error("file_MCU"),
-                        "filesrt" => $error,
+                        "pesan" => $error,
                     ));
                 } else {
                     if ($auth_kary != "") {
@@ -2132,6 +2117,75 @@ class Karyawan extends My_Controller
                         if ($mcu) {
                             $auth_mcu = $this->kry->last_row_authmcu();
                             $link = '/assets/berkas/karyawan/' . $foldername . '/' . $nama_file;
+                            echo json_encode(array(
+                                "statusCode" => 200,
+                                "pesan" => "Data MCU berhasil disimpan",
+                            ));
+                        } else {
+                            echo json_encode(array("statusCode" => 201, "pesan" => "Data MCU gagal disimpan"));
+                        }
+                    } else {
+                        echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data personal"));
+                    }
+                }
+            } else {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Folder data personal tidak ditemukan"));
+            }
+        } else {
+            $nik = $result->no_nik;
+            $nama = $result->nama_lengkap;
+            $nama_file = $nik .' '. $nama . ".pdf";
+
+            if (is_dir('./berkas/mcu/1') == false) {
+                mkdir('./berkas/mcu/1', 0775, true);
+            }
+
+            if (is_dir('./berkas/mcu/1')) {
+                $config['upload_path'] = './berkas/mcu/1';
+                $config['allowed_types'] = 'pdf';
+                $config['max_size'] = 1000;
+                $config['file_name'] = $nama_file;
+                $config['remove_spaces'] = false;
+
+                $this->load->library('upload', $config);
+
+                if (!$this->upload->do_upload('fl_MCU')) {
+                    $err = $this->upload->display_errors();
+
+                    if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                        $error = "<p>Ukuran file maksimal 300 kb.</p>";
+                    } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                        $error = "<p>Format file nya dalam bentuk pdf</p>";
+                    } else {
+                        $error = $err;
+                    }
+
+                    echo json_encode(array(
+                        "statusCode" => 202,
+                        "pesan" => $error,
+                    ));
+                } else {
+                    if ($auth_kary != "") {
+                        $data_mcu = [
+                            'id_personal' => $id_personal,
+                            'id_mcu_jenis' => $hasilMCU,
+                            'tgl_mcu' => $tglMCU,
+                            'ket_mcu' => $ketMCU,
+                            'hasil_follow_up' => '',
+                            'tgl_follow_up' => '1970-01-01',
+                            'tgl_akhir' => '1970-01-01',
+                            'url_file' => $nama_file,
+                            'stat_mcu' => 'T',
+                            'tgl_buat' => date('Y-m-d H:i:s'),
+                            'tgl_edit' => date('Y-m-d H:i:s'),
+                            'id_perusahaan' => 0,
+                            'id_user' => $this->session->userdata('id_user_hcdata'),
+                        ];
+
+                        $mcu = $this->kry->input_dtMCU($data_mcu);
+                        if ($mcu) {
+                            $auth_mcu = $this->kry->last_row_authmcu();
+                            $link = '/assets/berkas/mcu/1/' . $nama_file;
                             echo json_encode(array(
                                 "statusCode" => 200,
                                 "pesan" => "Data MCU berhasil disimpan",
@@ -2836,14 +2890,25 @@ class Karyawan extends My_Controller
             foreach ($dtmcu as $list) {
                 $url_file = $list->url_file;
                 $id_personal = $list->id_personal;
+                $id_m_perusahaan = $list->id_m_perusahaan;
             }
-            $foldername = md5($id_personal);
-            if (is_file("berkas/karyawan/" . $foldername . "/" . $url_file)) {
-                $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_file);
-                header('Content-Type: application/pdf');
-                readfile($tofile);
+            if ($id_m_perusahaan == '1' || $id_m_perusahaan == '3') {
+                if (is_file("berkas/mcu/1/" . $url_file)) {
+                    $tofile = realpath("berkas/mcu/1/" . $url_file);
+                    header('Content-Type: application/pdf');
+                    readfile($tofile);
+                } else {
+                    $this->load->view('errors/errnotfound');
+                }
             } else {
-                $this->load->view('errors/errnotfound');
+                $foldername = md5($id_personal);
+                if (is_file("berkas/karyawan/" . $foldername . "/" . $url_file)) {
+                    $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_file);
+                    header('Content-Type: application/pdf');
+                    readfile($tofile);
+                } else {
+                    $this->load->view('errors/errnotfound');
+                }
             }
         } else {
             $this->load->view('errors/errnotfound');
@@ -3277,7 +3342,7 @@ class Karyawan extends My_Controller
                     <div class="dropdown-menu">
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnDetailKary" title ="Detail" href="' . base_url('karyawan/detail/' . $kry->auth_karyawan) . '" target="_blank">Detail</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnHapusKary" title ="Hapus" value="' . $kry->nama_lengkap . '">Hapus</a>
-                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '">Edit</a>
+                    <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnEditKary" title ="Edit" href="' . base_url('karyawan/edit_karyawan/' . $kry->auth_karyawan) . '" value="' . $kry->nama_lengkap . '" target="_blank">Edit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnFotoKaryawan" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="Foto Karyawan" href="#!">Foto Karyawan</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSIMPER" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="SIMPER/Mine Permit" href="#!">SIMPER/Mine Permit</a>
                     <a id="' . $kry->auth_karyawan . '" class="dropdown-item btnSertifikasi" dt1= "' . $kry->no_nik . '" dt2="' . $kry->nama_lengkap . '" dt3="' . $kry->nama_perusahaan . '" title ="Sertifikasi" href="#!">Sertifikasi</a>
@@ -3863,7 +3928,7 @@ class Karyawan extends My_Controller
 
             $alamat = './berkas/karyawan/' . $foldername . "/" . $nama_file;
             //   if (!is_file($alamat)) {
-                
+
             if (is_dir('./berkas/karyawan/' . $foldername) == false) {
                 mkdir('./berkas/karyawan/' . $foldername, 0775, true);
             }
@@ -3893,8 +3958,8 @@ class Karyawan extends My_Controller
                     ));
                 }
             } else {
-                  echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload foto karyawan"));
-                return;   
+                echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload foto karyawan"));
+                return;
             }
         } else {
             if ($auth_kary == "") {
@@ -3936,7 +4001,7 @@ class Karyawan extends My_Controller
                     ));
                 }
             } else {
-                  echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload file foto karyawan"));
+                echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload file foto karyawan"));
             }
         }
     }

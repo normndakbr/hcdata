@@ -6101,7 +6101,7 @@ $(document).ready(function () {
     $("#mdlnewmcu").modal("show");
   });
 
-  $("#btnnewMCU").click(function () {
+  $("#tambahDataMCU").submit(function () {
     let auth_kary = $(".890123hjn34267xcxvbj7234hh").text();
     let tglMCU = $("#tglMCUnew").val();
     let hasilMCU = $("#hasilMCUnew").val();
@@ -6115,113 +6115,98 @@ $(document).ready(function () {
       errkary = "";
     }
 
-    if (tglMCU == "") {
-      errtglMCU = "Tanggal MCU wajib diisi";
-    } else {
-      errtglMCU = "";
-    }
-    if (hasilMCU == "") {
-      errhasilMCU = "Hasil wajib dipilih";
-    } else {
-      errhasilMCU = "";
-    }
-    if (ketMCU == "") {
-      errketMCU = "Keterangan wajib diisi";
-    } else {
-      errketMCU = "";
-    }
-    if (file_MCU == "") {
-      errfile_MCU = "File MCU wajib diupload";
-    } else {
-      errfile_MCU = "";
-    }
-
-    if (
-      errkary == "" &&
-      errtglMCU == "" &&
-      errhasilMCU == "" &&
-      errketMCU == "" &&
-      errfile_MCU == ""
-    ) {
+    let fileExtension = file_MCU.split(".").pop().toLowerCase();
+    let sizeFile = fl_MCU["size"];
+    if (fileExtension != "pdf") {
       swal({
-        title: "Upload MCU",
-        text: "Yakin data MCU akan di-upload?",
-        type: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#36c6d3",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, upload",
-        cancelButtonText: "Batalkan",
-      }).then(function (result) {
-        if (result.value) {
-          $.LoadingOverlay("show");
-          let formData = new FormData();
-          formData.append("tglMCU", tglMCU);
-          formData.append("hasilMCU", hasilMCU);
-          formData.append("ketMCU", ketMCU);
-          formData.append("file_MCU", file_MCU);
-          formData.append("fl_MCU", fl_MCU);
-          formData.append("auth_kary", auth_kary);
-
-          $.ajax({
-            type: "POST",
-            url: site_url + "karyawan/newMCU",
-            data: formData,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-              var data = JSON.parse(data);
-              if (data.statusCode == 200) {
-                $("#mdlnewmcu").modal("hide");
-                $(".890123hjn34267xcxvbj7234hh").text("");
-                $("#hasilMCUnew").val("").trigger("change");
-                $("#ketMCUnew").val("");
-                $("#tglMCUnew").val("");
-                $("#fileMCUnew").val("");
-                swal("Berhasil", data.pesan, "success");
-                $.LoadingOverlay("hide");
-              } else if (data.statusCode == 201) {
-                $.LoadingOverlay("hide");
-                $(".errnewmcu").removeClass("d-none");
-                $(".errnewmcu").removeClass("alert-primary]");
-                $(".errnewmcu").addClass("alert-danger");
-                $(".errnewmcu").html(data.pesan);
-              } else {
-                $(".errorTglMCUnew").html(data.tglMCU);
-                $(".errorHasilMCUnew").html(data.hasilMCU);
-                $(".errorKetMCUnew").html(data.ketMCU);
-                $(".errorFileMCUnew").html(data.file_MCU);
-                $.LoadingOverlay("hide");
-              }
-            },
-          });
-        } else {
-          swal.close();
-        }
+        title: "Informasi",
+        text: "File MCU yang dipilih bukan PDF",
+        type: "info",
+      });
+    } else if (sizeFile > 1000000) {
+      swal({
+        title: "Peringatan",
+        text: "Ukuran File MCU yang dipilih melebihi 100kb",
+        type: "warning",
       });
     } else {
-      if (errkary != "") {
-        $(".errnewmcu").removeClass("d-none");
-        $(".errnewmcu").removeClass("alert-primary]");
-        $(".errnewmcu").addClass("alert-danger");
-        $(".errnewmcu").html(errkary);
-      } else {
-        $(".errnewmcu").addClass("d-none");
-        $(".errnewmcu").html("");
-      }
+      if (errkary == "") {
+        swal({
+          title: "Upload MCU",
+          text: "Yakin data MCU akan di-upload?",
+          type: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#36c6d3",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Ya, upload",
+          cancelButtonText: "Batalkan",
+        }).then(function (result) {
+          if (result.value) {
+            $.LoadingOverlay("show");
+            let formData = new FormData();
+            formData.append("tglMCU", tglMCU);
+            formData.append("hasilMCU", hasilMCU);
+            formData.append("ketMCU", ketMCU);
+            formData.append("file_MCU", file_MCU);
+            formData.append("fl_MCU", fl_MCU);
+            formData.append("auth_kary", auth_kary);
 
-      $(".errorTglMCUnew").html(errtglMCU);
-      $(".errorHasilMCUnew").html(errhasilMCU);
-      $(".errorKetMCUnew").html(errketMCU);
-      $(".errorFileMCUnew").html(errfile_MCU);
-
-      $(".errnewmcu")
-        .fadeTo(5000, 500)
-        .slideUp(500, function () {
-          $(".errnewmcu").slideUp(500);
-          $(".errnewmcu").addClass("d-none");
+            $.ajax({
+              type: "POST",
+              url: site_url + "karyawan/newMCU",
+              data: formData,
+              cache: false,
+              processData: false,
+              contentType: false,
+              success: function (data) {
+                console.log(data);
+                var data = JSON.parse(data);
+                if (data.statusCode == 200) {
+                  $("#mdlnewmcu").modal("hide");
+                  $(".890123hjn34267xcxvbj7234hh").text("");
+                  $("#hasilMCUnew").val("").trigger("change");
+                  $("#ketMCUnew").val("");
+                  $("#tglMCUnew").val("");
+                  $("#fileMCUnew").val("");
+                  swal("Berhasil", data.pesan, "success");
+                  $.LoadingOverlay("hide");
+                } else if (data.statusCode == 201) {
+                  $.LoadingOverlay("hide");
+                  $(".errnewmcu").removeClass("d-none");
+                  $(".errnewmcu").removeClass("alert-primary]");
+                  $(".errnewmcu").addClass("alert-danger");
+                  $(".errnewmcu").html(data.pesan);
+                } else {
+                  $.LoadingOverlay("hide");
+                  $(".errnewmcu").removeClass("d-none");
+                  $(".errnewmcu").removeClass("alert-primary]");
+                  $(".errnewmcu").addClass("alert-danger");
+                  $(".errnewmcu").html(data.pesan);
+                }
+              },
+            });
+          } else {
+            swal.close();
+          }
         });
+      } else {
+        if (errkary != "") {
+          $(".errnewmcu").removeClass("d-none");
+          $(".errnewmcu").removeClass("alert-primary]");
+          $(".errnewmcu").addClass("alert-danger");
+          $(".errnewmcu").html(errkary);
+        } else {
+          $(".errnewmcu").addClass("d-none");
+          $(".errnewmcu").html("");
+        }
+
+        $(".errnewmcu")
+          .fadeTo(5000, 500)
+          .slideUp(500, function () {
+            $(".errnewmcu").slideUp(500);
+            $(".errnewmcu").addClass("d-none");
+          });
+      }
     }
   });
 
