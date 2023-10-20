@@ -508,7 +508,7 @@
                <div class="modal-header bg-c-yellow">
                     <h5 class="modal-title text-white" id="jdlmdlnewmcu">Tambah MCU</h5>
                </div>
-
+               <form action="javascript:void(0)" id="tambahDataMCU" method="post" data-parsley-validate>
                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                     <div class="row">
                          <div class="col-lg-12 col-md-12 col-sm-12">
@@ -518,7 +518,7 @@
                          </div>
                          <div class="col-lg-4 col-md-4 col-sm-12">
                               <div class="form-group">
-                                   <label for="tglMCUnew">Tanggal MCU <span class="text-danger">*</span></label>
+                                   <label for="tglMCUnew" class="form-label">Tanggal MCU <span class="text-danger">*</span></label>
                                    <input id='tglMCUnew' name='tglMCUnew' type="date" autocomplete="off"
                                         spellcheck="false" class="form-control" value="" required>
                                    <small class="errorTglMCUnew text-danger font-italic font-weight-bold"></small>
@@ -527,7 +527,7 @@
                          </div>
                          <div class="col-lg-8 col-md-8 col-sm-12">
                               <div class="form-group">
-                                   <label for="hasilMCUnew">Hasil MCU <span class="text-danger">*</span></label>
+                                   <label for="hasilMCUnew" class="form-label">Hasil MCU <span class="text-danger">*</span></label>
                                    <select id='hasilMCUnew' name='hasilMCUnew' autocomplete="off" spellcheck="false"
                                         class="form-control" value="" required>
                                         <option value="">-- WAJID DIPILIH --</option>
@@ -537,7 +537,7 @@
                          </div>
                          <div class="col-lg-12 col-md-12 col-sm-12">
                               <div class="form-group">
-                                   <label for="ketMCUnew">Keterangan <span class="text-danger">*</span></label>
+                                   <label for="ketMCUnew" class="form-label">Keterangan <span class="text-danger">*</span></label>
                                    <textarea id='ketMCUnew' name='ketMCUnew' type="text" autocomplete="off"
                                         spellcheck="false" class="form-control" value="" required></textarea>
                                    <small class="errorKetMCUnew text-danger font-italic font-weight-bold"></small>
@@ -549,20 +549,19 @@
                                         ukuran file MCU maksimal 200 kb.</h6>
                               </div>
                               <div class="form-group">
-                                   <label for="fileMCUnew">Upload file MCU :</label>
-                                   <input type="file" class="form-control-file" id="fileMCUnew" name="fileMCUnew">
+                                   <label for="fileMCUnew" class="form-label">File MCU <span class="text-danger">*</span></label>
+                                   <input type="file" class="form-control-file" id="fileMCUnew" name="fileMCUnew" accept=".pdf" required>
                                    <small class="errorFileMCUnew text-danger font-italic font-weight-bold"></small>
                               </div>
                          </div>
                     </div>
                </div>
                <div class="modal-footer m-3">
-                    <button type="button" name="btnnewMCU" id="btnnewMCU"
-                         class="btn font-weight-bold btn-primary">Upload
+                    <button type="submit" class="btn font-weight-bold btn-primary">Upload
                          Data</button>
-                    <button name="btnbatalMCU" id="btnbatalMCU" data-dismiss="modal"
-                         class="btn font-weight-bold btn-warning">Batal</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
                </div>
+               </form>
           </div>
      </div>
 </div>

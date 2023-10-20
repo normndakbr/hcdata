@@ -1026,48 +1026,7 @@
                                             <hr style="height: 3px; background: #404443;">
                                         </div>
 
-                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                                            <table id="tbmSertifikasi"
-                                                class="table table-striped table-bordered table-hover text-black text-nowrap"
-                                                style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                <thead>
-                                                    <tr>
-                                                        <th style="text-align:center;width:1%;">No.</th>
-                                                        <th style="text-align:center;width:10%;">Hasil MCU</th>
-                                                        <th style="text-align:center;width:10%;">Tanggal MCU</th>
-                                                        <th style="text-align:center;width:9%;">Aksi</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-
-                                                    if (!empty($data_mcu)) {
-                                                        $n = 1;
-                                                        foreach ($data_mcu as $list) {
-                                                            echo "<tr>";
-                                                            echo "<td class='align-middle' style='text-align:center;width:1%;'>" . $n++ . "</td>";
-                                                            echo "<td class='align-middle text-center' style='width:35%;'>" . $list->mcu_jenis . "</td>";
-                                                            echo "<td class='align-middle text-center' style='width:35%;'>" . $list->tgl_mcu . "</td>";
-                                                            echo "<td class='align-middle' style='width:9%;'>";
-                                                            echo "<button id=" . $list->auth_mcu . " class='btn btn-primary btn-sm detail_sertifikasi' value='" . $list->id_mcu . "'><i class='fas fa-asterisk'></i></button> ";
-                                                            echo "<a id=" . $list->auth_mcu . " class='btn btn-success btn-sm ' href ='" . base_url('karyawan/sertifikat/') . $list->auth_mcu . "' target='_blank' title='Tampilkan file mecical check up' value='" . $list->id_mcu . "'> <i class='fas fa-file-alt'></i> </a> ";
-                                                            echo "<button id=" . $list->auth_mcu . " class='btn btn-primary btn-sm upload_sertifikasi' value='" . $list->id_mcu . "'><i class='fas fa-file-upload'></i></button> ";
-                                                            echo "<button id=" . $list->auth_mcu . " class='btn btn-warning btn-sm edit_sertifikasi' value='" . $list->id_mcu . "'><i class='fas fa-edit'></i></button> ";
-                                                            echo "<button id=" . $list->auth_mcu . " class='btn btn-danger btn-sm hapus_sertifikasi' value='" . $list->id_mcu . "'><i class='fas fa-trash'></i></button> ";
-                                                            echo "</td>";
-                                                            echo "<tr>";
-                                                        }
-                                                    } else {
-                                                        echo  "<tr>";
-                                                        echo "<td colspan='6' style='text-align:center;'> Tidak ada data</td>";
-                                                        echo "</tr>";
-                                                    }
-
-                                                    echo '<script>$("#idsertifikat").LoadingOverlay("hide");</script>';
-
-                                                    ?>
-                                                </tbody>
-                                            </table>
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12" id="dataEditMCU">
                                         </div>
                                     </div>
                                 </div>
@@ -1299,33 +1258,36 @@
         style="margin-left: auto; margin-right: auto;max-width:70%;">
         <div class="modal-content">
             <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
-                <h5 class="modal-title text-white align-middle" id="jdldetailsertifikat">Detail Medical Check Up</h5>
+                <h5 class="modal-title text-white align-middle">Detail Medical Check Up</h5>
                 <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i
-                        class="feather icon-slash"></i></button>
+                        class="feather icon-x"></i></button>
             </div>
 
             <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                 <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger errorDetailMCU animate__animated animate__bounce d-none">
+                        </div>
+                    </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label class="font-weight-bold" for="jenisSertifikasiDetail">Tanggal Medical Check Up
+                            <label class="font-weight-bold" for="tanggalMCU">Tanggal Medical Check Up
                                 :</label>
-                            <input style="background-color: none;" id='jenisSertifikasiDetail'
-                                name='jenisSertifikasiDetail' class="form-control" value="" disabled>
+                            <input style="background-color: none;" type="text" id='tanggalMCU' class="form-control"
+                                value="" disabled>
                         </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12">
                         <div class="form-group">
-                            <label class="font-weight-bold" for="noSertifikatDetail">Hasil Medical Check Up :</label>
-                            <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail'
-                                type="text" class="form-control" value="" disabled>
+                            <label class="font-weight-bold" for="hasilMCU">Hasil Medical Check Up :</label>
+                            <input style="background-color: none;" id='hasilMCU' type="text" class="form-control"
+                                value="" disabled>
                         </div>
                     </div>
-                    <div class="col-lg-8 col-md-12 col-sm-12">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="form-group">
-                            <label class="font-weight-bold" for="namaLembagaDetail">Keterangan :</label>
-                            <input style="background-color: none;" id='namaLembagaDetail' name='namaLembagaDetail'
-                                type="text" class="form-control" value="" disabled>
+                            <label class="font-weight-bold" for="keteranganMCU">Keterangan :</label>
+                            <textarea class="form-control" id="keteranganMCU" disabled></textarea>
                         </div>
                     </div>
                 </div>
@@ -1334,7 +1296,49 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdlEditVaksin" role="dialog" aria-labelledby="exampleModalLabel"
+<div class="modal fade" id="mdlUploadMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document"
+        style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white">Upload Ulang File MCU</h5>
+            </div>
+            <form action="javascript:void(0)" id="uploadUlangMCU" method="post" data-parsley-validate>
+                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="alert errUploadMCU alert-danger animate__animated animate__bounce d-none"
+                                role="alert">
+                            </div>
+                        </div>
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div>
+                                <h6 class="text-danger font-italic">Catatan : Upload file MCU dalam format pdf,
+                                    ukuran file MCU maksimal 200 kb.</h6>
+                            </div>
+                            <div class="form-group">
+                                <label for="fileMCUnew" class="form-label">File MCU <span
+                                        class="text-danger">*</span></label>
+                                <input type="file" class="form-control-file" id="fileMCUnew" name="fileMCUnew"
+                                    accept=".pdf" required>
+                                <small class="errorFileMCUnew text-danger font-italic font-weight-bold"></small>
+                            </div>
+                            <span class="bg83t12trgr98h9 d-none"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer m-3">
+                    <button type="submit" class="btn font-weight-bold btn-primary">Upload
+                        Data</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlEditVaksin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document"
         style="margin-left: auto; margin-right: auto;max-width:70%;">
