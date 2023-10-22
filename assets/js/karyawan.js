@@ -6123,10 +6123,10 @@ $(document).ready(function () {
         text: "File MCU yang dipilih bukan PDF",
         type: "info",
       });
-    } else if (sizeFile > 1000000) {
+    } else if (sizeFile > 200000) {
       swal({
         title: "Peringatan",
-        text: "Ukuran File MCU yang dipilih melebihi 100kb",
+        text: "Ukuran File MCU yang dipilih melebihi 200kb",
         type: "warning",
       });
     } else {

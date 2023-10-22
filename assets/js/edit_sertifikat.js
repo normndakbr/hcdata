@@ -2,28 +2,44 @@ $(document).ready(function () {
   var token = $("#token").val();
   let auth_person = $("#valueAuthPersonal").val();
 
+  // Select Searchable
+  $("#editHasilMCU").select2({
+    theme: "bootstrap4",
+    dropdownParent: $("#mdlEditMCU"),
+  });
+
   // Format Tanggal
   function formatDate(inputDate) {
     // Define month names
     const months = [
-      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
     ];
-  
+
     // Create a Date object from the input string
     const date = new Date(inputDate);
-  
+
     // Extract day, month, and year
     const day = date.getDate();
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-  
+
     // Create the formatted date string
-    const formattedDate = day + '-' + month + '-' + year;
-  
+    const formattedDate = day + "-" + month + "-" + year;
+
     return formattedDate;
   }
-  
+
   $.ajax({
     type: "POST",
     url: site_url + "vaksin/get_vaksin_jenis_all",
@@ -61,6 +77,27 @@ $(document).ready(function () {
       if (thrownError != "") {
         $(".erroreditvaksin").html(
           "Terjadi kesalahan saat load data nama vaksin, hubungi administrator"
+        );
+      }
+    },
+  });
+
+  $.ajax({
+    type: "GET",
+    url: site_url + "mcu/jenisHasil",
+    data: {
+      token: token,
+    },
+    success: function (data) {
+      var data = JSON.parse(data);
+      $("#editHasilMCU").html(data.data);
+    },
+    error: function (xhr, ajaxOptions, thrownError) {
+      $.LoadingOverlay("hide");
+      $(".errEditMCU").removeClass("d-none");
+      if (thrownError != "") {
+        $(".errEditMCU").html(
+          "Terjadi kesalahan saat load data hasil MCU, hubungi administrator"
         );
       }
     },
@@ -274,12 +311,12 @@ $(document).ready(function () {
         $('#jenisVaksin option[value="0"]').remove();
         $('#namaVaksin option[value="0"]').remove();
         $("#jenisVaksin").select2({
-          dropdownParent: $('#mdlEditVaksin'),
-          theme: "bootstrap4"
+          dropdownParent: $("#mdlEditVaksin"),
+          theme: "bootstrap4",
         });
         $("#namaVaksin").select2({
-          dropdownParent: $('#mdlEditVaksin'),
-          theme: "bootstrap4"
+          dropdownParent: $("#mdlEditVaksin"),
+          theme: "bootstrap4",
         });
         $("#jenisVaksin").val(data.id_vaksin_jenis).trigger("change");
         $("#namaVaksin").val(data.id_vaksin_nama).trigger("change");
@@ -320,8 +357,8 @@ $(document).ready(function () {
             site_url + "karyawan/vaksin?auth_person=" + auth_person
           );
           $("#idEditVaccine").LoadingOverlay("hide");
-          swal("Berhasil", data.pesan, "success");
           $("#mdlEditVaksin").modal("hide");
+          swal("Berhasil", data.pesan, "success");
         } else if (data.statusCode == 201) {
           swal("Gagal", data.pesan, "error");
         }
@@ -470,41 +507,36 @@ $(document).ready(function () {
           if (result.value) {
             $.LoadingOverlay("show");
             let formData = new FormData();
-            formData.append("file_MCU", file_MCU);
             formData.append("fl_MCU", fl_MCU);
             formData.append("auth_mcu", auth_mcu);
 
             $.ajax({
               type: "POST",
-              url: site_url + "karyawan/newMCU",
+              url: site_url + "mcu/uploadUlangFile",
               data: formData,
               cache: false,
               processData: false,
               contentType: false,
               success: function (data) {
-                console.log(data);
                 var data = JSON.parse(data);
                 if (data.statusCode == 200) {
-                  $("#mdlnewmcu").modal("hide");
-                  $(".890123hjn34267xcxvbj7234hh").text("");
-                  $("#hasilMCUnew").val("").trigger("change");
-                  $("#ketMCUnew").val("");
-                  $("#tglMCUnew").val("");
-                  $("#fileMCUnew").val("");
+                  $("#dataEditMCU").LoadingOverlay("show");
+                  $("#dataEditMCU").load(
+                    site_url + "karyawan/dataMCU?auth_person=" + auth_person
+                  );
+                  $("#dataEditMCU").LoadingOverlay("hide");
+                  $("#mdlUploadMCU").modal("hide");
+                  $(".bg83t12trgr98h9").text("");
                   swal("Berhasil", data.pesan, "success");
                   $.LoadingOverlay("hide");
                 } else if (data.statusCode == 201) {
                   $.LoadingOverlay("hide");
-                  $(".errnewmcu").removeClass("d-none");
-                  $(".errnewmcu").removeClass("alert-primary]");
-                  $(".errnewmcu").addClass("alert-danger");
-                  $(".errnewmcu").html(data.pesan);
+                  $(".errUploadMCU").removeClass("d-none");
+                  $(".errUploadMCU").html(data.pesan);
                 } else {
                   $.LoadingOverlay("hide");
-                  $(".errnewmcu").removeClass("d-none");
-                  $(".errnewmcu").removeClass("alert-primary]");
-                  $(".errnewmcu").addClass("alert-danger");
-                  $(".errnewmcu").html(data.pesan);
+                  $(".errUploadMCU").removeClass("d-none");
+                  $(".errUploadMCU").html(data.pesan);
                 }
               },
             });
@@ -514,22 +546,185 @@ $(document).ready(function () {
         });
       } else {
         if (errmcu != "") {
-          $(".errnewmcu").removeClass("d-none");
-          $(".errnewmcu").removeClass("alert-primary]");
-          $(".errnewmcu").addClass("alert-danger");
-          $(".errnewmcu").html(errmcu);
+          $(".errUploadMCU").removeClass("d-none");
+          $(".errUploadMCU").html(errmcu);
         } else {
-          $(".errnewmcu").addClass("d-none");
-          $(".errnewmcu").html("");
+          $(".errUploadMCU").addClass("d-none");
+          $(".errUploadMCU").html("");
         }
 
-        $(".errnewmcu")
+        $(".errUploadMCU")
           .fadeTo(5000, 500)
           .slideUp(500, function () {
-            $(".errnewmcu").slideUp(500);
-            $(".errnewmcu").addClass("d-none");
+            $(".errUploadMCU").slideUp(500);
+            $(".errUploadMCU").addClass("d-none");
           });
       }
     }
+  });
+
+  $(document).on("click", ".editMCU ", function () {
+    let auth_mcu = $(this).attr("id");
+    $(".89621y398thnr8").text(auth_mcu);
+    $.ajax({
+      type: "GET",
+      url: site_url + "karyawan/dataMCU_by_id",
+      data: {
+        id: auth_mcu,
+      },
+      success: function (data) {
+        var data = JSON.parse(data);
+        $("#editTanggalMCU").val(data.tgl_mcu);
+        $("#editHasilMCU").val(data.id_mcu_jenis).trigger("change");
+        $("#editKeteranganMCU").val(data.ket_mcu);
+      },
+      error: function (xhr, ajaxOptions, thrownError) {
+        $.LoadingOverlay("hide");
+        $(".errorDetailMCU").removeClass("d-none");
+        if (thrownError != "") {
+          $(".errorDetailMCU").html(
+            "Terjadi kesalahan saat load data mcu, hubungi administrator"
+          );
+        }
+      },
+    });
+    $("#mdlEditMCU").modal("show");
+  });
+
+  $("#editMCU").submit(function () {
+    let auth_mcu = $(".89621y398thnr8").text();
+    let tanggalMCU = $("#editTanggalMCU").val();
+    let hasilMCU = $("#editHasilMCU").val();
+    let keteranganMCU = $("#editKeteranganMCU").val();
+
+    if (auth_mcu == "") {
+      errmcu = "Data mcu tidak ditemukan";
+    } else {
+      errmcu = "";
+    }
+
+    if (errmcu == "") {
+      swal({
+        title: "Edit MCU",
+        text: "Yakin data MCU sudah benar?",
+        type: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#36c6d3",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, benar",
+        cancelButtonText: "Batalkan",
+      }).then(function (result) {
+        if (result.value) {
+          $.LoadingOverlay("show");
+
+          $.ajax({
+            type: "post",
+            url: site_url + "mcu/editData",
+            data: {
+              auth_mcu: auth_mcu,
+              tanggalMCU: tanggalMCU,
+              hasilMCU: hasilMCU,
+              keteranganMCU: keteranganMCU,
+            },
+            success: function (data) {
+              var data = JSON.parse(data);
+              if (data.statusCode == 200) {
+                $("#dataEditMCU").LoadingOverlay("show");
+                $("#dataEditMCU").load(
+                  site_url + "karyawan/dataMCU?auth_person=" + auth_person
+                );
+                $("#dataEditMCU").LoadingOverlay("hide");
+                $("#mdlEditMCU").modal("hide");
+                $(".89621y398thnr8").text("");
+                swal("Berhasil", data.pesan, "success");
+                $.LoadingOverlay("hide");
+              } else if (data.statusCode == 201) {
+                $.LoadingOverlay("hide");
+                $(".errEditMCU").removeClass("d-none");
+                $(".errEditMCU").html(data.pesan);
+              }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+              $.LoadingOverlay("hide");
+              $(".errEditMCU").removeClass("d-none");
+              if (thrownError != "") {
+                $(".errEditMCU").html(
+                  "Terjadi kesalahan saat edit data mcu, hubungi administrator"
+                );
+              }
+            },
+          });
+        } else {
+          swal.close();
+        }
+      });
+    } else {
+      if (errmcu != "") {
+        $(".errUploadMCU").removeClass("d-none");
+        $(".errUploadMCU").html(errmcu);
+      } else {
+        $(".errUploadMCU").addClass("d-none");
+        $(".errUploadMCU").html("");
+      }
+
+      $(".errUploadMCU")
+        .fadeTo(5000, 500)
+        .slideUp(500, function () {
+          $(".errUploadMCU").slideUp(500);
+          $(".errUploadMCU").addClass("d-none");
+        });
+    }
+  });
+
+  $(document).on("click", ".hapusMCU ", function () {
+    let auth_mcu = $(this).attr("id");
+    swal({
+      title: "Hapus MCU",
+      text: "Yakin data MCU akan dihapus?",
+      type: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#36c6d3",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, hapus",
+      cancelButtonText: "Batalkan",
+    }).then(function (result) {
+      if (result.value) {
+        $.LoadingOverlay("show");
+
+        $.ajax({
+          type: "post",
+          url: site_url + "karyawan/hapus_mcu",
+          data: {
+            auth_mcu: auth_mcu,
+            token: token,
+          },
+          success: function (data) {
+            console.log(data);
+            var data = JSON.parse(data);
+            if (data.statusCode == 200) {
+              $("#dataEditMCU").LoadingOverlay("show");
+              $("#dataEditMCU").load(
+                site_url + "karyawan/dataMCU?auth_person=" + auth_person
+              );
+              $("#dataEditMCU").LoadingOverlay("hide");
+              swal("Berhasil", data.pesan, "success");
+              $.LoadingOverlay("hide");
+            } else if (data.statusCode == 201) {
+              $.LoadingOverlay("hide");
+              swal("Gagal", data.pesan, "error");
+            } else if (data.statusCode == 202) {
+              $.LoadingOverlay("hide");
+              swal("Gagal", data.pesan, "error");
+            }
+          },
+          error: function (xhr, ajaxOptions, thrownError) {
+            $.LoadingOverlay("hide");
+            swal("Gagal", "Terjadi error saat hapus data mcu, hubungi administrator", "error");
+          },
+        });
+      } else {
+        swal.close();
+      }
+    });
   });
 });
