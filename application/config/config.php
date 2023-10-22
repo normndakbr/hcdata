@@ -503,6 +503,7 @@ $config['compress_output'] = false;
 |
  */
 $config['time_reference'] = 'local';
+date_default_timezone_set('Asia/Singapore');
 
 /*
 |--------------------------------------------------------------------------

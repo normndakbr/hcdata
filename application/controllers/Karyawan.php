@@ -73,7 +73,7 @@ class Karyawan extends My_Controller
 
     public function sertifikasi()
     {
-        $auth_person = $this->input->get('auth_person');
+        $auth_person = htmlspecialchars($this->input->get('auth_person', true));
         $id_personal = $this->kry->get_id_personal($auth_person);
         $data['sert'] = $this->srt->tabel_sertifikasi($id_personal);
         $this->load->view('dashboard/karyawan/sertifikasi', $data);
@@ -81,7 +81,7 @@ class Karyawan extends My_Controller
 
     public function dataMCU()
     {
-        $auth_person = $this->input->get('auth_person');
+        $auth_person = htmlspecialchars($this->input->get('auth_person', true));
         $id_personal = $this->kry->get_id_personal($auth_person);
         $data['data_mcu'] = $this->mcu->dataMCU($id_personal);
         $this->load->view('dashboard/karyawan/mcu', $data);
@@ -89,14 +89,14 @@ class Karyawan extends My_Controller
 
     public function dataMCU_by_id()
     {
-        $id = $this->input->get('id');
+        $id = htmlspecialchars($this->input->get('id', true));
         $data = $this->mcu->dataMCU_by_id($id);
         echo json_encode($data);
     }
 
     public function vaksin()
     {
-        $auth_person = $this->input->get('auth_person');
+        $auth_person = htmlspecialchars($this->input->get('auth_person', true));
         $id_personal = $this->kry->get_id_personal($auth_person);
         $data['vaks'] = $this->vks->tabel_vaksin($id_personal);
         $this->load->view('dashboard/karyawan/vaksin', $data);
@@ -104,19 +104,19 @@ class Karyawan extends My_Controller
 
     public function vaksin_kary()
     {
-        $auth_vaksin = $this->input->get('auth_vaksin');
+        $auth_vaksin = htmlspecialchars($this->input->get('auth_vaksin', true));
         $dataVaksin = $this->vks->get_vaksin_id2($auth_vaksin);
         echo json_encode($dataVaksin);
     }
 
     public function update_vaksin()
     {
-        $token = $this->input->post("token");
+        $token = htmlspecialchars($this->input->post("token", true));
         $this->cek_auth($token);
 
-        $id_vaksin = $this->input->post('id_vaksin');
-        $nama_vaksin = $this->input->post('nama_vaksin');
-        $tgl_vaksin = $this->input->post('tgl_vaksin');
+        $id_vaksin = htmlspecialchars($this->input->post('id_vaksin', true));
+        $nama_vaksin = htmlspecialchars($this->input->post('nama_vaksin', true));
+        $tgl_vaksin = htmlspecialchars($this->input->post('tgl_vaksin', true));
 
         $data = [
             "id_vaksin_nama" => $nama_vaksin,
@@ -137,7 +137,7 @@ class Karyawan extends My_Controller
     public function getKaryawan()
     {
         // POST data
-        $data = $this->input->post();
+        $data = htmlspecialchars($this->input->post());
         $list = $this->kry->getKaryawan($data);
 
         echo json_encode($list);
@@ -146,7 +146,7 @@ class Karyawan extends My_Controller
     public function getKaryawanIzin()
     {
         // POST data
-        $data = $this->input->post();
+        $data = htmlspecialchars($this->input->post());
         $list = $this->kry->getKaryawanIzin($data);
 
         echo json_encode($list);
@@ -220,6 +220,7 @@ class Karyawan extends My_Controller
             foreach ($datamcu as $list) {
                 $id_personal = $list->id_personal;
                 $nama_file = $list->url_file;
+                $id_perusahaan = $list->id_m_perusahaan;
             }
 
             $namafolder = md5($id_personal);
@@ -230,7 +231,11 @@ class Karyawan extends My_Controller
 
         $query = $this->kry->hapus_mcu($auth_mcu);
         if ($query == 200) {
-            unlink('assets/berkas/karyawan/' . $namafolder . '/' . $nama_file);
+            if ($id_perusahaan == '1') {
+                unlink('assets/berkas/mcu/1/' . $nama_file);
+            } else {
+                unlink('assets/berkas/karyawan/' . $namafolder . '/' . $nama_file);
+            }
             echo json_encode(array("statusCode" => 200, "pesan" => "Data MCU berhasil dihapus"));
             return;
         } else if ($query == 201) {
@@ -2051,10 +2056,10 @@ class Karyawan extends My_Controller
 
     public function newMCU()
     {
-        $auth_kary = $this->input->post("auth_kary");
-        $tglMCU = $this->input->post("tglMCU");
-        $hasilMCU = $this->input->post("hasilMCU");
-        $ketMCU = trim($this->input->post("ketMCU"));
+        $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
+        $tglMCU = htmlspecialchars($this->input->post("tglMCU", true));
+        $hasilMCU = htmlspecialchars($this->input->post("hasilMCU", true));
+        $ketMCU = htmlspecialchars(trim($this->input->post("ketMCU", true)));
         $result = $this->kry->get_by_auth($auth_kary);
         $id_personal = $result->id_personal;
 
@@ -2066,7 +2071,7 @@ class Karyawan extends My_Controller
         if ($result->id_m_perusahaan != '1') {
             $foldername = md5($id_personal);
             $now = date('YmdHis');
-            $nama_file = $now . "-SRT.pdf";
+            $nama_file = $now . "-MCU.pdf";
 
             if (is_dir('./berkas/karyawan/' . $foldername) == false) {
                 mkdir('./berkas/karyawan/' . $foldername, 0775, true);
@@ -2075,7 +2080,7 @@ class Karyawan extends My_Controller
             if (is_dir('./berkas/karyawan/' . $foldername)) {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 1000;
+                $config['max_size'] = 200;
                 $config['file_name'] = $nama_file;
 
                 $this->load->library('upload', $config);
@@ -2132,9 +2137,16 @@ class Karyawan extends My_Controller
                 echo json_encode(array("statusCode" => 201, "pesan" => "Folder data personal tidak ditemukan"));
             }
         } else {
-            $nik = $result->no_nik;
-            $nama = $result->nama_lengkap;
-            $nama_file = $nik .' '. $nama . ".pdf";
+            $checkMCU = $this->mcu->dataMCU_by_id_personal($id_personal);
+            if (count($checkMCU) > 0) {
+                $nama = $result->nama_lengkap;
+                $now = date('YmdHis');
+                $nama_file = $now . "-". $nama . "-MCU.pdf";
+            } else {
+                $nik = $result->no_nik;
+                $nama = $result->nama_lengkap;
+                $nama_file = $nik . ' ' . $nama . ".pdf";
+            }
 
             if (is_dir('./berkas/mcu/1') == false) {
                 mkdir('./berkas/mcu/1', 0775, true);
@@ -3306,8 +3318,8 @@ class Karyawan extends My_Controller
 
             echo json_encode($output);
         } else {
-            $ck = $this->input->get("ck");
-            $auth_m_per = $this->input->get("auth_m_per");
+            $ck = htmlspecialchars($this->input->get("ck", true));
+            $auth_m_per = htmlspecialchars($this->input->get("auth_m_per", true));
             $list = $this->kry->get_datatables($auth_m_per, $ck);
             $data = array();
             $no = 0;
@@ -3450,7 +3462,7 @@ class Karyawan extends My_Controller
             return;
         } else {
             // data personal
-            $id_personal = $this->input->post("id_personal", true);
+            $id_personal = htmlspecialchars($this->input->post("id_personal", true));
             $no_ktp_old = htmlspecialchars($this->input->post("no_ktp_old", true));
             $no_kk_old = htmlspecialchars($this->input->post("no_kk_old", true));
             $no_ktp = htmlspecialchars($this->input->post("no_ktp", true));
@@ -3777,7 +3789,7 @@ class Karyawan extends My_Controller
 
     public function newfilependukung()
     {
-        $auth_kary = $this->input->post("auth_kary");
+        $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
         $idpersonal = $this->kry->get_by_auth($auth_kary);
         if ($idpersonal->id_m_perusahaan != '1') {
             $foldername = md5($idpersonal->id_personal);
@@ -3873,10 +3885,10 @@ class Karyawan extends My_Controller
 
     public function newvaksin()
     {
-        $jenisVaksin = $this->input->post("jenisVaksin");
-        $namaVaksin = $this->input->post("namaVaksin");
-        $tanggalVaksin = $this->input->post("tanggalVaksin");
-        $auth_kary = $this->input->post("auth_kary");
+        $jenisVaksin = htmlspecialchars($this->input->post("jenisVaksin", true));
+        $namaVaksin = htmlspecialchars($this->input->post("namaVaksin", true));
+        $tanggalVaksin = htmlspecialchars($this->input->post("tanggalVaksin", true));
+        $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
         $dataKaryawan = $this->kry->get_by_auth($auth_kary);
         $id_personal = $dataKaryawan->id_personal;
         $now = date("Y-m-d");
@@ -3910,7 +3922,7 @@ class Karyawan extends My_Controller
 
     public function newfotokaryawan()
     {
-        $auth_kary = $this->input->post("auth_kary");
+        $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
         $idpersonal = $this->kry->get_by_auth($auth_kary);
         $now = date('YmdHis');
         $nama_file = $now . "-FOTO.jpg";

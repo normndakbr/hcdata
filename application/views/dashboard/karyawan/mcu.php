@@ -17,13 +17,13 @@
                                                             echo "<tr>";
                                                             echo "<td class='align-middle' style='text-align:center;width:1%;'>" . $n++ . "</td>";
                                                             echo "<td class='align-middle text-center' style='width:35%;'>" . $list->mcu_jenis . "</td>";
-                                                            echo "<td class='align-middle text-center' style='width:35%;'>" . $list->tgl_mcu . "</td>";
+                                                            echo "<td class='align-middle text-center' style='width:35%;'>" . date("d-M-Y", strtotime($list->tgl_mcu)) . "</td>";
                                                             echo "<td class='align-middle' style='width:9%;'>";
                                                             echo "<button type='button' id=" . $list->auth_mcu . " class='btn btn-primary btn-sm detailMCU' value='" . $list->id_mcu . "' title='Detail MCU'><i class='fas fa-asterisk'></i></button> ";
                                                             echo "<a id=" . $list->auth_mcu . " class='btn btn-success btn-sm' href ='" . base_url('karyawan/mcu/') . $list->auth_mcu . "' target='_blank' title='Tampilkan file MCU' value='" . $list->id_mcu . "'> <i class='fas fa-file-alt'></i> </a> ";
                                                             echo "<button type='button' id=" . $list->auth_mcu . " class='btn btn-primary btn-sm uploadMCU' value='" . $list->id_mcu . "' title='Upload Ulang File MCU'><i class='fas fa-file-upload'></i></button> ";
                                                             echo "<button type='button' id=" . $list->auth_mcu . " class='btn btn-warning btn-sm editMCU' value='" . $list->id_mcu . "' title='Edit Data MCU'><i class='fas fa-edit'></i></button> ";
-                                                            echo "<button type='button' id=" . $list->auth_mcu . " class='btn btn-danger btn-sm hapusMCU' value='" . $list->id_mcu . "' titile='Hapus Data MCU'><i class='fas fa-trash'></i></button> ";
+                                                            echo "<button type='button' id=" . $list->auth_mcu . " class='btn btn-danger btn-sm hapusMCU' value='" . $list->id_mcu . "' title='Hapus Data MCU'><i class='fas fa-trash'></i></button> ";
                                                             echo "</td>";
                                                             echo "<tr>";
                                                         }

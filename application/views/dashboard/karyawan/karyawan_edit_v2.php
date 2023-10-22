@@ -885,7 +885,7 @@
                                                         <span class="text-danger">*</span></label>
                                                     <input id='editTglExpSim' name='editTglExpSim' type="date"
                                                         class="form-control form-control-user"
-                                                        value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '-' ?>">
+                                                        value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '' ?>">
                                                     <small
                                                         class="errorEditTglExpSim text-danger font-italic font-weight-bold"></small>
                                                 </div>
@@ -1326,6 +1326,58 @@
                             </div>
                             <span class="bg83t12trgr98h9 d-none"></span>
                         </div>
+                    </div>
+                </div>
+                <div class="modal-footer m-3">
+                    <button type="submit" class="btn font-weight-bold btn-primary">Upload
+                        Data</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlEditMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document"
+        style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white">Edit MCU</h5>
+            </div>
+            <form action="javascript:void(0)" id="editMCU" method="post" data-parsley-validate>
+                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="alert errEditMCU alert-danger animate__animated animate__bounce d-none"
+                                role="alert">
+                            </div>
+                        </div>
+                         <div class="col-lg-4 col-md-4 col-sm-12">
+                              <div class="form-group">
+                                   <label for="editTanggalMCU" class="form-label">Tanggal MCU <span class="text-danger">*</span></label>
+                                   <input id='editTanggalMCU' type="date" autocomplete="off"
+                                        spellcheck="false" class="form-control" max="<?= date('Y-m-d') ?>" value="" required>
+                                   <span class="89621y398thnr8 d-none"></span>
+                              </div>
+                         </div>
+                         <div class="col-lg-8 col-md-8 col-sm-12">
+                              <div class="form-group">
+                                   <label for="editHasilMCU" class="form-label">Hasil MCU <span class="text-danger">*</span></label>
+                                   <select id='editHasilMCU' autocomplete="off" spellcheck="false"
+                                        class="form-control" value="" required>
+                                        <option value=""></option>
+                                   </select>
+                              </div>
+                         </div>
+                         <div class="col-lg-12 col-md-12 col-sm-12">
+                              <div class="form-group">
+                                   <label for="editKeteranganMCU" class="form-label">Keterangan <span class="text-danger">*</span></label>
+                                   <textarea id='editKeteranganMCU' type="text" autocomplete="off"
+                                        spellcheck="false" class="form-control" value="" required></textarea>
+                              </div>
+                         </div>
                     </div>
                 </div>
                 <div class="modal-footer m-3">
