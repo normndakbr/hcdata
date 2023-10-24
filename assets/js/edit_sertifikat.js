@@ -103,52 +103,9 @@ $(document).ready(function () {
     },
   });
 
-  $("#idEditSertifikat").load(
-    site_url + "karyawan/sertifikasi?auth_person=" + auth_person
-  );
-  $("#idEditVaccine").load(
-    site_url + "karyawan/vaksin?auth_person=" + auth_person + "&status=edit"
-  );
-  $("#dataEditMCU").load(
-    site_url + "karyawan/dataMCU?auth_person=" + auth_person
-  );
-
-  $(document).on("click", ".detail_sertifikasi", function () {
-    let auth_sertifikat = $(this).attr("id");
-
-    $.ajax({
-      type: "POST",
-      url: site_url + "sertifikasi/get_sertifikasi",
-      data: {
-        auth_sertifikat: auth_sertifikat,
-      },
-      success: function (data) {
-        var data = JSON.parse(data);
-        $("#mdldetailsertifikat").modal("show");
-        $("#jdldetailsertifikat").text(
-          data.no_sertifikat + " | " + data.jenis_sertifikasi
-        );
-        $("#jenisSertifikasiDetail").val(data.jenis_sertifikasi);
-        $("#noSertifikatDetail").val(data.no_sertifikasi);
-        $("#namaLembagaDetail").val(data.lembaga);
-        $("#tanggalSertifikasiDetail").val(data.tgl_sertifikasi_show);
-        $("#tanggalSertifikasiAkhirDetail").val(
-          data.tgl_berakhir_sertifikasi_show
-        );
-      },
-      error: function (xhr, ajaxOptions, thrownError) {
-        $.LoadingOverlay("hide");
-        $(".errsertifikatdetail").removeClass("d-none");
-        $(".errsertifikatdetail").removeClass("alert-info");
-        $(".errsertifikatdetail").addClass("alert-danger");
-        if (thrownError != "") {
-          $(".errsertifikatdetail").html(
-            "Terjadi kesalahan saat load data sertifikasi, hubungi administrator"
-          );
-        }
-      },
-    });
-  });
+  $("#idEditSertifikat").load(site_url + "karyawan/sertifikasi?auth_person=" + auth_person + "&status=edit");
+  $("#idEditVaccine").load(site_url + "karyawan/vaksin?auth_person=" + auth_person + "&status=edit");
+  $("#dataEditMCU").load(site_url + "karyawan/dataMCU?auth_person=" + auth_person);
 
   $("#btnEditReuploadSertifikat").click(function () {
     let auth_ser = $(".9f7fjmuj8ik2js4n8k66g3hjl323").text();
