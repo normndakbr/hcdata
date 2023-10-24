@@ -38,7 +38,7 @@ class Karyawan extends My_Controller
         $this->load->view('dashboard/code/karyawan');
     }
 
-    public function new ()
+    public function new()
     {
         if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
             $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
@@ -182,30 +182,35 @@ class Karyawan extends My_Controller
         }
     }
 
-    public function edit_karyawan($id_kary)
+    public function edit_karyawan($auth_kary)
     {
-        $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+        $cekauth = $this->kry->get_by_auth($auth_kary);
 
-        $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-        $data['nama'] = $this->session->userdata("nama_hcdata");
-        $data['email'] = $this->session->userdata("email_hcdata");
-        $data['menu'] = $this->session->userdata("id_menu_hcdata");
-        $data["data_kary"] = $this->kry->get_by_auth($id_kary);
-        $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($id_kary);
-        $data["data_izin"] = $this->kry->get_izin_by_auth($id_kary);
-        $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
-        $data["data_unit"] = $this->kry->get_izin_unit_by_auth($id_kary);
-        $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($id_kary);
-        $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($id_kary);
-        $data['get_menu'] = $this->dsmod->get_menu();
+        if (!empty($cekauth)) {
+            $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
+            $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
+            $data['nama'] = $this->session->userdata("nama_hcdata");
+            $data['email'] = $this->session->userdata("email_hcdata");
+            $data['menu'] = $this->session->userdata("id_menu_hcdata");
+            $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
+            $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($auth_kary);
+            $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
+            $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
+            $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
+            $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
+            $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
+            $data['get_menu'] = $this->dsmod->get_menu();
 
-        $data['jsonData'] = json_encode($data);
+            $data['jsonData'] = json_encode($data);
 
-        $this->load->view('dashboard/template/header', $data);
-        $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
-        $this->load->view('dashboard/modal/karyawan', $data);
-        $this->load->view('dashboard/template/footer', $data);
-        $this->load->view('dashboard/code/karydetail');
+            $this->load->view('dashboard/template/header', $data);
+            $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
+            $this->load->view('dashboard/modal/karyawan', $data);
+            $this->load->view('dashboard/template/footer', $data);
+            $this->load->view('dashboard/code/karydetail');
+        } else {
+            $this->load->view('errors/errnotfound');
+        }
     }
 
     public function hapus_mcu()
@@ -306,20 +311,20 @@ class Karyawan extends My_Controller
         }
     }
 
-//     public function cekfoto()
+    //     public function cekfoto()
     //     {
 
-//         if ($_FILES['fl_foto']['name'] == "") {
+    //         if ($_FILES['fl_foto']['name'] == "") {
     //             echo json_encode(array('statusCode' => 201, "pesan" => "File foto wajib di-upload"));
     //             return;
     //         }
 
-//         if ($_FILES['fl_foto']['type'] !== 'image/jpeg') {
+    //         if ($_FILES['fl_foto']['type'] !== 'image/jpeg') {
     //             echo json_encode(array('statusCode' => 201, "pesan" => "File harus dalam format jpg"));
     //             return;
     //         }
 
-//         if ($_FILES['fl_foto']['size'] > 50) {
+    //         if ($_FILES['fl_foto']['size'] > 50) {
     //             echo json_encode(array('statusCode' => 201, "pesan" => "Ukuran file tidak boleh lebih dari 50 kb"));
     //             return;
     //         }
@@ -2141,7 +2146,7 @@ class Karyawan extends My_Controller
             if (count($checkMCU) > 0) {
                 $nama = $result->nama_lengkap;
                 $now = date('YmdHis');
-                $nama_file = $now . "-". $nama . "-MCU.pdf";
+                $nama_file = $now . "-" . $nama . "-MCU.pdf";
             } else {
                 $nik = $result->no_nik;
                 $nama = $result->nama_lengkap;
@@ -2706,7 +2711,8 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filedukung" => "Format file pendukung yang diupload wajib dalam bentuk jpg.",
-                    "filefoto" => ""));
+                    "filefoto" => ""
+                ));
                 return;
             }
 
@@ -2714,7 +2720,8 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filedukung" => "Ukuran file maksimal 700kb.",
-                    "filefoto" => ""));
+                    "filefoto" => ""
+                ));
                 return;
             }
 
@@ -3039,7 +3046,6 @@ class Karyawan extends My_Controller
             } else {
                 $this->load->view('errors/errnotfound');
             }
-
         } else {
             $this->load->view('errors/errnotfound');
         }
