@@ -184,6 +184,6 @@ class Mcu extends My_Controller
             } else {
                 echo json_encode(array("statusCode" => 201, "pesan" => "Data MCU gagal diedit"));
             }
-        
+        }
     }
 }
