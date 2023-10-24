@@ -609,7 +609,7 @@
 
                                             <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
                                             <h6 class="text-uppercase font-weight-bold" for="editPerKary">
-                                                <?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang == 'MP' ? 'Data Mine Permit' : 'Data SIMPER' : '-' ?>
+                                                <?= isset($data_izin->id_jenis_izin_tambang) ? $data_izin->id_jenis_izin_tambang == 1 ? 'Data Mine Permit' : 'Data SIMPER' : '-' ?>
                                             </h6>
                                             <hr style="height: 3px; background: #404443;">
 
@@ -624,8 +624,14 @@
                                             </div>
                                             <div class=" mb-3 col-lg-6 col-md-6 col-sm-12">
                                                 <div class="form-group">
-                                                    <label class="font-weight-bold" for="editTglExp">Tanggal Expired
-                                                        Izin <span class="text-danger">*</span></label>
+                                                    <?php if (isset($data_izin->id_jenis_izin_tambang) == 1) { ?>
+                                                        <label class="font-weight-bold" for="editTglExp">Tanggal Expired
+                                                            Mine Permit <span class="text-danger">*</span></label>
+                                                    <?php } else if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
+                                                        <label class="font-weight-bold" for="editTglExp">Tanggal Expired
+                                                            SIMPER <span class="text-danger">*</span></label>
+                                                    <?php } ?>
+
                                                     <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>">
                                                     <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
                                                 </div>
@@ -650,7 +656,7 @@
                                                 </div>
                                             </div>
 
-                                            <div id="fieldEditFileSimPolisi" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                            <!-- <div id="fieldEditFileSimPolisi" class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                                 <a href="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>" target="_blank"><?= isset($data_sim_kary) ? $data_sim_kary->url_file : ' ' ?></a>
                                                 <div>
                                                     <h6 class="text-danger font-italic">Catatan : Upload SIM Polisi
@@ -662,7 +668,7 @@
                                                     <small class="errorEditFileSimPolisi text-danger font-italic font-weight-bold"></small>
                                                     <span class="h52k342 j8234234b n234b5b7 kl234nn d-none"></span>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <!-- <div id="tabelSIMPOL" class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                                 <div id="groupTbmSIMPOL" class="form-group">
