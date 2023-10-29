@@ -621,8 +621,8 @@
                                                     <div class="form-group">
                                                         <label class="font-weight-bold" for="editNoReg">No. Registrasi <span class="text-danger">*</span></label>
                                                         <input id="editNoReg" name="editNoReg" type="text" class="form-control form-control-user" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>">
-                                                        <?php echo form_error('editNoReg'); ?>
-                                                        <!-- <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small> -->
+                                                        <!-- <?php echo form_error('editNoReg'); ?> -->
+                                                        <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
                                                     </div>
                                                 </div>
 
@@ -656,10 +656,10 @@
 
                                                 <div id="fieldEditExpiredSIM" class=" mb-3 col-lg-6 col-md-6 col-sm-12">
                                                     <div class="form-group">
-                                                        <label class="font-weight-bold" for="editTglExpSim">Tanggal Expired SIM
+                                                        <label class="font-weight-bold" for="editTglExpSIM">Tanggal Expired SIM
                                                             <span class="text-danger">*</span></label>
-                                                        <input id='editTglExpSim' name='editTglExpSim' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '' ?>">
-                                                        <small class="errorEditTglExpSim text-danger font-italic font-weight-bold"></small>
+                                                        <input id='editTglExpSIM' name='editTglExpSIM' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '' ?>">
+                                                        <small class="errorEditTglExpSIM text-danger font-italic font-weight-bold"></small>
                                                     </div>
                                                 </div>
 
