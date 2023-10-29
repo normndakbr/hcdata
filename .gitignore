@@ -1,4 +1,9 @@
 vendor/
+berkas/
+berkas/foto/
+berkas/mcu/
+berkas/pendukung/
+berkas/sim/
 berkas/karyawan/
 berkas/perusahaan/
 captcha/
