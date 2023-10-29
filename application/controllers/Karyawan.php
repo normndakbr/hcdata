@@ -4022,30 +4022,19 @@ class Karyawan extends My_Controller
 
     public function editSimper()
     {
-        echo json_encode(array("statusCode" => 204, "message" => "Data Berhasil Diperbarui"));
-        return;
         // $auth = htmlspecialchars($this->input->post("token", true));
         // $this->cek_auth($auth);
 
         $this->form_validation->set_rules("editNoReg", "editNoReg", "required|trim|max_length[50]", [
-            "required" => "No. Registrasi tidak boleh kosong",
+            "required" => "No. Registrasi wajib diisi",
             "max_length" => "No. Register maksimal 50 karakter",
         ]);
         $this->form_validation->set_rules("editTglExp", "editTglExp", "required|trim", [
-            "required" => "Tanggal expired tidak boleh kosong",
-        ]);
-        $this->form_validation->set_rules("editTglExpSIM", "editTglExpSIM", "required|trim", [
-            "required" => "Tanggal expired sim tidak boleh kosong",
-        ]);
-        $this->form_validation->set_rules("editJenisSIM", "editJenisSIM", "required|trim", [
-            "required" => "Jenis SIM wajib dipilih",
+            "required" => "Tanggal expired SIMPER/Mine Permit wajib diisi",
         ]);
 
         if ($this->form_validation->run() == false) {
-            // handle error on input form
             $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
-            $tglExp = htmlspecialchars($this->input->post("editTglExp", true));
-            $noRegistrasi = htmlspecialchars($this->input->post("editNoReg", true));
             $jenisSIM = htmlspecialchars($this->input->post("editJenisSIM", true));
             $tglExpSIM = htmlspecialchars($this->input->post("editTglExpSIM", true));
             // $filesmp = htmlspecialchars($this->input->post("filesmp", true));
@@ -4083,10 +4072,10 @@ class Karyawan extends My_Controller
 
             $error = [
                 'statusCode' => 400,
-                'noreg' => form_error("errorEditNoReg"),
-                'tglexp' => form_error("errorEditTglExp"),
-                'jenissim' => $errorJenisSIM,
-                'tglexpsim' => $errorTglExpSIM,
+                'errorNoRegistrasi' => form_error("editNoReg"),
+                'errorTglExpIzin' => form_error("editTglExp"),
+                'errorJenisSIM' => $errorJenisSIM,
+                'errorTglExpSIM' => $errorTglExpSIM,
                 // 'filesim' => $errsim,
                 // 'filesmp' => $errsmp,
             ];
