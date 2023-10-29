@@ -621,7 +621,6 @@
                                                     <div class="form-group">
                                                         <label class="font-weight-bold" for="editNoReg">No. Registrasi <span class="text-danger">*</span></label>
                                                         <input id="editNoReg" name="editNoReg" type="text" class="form-control form-control-user" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>">
-                                                        <!-- <?php echo form_error('editNoReg'); ?> -->
                                                         <small class="errorEditNoReg text-danger font-italic font-weight-bold"></small>
                                                     </div>
                                                 </div>
