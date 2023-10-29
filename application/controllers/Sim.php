@@ -275,4 +275,16 @@ class Sim extends My_Controller
                return $query;
           }
      }
+
+     public function get_id_sim_by_auth()
+     {
+          $auth_sim = $this->input->post('auth_sim');
+          $query = $this->smm->get_id_sim_by_auth($auth_sim);
+
+          if ($query === 0) {
+               return 0;
+          } else {
+               return $query;
+          }
+     }
 }

@@ -189,4 +189,19 @@ class Sim_model extends CI_Model
                return 0;
           }
      }
+
+     public function get_id_sim_by_auth($auth_sim)
+     {
+          $id_sim = "";
+          $query = $this->db->get_where('vw_sim', ['auth_sim' => $auth_sim]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $id_sim = $list->id_sim;
+               }
+               echo json_encode(array("statusCode" => 200, "pesan" => "Success", "id_sim" => $id_sim));
+               return;
+          } else {
+               return 0;
+          }
+     }
 }
