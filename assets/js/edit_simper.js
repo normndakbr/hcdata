@@ -123,63 +123,63 @@ $(document).ready(function () {
 
         if (jenisIzin == 'SIMPER') {
             idJenisSIM = editJenisSIM;
-            tglExpiredSIM = editTglExpSIM;
+            tglExpiredSIM = $("#editTglExpSIM").val();
         }
-        let formData = new FormData();
 
-        if (!auth_sim) {
-            swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
-        } else if (!editNoReg) {
-            swal("Perhatian", "No. Registrasi tidak boleh kosong!", "error");
-        } else if (!editTglExp) {
-            swal("Perhatian", "Tanggal Expired Simper/Mine Permit tidak boleh kosong!", "error");
-        } else if (!editTglExpSim) {
-            swal("Perhatian", "Tanggal Expired SIM tidak boleh kosong!", "error");
-        } else {
-            $.ajax({
-                type: "POST",
-                url: site_url + "sim/get_id_sim_by_auth",
-                data: { auth_sim: auth_sim },
-                success: function (res) {
-                    console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
-                    let data = JSON.parse(res);
-                    editJenisSim = data.id_sim;
+        // if (!auth_sim) {
+        //     swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
+        // } else if (!editNoReg) {
+        //     swal("Perhatian", "No. Registrasi tidak boleh kosong!", "error");
+        // } else if (!editTglExp) {
+        //     swal("Perhatian", "Tanggal Expired Simper/Mine Permit tidak boleh kosong!", "error");
+        // } else if (!tglExpiredSIM) {
+        //     swal("Perhatian", "Tanggal Expired SIM tidak boleh kosong!", "error");
+        // } else {
+        $.ajax({
+            type: "POST",
+            url: site_url + "sim/get_id_sim_by_auth",
+            data: { auth_sim: auth_sim },
+            success: function (res) {
+                console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
+                let data = JSON.parse(res);
+                editJenisSIM = data.id_sim;
 
-                    console.log("authKary => " + authKary);
-                    console.log("jenisIzin => " + jenisIzin);
-                    console.log("editNoReg => " + noRegistrasiIzin);
-                    console.log("editTglExp => " + tglExpiredIzin);
-                    console.log("idJenisSIM => " + idJenisSIM);
-                    console.log("editTglExpSIM => " + tglExpiredSIM);
+                console.log("authKary => " + authKary);
+                console.log("jenisIzin => " + jenisIzin);
+                console.log("editNoReg => " + noRegistrasiIzin);
+                console.log("editTglExp => " + tglExpiredIzin);
+                console.log("idJenisSIM => " + idJenisSIM);
+                console.log("editTglExpSIM => " + tglExpiredSIM);
 
-                    formData.append("token", token);
-                    formData.append("authKary", authKary);
-                    formData.append("jenisIzin", jenisIzin);
-                    formData.append("editNoReg", editNoReg);
-                    formData.append("editTglExp", editTglExp);
-                    formData.append("editJenisSIM", idJenisSIM);
-                    formData.append("editTglExpSIM", tglExpiredSIM);
-
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
-                    console.log(thrownError);
-                }
-            });
-            // $.ajax({
-            //     type: "POST",
-            //     url: site_url + "karyawan/editSimper",
-            //     data: formData,
-            //     success: function (res) {
-            //         console.log("Success POST on " + site_url + "sim/editSimper");
-            //         let data = JSON.parse(res);
-            //         console.log(data);
-            //     },
-            //     error: function (xhr, ajaxOptions, thrownError) {
-            //         console.log("Error POST on " + site_url + "sim/editSimper");
-            //         console.log(thrownError);
-            //     }
-            // });
-        }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
+                console.log(thrownError);
+            }
+        });
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/editSimper",
+            data: {
+                token: token,
+                authKary: authKary,
+                jenisIzin: jenisIzin,
+                editNoReg: noRegistrasiIzin,
+                editTglExp: tglExpiredIzin,
+                editJenisSIM: idJenisSIM,
+                editTglExpSIM: tglExpiredSIM,
+            },
+            success: function (res) {
+                console.log(res);
+                console.log("Success POST on " + site_url + "sim/editSimper");
+                // let data = JSON.parse(res);
+                // if
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "sim/editSimper");
+                console.log(thrownError);
+            }
+        });
+        // }
     });
 });

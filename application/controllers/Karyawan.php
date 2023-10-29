@@ -4019,9 +4019,11 @@ class Karyawan extends My_Controller
             }
         }
     }
- 
+
     public function editSimper()
     {
+        echo json_encode(array("statusCode" => 204, "message" => "Data Berhasil Diperbarui"));
+        return;
         // $auth = htmlspecialchars($this->input->post("token", true));
         // $this->cek_auth($auth);
 
@@ -4032,33 +4034,34 @@ class Karyawan extends My_Controller
         $this->form_validation->set_rules("editTglExp", "editTglExp", "required|trim", [
             "required" => "Tanggal expired tidak boleh kosong",
         ]);
-        $this->form_validation->set_rules("editTglExpSim", "editTglExpSim", "required|trim", [
+        $this->form_validation->set_rules("editTglExpSIM", "editTglExpSIM", "required|trim", [
             "required" => "Tanggal expired sim tidak boleh kosong",
         ]);
         $this->form_validation->set_rules("editJenisSIM", "editJenisSIM", "required|trim", [
             "required" => "Jenis SIM wajib dipilih",
         ]);
- 
+
         if ($this->form_validation->run() == false) {
             // handle error on input form
             $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
-            $editJenisSim = htmlspecialchars($this->input->post("editJenisSim", true));
-            $editTglExpSim = htmlspecialchars($this->input->post("editTglExpSim", true));
-            $tglexp = htmlspecialchars($this->input->post("tglexp", true));
+            $tglExp = htmlspecialchars($this->input->post("editTglExp", true));
+            $noRegistrasi = htmlspecialchars($this->input->post("editNoReg", true));
+            $jenisSIM = htmlspecialchars($this->input->post("editJenisSIM", true));
+            $tglExpSIM = htmlspecialchars($this->input->post("editTglExpSIM", true));
             // $filesmp = htmlspecialchars($this->input->post("filesmp", true));
 
-            if ($jenisIzin == 2) {
+            if ($jenisIzin == 'SIMPER') {
                 // $filesim = htmlspecialchars($this->input->post("filesim", true));
-                if ($editJenisSim == "") {
-                    $errjenis = "<p>Jenis SIM wajib dipilih</p>";
+                if ($jenisSIM == "") {
+                    $errorJenisSIM = "<p>Jenis SIM wajib dipilih</p>";
                 } else {
-                    $errjenis = "";
+                    $errorJenisSIM = "";
                 }
 
-                if ($editTglExpSim == "") {
-                    $errtglsim = "<p>Tanggal expired SIM wajib diisi</p>";
+                if ($tglExpSIM == "") {
+                    $errorTglExpSIM = "<p>Tanggal expired SIM wajib diisi</p>";
                 } else {
-                    $errtglsim = "";
+                    $errorTglExpSIM = "";
                 }
 
                 // if ($filesim == "") {
@@ -4067,9 +4070,9 @@ class Karyawan extends My_Controller
                 //     $errsim = "";
                 // }
             } else {
-                $errjenis = "";
-                $errtglsim = "";
-                $errsim = "";
+                $errorJenisSIM = "";
+                $errorTglExpSIM = "";
+                $errFileSIM = "";
             }
 
             // if ($filesmp == "") {
@@ -4079,17 +4082,19 @@ class Karyawan extends My_Controller
             // }
 
             $error = [
-                'statusCode' => 202,
-                'jenisizin' => form_error("errorEditJenisSIM"),
+                'statusCode' => 400,
                 'noreg' => form_error("errorEditNoReg"),
-                'tglexp' => form_error("errorEditTglExpSim"),
-                'jenissim' => $errjenis,
-                'tglexpsim' => $errtglsim,
-                'filesim' => $errsim,
+                'tglexp' => form_error("errorEditTglExp"),
+                'jenissim' => $errorJenisSIM,
+                'tglexpsim' => $errorTglExpSIM,
+                // 'filesim' => $errsim,
                 // 'filesmp' => $errsmp,
             ];
 
             echo json_encode($error);
+            return;
+        } else {
+            echo json_encode(array("statusCode" => 204, "message" => "Data Berhasil Diperbarui"));
             return;
         }
         // else {
