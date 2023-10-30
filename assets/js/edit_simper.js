@@ -90,6 +90,21 @@ $(document).ready(function () {
         }
     });
 
+    function clearFormValidation() {
+        $(".errorEditNoReg").html("");
+        $(".errorEditTglExp").html("");
+        $(".errorEditJenisSIM").html("");
+        $(".errorEditTglExpSIM").html("");
+        $(".errorEditJenisSIM").html("");
+    }
+
+    function addFormValidation(errorNoRegistrasi, errorTglExpIzin, errorJenisSIM, errorTglExpSIM) {
+        $(".errorEditNoReg").html(errorNoRegistrasi);
+        $(".errorEditTglExp").html(errorTglExpIzin);
+        $(".errorEditJenisSIM").html(errorJenisSIM);
+        $(".errorEditTglExpSIM").html(errorTglExpSIM);
+    }
+
     $(document).on('click', '.btnDetailIzinKaryawan', function () {
         $("#mdlDetailIzinKaryawan").modal("show");
     });
@@ -103,8 +118,12 @@ $(document).ready(function () {
             success: function (res) {
                 console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
                 let data = JSON.parse(res);
-                editJenisSIM = data.id_sim;
-                console.log("Edit jenis SIM = " + editJenisSIM);
+                if (data.statusCode == 200) {
+                    editJenisSIM = data.id_sim;
+                } else {
+                    swal({ title: "Perhatian", text: "Data jenis SIM wajib dipilih apabila jenis dokumen adalah SIMPER", type: 'warning' });
+                    $(".errorEditJenisSIM").html(data.pesan);
+                }
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
@@ -122,74 +141,49 @@ $(document).ready(function () {
         let tglExpiredSIM = "";
 
         if (jenisIzin == 'SIMPER') {
-            idJenisSIM = editJenisSIM;
-            tglExpiredSIM = $("#editTglExpSIM").val();
+            if (auth_sim) {
+                idJenisSIM = editJenisSIM;
+                tglExpiredSIM = $("#editTglExpSIM").val();
+            } else {
+                swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
+                $(".errorEditJenisSIM").html("Data jenis SIM wajib dipilih");
+            }
         }
 
-        // if (!auth_sim) {
-        //     swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
-        // } else if (!editNoReg) {
-        //     swal("Perhatian", "No. Registrasi tidak boleh kosong!", "error");
-        // } else if (!editTglExp) {
-        //     swal("Perhatian", "Tanggal Expired Simper/Mine Permit tidak boleh kosong!", "error");
-        // } else if (!tglExpiredSIM) {
-        //     swal("Perhatian", "Tanggal Expired SIM tidak boleh kosong!", "error");
-        // } else {
-        $.ajax({
-            type: "POST",
-            url: site_url + "sim/get_id_sim_by_auth",
-            data: { auth_sim: auth_sim },
-            success: function (res) {
-                console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
-                let data = JSON.parse(res);
-                editJenisSIM = data.id_sim;
-
-                console.log("authKary => " + authKary);
-                console.log("jenisIzin => " + jenisIzin);
-                console.log("editNoReg => " + noRegistrasiIzin);
-                console.log("editTglExp => " + tglExpiredIzin);
-                console.log("idJenisSIM => " + idJenisSIM);
-                console.log("editTglExpSIM => " + tglExpiredSIM);
-
-                $.ajax({
-                    type: "POST",
-                    url: site_url + "karyawan/editSimper",
-                    data: {
-                        token: token,
-                        authKary: authKary,
-                        jenisIzin: jenisIzin,
-                        editNoReg: noRegistrasiIzin,
-                        editTglExp: tglExpiredIzin,
-                        editJenisSIM: idJenisSIM,
-                        editTglExpSIM: tglExpiredSIM,
-                    },
-                    success: function (res) {
-                        console.log("Success POST on " + site_url + "sim/editSimper");
-                        let data = JSON.parse(res);
-                        console.log(data);
-                        if (data.statusCode == 400) {
-                            $(".errorEditNoReg").html(data.errorNoRegistrasi);
-                            $(".errorEditTglExp").html(data.errorTglExpIzin);
-                            $(".errorEditJenisSIM").html(data.errorJenisSIM);
-                            $(".errorEditTglExpSIM").html(data.errorTglExpSIM);
-                        } else {
-                            $(".errorEditNoReg").html("");
-                            $(".errorEditTglExp").html("");
-                            $(".errorEditJenisSIM").html("");
-                            $(".errorEditTglExpSIM").html("");
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        console.log("Error POST on " + site_url + "sim/editSimper");
-                        console.log(thrownError);
+        if (!auth_sim) {
+            swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
+            $(".errorEditJenisSIM").html("Data jenis SIM wajib dipilih");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: site_url + "karyawan/editSimper",
+                data: {
+                    token: token,
+                    authKary: authKary,
+                    jenisIzin: jenisIzin,
+                    editNoReg: noRegistrasiIzin,
+                    editTglExp: tglExpiredIzin,
+                    editJenisSIM: idJenisSIM,
+                    editTglExpSIM: tglExpiredSIM,
+                },
+                success: function (res) {
+                    console.log("Success POST on " + site_url + "sim/editSimper");
+                    let data = JSON.parse(res);
+                    console.log(data);
+                    if (data.statusCode == 400) {
+                        addFormValidation(data.errorNoRegistrasi, data.errorTglExpIzin, data.errorJenisSIM, data.errorTglExpSIM);
+                    } else if (data.statusCode == 204) {
+                        console.log("Data has been updated successfully");
+                        clearFormValidation();
+                    } else {
+                        clearFormValidation();
                     }
-                });
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
-                console.log(thrownError);
-            }
-        });
-        // }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("Error POST on " + site_url + "sim/editSimper");
+                    console.log(thrownError);
+                }
+            });
+        }
     });
 });
