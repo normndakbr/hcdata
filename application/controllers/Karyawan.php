@@ -146,7 +146,7 @@ class Karyawan extends My_Controller
     public function getKaryawanIzin()
     {
         // POST data
-        $data = this->input->post();
+        $data = $this->input->post();
         $list = $this->kry->getKaryawanIzin($data);
 
         echo json_encode($list);
@@ -3094,19 +3094,50 @@ class Karyawan extends My_Controller
         }
     }
 
-    public function support($auth_personal)
+    public function support($auth_karyawan)
     {
-        $dtpersonal = $this->kry->get_personal_by_auth($auth_personal);
-        if (!empty($dtpersonal)) {
-            foreach ($dtpersonal as $list) {
-                $url_pendukung = $list->url_pendukung;
-                $id_personal = $list->id_personal;
+        $dtkary = $this->kry->get_auth_personal_by_kary($auth_karyawan);
+
+        if (!empty($dtkary)) {
+
+            foreach ($dtkary as $lskary) {
+                $auth_personal = $lskary->auth_personal;
+                $id_m_perusahaan = $lskary->id_m_perusahaan;
             }
-            $foldername = md5($id_personal);
-            if (is_file("berkas/karyawan/" . $foldername . "/" . $url_pendukung)) {
-                $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_pendukung);
-                header('Content-Type: application/pdf');
-                readfile($tofile);
+
+
+            $dtpersonal = $this->kry->get_personal_by_auth($auth_personal);
+            if (!empty($dtpersonal)) {
+                foreach ($dtpersonal as $list) {
+                    $url_pendukung = $list->url_pendukung;
+                    $id_personal = $list->id_personal;
+                }
+
+                $foldername = md5($id_personal);
+
+                if ($id_m_perusahaan != 1) {
+                    if (is_file("berkas/karyawan/" . $foldername . "/" . $url_pendukung)) {
+                        $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_pendukung);
+                        header('Content-Type: application/pdf');
+                        readfile($tofile);
+                    } else {
+                        $this->load->view('errors/errnotfound');
+                    }
+                } else {
+                    if (is_file("berkas/pendukung/1/" . $url_pendukung)) {
+                        $tofile = realpath("berkas/pendukung/1/" . $url_pendukung);
+                        header('Content-Type: application/pdf');
+                        readfile($tofile);
+                    } else {
+                        if (is_file("berkas/karyawan/" . $foldername . "/" . $url_pendukung)) {
+                            $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_pendukung);
+                            header('Content-Type: application/pdf');
+                            readfile($tofile);
+                        } else {
+                            $this->load->view('errors/errnotfound');
+                        }
+                    }
+                }
             } else {
                 $this->load->view('errors/errnotfound');
             }

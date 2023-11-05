@@ -129,7 +129,7 @@
                                         <a class="nav-link text-uppercase" id="employee-tab" data-toggle="tab" href="#employeeTab" role="tab" aria-controls="employee" aria-selected="false">Data Karyawan</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a class="nav-link text-uppercase" id="license-tab" data-toggle="tab" href="#licenseTab" role="tab" aria-controls="license" aria-selected="false">SIMPER/Mine Permit</a>
+                                        <a class="nav-link text-uppercase" id="license-tab" data-toggle="tab" href="#licenseTab" role="tab" aria-controls="license" aria-selected="false">Data Izin Tambang</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-uppercase" id="certificate-tab" data-toggle="tab" href="#certificateTab" role="tab" aria-controls="certificate" aria-selected="false">Sertifikasi</a>
@@ -614,9 +614,9 @@
                                             <hr style="height: 3px; background: #404443;">
 
                                         </div>
-                                        <?php if (isset($data_izin->id_jenis_izin_tambang)) { ?>
-                                            <div class="card-body row">
 
+                                        <?php if (isset($data_izin)) { ?>
+                                            <div class="card-body row">
                                                 <div class=" mb-3 col-lg-6 col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <label class="font-weight-bold" for="editNoReg">No. Registrasi <span class="text-danger">*</span></label>
@@ -643,36 +643,87 @@
                                                     </div>
                                                 </div>
 
-                                                <div id="fieldEditJenisSim" class=" mb-3 col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="font-weight-bold" for="editJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
-                                                        <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
-                                                            <option value="">-- TIDAK ADA DATA --</option>
-                                                        </select>
-                                                        <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
-                                                    </div>
-                                                </div>
-
-                                                <div id="fieldEditExpiredSIM" class=" mb-3 col-lg-6 col-md-6 col-sm-12">
-                                                    <div class="form-group">
-                                                        <label class="font-weight-bold" for="editTglExpSIM">Tanggal Expired SIM
-                                                            <span class="text-danger">*</span></label>
-                                                        <input id='editTglExpSIM' name='editTglExpSIM' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '' ?>">
-                                                        <small class="errorEditTglExpSIM text-danger font-italic font-weight-bold"></small>
-                                                    </div>
-                                                </div>
-
                                                 <?php if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
+                                                    <!-- <div class="mb-2 col-lg-12 col-md-12 col-sm-12">
+                                                        <h6 class="mb-3">Data Surat Izin Mengemudi (SIM)</h6>
+                                                    </div> -->
+
+                                                    <div id="fieldEditJenisSim" class="mb-2 col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold" for="editJenisSIM">Jenis SIM <span class="text-danger">*</span></label>
+                                                            <select id='editJenisSIM' name='editJenisSIM' class="form-control form-control-user">
+                                                                <option value="">-- TIDAK ADA DATA --</option>
+                                                            </select>
+                                                            <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="fieldEditExpiredSIM" class="mb-2 col-lg-6 col-md-6 col-sm-12">
+                                                        <div class="form-group">
+                                                            <label class="font-weight-bold" for="editTglExpSIM">Tanggal Expired SIM
+                                                                <span class="text-danger">*</span></label>
+                                                            <input id='editTglExpSIM' name='editTglExpSIM' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_exp_sim) ? $data_izin->tgl_exp_sim : '' ?>">
+                                                            <small class="errorEditTglExpSIM text-danger font-italic font-weight-bold"></small>
+                                                        </div>
+                                                    </div>
+
+                                                    <div id="tabelSIM" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                        <table id="tbmSIMDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="text-align:center; width: 1%;">NO.</th>
+                                                                    <th style="width: 60%;">Berkas Izin Tambang</th>
+                                                                    <th style="text-align:center; width: 10%;">Aksi</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $no = 1;
+                                                                if (!empty($data_izin)) {
+                                                                    // foreach ($data_izin as $list) {
+                                                                    echo '<tr>';
+                                                                    echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                    echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkasizin/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas MINE PERMIT"> MINE PERMIT </a> </td>';
+                                                                    echo '<td style="text-align:center;">';
+                                                                    echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-upload"></i></button> ';
+                                                                    echo '</td>';
+                                                                    echo '</tr>';
+                                                                    if ($data_izin->id_jenis_izin_tambang == 2) {
+                                                                        echo '<tr>';
+                                                                        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                        echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIMPER"> SIMPER </a> </td>';
+                                                                        echo '<td style="text-align:center;">';
+                                                                        echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-upload"></i></button> ';
+                                                                        echo '</td>';
+                                                                        echo '</tr>';
+                                                                        echo '<tr>';
+                                                                        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                        echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIM"> SIM </a> </td>';
+                                                                        echo '<td style="text-align:center;">';
+                                                                        echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-upload"></i></button> ';
+                                                                        echo '</td>';
+                                                                        echo '</tr>';
+                                                                    }
+                                                                } else {
+                                                                    echo '<tr>';
+                                                                    echo '<td colspan=6 class=" align-middle text-center">Data tidak ada</td>';
+                                                                    echo '</tr>';
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+
                                                     <div id="tabelListUnit" class="col-lg-12 col-md-12 col-sm-12 mt-3">
                                                         <div id="groupTbmUnitDetail" class="form-group">
-                                                            <h5 class="mb-3">Unit yang diizinkan</h5>
+                                                            <!-- <h6 class="mb-3">Data Unit Yang Diizinkan</h6> -->
                                                             <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
                                                                 <thead>
                                                                     <tr>
                                                                         <th style="text-align:center; width: 1%;">No.</th>
-                                                                        <th style="text-align:center; width: 80%;">Unit</th>
-                                                                        <th style="text-align:center; width: 19%;">Akses</th>
-                                                                        <th style="text-align:center; width: 19%;">Aksi</th>
+                                                                        <th style="text-align:center; width: 70%;">Unit yang diizinkan</th>
+                                                                        <th style="text-align:center; width: 15%;">Akses</th>
+                                                                        <th style="text-align:center; width: 15%;">Aksi</th>
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
@@ -682,11 +733,11 @@
                                                                         foreach ($data_unit as $list) {
                                                                             echo '<tr>';
                                                                             echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                            echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
-                                                                            echo '<td class="align-middle text-center" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
-                                                                            echo "<td>";
-                                                                            echo "<button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
+                                                                            echo '<td class="align-middle" style="width: 70%;">' . $list->unit . '</td>';
+                                                                            echo '<td class="align-middle text-center" style="width: 10%;">' . $list->tipe_akses_unit . '</td>';
+                                                                            echo "<td style='text-align:center; width: 15%;'>";
                                                                             echo "<button id='' type='button' class='btn btn-success btn-sm editStrPer' title='Edit'><i class='fas fa-edit'></i></button> ";
+                                                                            echo "<button id='' type='button' class='btn btn-danger btn-sm hpsStrPer' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
                                                                             echo "</td>";
                                                                             echo '</tr>';
                                                                         }
@@ -713,7 +764,6 @@
                                                 <h5 style='text-align:center;'>Tidak Ada Data</h5>
                                             </div>
                                         <?php } ?>
-
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="certificateTab" role="tabpanel">
@@ -1118,3 +1168,9 @@
         </div>
     </div>
 </div>
+
+<script>
+    // Access the data in JavaScript
+    var myData = "<?php echo $jsonData; ?>";
+    console.log(myData);
+</script>

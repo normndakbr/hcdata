@@ -201,7 +201,7 @@ class Sim_model extends CI_Model
                echo json_encode(array("statusCode" => 200, "pesan" => "Success", "id_sim" => $id_sim));
                return;
           } else {
-               echo json_encode(array("statusCode" => 404, "pesan" => "Data jenis SIM wajib dipilih"));
+               echo json_encode(array("statusCode" => 404, "pesan" => "Jenis SIM wajib dipilih"));
                 return;
           }
      }

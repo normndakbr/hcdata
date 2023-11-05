@@ -111,25 +111,31 @@ $(document).ready(function () {
 
     $("#editJenisSIM").change(() => {
         editAuthSIM = $("#editJenisSIM").val();
-        $.ajax({
-            type: "POST",
-            url: site_url + "sim/get_id_sim_by_auth",
-            data: { auth_sim: editAuthSIM },
-            success: function (res) {
-                console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
-                let data = JSON.parse(res);
-                if (data.statusCode == 200) {
-                    editJenisSIM = data.id_sim;
-                } else {
-                    swal({ title: "Perhatian", text: "Data jenis SIM wajib dipilih apabila jenis dokumen adalah SIMPER", type: 'warning' });
-                    $(".errorEditJenisSIM").html(data.pesan);
+        if (!editAuthSIM) {
+            swal({ title: "Perhatian", text: "Data jenis SIM wajib dipilih apabila jenis dokumen adalah SIMPER", type: 'warning' });
+            $(".errorEditJenisSIM").html('Jenis SIM wajib dipilih');
+        } else {
+            $.ajax({
+                type: "POST",
+                url: site_url + "sim/get_id_sim_by_auth",
+                data: { auth_sim: editAuthSIM },
+                success: function (res) {
+                    console.log("Success POST on " + site_url + "sim/get_id_sim_by_auth");
+                    let data = JSON.parse(res);
+                    if (data.statusCode == 200) {
+                        editJenisSIM = data.id_sim;
+                        $(".errorEditJenisSIM").html('');
+                    } else {
+                        swal({ title: "Error", text: "Terjadi kesalahan saat memlih data SIM, silahkan hubungi administrator.", type: 'error' });
+                        console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
+                    console.log(thrownError);
                 }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Error POST on " + site_url + "sim/get_id_sim_by_auth");
-                console.log(thrownError);
-            }
-        });
+            });
+        }
     });
 
     $("#editSimpanIzin").click(() => {
@@ -146,7 +152,7 @@ $(document).ready(function () {
                 tglExpiredSIM = $("#editTglExpSIM").val();
             } else {
                 swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
-                $(".errorEditJenisSIM").html("Data jenis SIM wajib dipilih");
+                $(".errorEditJenisSIM").html("Jenis SIM wajib dipilih");
             }
         }
 
