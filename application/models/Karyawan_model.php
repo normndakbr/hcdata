@@ -142,13 +142,12 @@ class Karyawan_model extends CI_Model
         $this->db->from('vw_karyawan');
         $this->db->where('auth_karyawan', $auth_karyawan);
         $query = $this->db->get();
-
         return $query->row();
     }
 
     public function get_kary_by_auth_m_per($auth_m_per)
     {
-        $this->db->select('no_nik, no_ktp, nama_lengkap, depart, auth_m_perusahaan, auth_karyawan, auth_m_perusahaan', );
+        $this->db->select('no_nik, no_ktp, nama_lengkap, depart, auth_m_perusahaan, auth_karyawan, auth_m_perusahaan');
         $this->db->from('vw_karyawan');
         $this->db->where('auth_m_perusahaan', $auth_m_per);
         $query = $this->db->get();
@@ -203,11 +202,12 @@ class Karyawan_model extends CI_Model
 
     public function get_all_izin_by_auth($auth_karyawan)
     {
-        $this->db->from('vw_izin_tambang');
-        $this->db->where('auth_karyawan', $auth_karyawan);
-        $query = $this->db->get();
-
-        return $query->result();
+        $query = $this->db->query("SELECT * FROM vw_izin_tambang WHERE auth_karyawan = '" . $auth_karyawan . "' AND id_izin_tambang IS NOT NULL")->result();
+        if (!empty($query)) {
+            return $query;
+        } else {
+            return;
+        }
     }
 
     public function get_sim_by_auth($auth_personal)
@@ -772,16 +772,12 @@ class Karyawan_model extends CI_Model
         }
     }
 
-    public function get_auth_personal($id_personal)
+    public function get_auth_personal_by_kary($auth_kary)
     {
-        $query = $this->db->get_where('vw_personal', ['id_personal' => $id_personal])->result();
+        $query = $this->db->get_where('vw_kry', ['auth_karyawan' => $auth_kary])->result();
 
         if (!empty($query)) {
-            foreach ($query as $list) {
-                $auth_personal = $list->auth_personal;
-            }
-
-            return $auth_personal;
+            return $query;
         } else {
             return;
         }
@@ -900,7 +896,6 @@ class Karyawan_model extends CI_Model
         } else {
             return 0;
         }
-
     }
 
     public function get_dt_izin($auth_izin_tambang)
