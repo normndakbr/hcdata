@@ -1343,7 +1343,7 @@ if (!$this->session->csrf_token) {
                                                             <div>
                                                                  <h6 class="text-danger font-italic">Catatan : Upload
                                                                       file MCU dalam format pdf, ukuran file MCU
-                                                                      maksimal 500 kb.</h6>
+                                                                      maksimal 1000 kb.</h6>
                                                             </div>
                                                             <div class="form-group">
                                                                  <label class="font-weight-bold" for="fileMCU">Upload
