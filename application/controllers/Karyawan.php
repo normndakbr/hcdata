@@ -137,7 +137,7 @@ class Karyawan extends My_Controller
     public function getKaryawan()
     {
         // POST data
-        $data = htmlspecialchars($this->input->post());
+        $data = $this->input->post();
         $list = $this->kry->getKaryawan($data);
 
         echo json_encode($list);
@@ -146,7 +146,7 @@ class Karyawan extends My_Controller
     public function getKaryawanIzin()
     {
         // POST data
-        $data = htmlspecialchars($this->input->post());
+        $data = this->input->post();
         $list = $this->kry->getKaryawanIzin($data);
 
         echo json_encode($list);
