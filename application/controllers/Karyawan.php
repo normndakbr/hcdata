@@ -201,7 +201,7 @@ class Karyawan extends My_Controller
             $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
             $data['get_menu'] = $this->dsmod->get_menu();
 
-            // $data['jsonData'] = json_encode($data);
+            $data['jsonData'] = json_encode($data['data_izin']);
 
             $this->load->view('dashboard/template/header', $data);
             $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
@@ -2282,7 +2282,7 @@ class Karyawan extends My_Controller
                     if (is_dir('./berkas/karyawan/' . $foldername)) {
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 300;
+                        $config['max_size'] = 1000;
                         $config['file_name'] = $nama_file;
 
                         $this->load->library('upload', $config);
@@ -2290,7 +2290,7 @@ class Karyawan extends My_Controller
                             $err = $this->upload->display_errors();
 
                             if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                                $error = "<p>Ukuran file maksimal 300 kb.</p>";
+                                $error = "<p>Ukuran file maksimal 1000 kb.</p>";
                             } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                                 $error = "<p>Format file nya dalam bentuk pdf</p>";
                             } else {
@@ -2342,7 +2342,7 @@ class Karyawan extends My_Controller
                 if (is_dir('./berkas/karyawan/' . $foldername)) {
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 200;
+                    $config['max_size'] = 1000;
                     $config['file_name'] = $nama_file;
 
                     $this->load->library('upload', $config);
@@ -2354,7 +2354,7 @@ class Karyawan extends My_Controller
                         // return;
 
                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                            $error = "<p>Ukuran file maksimal 200 kb.</p>";
+                            $error = "<p>Ukuran file maksimal 1000 kb.</p>";
                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
                             $error = "<p>Format file nya dalam bentuk pdf</p>";
                         } else {
@@ -2930,36 +2930,6 @@ class Karyawan extends My_Controller
         }
     }
 
-    public function berkasizin($auth_izin_tambang)
-    {
-        $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
-        if (!empty($dtizin)) {
-            foreach ($dtizin as $list) {
-                $url_izin_tambang = $list->url_izin_tambang;
-                $id_m_perusahaan = $list->id_m_perusahaan;
-                $id_personal = $list->id_personal;
-            }
-
-            $foldername = md5($id_personal);
-
-            if ($id_m_perusahaan == 1) {
-                $fileizin = "berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang;
-            } else {
-                $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
-            }
-
-            if (is_file($fileizin)) {
-                $tofile = realpath($fileizin);
-                header('Content-Type: application/pdf');
-                readfile($tofile);
-            } else {
-                $this->load->view('errors/errnotfound');
-            }
-        } else {
-            $this->load->view('errors/errnotfound');
-        }
-    }
-
     public function berkasizinadd($auth_izin_tambang)
     {
         $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
@@ -2997,6 +2967,36 @@ class Karyawan extends My_Controller
 
             if (is_file("berkas/karyawan/" . $foldername . "/" . $url_file)) {
                 $tofile = realpath("berkas/karyawan/" . $foldername . "/" . $url_file);
+                header('Content-Type: application/pdf');
+                readfile($tofile);
+            } else {
+                $this->load->view('errors/errnotfound');
+            }
+        } else {
+            $this->load->view('errors/errnotfound');
+        }
+    }
+
+    public function berkasizin($auth_izin_tambang)
+    {
+        $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
+        if (!empty($dtizin)) {
+            foreach ($dtizin as $list) {
+                $url_izin_tambang = $list->url_izin_tambang;
+                $id_m_perusahaan = $list->id_m_perusahaan;
+                $id_personal = $list->id_personal;
+            }
+
+            $foldername = md5($id_personal);
+
+            if ($id_m_perusahaan == 1) {
+                $fileizin = "berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang;
+            } else {
+                $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
+            }
+
+            if (is_file($fileizin)) {
+                $tofile = realpath($fileizin);
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
@@ -4022,69 +4022,96 @@ class Karyawan extends My_Controller
 
     public function editSimper()
     {
-        // $auth = htmlspecialchars($this->input->post("token", true));
-        // $this->cek_auth($auth);
+        $auth = htmlspecialchars($this->input->post("token", true));
+        $cekauth = $this->cek_auth($auth);
 
-        $this->form_validation->set_rules("editNoReg", "editNoReg", "required|trim|max_length[50]", [
-            "required" => "No. Registrasi wajib diisi",
-            "max_length" => "No. Register maksimal 50 karakter",
-        ]);
-        $this->form_validation->set_rules("editTglExp", "editTglExp", "required|trim", [
-            "required" => "Tanggal expired SIMPER/Mine Permit wajib diisi",
-        ]);
-
-        if ($this->form_validation->run() == false) {
-            $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
-            $jenisSIM = htmlspecialchars($this->input->post("editJenisSIM", true));
-            $tglExpSIM = htmlspecialchars($this->input->post("editTglExpSIM", true));
-            // $filesmp = htmlspecialchars($this->input->post("filesmp", true));
-
-            if ($jenisIzin == 'SIMPER') {
-                // $filesim = htmlspecialchars($this->input->post("filesim", true));
-                if ($jenisSIM == "") {
-                    $errorJenisSIM = "<p>Jenis SIM wajib dipilih</p>";
-                } else {
-                    $errorJenisSIM = "";
-                }
-
-                if ($tglExpSIM == "") {
-                    $errorTglExpSIM = "<p>Tanggal expired SIM wajib diisi</p>";
-                } else {
-                    $errorTglExpSIM = "";
-                }
-
-                // if ($filesim == "") {
-                //     $errsim = "<p>SIM Polisi wajib diupload</p>";
-                // } else {
-                //     $errsim = "";
-                // }
-            } else {
-                $errorJenisSIM = "";
-                $errorTglExpSIM = "";
-                $errFileSIM = "";
-            }
-
-            // if ($filesmp == "") {
-            //     $errsmp = "<p>SIMPER / MINE PERMIT wajib diupload</p>";
-            // } else {
-            //     $errsmp = "";
-            // }
-
-            $error = [
-                'statusCode' => 400,
-                'errorNoRegistrasi' => form_error("editNoReg"),
-                'errorTglExpIzin' => form_error("editTglExp"),
-                'errorJenisSIM' => $errorJenisSIM,
-                'errorTglExpSIM' => $errorTglExpSIM,
-                // 'filesim' => $errsim,
-                // 'filesmp' => $errsmp,
-            ];
-
-            echo json_encode($error);
+        if ($cekauth == 501) {
+            echo json_encode(array('statusCode' => 501, "status" => "Gagal", "message" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
             return;
         } else {
-            echo json_encode(array("statusCode" => 204, "message" => "Data Berhasil Diperbarui"));
-            return;
+            $this->form_validation->set_rules("editNoReg", "editNoReg", "required|trim|max_length[50]", [
+                "required" => "No. Registrasi wajib diisi",
+                "max_length" => "No. Register maksimal 50 karakter",
+            ]);
+            $this->form_validation->set_rules("editTglExp", "editTglExp", "required|trim", [
+                "required" => "Tanggal expired SIMPER/Mine Permit wajib diisi",
+            ]);
+
+            if ($this->form_validation->run() == false) {
+                $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
+                $jenisSIM = htmlspecialchars($this->input->post("editJenisSIM", true));
+                $tglExpSIM = htmlspecialchars($this->input->post("editTglExpSIM", true));
+                // $filesmp = htmlspecialchars($this->input->post("filesmp", true));
+
+                if ($jenisIzin == 'SIMPER') {
+                    // $filesim = htmlspecialchars($this->input->post("filesim", true));
+                    if ($jenisSIM == "") {
+                        $errorJenisSIM = "<p>Jenis SIM wajib dipilih</p>";
+                    } else {
+                        $errorJenisSIM = "";
+                    }
+
+                    if ($tglExpSIM == "") {
+                        $errorTglExpSIM = "<p>Tanggal expired SIM wajib diisi</p>";
+                    } else {
+                        $errorTglExpSIM = "";
+                    }
+
+                    // if ($filesim == "") {
+                    //     $errsim = "<p>SIM Polisi wajib diupload</p>";
+                    // } else {
+                    //     $errsim = "";
+                    // }
+                } else {
+                    $errorJenisSIM = "";
+                    $errorTglExpSIM = "";
+                    // $errFileSIM = "";
+                }
+
+                // if ($filesmp == "") {
+                //     $errsmp = "<p>SIMPER / MINE PERMIT wajib diupload</p>";
+                // } else {
+                //     $errsmp = "";
+                // }
+
+                $error = [
+                    'statusCode' => 400,
+                    'errorNoRegistrasi' => form_error("editNoReg"),
+                    'errorTglExpIzin' => form_error("editTglExp"),
+                    'errorJenisSIM' => $errorJenisSIM,
+                    'errorTglExpSIM' => $errorTglExpSIM,
+                    // 'filesim' => $errsim,
+                    // 'filesmp' => $errsmp,
+                ];
+
+                echo json_encode($error);
+                return;
+            } else {
+                $auth_kary = htmlspecialchars($this->input->post("authKary", true));
+                $jenisizin = htmlspecialchars($this->input->post("jenisIzin", true));
+                $noreg = htmlspecialchars($this->input->post("editNoReg", true));
+                $tglexp = htmlspecialchars($this->input->post("editTglExp", true));
+                $jenissim = htmlspecialchars($this->input->post("editJenisSIM", true));
+                $tglexpsim = htmlspecialchars($this->input->post("editTglExpSIM", true));
+                $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
+                $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
+
+                if ($auth_kary == "") {
+                    echo json_encode(array(
+                        "statusCode" => 404,
+                        "status" => "Not Found",
+                        "pesan" => "Data karyawan tidak ditemukan"
+                    ));
+                    return;
+                }
+
+                echo json_encode(array(
+                    "statusCode" => 204,
+                    "status" => "Resource has been updated",
+                    "message" => "Data Berhasil Diperbarui"
+                ));
+                return;
+            }
         }
         // else {
         //     $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
