@@ -156,7 +156,7 @@ $(document).ready(function () {
             }
         }
 
-        if (!auth_sim) {
+        if (jenisIzin == 'SIMPER' && !auth_sim) {
             swal("Perhatian", "Jenis SIM wajib dipilih!", "error");
             $(".errorEditJenisSIM").html("Data jenis SIM wajib dipilih");
         } else {
