@@ -777,8 +777,7 @@
                                             <h6 class="font-weight-bold" for="editPerKary">
                                                 <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
                                             </h6>
-                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data
-                                                Sertifikasi</h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Sertifikasi</h6>
                                             <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
                                             <hr style="height: 3px; background: #404443;">
                                         </div>
