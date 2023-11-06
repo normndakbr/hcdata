@@ -3888,7 +3888,7 @@ class Karyawan extends My_Controller
             } else {
                 $config['upload_path'] = './berkas/pendukung/1';
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 500;
+                $config['max_size'] = 1000;
                 $config['file_name'] = $nama_file;
                 $config['overwrite'] = true;
 
