@@ -6364,10 +6364,10 @@ $(document).ready(function () {
         text: "File yang dipilih bukan PDF",
         type: "info",
       });
-    } else if (sizeFile > 500000) {
+    } else if (sizeFile > 1000000) {
       swal({
         title: "Peringatan",
-        text: "Ukuran file yang dipilih melebihi 500kb",
+        text: "Ukuran file yang dipilih melebihi 1000kb",
         type: "warning",
       });
     } else {
