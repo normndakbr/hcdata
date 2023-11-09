@@ -102,9 +102,10 @@
                         <input id="valueKontrakKary" class="d-none" value="<?= isset($data_kontrak->auth_kontrak_kary) ? $data_kontrak->auth_kontrak_kary : '-' ?>"></input>
 
                         <!-- data SIMPER/Mine Permit -->
-                        <input id="valueJenisIzinTambang" class="d-none" value="<?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang : '-' ?>"></input>
-                        <input id="valueNoRegIzin" class="d-none" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>"></input>
-                        <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
+                        <input id="valueIDJenisIzinTambang" class="" value="<?= isset($data_izin->id_jenis_izin_tambang) ? $data_izin->id_jenis_izin_tambang : '-' ?>"></input>
+                        <input id="valueJenisIzinTambang" class="" value="<?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang : '-' ?>"></input>
+                        <input id="valueNoRegIzin" class="" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>"></input>
+                        <input id="valueTglExpired" class="" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                         <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                         <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
                         <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
