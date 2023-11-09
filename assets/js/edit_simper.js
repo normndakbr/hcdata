@@ -5,6 +5,7 @@ $(document).ready(function () {
     let editAuthSIM = "";
     let editJenisSIM = "";
     let jenisIzinTambang = $("#valueJenisIzinTambang").val();
+    let idJenisIzinTambang = $("#valueIDJenisIzinTambang").val();
     let editTglExpSIM = $("#editTglExpSim").val();
 
 
@@ -166,6 +167,7 @@ $(document).ready(function () {
                 data: {
                     token: token,
                     authKary: authKary,
+                    idJenisIzin: idJenisIzinTambang,
                     jenisIzin: jenisIzin,
                     editNoReg: noRegistrasiIzin,
                     editTglExp: tglExpiredIzin,
@@ -173,7 +175,7 @@ $(document).ready(function () {
                     editTglExpSIM: tglExpiredSIM,
                 },
                 success: function (res) {
-                    console.log("Success POST on " + site_url + "sim/editSimper");
+                    console.log("Success POST on " + site_url + "karyawan/editSimper");
                     let data = JSON.parse(res);
                     console.log(data);
                     if (data.statusCode == 400) {
@@ -186,7 +188,7 @@ $(document).ready(function () {
                     }
                 },
                 error: function (xhr, ajaxOptions, thrownError) {
-                    console.log("Error POST on " + site_url + "sim/editSimper");
+                    console.log("Error POST on " + site_url + "karyawan/editSimper");
                     console.log(thrownError);
                 }
             });
