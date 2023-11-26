@@ -102,18 +102,20 @@
                         <input id="valueKontrakKary" class="d-none" value="<?= isset($data_kontrak->auth_kontrak_kary) ? $data_kontrak->auth_kontrak_kary : '-' ?>"></input>
 
                         <!-- data SIMPER/Mine Permit -->
-                        <input id="valueIDJenisIzinTambang" class="" value="<?= isset($data_izin->id_jenis_izin_tambang) ? $data_izin->id_jenis_izin_tambang : '-' ?>"></input>
-                        <input id="valueJenisIzinTambang" class="" value="<?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang : '-' ?>"></input>
-                        <input id="valueNoRegIzin" class="" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>"></input>
-                        <input id="valueTglExpired" class="" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
+                        <input id="valueIDIzinTambang" class="d-none" value="<?= isset($data_izin->id_izin_tambang) ? $data_izin->id_izin_tambang : '-' ?>"></input>
+                        <input id="valueIDJenisIzinTambang" class="d-none" value="<?= isset($data_izin->id_jenis_izin_tambang) ? $data_izin->id_jenis_izin_tambang : '-' ?>"></input>
+                        <input id="valueJenisIzinTambang" class="d-none" value="<?= isset($data_izin->jenis_izin_tambang) ? $data_izin->jenis_izin_tambang : '-' ?>"></input>
+                        <input id="valueNoRegIzin" class="d-none" value="<?= isset($data_izin->no_reg) ? $data_izin->no_reg : '-' ?>"></input>
+                        <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                         <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                         <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
                         <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
                         <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp_sim : '-' ?>"></input>
+                        <input id="valueTglBuatIzinTambang" class="d-none" value="<?= isset($data_izin) ? $data_izin->tgl_buat : '-' ?>"></input>
+                        <input id="valueTglBuatSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_buat : '-' ?>"></input>
 
                         <div class="row p-3">
                             <?php
-
                             if (!$this->session->csrf_token) {
                                 $this->session->csrf_token = hash("sha1", time());
                             }
@@ -616,7 +618,7 @@
 
                                         </div>
 
-                                        <?php if (isset($data_izin)) { ?>
+                                        <?php if (isset($data_izin->jenis_izin_tambang)) { ?>
                                             <div class="card-body row">
                                                 <div class=" mb-3 col-lg-6 col-md-6 col-sm-12">
                                                     <div class="form-group">
@@ -629,21 +631,18 @@
                                                 <div class=" mb-3 col-lg-6 col-md-6 col-sm-12">
                                                     <div class="form-group">
                                                         <!-- $data_izin->jenis_izin_tambang -->
-                                                        <?php if (isset($data_izin->id_jenis_izin_tambang)) { ?>
-                                                            <?php if ($data_izin->id_jenis_izin_tambang == 1) { ?>
-                                                                <label class="font-weight-bold" for="editTglExp">Tanggal Expired
-                                                                    MINE PERMIT <span class="text-danger">*</span></label>
-                                                            <?php } else if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
-                                                                <label class="font-weight-bold" for="editTglExp">Tanggal Expired
-                                                                    SIMPER <span class="text-danger">*</span></label>
-                                                            <?php } ?>
+                                                        <?php if ($data_izin->id_jenis_izin_tambang == 1) { ?>
+                                                            <label class="font-weight-bold" for="editTglExp">Tanggal Expired
+                                                                MINE PERMIT <span class="text-danger">*</span></label>
+                                                        <?php } else if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
+                                                            <label class="font-weight-bold" for="editTglExp">Tanggal Expired
+                                                                SIMPER <span class="text-danger">*</span></label>
                                                         <?php } ?>
 
                                                         <input id='editTglExp' name='editTglExp' type="date" class="form-control form-control-user" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>">
                                                         <small class="errorEditTglExp text-danger font-italic font-weight-bold"></small>
                                                     </div>
                                                 </div>
-
 
                                                 <?php if (isset($data_izin->id_jenis_izin_tambang) && $data_izin->id_jenis_izin_tambang == 2) { ?>
                                                     <div id="fieldEditJenisSim" class="mb-2 col-lg-6 col-md-6 col-sm-12">
@@ -763,7 +762,7 @@
                                             </div>
                                         <?php } else { ?>
                                             <div class="card-body row justify-content-center">
-                                                <h5 style='text-align:center;'>Tidak Ada Data</h5>
+                                                <h5 style='text-align:center;'>Data Izin Tambang Tidak Ditemukan.</h5>
                                             </div>
                                         <?php } ?>
                                     </div>
@@ -1170,8 +1169,8 @@
     </div>
 </div>
 
-<script>
+<!-- <script>
     // Access the data in JavaScript
     var myData = "<?php echo $jsonData; ?>";
     console.log(myData);
-</script>
+</script> -->
