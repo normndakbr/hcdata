@@ -140,12 +140,15 @@ $(document).ready(function () {
     });
 
     $("#editSimpanIzin").click(() => {
+        let idIzinTambang = $("#valueIDIzinTambang").val();
         let auth_sim = editAuthSIM;
         let jenisIzin = jenisIzinTambang;
         let noRegistrasiIzin = $("#editNoReg").val();
         let tglExpiredIzin = $("#editTglExp").val();
         let idJenisSIM = "";
         let tglExpiredSIM = "";
+        let tglBuatIzinTambang = $("#valueTglBuatIzinTambang").val();
+        let tglBuatSimKary = $("#valueTglBuatSimKary").val();
 
         if (jenisIzin == 'SIMPER') {
             if (auth_sim) {
@@ -173,6 +176,9 @@ $(document).ready(function () {
                     editTglExp: tglExpiredIzin,
                     editJenisSIM: idJenisSIM,
                     editTglExpSIM: tglExpiredSIM,
+                    idIzinTambang: idIzinTambang,
+                    tglBuatIzinTambang: tglBuatIzinTambang,
+                    tglBuatSimKary: tglBuatSimKary
                 },
                 success: function (res) {
                     console.log("Success POST on " + site_url + "karyawan/editSimper");
