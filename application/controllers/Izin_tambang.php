@@ -123,8 +123,8 @@ class Izin_tambang extends My_Controller
                 return;
             }
 
-            if ($smpsize > 70000) {
-                echo json_encode(array("statusCode" => 202, "filesmp" => "Ukuran file maksimal 70kb."));
+            if ($smpsize > 200000) {
+                echo json_encode(array("statusCode" => 202, "filesmp" => "Ukuran file maksimal 200kb."));
                 return;
             }
 
@@ -143,8 +143,8 @@ class Izin_tambang extends My_Controller
                 return;
             }
 
-            if ($simsize > 70000) {
-                echo json_encode(array("statusCode" => 202, "filesim" => "Ukuran file maksimal 70kb."));
+            if ($simsize > 200000) {
+                echo json_encode(array("statusCode" => 202, "filesim" => "Ukuran file maksimal 200kb."));
                 return;
             }
 
@@ -170,7 +170,7 @@ class Izin_tambang extends My_Controller
                     $_FILES['filesmpkary']['name'] = $nama_smp;
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 70;
+                    $config['max_size'] = 200;
 
                     $this->load->library('upload', $config);
                     $this->load->initialize($config);
@@ -180,7 +180,7 @@ class Izin_tambang extends My_Controller
                     $_FILES['filesimpolisi']['name'] = $nama_sim;
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 70;
+                    $config['max_size'] = 200;
 
                     $this->load->library('upload', $config);
                     $this->load->initialize($config);
@@ -389,8 +389,8 @@ class Izin_tambang extends My_Controller
                 return;
             }
 
-            if ($smpsize > 70000) {
-                echo json_encode(array("statusCode" => 202, "filesmp" => "Ukuran file maksimal 70kb."));
+            if ($smpsize > 200000) {
+                echo json_encode(array("statusCode" => 202, "filesmp" => "Ukuran file maksimal 200kb."));
                 return;
             }
             
@@ -409,8 +409,8 @@ class Izin_tambang extends My_Controller
                 return;
             }
             
-            if ($simsize > 70000) {
-                echo json_encode(array("statusCode" => 202, "filesim" => "Ukuran file maksimal 70kb."));
+            if ($simsize > 200000) {
+                echo json_encode(array("statusCode" => 202, "filesim" => "Ukuran file maksimal 200kb."));
                 return;
             }
             
@@ -437,7 +437,7 @@ class Izin_tambang extends My_Controller
                     $_FILES['filesmpkary']['name'] = $nama_smp;
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 70;
+                    $config['max_size'] = 200;
                     
                     $this->load->library('upload', $config);
                     $this->load->initialize($config);
@@ -447,7 +447,7 @@ class Izin_tambang extends My_Controller
                     $_FILES['filesimpolisi']['name'] = $nama_sim;
                     $config['upload_path'] = './berkas/karyawan/' . $foldername;
                     $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 70;
+                    $config['max_size'] = 200;
                     
                     $this->load->library('upload', $config);
                     $this->load->initialize($config);

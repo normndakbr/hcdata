@@ -165,7 +165,7 @@ class Karyawan extends My_Controller
             $data["data_alamat"] = $this->kry->get_alamat_by_auth($auth_kary);
             $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
             $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
-            $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
+            // $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
             $data["data_izin"] = $this->kry->get_all_izin_by_auth($auth_kary);
             $data["data_langgar"] = $this->kry->get_pelanggaran_by_auth($auth_kary);
             $data["data_mcu"] = $this->kry->get_mcu_by_auth($auth_kary);
@@ -1349,7 +1349,7 @@ class Karyawan extends My_Controller
 
                                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                                 $config['allowed_types'] = 'pdf';
-                                $config['max_size'] = 70;
+                                $config['max_size'] = 200;
                                 $config['overwrite'] = true;
                                 $this->load->library('upload', $config);
                                 $this->load->initialize($config);
@@ -1380,7 +1380,7 @@ class Karyawan extends My_Controller
                                     return;
                                 }
 
-                                if ($smpsize > 70000) {
+                                if ($smpsize > 200000) {
                                     echo json_encode(array("statusCode" => 202, "filesmp" => "File melebihi Batas ukuran file maksimal 70kb."));
                                     return;
                                 }
@@ -1393,7 +1393,7 @@ class Karyawan extends My_Controller
 
                                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                                 $config['allowed_types'] = 'pdf';
-                                $config['max_size'] = 70;
+                                $config['max_size'] = 200;
                                 $config['overwrite'] = true;
                                 $this->load->library('upload', $config);
                                 $this->load->initialize($config);
@@ -1475,7 +1475,7 @@ class Karyawan extends My_Controller
                             return;
                         }
 
-                        if ($smpsize > 70000) {
+                        if ($smpsize > 200000) {
                             echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
                             return;
                         }
@@ -1491,7 +1491,7 @@ class Karyawan extends My_Controller
 
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 70;
+                        $config['max_size'] = 100;
                         $config['overwrite'] = true;
                         $this->load->library('upload', $config);
                         $this->load->initialize($config);
@@ -1554,7 +1554,7 @@ class Karyawan extends My_Controller
                         $_FILES['filesmpkary']['name'] = $url_izin;
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 70;
+                        $config['max_size'] = 200;
                         $config['overwrite'] = true;
                         $this->load->library('upload', $config);
                         $this->load->initialize($config);
@@ -1745,8 +1745,8 @@ class Karyawan extends My_Controller
                         return;
                     }
 
-                    if ($smpsize > 70000) {
-                        echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
+                    if ($smpsize > 200000) {
+                        echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 100kb."));
                         return;
                     }
 
@@ -1758,7 +1758,7 @@ class Karyawan extends My_Controller
                         $_FILES['filesmpkary']['name'] = $url_izin;
                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
                         $config['allowed_types'] = 'pdf';
-                        $config['max_size'] = 70;
+                        $config['max_size'] = 200;
                         $config['overwrite'] = true;
                         $this->load->library('upload', $config);
                         $this->load->initialize($config);
@@ -2998,18 +2998,14 @@ class Karyawan extends My_Controller
 
             $foldername = md5($id_personal);
 
-            if ($id_m_perusahaan == 1) {
-                $fileizin = "berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang;
-            } else {
-                $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
-            }
+            $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
 
             if (is_file($fileizin)) {
                 $tofile = realpath($fileizin);
                 header('Content-Type: application/pdf');
                 readfile($tofile);
             } else {
-                $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_izin_tambang;
+                $fileizin = "berkas/simper/" . $id_m_perusahaan . "/" . $url_izin_tambang;
                 if (is_file($fileizin)) {
                     $tofile = realpath($fileizin);
                     header('Content-Type: application/pdf');
@@ -3044,6 +3040,13 @@ class Karyawan extends My_Controller
 
                 if ($id_m_perusahaan == 1) {
                     $fileizin = "berkas/sim/" . $id_m_perusahaan . "/" . $url_file;
+                    if (is_file($fileizin)) {
+                        $tofile = realpath($fileizin);
+                        header('Content-Type: application/pdf');
+                        readfile($tofile);
+                    } else {
+                        $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_file;
+                    }
                 } else {
                     $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_file;
                 }
@@ -3859,7 +3862,7 @@ class Karyawan extends My_Controller
             } else {
                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
                 $config['allowed_types'] = 'pdf';
-                $config['max_size'] = 700;
+                $config['max_size'] = 1000;
                 $config['file_name'] = $nama_file;
                 $config['overwrite'] = true;
 
@@ -4008,8 +4011,10 @@ class Karyawan extends My_Controller
                     echo json_encode(array("statusCode" => 201, "pesan" => $error));
                     return;
                 } else {
+                    $file_info = $this->upload->data();
+                    $uploaded_file_name = $file_info['file_name'];
                     $dt_personal = array(
-                        'url_foto' => $nama_file,
+                        'url_foto' => $uploaded_file_name,
                     );
                     $id_karyawan = $idpersonal->id_kary;
                     $this->kry->update_dtkary($id_karyawan, $dt_personal);
@@ -4043,6 +4048,7 @@ class Karyawan extends My_Controller
                 $config['max_size'] = 100;
                 $config['file_name'] = $nama_file;
                 $config['overwrite'] = true;
+                $config['remove_spaces'] = false;
 
                 $this->load->library('upload', $config);
 
@@ -4051,8 +4057,10 @@ class Karyawan extends My_Controller
                     echo json_encode(array("statusCode" => 201, "pesan" => $error));
                     return;
                 } else {
+                    $file_info = $this->upload->data();
+                    $uploaded_file_name = $file_info['file_name'];
                     $dt_personal = array(
-                        'url_foto' => $nama_file,
+                        'url_foto' => $uploaded_file_name,
                     );
                     $id_karyawan = $idpersonal->id_kary;
                     $this->kry->update_dtkary($id_karyawan, $dt_personal);
@@ -4135,13 +4143,59 @@ class Karyawan extends My_Controller
                 return;
             } else {
                 $auth_kary = htmlspecialchars($this->input->post("authKary", true));
-                $jenisizin = htmlspecialchars($this->input->post("jenisIzin", true));
-                $noreg = htmlspecialchars($this->input->post("editNoReg", true));
-                $tglexp = htmlspecialchars($this->input->post("editTglExp", true));
-                $jenissim = htmlspecialchars($this->input->post("editJenisSIM", true));
-                $tglexpsim = htmlspecialchars($this->input->post("editTglExpSIM", true));
                 $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
-                $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
+                $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
+                $idIzinTambang = htmlspecialchars($this->input->post("idIzinTambang", true));
+                $idJenisIzinTambang = "";
+                $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
+                $noReg = htmlspecialchars($this->input->post("editNoReg", true));
+                $tglExp = htmlspecialchars($this->input->post("editTglExp", true));
+                $idJenisSim = htmlspecialchars($this->input->post("editJenisSIM", true));
+                $tglExpSim = htmlspecialchars($this->input->post("editTglExpSIM", true));
+                $tglBuatIzinTambang = htmlspecialchars($this->input->post("tglBuatIzinTambang", true));
+                $tglBuatSimKary = htmlspecialchars($this->input->post("tglBuatSimKary", true));
+                $idSimKary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
+                $id_user = $this->session->userdata('id_user_hcdata');
+
+                if ($jenisIzin == "SIMPER") {
+                    $idJenisIzinTambang = 2;
+                } else {
+                    $idJenisIzinTambang = 1;
+                }
+
+                $data_izin_tambang = array(
+                    'id_izin_tambang' => $idIzinTambang,
+                    'id_kary' => $id_karyawan,
+                    'id_jenis_izin_tambang' => $idJenisIzinTambang,
+                    'no_reg' => $noReg,
+                    'tgl_expired' => $tglExp,
+                    'id_sim_kary' => $idSimKary,
+                    'url_izin_tambang' => "test",
+                    'ket_izin_tambang' => "-",
+                    'tgl_buat' => $tglBuatIzinTambang,
+                    'tgl_edit' => date('Y-m-d H:i:s'),
+                    'id_user' => $id_user,
+                );
+                $json_data_izin_tambang = json_encode($data_izin_tambang, JSON_PRETTY_PRINT);
+                echo $json_data_izin_tambang . "\n";
+
+                if ($jenisIzin == 'SIMPER') {
+                    $data_sim_kary = array(
+                        'id_sim_kary' => $idSimKary,
+                        'id_personal' => $id_personal,
+                        'id_sim' => $idJenisSim,
+                        'tgl_exp_sim' => $tglExpSim,
+                        'ket_sim_kary' => "-",
+                        'url_file' => "",
+                        'tgl_buat' => $tglBuatSimKary,
+                        'tgl_edit' => date('Y-m-d H:i:s'),
+                        'id_user' => $id_user,
+                    );
+                    $json_data_sim_kary = json_encode($data_sim_kary, JSON_PRETTY_PRINT);
+                    echo $json_data_sim_kary . "\n";
+                }
+
+                // $this->kry->update_dtkary($id_karyawan, $data_kry);
 
                 if ($auth_kary == "") {
                     echo json_encode(array(
