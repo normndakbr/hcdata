@@ -109,6 +109,7 @@
                         <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                         <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                         <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
+                        <input id="valueUrlIzinTambang" class="d-none" value="<?= isset($data_sim_kary) ? $data_izin->url_izin_tambang : '-' ?>"></input>
                         <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
                         <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp_sim : '-' ?>"></input>
                         <input id="valueTglBuatIzinTambang" class="d-none" value="<?= isset($data_izin) ? $data_izin->tgl_buat : '-' ?>"></input>
@@ -877,6 +878,40 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlUploadUlangSimper" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white" id="jdluploadulangser">Upload Ulang Sertifikat</h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert erruploadulangser alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div>
+                            <h6 class="text-danger font-italic">Catatan : Upload file Sertifikat dalam format pdf,
+                                ukuran file Sertifikat maksimal 300 kb.</h6>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileSertifikasiUlang"><b>Upload file sertifikat</b> :</label>
+                            <input type="file" class="form-control-file" id="fileSertifikasiUlang">
+                            <small class="errorFileSertifikasiUlang text-danger font-italic font-weight-bold"></small>
+                            <span class="9f7fjmuj8ik2js4n8k66g3hjl323 d-none"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" name="btnEditReuploadSertifikat" id="btnEditReuploadSertifikat" class="btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button name="btnbataluploadulangser" id="btnbataluploadulangser" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
             </div>
         </div>
     </div>

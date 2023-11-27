@@ -1692,8 +1692,6 @@ class Karyawan extends My_Controller
             $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
             $filesim = htmlspecialchars($this->input->post("filesim", true));
             $filesmp = htmlspecialchars($this->input->post("filesmp", true));
-            $filesim = htmlspecialchars($this->input->post("filesim", true));
-            $filesmp = htmlspecialchars($this->input->post("filesmp", true));
             $filesimnm = htmlspecialchars($this->input->post("filesimnm", true));
             $filesimsv = htmlspecialchars($this->input->post("filesimsv", true));
             $filesmpnm = htmlspecialchars($this->input->post("filesmpnm", true));
@@ -4164,38 +4162,26 @@ class Karyawan extends My_Controller
                 }
 
                 $data_izin_tambang = array(
-                    'id_izin_tambang' => $idIzinTambang,
-                    'id_kary' => $id_karyawan,
-                    'id_jenis_izin_tambang' => $idJenisIzinTambang,
                     'no_reg' => $noReg,
                     'tgl_expired' => $tglExp,
-                    'id_sim_kary' => $idSimKary,
-                    'url_izin_tambang' => "test",
-                    'ket_izin_tambang' => "-",
-                    'tgl_buat' => $tglBuatIzinTambang,
                     'tgl_edit' => date('Y-m-d H:i:s'),
                     'id_user' => $id_user,
                 );
-                $json_data_izin_tambang = json_encode($data_izin_tambang, JSON_PRETTY_PRINT);
-                echo $json_data_izin_tambang . "\n";
+                $this->kry->update_simper($idIzinTambang, $data_izin_tambang);
+                // $json_data_izin_tambang = json_encode($data_izin_tambang, JSON_PRETTY_PRINT);
+                // echo $json_data_izin_tambang . "\n";
 
                 if ($jenisIzin == 'SIMPER') {
                     $data_sim_kary = array(
-                        'id_sim_kary' => $idSimKary,
-                        'id_personal' => $id_personal,
                         'id_sim' => $idJenisSim,
                         'tgl_exp_sim' => $tglExpSim,
-                        'ket_sim_kary' => "-",
-                        'url_file' => "",
-                        'tgl_buat' => $tglBuatSimKary,
                         'tgl_edit' => date('Y-m-d H:i:s'),
                         'id_user' => $id_user,
                     );
-                    $json_data_sim_kary = json_encode($data_sim_kary, JSON_PRETTY_PRINT);
-                    echo $json_data_sim_kary . "\n";
+                    $this->kry->update_sim($idSimKary, $data_sim_kary);
+                    // $json_data_sim_kary = json_encode($data_sim_kary, JSON_PRETTY_PRINT);
+                    // echo $json_data_sim_kary . "\n";
                 }
-
-                // $this->kry->update_dtkary($id_karyawan, $data_kry);
 
                 if ($auth_kary == "") {
                     echo json_encode(array(
@@ -4209,339 +4195,10 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 204,
                     "status" => "Resource has been updated",
-                    "message" => "Data Berhasil Diperbarui"
+                    "message" => "Data SIMPER/Mine Permit Berhasil Diperbarui"
                 ));
                 return;
             }
         }
-        // else {
-        //     $auth_kary = htmlspecialchars($this->input->post("auth_kary", true));
-        //     $auth_izin = htmlspecialchars($this->input->post("auth_izin", true));
-        //     $auth_simpol = htmlspecialchars($this->input->post("auth_simpol", true));
-        //     $jenisizin = htmlspecialchars($this->input->post("jenisizin", true));
-        //     $noreg = htmlspecialchars($this->input->post("noreg", true));
-        //     $tglexp = htmlspecialchars($this->input->post("tglexp", true));
-        //     $jenissim = htmlspecialchars($this->input->post("jenissim", true));
-        //     $tglexpsim = htmlspecialchars($this->input->post("tglexpsim", true));
-        //     $filesim = htmlspecialchars($this->input->post("filesim", true));
-        //     $filesmp = htmlspecialchars($this->input->post("filesmp", true));
-        //     $filesmpnm = htmlspecialchars($this->input->post("filesmpnm", true));
-        //     $filesmpsv = htmlspecialchars($this->input->post("filesmpsv", true));
-        //     $id_karyawan = $this->kry->get_id_karyawan($auth_kary);
-        //     $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
-        //     $id_sim_kary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
-        //     $url_izin = date('YmdHis') . '-SMP.pdf';
-        //     $url_sim = date('YmdHis') . '-SIMPOL.pdf';
-        //     $foldername = md5($id_personal);
-
-        //     if ($auth_kary == "") {
-        //         echo json_encode(array("statusCode" => 201, "pesan" => "Data karyawan tidak ditemukan"));
-        //         return;
-        //     }
-
-        //     if ($jenisizin == 2) { // ===================== jika simper ==============================
-        //         if ($auth_izin != "") { // ====================== jika izin tambang sudah ada =======================
-        //             $query = $this->smp->cek_unit($auth_izin);
-
-        //             if ($query == 201) {
-        //                 echo json_encode(array("statusCode" => 201, "pesan" => "Data unit SIMPER belum dibuat"));
-        //                 return;
-        //             } else {
-        //                 if (is_dir('./berkas/karyawan/' . $foldername) == false) {
-        //                     mkdir('./berkas/karyawan/' . $foldername, 0775, true);
-        //                 }
-
-        //                 if (is_dir('./berkas/karyawan/' . $foldername)) {
-        //                     $simname = $_FILES['filesimkary']['name'];
-        //                     $simtipe = $_FILES['filesimkary']['type'];
-        //                     $simsize = $_FILES['filesimkary']['size'];
-
-        //                     if ($filesimnm !== $simname) { //  ================== jika sim di ganti file =====================
-
-        //                         if ($simname == "" || $simname == "Pilih file SIMPER/MINE PERMIT") {
-        //                             echo json_encode(array("statusCode" => 202, "filesim" => "SIM Polisi wajib diupload."));
-        //                             return;
-        //                         }
-
-        //                         if ($simtipe == "application\/pdf") {
-        //                             echo json_encode(array("statusCode" => 202, "filesim" => "Format file yang diupload wajib dalam bentuk pdf."));
-        //                             return;
-        //                         }
-
-        //                         if ($simsize > 70000) {
-        //                             echo json_encode(array("statusCode" => 202, "filesim" => "File melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
-        //                             return;
-        //                         }
-
-        //                         if ($filesimsv == "") {
-        //                             $_FILES['filesimkary']['name'] = $url_sim;
-        //                         } else {
-        //                             $_FILES['filesimkary']['name'] = $filesimsv;
-        //                         }
-
-        //                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
-        //                         $config['allowed_types'] = 'pdf';
-        //                         $config['max_size'] = 70;
-        //                         $config['overwrite'] = true;
-        //                         $this->load->library('upload', $config);
-        //                         $this->load->initialize($config);
-        //                         $this->upload->do_upload('filesimkary');
-        //                     } else {
-        //                         if ($filesimsv == "") {
-        //                             $_FILES['filesimkary']['name'] = $url_sim;
-        //                         } else {
-        //                             $_FILES['filesimkary']['name'] = $filesimsv;
-        //                         }
-        //                     }
-
-        //                     $smpname = $_FILES['filesmpkary']['name'];
-        //                     $smptipe = $_FILES['filesmpkary']['type'];
-        //                     $smpsize = $_FILES['filesmpkary']['size'];
-
-        //                     // echo json_encode([$filesmpnm . " - " . $smpname]);
-        //                     // return;
-
-        //                     if ($filesmpnm !== $smpname) { //  ================== jika smp di ganti file =====================
-        //                         if ($smpname == "" || $smpname == "Pilih file SIMPER/MINE PERMIT") {
-        //                             echo json_encode(array("statusCode" => 202, "filesmp" => "SIMPER/MINE PERMIT wajib diupload."));
-        //                             return;
-        //                         }
-
-        //                         if ($smptipe == "application\/pdf") {
-        //                             echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
-        //                             return;
-        //                         }
-
-        //                         if ($smpsize > 70000) {
-        //                             echo json_encode(array("statusCode" => 202, "filesmp" => "File melebihi Batas ukuran file maksimal 70kb."));
-        //                             return;
-        //                         }
-
-        //                         if ($filesmpsv == "") {
-        //                             $_FILES['filesmpkary']['name'] = $url_izin;
-        //                         } else {
-        //                             $_FILES['filesmpkary']['name'] = $filesmpsv;
-        //                         }
-
-        //                         $config['upload_path'] = './berkas/karyawan/' . $foldername;
-        //                         $config['allowed_types'] = 'pdf';
-        //                         $config['max_size'] = 70;
-        //                         $config['overwrite'] = true;
-        //                         $this->load->library('upload', $config);
-        //                         $this->load->initialize($config);
-        //                         $this->upload->do_upload('filesmpkary');
-        //                     } else {
-        //                         if ($filesmpsv == "") {
-        //                             $_FILES['filesmpkary']['name'] = $url_izin;
-        //                         } else {
-        //                             $_FILES['filesmpkary']['name'] = $filesmpsv;
-        //                         }
-        //                     }
-
-        //                     $id_izin = $this->kry->get_id_izin($auth_izin);
-        //                     $dtizin = array(
-        //                         'id_jenis_izin_tambang' => $jenisizin,
-        //                         'no_reg' => $noreg,
-        //                         'tgl_expired' => $tglexp,
-        //                         'id_sim_kary' => $id_sim_kary,
-        //                         'ket_izin_tambang' => '',
-        //                     );
-
-        //                     // echo json_encode([$_FILES['filesmpkary']['name'] . " - " . $_FILES['filesimkary']['name']]);
-        //                     // return;
-
-        //                     $upt_izin = $this->smp->update_izin($id_izin, $dtizin);
-        //                     $id_sim_kary_last = $this->smp->get_id_simpol($auth_simpol);
-
-        //                     $data_sim_polisi = [
-        //                         'id_sim' => $jenissim,
-        //                         'tgl_exp_sim' => $tglexpsim,
-        //                         'ket_sim_kary' => '',
-        //                     ];
-
-        //                     $this->kry->update_sim($id_sim_kary_last, $data_sim_polisi);
-
-        //                     echo json_encode(array(
-        //                         "statusCode" => 200,
-        //                         "pesan" => "Data SIMPER berhasil diupdate",
-        //                         "filesim" => $simname,
-        //                         "filesimsv" => $_FILES['filesimkary']['name'],
-        //                         "filesmp" => $smpname,
-        //                         "filesmpsv" => $_FILES['filesmpkary']['name'],
-        //                     ));
-        //                 } else {
-        //                     echo json_encode(array("statusCode" => 201, "pesan" => "Folder data karyawan gagal dibuat"));
-        //                     return;
-        //                 }
-        //             }
-        //         } else {
-        //             echo json_encode(array("statusCode" => 201, "pesan" => "Data unit SIMPER belum dibuat"));
-        //             return;
-        //         }
-        //     } else if ($jenisizin == 1) { // jika mine permit -------------------------------
-        //         $id_sim_kary = 0;
-        //         $tglexpsim = "1970-01-01";
-
-        //         if ($auth_izin !== "") { // ====================== jika izin tambang sudah ada =======================
-        //             $id_izin = $this->smp->get_id_izin_tambang($auth_izin);
-        //             $cek_noreg_ada = $this->kry->cek_no_simper_ada($noreg, $id_izin);
-
-        //             if ($cek_noreg_ada) {
-        //                 echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Mine Permit sudah digunakan"));
-        //                 return;
-        //             }
-
-        //             $smpname = $_FILES['filesmpkary']['name'];
-        //             $smptipe = $_FILES['filesmpkary']['type'];
-        //             $smpsize = $_FILES['filesmpkary']['size'];
-
-        //             if ($filesmpnm != $smpname) { //  ================== jika sim di ganti =====================
-
-        //                 if ($smpname == "") {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "MINE PERMIT wajib diupload."));
-        //                     return;
-        //                 }
-
-        //                 if ($smptipe == "application\/pdf") {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
-        //                     return;
-        //                 }
-
-        //                 if ($smpsize > 70000) {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
-        //                     return;
-        //                 }
-
-        //                 if ($filesmpsv == "") {
-        //                     $_FILES['filesmpkary']['name'] = $url_izin;
-        //                 } else {
-        //                     $_FILES['filesmpkary']['name'] = $filesmpsv;
-        //                 }
-
-        //                 // echo json_encode([$smpname]);
-        //                 // return;
-
-        //                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
-        //                 $config['allowed_types'] = 'pdf';
-        //                 $config['max_size'] = 70;
-        //                 $config['overwrite'] = true;
-        //                 $this->load->library('upload', $config);
-        //                 $this->load->initialize($config);
-        //                 $this->upload->do_upload('filesmpkary');
-        //             } else {
-        //                 if ($filesmpsv == "") {
-        //                     $_FILES['filesmpkary']['name'] = $url_izin;
-        //                 } else {
-        //                     $_FILES['filesmpkary']['name'] = $filesmpsv;
-        //                 }
-        //             }
-
-        //             $dtizin = array(
-        //                 'id_jenis_izin_tambang' => $jenisizin,
-        //                 'no_reg' => $noreg,
-        //                 'tgl_expired' => $tglexp,
-        //                 'id_sim_kary' => $id_sim_kary,
-        //                 'url_izin_tambang' => $_FILES['filesmpkary']['name'],
-        //                 'ket_izin_tambang' => '',
-        //             );
-
-        //             $upt_izin = $this->smp->update_izin($id_izin, $dtizin);
-        //             $linkizn = base_url('karyawan/berkasizinadd/' . $auth_izin);
-
-        //             echo json_encode(array(
-        //                 "statusCode" => 200,
-        //                 "pesan" => "Data Mine Permit berhasil diupdate",
-        //                 "filesmp" => $smpname,
-        //                 "filesmpsv" => $_FILES['filesmpkary']['name'],
-        //                 "linkizin" => $linkizn,
-        //             ));
-        //             return;
-        //         } else { // ========================= jika belum ada izin tambang ===========================
-        //             $cek_noreg = $this->kry->cek_no_simper($noreg);
-        //             if ($cek_noreg) {
-        //                 echo json_encode(array("statusCode" => 201, "pesan" => "No. Register SIMPER/Mine Permit sudah digunakan"));
-        //                 return;
-        //             }
-
-        //             if ($auth_kary !== "") {
-        //                 $smpname = $_FILES['filesmpkary']['name'];
-        //                 $smptipe = $_FILES['filesmpkary']['type'];
-        //                 $smpsize = $_FILES['filesmpkary']['size'];
-
-        //                 if ($smpname == "" || $smpname == "Pilih file SIMPER/MINE PERMIT") {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "MINE PERMIT wajib diupload."));
-        //                     return;
-        //                 }
-
-        //                 if ($smptipe == "application\/pdf") {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "Format file yang diupload wajib dalam bentuk pdf."));
-        //                     return;
-        //                 }
-
-        //                 if ($smpsize > 70000) {
-        //                     echo json_encode(array("statusCode" => 202, "filesmp" => "File MINE PERMIT melebihi batas ukuran file maksimal. Batas ukuran file maksimal 70kb."));
-        //                     return;
-        //                 }
-
-        //                 $_FILES['filesmpkary']['name'] = $url_izin;
-        //                 $config['upload_path'] = './berkas/karyawan/' . $foldername;
-        //                 $config['allowed_types'] = 'pdf';
-        //                 $config['max_size'] = 70;
-        //                 $config['overwrite'] = true;
-        //                 $this->load->library('upload', $config);
-        //                 $this->load->initialize($config);
-        //                 $this->upload->do_upload('filesmpkary');
-
-        //                 $data_izin_tambang = [
-        //                     'id_kary' => $id_karyawan,
-        //                     'id_jenis_izin_tambang' => $jenisizin,
-        //                     'no_Reg' => $noreg,
-        //                     'tgl_expired' => $tglexp,
-        //                     'id_sim_kary' => $id_sim_kary,
-        //                     'url_izin_tambang' => $url_izin,
-        //                     'ket_izin_tambang' => '',
-        //                     'tgl_buat' => date('Y-m-d H:i:s'),
-        //                     'tgl_edit' => date('Y-m-d H:i:s'),
-        //                     'id_user' => $this->session->userdata('id_user_hcdata'),
-        //                 ];
-
-        //                 $izin = $this->smp->input_izin_tambang($data_izin_tambang);
-
-        //                 if ($izin) {
-        //                     $last_izin = $this->smp->last_row_izin($auth_kary);
-
-        //                     if (!empty($last_izin)) {
-        //                         foreach ($last_izin as $list) {
-        //                             $auth_izin = $list->auth_izin_tambang;
-        //                         }
-
-        //                         $linkizn = base_url('karyawan/berkasizinadd/' . $auth_izin);
-
-        //                         echo json_encode(array(
-        //                             "statusCode" => 200,
-        //                             "pesan" => "Data Mine Permit berhasil disimpan",
-        //                             "auth_izin" => $auth_izin,
-        //                             "filesmp" => $smpname,
-        //                             "filesmpsv" => $url_izin,
-        //                             "linkizin" => $linkizn,
-        //                         ));
-        //                     } else {
-        //                         echo json_encode(array(
-        //                             "statusCode" => 201,
-        //                             "pesan" => "Error saat mengambil data Mine Permit",
-        //                         ));
-        //                     }
-        //                 } else {
-        //                     echo json_encode(array("statusCode" => 201, "pesan" => "Data Mine Permit gagal disimpan"));
-        //                 }
-        //             } else {
-        //                 echo json_encode(array("statusCode" => 201, "pesan" => "Error saat mengambil data karyawan"));
-        //             }
-        //         }
-        //     } else {
-        //         echo json_encode(array("statusCode" => 201, "pesan" => "Kode jenis izin tidak diketahui"));
-        //         die;
-        //     }
-        // }
     }
 }
