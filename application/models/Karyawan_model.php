@@ -958,7 +958,6 @@ class Karyawan_model extends CI_Model
 
     public function update_filependukung($auth_person, $dtpersonal)
     {
-
         $cek_id = $this->db->get_where('vw_personal', ['auth_personal' => $auth_person])->result();
         if (!empty($cek_id)) {
             foreach ($cek_id as $list) {
@@ -975,7 +974,6 @@ class Karyawan_model extends CI_Model
 
     public function hapus_vaksin($auth_vaksin)
     {
-
         $cek_id = $this->db->get_where('vw_vaksin_kary', ['auth_vaksin' => $auth_vaksin])->result();
         if (!empty($cek_id)) {
             foreach ($cek_id as $list) {
