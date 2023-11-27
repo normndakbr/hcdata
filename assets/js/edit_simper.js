@@ -141,6 +141,9 @@ $(document).ready(function () {
 
     $("#editSimpanIzin").click(() => {
         let idIzinTambang = $("#valueIDIzinTambang").val();
+        let idJenisIzin = $("#valueIDJenisIzinTambang").val();
+        let urlIzinTambang = $("#valueUrlIzinTambang").val();
+        let urlSimKary = $("#valueUrlSimKary").val();
         let auth_sim = editAuthSIM;
         let jenisIzin = jenisIzinTambang;
         let noRegistrasiIzin = $("#editNoReg").val();
@@ -170,13 +173,13 @@ $(document).ready(function () {
                 data: {
                     token: token,
                     authKary: authKary,
-                    idJenisIzin: idJenisIzinTambang,
+                    idIzinTambang: idIzinTambang,
+                    idJenisIzin: idJenisIzin,
                     jenisIzin: jenisIzin,
                     editNoReg: noRegistrasiIzin,
                     editTglExp: tglExpiredIzin,
                     editJenisSIM: idJenisSIM,
                     editTglExpSIM: tglExpiredSIM,
-                    idIzinTambang: idIzinTambang,
                     tglBuatIzinTambang: tglBuatIzinTambang,
                     tglBuatSimKary: tglBuatSimKary
                 },
@@ -189,6 +192,7 @@ $(document).ready(function () {
                     } else if (data.statusCode == 204) {
                         console.log("Data has been updated successfully");
                         clearFormValidation();
+                        swal("Berhasil", data.message, "success");
                     } else {
                         clearFormValidation();
                     }
