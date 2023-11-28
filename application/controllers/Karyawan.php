@@ -4150,8 +4150,6 @@ class Karyawan extends My_Controller
                 $tglExp = htmlspecialchars($this->input->post("editTglExp", true));
                 $idJenisSim = htmlspecialchars($this->input->post("editJenisSIM", true));
                 $tglExpSim = htmlspecialchars($this->input->post("editTglExpSIM", true));
-                $tglBuatIzinTambang = htmlspecialchars($this->input->post("tglBuatIzinTambang", true));
-                $tglBuatSimKary = htmlspecialchars($this->input->post("tglBuatSimKary", true));
                 $idSimKary = $this->kry->get_sim_kary_by_idkary($id_karyawan);
                 $id_user = $this->session->userdata('id_user_hcdata');
 
@@ -4198,6 +4196,74 @@ class Karyawan extends My_Controller
                     "message" => "Data SIMPER/Mine Permit Berhasil Diperbarui"
                 ));
                 return;
+            }
+        }
+    }
+
+    public function reUploadFile()
+    {
+        $auth = htmlspecialchars($this->input->post("token", true));
+        $cekauth = $this->cek_auth($auth);
+
+        if ($cekauth == 501) {
+            echo json_encode(array('statusCode' => 201, "kode_pesan" => "Gagal", "pesan" => "Autentikasi tidak valid, refresh data", "tipe_pesan" => "error"));
+        } else {
+
+            $auth_person = htmlspecialchars($this->input->post("auth_person", true));
+            $idpersonal = $this->kry->get_id_personal($auth_person);
+            $foldername = md5($idpersonal);
+
+            if ($auth_person == "") {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+                die;
+            }
+
+            $dtperson = $this->kry->get_personal_by_auth($auth_person);
+            if (!empty($dtperson)) {
+                foreach ($dtperson as $list) {
+                    $nama_file = $list->url_pendukung;
+                }
+
+                if ($nama_file == "") {
+                    $now = date('YmdHis');
+                    $nama_file = $now . "-SUPPORT.pdf";
+                }
+
+                if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                    mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+                }
+
+                if (is_dir('./berkas/karyawan/' . $foldername)) {
+                    $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 1000;
+                    $config['file_name'] = $nama_file;
+                    $config['overwrite'] = true;
+
+                    $this->load->library('upload', $config);
+
+                    if (!$this->upload->do_upload('filePendukung')) {
+                        $error = $this->upload->display_errors();
+                        echo json_encode(array("statusCode" => 201, "pesan_muasd" => $error));
+                        die;
+                    } else {
+                        $dt_personal = array(
+                            'url_pendukung' => $nama_file,
+                        );
+
+                        $this->kry->update_dtPersonal($idpersonal, $dt_personal);
+                        $link = base_url('karyawan/support/') . $auth_person;
+                        echo json_encode(array(
+                            "statusCode" => 200,
+                            "pesan" => "File pendukung berhasil diupload",
+                            "link" => $link,
+                        ));
+                    }
+                } else {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Gagal upload file pendukung"));
+                }
+            } else {
+                echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
             }
         }
     }
