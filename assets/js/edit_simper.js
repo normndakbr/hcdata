@@ -186,11 +186,9 @@ $(document).ready(function () {
                 success: function (res) {
                     console.log("Success POST on " + site_url + "karyawan/editSimper");
                     let data = JSON.parse(res);
-                    console.log(data);
                     if (data.statusCode == 400) {
                         addFormValidation(data.errorNoRegistrasi, data.errorTglExpIzin, data.errorJenisSIM, data.errorTglExpSIM);
                     } else if (data.statusCode == 204) {
-                        console.log("Data has been updated successfully");
                         clearFormValidation();
                         swal("Berhasil", data.message, "success");
                     } else {
@@ -203,5 +201,23 @@ $(document).ready(function () {
                 }
             });
         }
+    });
+
+    $("#btnReuploadMinePermit").click(() => {
+        $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File Mine Permit");
+        $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file Mine Permit dalam format pdf, ukuran file maksimal 200 kb.");
+    });
+
+    $("#btnReuploadSimper").click(() => {
+        $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File SIMPER");
+        $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file SIMPER dalam format pdf, ukuran file maksimal 200 kb.");
+    });
+
+    $("#btnReuploadSIM").click(() => {
+        $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File SIM");
+        $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file SIM dalam format pdf, ukuran file maksimal 200 kb.");
     });
 });
