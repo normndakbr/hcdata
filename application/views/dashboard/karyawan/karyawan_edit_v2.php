@@ -684,7 +684,7 @@
                                                                     echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
                                                                     echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkasizin/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas MINE PERMIT"> MINE PERMIT </a> </td>';
                                                                     echo '<td style="text-align:center;">';
-                                                                    echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-upload"></i></button> ';
+                                                                    echo '<button id="btnReuploadMinePermit" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-upload"></i></button> ';
                                                                     echo '</td>';
                                                                     echo '</tr>';
                                                                     if ($data_izin->id_jenis_izin_tambang == 2) {
@@ -692,14 +692,14 @@
                                                                         echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
                                                                         echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIMPER"> SIMPER </a> </td>';
                                                                         echo '<td style="text-align:center;">';
-                                                                        echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-upload"></i></button> ';
+                                                                        echo '<button id="btnReuploadSimper" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-upload"></i></button> ';
                                                                         echo '</td>';
                                                                         echo '</tr>';
                                                                         echo '<tr>';
                                                                         echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
                                                                         echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIM"> SIM </a> </td>';
                                                                         echo '<td style="text-align:center;">';
-                                                                        echo '<button id="' . $data_izin->auth_izin_tambang . '" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-upload"></i></button> ';
+                                                                        echo '<button id="btnReuploadSIM" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-upload"></i></button> ';
                                                                         echo '</td>';
                                                                         echo '</tr>';
                                                                     }
@@ -883,11 +883,11 @@
     </div>
 </div>
 
-<div class="modal fade" id="mdlUploadUlangSimper" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+<div class="modal fade" id="mdlUploadUlangIzinTambang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
         <div class="modal-content">
             <div class="modal-header bg-c-yellow">
-                <h5 class="modal-title text-white" id="jdluploadulangser">Upload Ulang Sertifikat</h5>
+                <h5 class="modal-title text-white" id="jdlMdlUploadUlangIzinTambang">Upload Ulang File</h5>
             </div>
 
             <div class="modal-body">
@@ -897,7 +897,7 @@
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                         <div>
-                            <h6 class="text-danger font-italic">Catatan : Upload file Sertifikat dalam format pdf,
+                            <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang">Catatan : Upload file Sertifikat dalam format pdf,
                                 ukuran file Sertifikat maksimal 300 kb.</h6>
                         </div>
                         <div class="form-group">
