@@ -1446,7 +1446,7 @@ class Karyawan extends My_Controller
                     echo json_encode(array("statusCode" => 201, "pesan" => "Data unit SIMPER belum dibuat"));
                     return;
                 }
-            } else if ($jenisizin == 1) { // jika mine permit -------------------------------
+            } else if ($jenisizin == 1 || $jenisizin == 3) { // jika mine permit -------------------------------
                 $id_sim_kary = 0;
                 $tglexpsim = "1970-01-01";
 
@@ -1718,7 +1718,7 @@ class Karyawan extends My_Controller
                         "pesan" => "Data SIMPER berhasil disimpan",
                     ));
                 }
-            } else if ($jenisizin == 1) { // jika mine permit -------------------------------
+            } else if ($jenisizin == 1 || $jenisizin == 3) { // jika mine permit -------------------------------
                 $id_sim_kary = 0;
                 $tglexpsim = "1970-01-01";
 
