@@ -205,19 +205,129 @@ $(document).ready(function () {
 
     $("#btnReuploadMinePermit").click(() => {
         $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#captionLblUploadUlangIzinTambang").text("Upload File Mine Permit");
         $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File Mine Permit");
         $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file Mine Permit dalam format pdf, ukuran file maksimal 200 kb.");
+        $("#btnEditReuploadMP").removeClass("d-none");
+        $("#btnEditReuploadSMPR").addClass("d-none");
+        $("#btnEditReuploadSIM").addClass("d-none");
     });
 
     $("#btnReuploadSimper").click(() => {
         $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#captionLblUploadUlangIzinTambang").text("Upload File SIMPER");
         $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File SIMPER");
         $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file SIMPER dalam format pdf, ukuran file maksimal 200 kb.");
+        $("#btnEditReuploadMP").addClass("d-none");
+        $("#btnEditReuploadSMPR").removeClass("d-none");
+        $("#btnEditReuploadSIM").addClass("d-none");
     });
 
     $("#btnReuploadSIM").click(() => {
         $("#mdlUploadUlangIzinTambang").modal("show");
+        $("#captionLblUploadUlangIzinTambang").text("Upload File SIM");
         $("#jdlMdlUploadUlangIzinTambang").text("Upload Ulang File SIM");
         $("#captionMdlUploadUlangIzinTambang").text("Catatan : Upload file SIM dalam format pdf, ukuran file maksimal 200 kb.");
+        $("#btnEditReuploadMP").addClass("d-none");
+        $("#btnEditReuploadSMPR").addClass("d-none");
+        $("#btnEditReuploadSIM").removeClass("d-none");
+    });
+
+    function reuploadFileIzin(jenis, data) {
+        let jenisIzin = jenis;
+        let newData = data;
+
+        newData.forEach(function (value, key) {
+            console.log(key, value);
+        });
+
+        if (jenisIzin == "SIM") {
+            swal({
+                title: "Upload Ulang Surat Izin Mengemudi",
+                text: "File SIM yang lama akan diganti dengan file yang baru, anda yakin?",
+                type: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#36c6d3",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, upload",
+                cancelButtonText: "Batalkan",
+            }).then(function (result) {
+                console.log(result);
+                if (result.value) {
+                    // $.LoadingOverlay("show");
+                    // $.ajax({
+                    //     type: "POST",
+                    //     url: site_url + "karyawan/uploadUlangFileIzin",
+                    //     data: formData,
+                    //     cache: false,
+                    //     processData: false,
+                    //     contentType: false,
+                    //     success: function (data) {
+                    //         var data = JSON.parse(data);
+                    //         if (data.statusCode == 200) {
+                    //             $("#mdluploadulangser").modal("hide");
+                    //             $("#fileSertifikasiUlang").val("");
+                    //             $(".errorFileSertifikasiUlang").text("");
+                    //             $(".9f7fjmuj8ik2js4n8k66g3hjl323").text("");
+                    //             $.LoadingOverlay("hide");
+                    //             $("#idsertifikat").LoadingOverlay("show");
+                    //             $("#idsertifikat").load(
+                    //                 site_url + "karyawan/sertifikasi?auth_person=" + auth_person
+                    //             );
+                    //         } else if (data.statusCode == 201) {
+                    //             $(".erruploadulangser").removeClass("d-none");
+                    //             $(".erruploadulangser").removeClass("alert-primary");
+                    //             $(".erruploadulangser").addClass("alert-danger");
+                    //             $(".erruploadulangser").html(data.pesan);
+                    //             $.LoadingOverlay("hide");
+                    //         } else {
+                    //             $(".errorFileSertifikasiUlang").html(data.pesan);
+                    //             $.LoadingOverlay("hide");
+                    //         }
+                    //     },
+                    //     error: function (xhr, ajaxOptions, thrownError) {
+                    //         $.LoadingOverlay("hide");
+                    //         $(".erruploadulangser").removeClass("d-none");
+                    //         $(".erruploadulangser").addClass("alert-danger");
+                    //         if (thrownError != "") {
+                    //             $(".erruploadulangser").html(
+                    //                 "Terjadi kesalahan saat meng-upload data sertifikat, hubungi administrator"
+                    //             );
+                    //         }
+                    //     },
+                    // });
+                } else {
+                    swal.close();
+                }
+            });
+        } else if (jenisIzin == "SIMPER" || jenisIzin == "MINEPERMIT") {
+            console.log("SIMPER / MINE PERMIT");
+        }
+    }
+
+    $("#btnEditReuploadSIM").click(function () {
+        let jenisIzin = "SIM";
+        let auth_sim = editAuthSIM;
+        let auth_kary = $("#valueAuthKaryawan").val();
+        let auth_person = $("#valueAuthPersonal").val();
+        let newFile = $("#fileReuploadIzin").val();
+        const fileSIM = $("#fileReuploadIzin").prop("files")[0];
+
+        let formData = new FormData();
+        formData.append("jenisIzin", jenisIzin);
+        formData.append("auth_sim", auth_sim);
+        formData.append("auth_kary", auth_kary);
+        formData.append("auth_person", auth_person);
+        formData.append("newFile", newFile);
+        formData.append("fileSIM", fileSIM);
+
+        if (newFile == "") {
+            $(".errorFileReuploadIzin").text("File baru wajib dipilih");
+            return false;
+        } else {
+            $(".errorFileReuploadIzin").text("");
+        }
+
+        reuploadFileIzin("SIM", formData);
     });
 });

@@ -1265,29 +1265,32 @@ $(document).ready(function () {
   });
 
   $("#filesimpolisi").change(function () {
-    const filee = $("#filesimpolisi").prop("files")[0];
-    if (filee.name === "") {
+    const file = $("#filesimpolisi").prop("files")[0];
+    console.log(file.name);
+    if (file.name == "") {
       $("#lblsimpolisi").text("Pilih file SIM Polisi");
     } else {
-      $("#lblsimpolisi").text(filee.name);
+      $("#lblsimpolisi").text(file.name);
     }
   });
 
   $("#simpermp").change(function () {
-    const filee = $("#simpermp").prop("files")[0];
-    if (filee.name === "") {
+    const file = $("#simpermp").prop("files")[0];
+    console.log(file.name);
+    if (file.name == "") {
       $("#lblsimpermp").text("Pilih SIMPER/MINE PERMIT");
     } else {
-      $("#lblsimpermp").text(filee.name);
+      $("#lblsimpermp").text(file.name);
     }
   });
 
   $("#filesimpolisinew").change(function () {
-    const filee = $("#filesimpolisinew").prop("files")[0];
-    if (filee.name === "") {
+    const file = $("#filesimpolisinew").prop("files")[0];
+    console.log(file.name);
+    if (file.name == "") {
       $("#lblsimpolisinew").text("Pilih file SIM Polisi");
     } else {
-      $("#lblsimpolisinew").text(filee.name);
+      $("#lblsimpolisinew").text(file.name);
     }
   });
 

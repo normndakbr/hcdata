@@ -67,6 +67,7 @@
                         <input id="valueAuthPersonal" class="d-none" value="<?= isset($data_kary->auth_personal) ? $data_kary->auth_personal : '-' ?>"></input>
                         <input id="valueAuthKaryawan" class="d-none" value="<?= isset($data_kary->auth_karyawan) ? $data_kary->auth_karyawan : '-' ?>"></input>
                         <input id="valueAuthIzin" class="d-none" value="<?= isset($data_izin->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthSIM" class="d-none" value="<?= isset($data_sim_kary->auth_sim_kary) ? $data_sim_kary->auth_sim_kary : '-' ?>"></input>
 
                         <!-- Data Personal -->
                         <input id="editIdPersonal" class="d-none" value="<?= isset($data_kary->id_personal) ? $data_kary->id_personal : '-' ?>"></input>
@@ -891,27 +892,30 @@
             </div>
 
             <div class="modal-body">
-                <div class="row">
+                <div class="d-flex-row justify-content-between">
                     <div class="col-lg-12 col-md-12 col-sm-12">
                         <div class="alert erruploadulangser alert-danger animate__animated animate__bounce d-none" role="alert"></div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                         <div>
                             <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang">Catatan : Upload file Sertifikat dalam format pdf,
-                                ukuran file Sertifikat maksimal 300 kb.</h6>
+                                ukuran file Sertifikat maksimal 300 kb.
+                            </h6>
                         </div>
                         <div class="form-group">
-                            <label for="fileSertifikasiUlang"><b>Upload file sertifikat</b> :</label>
-                            <input type="file" class="form-control-file" id="fileSertifikasiUlang">
-                            <small class="errorFileSertifikasiUlang text-danger font-italic font-weight-bold"></small>
+                            <label for="fileReuploadIzin" class="d-none font-weight-bold" id="captionLblUploadUlangIzinTambang">Upload file sertifikat :</label>
+                            <input type="file" class="form-control-file" id="fileReuploadIzin">
+                            <small class="errorFileReuploadIzin text-danger font-italic font-weight-bold"></small>
                             <span class="9f7fjmuj8ik2js4n8k66g3hjl323 d-none"></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer p-3">
-                <button type="button" name="btnEditReuploadSertifikat" id="btnEditReuploadSertifikat" class="btn font-weight-bold btn-primary mr-3">Upload File</button>
-                <button name="btnbataluploadulangser" id="btnbataluploadulangser" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+                <button type="button" name="btnEditReupload" id="btnEditReuploadMP" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnEditReuploadSMPR" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnEditReuploadSIM" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button name="btnbataluploadulangser" id="btnBatalReupload" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
             </div>
         </div>
     </div>

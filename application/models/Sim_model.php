@@ -136,6 +136,12 @@ class Sim_model extends CI_Model
           return $query->result();
      }
 
+     public function get_sim_kary($auth_sim_kary)
+     {
+          $query = $this->db->get_where('vw_sim_kary', ['auth_sim_kary' => $auth_sim_kary]);
+          return $query->result();
+     }
+
      public function edit_sim($sim, $ket_sim, $status)
      {
           $id_sim = $this->session->userdata('id_sim');
