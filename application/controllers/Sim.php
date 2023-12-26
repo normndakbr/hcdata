@@ -261,7 +261,7 @@ class Sim extends My_Controller
                echo json_encode(array("statusCode" => 200, "sim" => $output, "pesan" => "Sukses"));
           } else {
                $output = "<option value=''>-- simemen tidak ditemukan --</option>";
-               echo json_encode(array("statusCode" => 200, "sim" => $output, "pesan", "Sim gagal ditampilkan"));
+               echo json_encode(array("statusCode" => 200, "sim" => $output, "pesan" => "Sim gagal ditampilkan"));
           }
      }
 
@@ -270,7 +270,7 @@ class Sim extends My_Controller
           $id_sim = $this->input->post('id_sim');
           $query = $this->smm->get_auth_sim($id_sim);
           if ($query === 0) {
-               return 0;
+               echo json_encode(array("statusCode" => 404, "status" => "Not Found", "pesan" => "id sim tidak ditemukan"));
           } else {
                return $query;
           }
@@ -282,9 +282,76 @@ class Sim extends My_Controller
           $query = $this->smm->get_id_sim_by_auth($auth_sim);
 
           if ($query === 0) {
-               return 0;
+               echo json_encode(array("statusCode" => 404, "status" => "Not Found", "pesan" => "auth sim tidak ditemukan"));
           } else {
                return $query;
+          }
+     }
+
+     public function upload_ulang_sim()
+     {
+          $auth_sim =  htmlspecialchars($this->input->post("auth_sim", true));
+          $auth_person =  htmlspecialchars($this->input->post("auth_person", true));
+
+          if ($auth_person == "") {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Data personal tidak ditemukan"));
+               die;
+          }
+
+          $id_personal = $this->kry->get_id_personal($auth_person);
+          $foldername = md5($id_personal);
+
+          $data_sim = $this->srt->get_sim_kary($auth_sim);
+
+          if (!empty($data_sim)) {
+               foreach ($data_sim as $list) {
+                    $id_sim_kary  = $list->id_sim_kary;
+                    $nama_file  = $list->url_file;
+               }
+
+               if ($nama_file == "") {
+                    $now = date('YmdHis');
+                    $nama_file = $now . "-SIM.pdf";
+               }
+          } else {
+               echo json_encode(array("statusCode" => 201, "pesan" => "Data SIM karyawan tidak ditemukan"));
+               die;
+          }
+
+          if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+               mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
+          } else {
+               $config['upload_path'] = './berkas/karyawan/' . $foldername;
+               $config['allowed_types'] = 'pdf';
+               $config['max_size'] = 1000;
+               $config['file_name'] = $nama_file;
+               $config['overwrite'] = TRUE;
+
+
+               $this->load->library('upload', $config);
+
+               if (!$this->upload->do_upload('filesimkary')) {
+                    $err = $this->upload->display_errors();
+
+                    if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                         $error = "<p>Ukuran file maksimal 1000 kb.</p>";
+                    } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                         $error = "<p>Format file nya dalam bentuk pdf</p>";
+                    } else {
+                         $error = $err;
+                    }
+
+                    echo json_encode(array("statusCode" => 201, "pesan" => $error));
+                    die;
+               } else {
+
+                    $dt_ser = array(
+                         'file_sertifikasi' => $nama_file
+                    );
+
+                    $this->srt->update_sertifikasi($id_ser, $dt_ser);
+                    echo json_encode(array("statusCode" => 200, "pesan" => "File SIM berhasil di-perbarui"));
+               }
           }
      }
 }
