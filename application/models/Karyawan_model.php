@@ -212,10 +212,12 @@ class Karyawan_model extends CI_Model
 
     public function get_sim_by_auth($auth_personal)
     {
-
-        $this->db->from('vw_sim_karyawan');
-        $this->db->where('auth_personal', $auth_personal);
-        $query = $this->db->get();
+        // $this->db->from('vw_sim_karyawan');
+        // $this->db->where('auth_personal', $auth_personal);
+        // $query = $this->db->get();
+        $query = $this->db->query("SELECT * FROM vw_sim_karyawan WHERE id_personal = 1630 ORDER BY tgl_exp_sim DESC LIMIT 1");
+        // echo json_encode(array($query->row()));
+        // die();
 
         return $query->row();
     }
@@ -905,12 +907,15 @@ class Karyawan_model extends CI_Model
 
     public function get_dt_sim($auth_simpol)
     {
+        // $this->db->order_by('tgl_exp_sim', 'desc');
+        // $this->db->limit(1);
         return $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_simpol])->result();
     }
 
     public function get_dt_sim_by_id($id_personal)
     {
-        return $this->db->get_where('vw_sim_karyawan', ['id_personal' => $id_personal])->result();
+        return $this->db->query("SELECT * FROM vw_sim_karyawan WHERE id_personal = " . $id_personal . " ORDER BY tgl_exp_sim DESC LIMIT 1")->result();
+        // return $this->db->get_where('vw_sim_karyawan', ['id_personal' => $id_personal])->result();
     }
 
     public function getHirarki($id_prs)
