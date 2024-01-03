@@ -194,14 +194,20 @@ class Karyawan extends My_Controller
             $data['menu'] = $this->session->userdata("id_menu_hcdata");
             $data["data_kary"] = $this->kry->get_by_auth($auth_kary);
             $data["data_alamat"] = $this->kry->get_edit_alamat_by_auth($auth_kary);
+
             $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
+            $data["data_simper"] = $this->kry->get_detail_izin_tambang($auth_kary, "SIMPER");
+            $data["data_mine_permit"] =  $this->kry->get_detail_izin_tambang($auth_kary, "MINE PERMIT");
+
             $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
             $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
             $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
             $data["data_kontrak"] = $this->kry->get_kontrak_by_auth($auth_kary);
             $data['get_menu'] = $this->dsmod->get_menu();
 
-            $data['jsonData'] = json_encode($data['data_izin']);
+            $data['jsonData'] = json_encode($data);
+            // echo $data['jsonData'];
+            // die;
 
             $this->load->view('dashboard/template/header', $data);
             $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
@@ -2984,6 +2990,7 @@ class Karyawan extends My_Controller
     public function berkasizin($auth_izin_tambang)
     {
         $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
+
         if (!empty($dtizin)) {
             foreach ($dtizin as $list) {
                 $url_izin_tambang = $list->url_izin_tambang;
@@ -4205,7 +4212,7 @@ class Karyawan extends My_Controller
         $this->cek_auth($auth);
 
         // Data
-        $jenisIzin = htmlspecialchars($this->input->post("jenis_izin", true));
+        // $jenisIzin = htmlspecialchars($this->input->post("jenis_izin", true));
         $authKary = htmlspecialchars($this->input->post("auth_kary", true));
         $authIzin = htmlspecialchars($this->input->post("auth_izin", true));
 
@@ -4226,79 +4233,78 @@ class Karyawan extends My_Controller
             return;
         }
 
-        if ($jenisIzin == "SIM") {
-            if ($authIzin != "") {
-                if (is_dir('./berkas/karyawan/' . $foldername) == false) {
-                    mkdir('./berkas/karyawan/' . $foldername, 0775, true);
-                }
+        // if ($jenisIzin == "SIM") {
+        if ($authIzin != "") {
+            if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                mkdir('./berkas/karyawan/' . $foldername, 0775, true);
+            }
 
-                if (is_dir('./berkas/karyawan/' . $foldername)) {
-                    $fileName = $_FILES['file']['name'];
-                    $fileType = $_FILES['file']['type'];
-                    $fileSize = $_FILES['file']['size'];
+            if (is_dir('./berkas/karyawan/' . $foldername)) {
+                $fileName = $_FILES['file']['name'];
+                $fileType = $_FILES['file']['type'];
+                $fileSize = $_FILES['file']['size'];
 
-                    if ($fileName == "" || $fileName == "Choose File") {
-                        echo json_encode(array(
-                            "statusCode" => 400,
-                            "status" => "warning",
-                            "message" => "File yang ingin diperbarui wajib diupload."
-                        ));
-                        return;
-                    }
-
-                    if ($fileType == "application\/pdf") {
-                        echo json_encode(array(
-                            "statusCode" => 400,
-                            "status" => "warning",
-                            "message" => "Format file yang diupload wajib dalam bentuk pdf."
-                        ));
-                        return;
-                    }
-
-                    if ($fileSize > 200000) {
-                        echo json_encode(array(
-                            "statusCode" => 400,
-                            "status" => "warning",
-                            "message" => "File melebihi batas ukuran file maksimal. Batas ukuran file yang diperbolehkan adalah 1 Mb."
-                        ));
-                        return;
-                    }
-
-                    $_FILES['file']['name'] = $file_name;
-                    $config['upload_path'] = './berkas/karyawan/' . $foldername;
-                    $config['allowed_types'] = 'pdf';
-                    $config['max_size'] = 1 * 1024;
-                    $config['overwrite'] = true;
-                    $this->load->library('upload', $config);
-                    $this->load->initialize($config);
-                    $this->upload->do_upload('file');
-
+                if ($fileName == "" || $fileName == "Choose File") {
                     echo json_encode(array(
-                        "statusCode" => 200,
-                        "status" => "success",
-                        "message" => "File Izin berhasil diupdate",
-                        "fileName" => $fileName,
-                        "file" => $_FILES['file']['name'],
-                    ));
-                } else {
-                    echo json_encode(array(
-                        "statusCode" => 404,
-                        "status" => "error",
-                        "pesan" => "Folder data karyawan tidak ditemukan"
+                        "statusCode" => 400,
+                        "status" => "warning",
+                        "message" => "File yang ingin diperbarui wajib diupload."
                     ));
                     return;
                 }
+
+                if ($fileType == "application\/pdf") {
+                    echo json_encode(array(
+                        "statusCode" => 400,
+                        "status" => "warning",
+                        "message" => "Format file yang diupload wajib dalam bentuk pdf."
+                    ));
+                    return;
+                }
+
+                if ($fileSize > 200000) {
+                    echo json_encode(array(
+                        "statusCode" => 400,
+                        "status" => "warning",
+                        "message" => "File melebihi batas ukuran file maksimal. Batas ukuran file yang diperbolehkan adalah 1 Mb."
+                    ));
+                    return;
+                }
+
+                $_FILES['file']['name'] = $file_name;
+                $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                $config['allowed_types'] = 'pdf';
+                $config['max_size'] = 1 * 1024;
+                $config['overwrite'] = true;
+                $this->load->library('upload', $config);
+                $this->load->initialize($config);
+                $this->upload->do_upload('file');
+
+                echo json_encode(array(
+                    "statusCode" => 200,
+                    "status" => "success",
+                    "message" => "File Izin berhasil diupdate",
+                ));
+                return;
             } else {
                 echo json_encode(array(
-                    "statusCode" => 400,
+                    "statusCode" => 404,
                     "status" => "error",
-                    "pesan" => "Data dokumen tidak valid"
+                    "pesan" => "Folder data karyawan tidak ditemukan"
                 ));
                 return;
             }
         } else {
-            echo json_encode(array("statusCode" => 201, "pesan" => "On Development"));
+            echo json_encode(array(
+                "statusCode" => 400,
+                "status" => "error",
+                "pesan" => "Data dokumen tidak valid"
+            ));
             return;
         }
+        // } else {
+        //     echo json_encode(array("statusCode" => 201, "pesan" => "On Development"));
+        //     return;
+        // }
     }
 }
