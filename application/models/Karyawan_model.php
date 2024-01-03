@@ -200,6 +200,16 @@ class Karyawan_model extends CI_Model
         return $query->row();
     }
 
+    public function get_detail_izin_tambang($auth_karyawan, $jenis_izin)
+    {
+        $this->db->from('vw_izin_tambang');
+        $this->db->where('auth_karyawan', $auth_karyawan);
+        $this->db->where('jenis_izin_tambang', $jenis_izin);
+        $query = $this->db->get();
+
+        return $query->row();
+    }
+
     public function get_all_izin_by_auth($auth_karyawan)
     {
         $query = $this->db->query("SELECT * FROM vw_izin_tambang WHERE auth_karyawan = '" . $auth_karyawan . "' AND id_izin_tambang IS NOT NULL")->result();
@@ -212,12 +222,7 @@ class Karyawan_model extends CI_Model
 
     public function get_sim_by_auth($auth_personal)
     {
-        // $this->db->from('vw_sim_karyawan');
-        // $this->db->where('auth_personal', $auth_personal);
-        // $query = $this->db->get();
-        $query = $this->db->query("SELECT * FROM vw_sim_karyawan WHERE id_personal = 1630 ORDER BY tgl_exp_sim DESC LIMIT 1");
-        // echo json_encode(array($query->row()));
-        // die();
+        $query = $this->db->query("SELECT * FROM vw_sim_karyawan WHERE auth_personal = '" . $auth_personal . "' ORDER BY tgl_exp_sim DESC LIMIT 1");
 
         return $query->row();
     }
