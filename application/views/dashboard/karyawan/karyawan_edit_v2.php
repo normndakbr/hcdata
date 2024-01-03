@@ -66,7 +66,8 @@
                         <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= isset($data_kary->auth_m_perusahaan) ? $data_kary->auth_m_perusahaan : '-' ?>"></input>
                         <input id="valueAuthPersonal" class="d-none" value="<?= isset($data_kary->auth_personal) ? $data_kary->auth_personal : '-' ?>"></input>
                         <input id="valueAuthKaryawan" class="d-none" value="<?= isset($data_kary->auth_karyawan) ? $data_kary->auth_karyawan : '-' ?>"></input>
-                        <input id="valueAuthIzin" class="d-none" value="<?= isset($data_izin->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthMINEPERMIT" class="d-none" value="<?= isset($data_mine_permit->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthSIMPER" class="d-none" value="<?= isset($data_simper->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
                         <input id="valueAuthSIM" class="d-none" value="<?= isset($data_sim_kary->auth_sim_kary) ? $data_sim_kary->auth_sim_kary : '-' ?>"></input>
 
                         <!-- Data Personal -->
@@ -110,7 +111,8 @@
                         <input id="valueTglExpired" class="d-none" value="<?= isset($data_izin->tgl_expired) ? $data_izin->tgl_expired : '-' ?>"></input>
                         <input id="valueIDSim" class="d-none" value="<?= isset($data_izin->id_sim) ? $data_izin->id_sim : '-' ?>"></input>
                         <input id="valueSim" class="d-none" value="<?= isset($data_izin->sim) ? $data_izin->sim : '-' ?>"></input>
-                        <input id="valueUrlIzinTambang" class="d-none" value="<?= isset($data_sim_kary) ? $data_izin->url_izin_tambang : '-' ?>"></input>
+                        <input id="valueUrlSIMPER" class="" value="<?= isset($data_simper) ? $data_simper->url_izin_tambang : '-' ?>"></input>
+                        <input id="valueUrlMINEPERMIT" class="" value="<?= isset($data_mine_permit) ? $data_mine_permit->url_izin_tambang : '-' ?>"></input>
                         <input id="valueUrlSIMPolisi" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->url_file : '-' ?>"></input>
                         <input id="valueTglExpiredSimKary" class="d-none" value="<?= isset($data_sim_kary) ? $data_sim_kary->tgl_exp_sim : '-' ?>"></input>
                         <input id="valueTglBuatIzinTambang" class="d-none" value="<?= isset($data_izin) ? $data_izin->tgl_buat : '-' ?>"></input>
@@ -672,7 +674,8 @@
                                                             <thead>
                                                                 <tr>
                                                                     <th style="text-align:center; width: 1%;">NO.</th>
-                                                                    <th style="width: 60%;">Berkas Izin Tambang</th>
+                                                                    <th style="width: 50%;">Berkas Izin Tambang</th>
+                                                                    <th style="text-align:center; width: 10%;">Tanggal Expired</th>
                                                                     <th style="text-align:center; width: 10%;">Aksi</th>
                                                                 </tr>
                                                             </thead>
@@ -681,24 +684,31 @@
                                                                 $no = 1;
                                                                 if (!empty($data_izin)) {
                                                                     // foreach ($data_izin as $list) {
-                                                                    echo '<tr>';
-                                                                    echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                    echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkasizin/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas MINE PERMIT"> MINE PERMIT </a> </td>';
-                                                                    echo '<td style="text-align:center;">';
-                                                                    echo '<button id="btnReuploadMinePermit" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-upload"></i></button> ';
-                                                                    echo '</td>';
-                                                                    echo '</tr>';
-                                                                    if ($data_izin->id_jenis_izin_tambang == 2) {
+                                                                    if (!empty($data_mine_permit)) {
                                                                         echo '<tr>';
                                                                         echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                        echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIMPER"> SIMPER </a> </td>';
+                                                                        echo '<td class="align-middle" style="width: 50%;"> <a href ="' . base_url('karyawan/berkasizin/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas MINE PERMIT"> MINE PERMIT </a> </td>';
+                                                                        echo '<td class="align-middle text-center" style="width: 10%;"> ' . $data_mine_permit->tgl_expired . ' </a> </td>';
+                                                                        echo '<td style="text-align:center;">';
+                                                                        echo '<button id="btnReuploadMinePermit" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-upload"></i></button> ';
+                                                                        echo '</td>';
+                                                                        echo '</tr>';
+                                                                    }
+                                                                    if (!empty($data_simper)) {
+                                                                        echo '<tr>';
+                                                                        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                        echo '<td class="align-middle" style="width: 50%;"> <a href ="' . base_url('karyawan/berkasizin/') . $data_simper->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIMPER"> SIMPER </a> </td>';
+                                                                        echo '<td class="align-middle text-center" style="width: 10%;"> ' . $data_simper->tgl_expired . ' </a> </td>';
                                                                         echo '<td style="text-align:center;">';
                                                                         echo '<button id="btnReuploadSimper" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-upload"></i></button> ';
                                                                         echo '</td>';
                                                                         echo '</tr>';
+                                                                    }
+                                                                    if (!empty($data_sim_kary)) {
                                                                         echo '<tr>';
                                                                         echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                        echo '<td class="align-middle" style="width: 60%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_izin->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIM"> SIM </a> </td>';
+                                                                        echo '<td class="align-middle" style="width: 50%;"> <a href ="' . base_url('karyawan/berkassim/') . $data_mine_permit->auth_izin_tambang . '" target="_blank" title="Tampilkan berkas SIM"> SIM </a> </td>';
+                                                                        echo '<td class="align-middle text-center" style="width: 10%;"> ' . $data_sim_kary->tgl_exp_sim . ' </a> </td>';
                                                                         echo '<td style="text-align:center;">';
                                                                         echo '<button id="btnReuploadSIM" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-upload"></i></button> ';
                                                                         echo '</td>';
@@ -888,32 +898,29 @@
     <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
         <div class="modal-content">
             <div class="modal-header bg-c-yellow">
-                <h5 class="modal-title text-white" id="jdlMdlUploadUlangIzinTambang">Upload Ulang File</h5>
+                <h5 class="modal-title text-white" id="jdlMdlUploadUlangIzinTambang"></h5>
             </div>
 
             <div class="modal-body">
                 <div class="d-flex-row justify-content-between">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="alert erruploadulangser alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                        <div class="alert errorReuploadIzin alert-danger animate__animated animate__bounce d-none" role="alert"></div>
                     </div>
                     <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                         <div>
-                            <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang">Catatan : Upload file Sertifikat dalam format pdf,
-                                ukuran file Sertifikat maksimal 300 kb.
-                            </h6>
+                            <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang"></h6>
                         </div>
                         <div class="form-group">
                             <label for="fileReuploadIzin" class="d-none font-weight-bold" id="captionLblUploadUlangIzinTambang">Upload file sertifikat :</label>
                             <input type="file" class="form-control-file" id="fileReuploadIzin">
                             <small class="errorFileReuploadIzin text-danger font-italic font-weight-bold"></small>
-                            <span class="9f7fjmuj8ik2js4n8k66g3hjl323 d-none"></span>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="modal-footer p-3">
-                <button type="button" name="btnEditReupload" id="btnEditReuploadMP" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
-                <button type="button" name="btnEditReupload" id="btnEditReuploadSMPR" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnEditReuploadMINEPERMIT" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnEditReuploadSIMPER" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
                 <button type="button" name="btnEditReupload" id="btnEditReuploadSIM" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
                 <button name="btnbataluploadulangser" id="btnBatalReupload" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
             </div>
