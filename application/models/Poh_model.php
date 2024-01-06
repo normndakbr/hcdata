@@ -127,10 +127,21 @@ class Poh_model extends CI_Model
           if (!empty($cek_id->result())) {
                foreach ($cek_id->result() as $list) {
                     $id_poh = $list->id_poh;
+                    $kd_poh = $list->kd_poh;
+                    $poh = $list->poh;
                }
+
+               $dtaudit = [
+                   'id_user' => $this->session->userdata('id_user_hcdata'),
+                   'jenis_proses' => 'HAPUS',
+                   'data_proses' => 'POINT OF HIRE(POH)',
+                   'nama_data' => $kd_poh . ' | ' . $poh,
+                   'tgl_buat' => date('Y-m-d H:i:s'),
+               ];
 
                $this->db->delete('tb_poh', ['id_poh' => $id_poh]);
                if ($this->db->affected_rows() > 0) {
+                    $this->db->insert('tb_audit', $dtaudit);
                     return 200;
                } else {
                     return 201;

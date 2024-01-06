@@ -127,10 +127,21 @@ class Lokker_model extends CI_Model
           if (!empty($cek_id->result())) {
                foreach ($cek_id->result() as $list) {
                     $id_lokker = $list->id_lokker;
+                    $kd_lokker = $list->kd_lokker;
+                    $lokker = $list->lokker;
                }
+
+               $dtaudit = [
+                   'id_user' => $this->session->userdata('id_user_hcdata'),
+                   'jenis_proses' => 'HAPUS',
+                   'data_proses' => 'LOKASI KERJA',
+                   'nama_data' => $kd_lokker . ' | ' . $lokker,
+                   'tgl_buat' => date('Y-m-d H:i:s'),
+               ];
 
                $this->db->delete('tb_lokker', ['id_lokker' => $id_lokker]);
                if ($this->db->affected_rows() > 0) {
+                    $this->db->insert('tb_audit', $dtaudit);
                     return 200;
                } else {
                     return 201;

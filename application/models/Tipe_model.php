@@ -116,10 +116,20 @@ class Tipe_model extends CI_Model
           if (!empty($cek_id->result())) {
                foreach ($cek_id->result() as $list) {
                     $id_tipe = $list->id_tipe;
+                    $tipe = $list->tipe;
                }
+
+               $dtaudit = [
+                   'id_user' => $this->session->userdata('id_user_hcdata'),
+                   'jenis_proses' => 'HAPUS',
+                   'data_proses' => 'GOLONGAN',
+                   'nama_data' => $tipe,
+                   'tgl_buat' => date('Y-m-d H:i:s'),
+               ];
 
                $this->db->delete('tb_tipe', ['id_tipe' => $id_tipe]);
                if ($this->db->affected_rows() > 0) {
+                    $this->db->insert('tb_audit', $dtaudit);
                     return 200;
                } else {
                     return 201;

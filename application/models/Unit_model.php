@@ -128,10 +128,21 @@ class Unit_model extends CI_Model
           if (!empty($cek_id->result())) {
                foreach ($cek_id->result() as $list) {
                     $id_unit = $list->id_unit;
+                    $kode_unit = $list->kode_unit;
+                    $unit = $list->unit;
                }
+            
+               $dtaudit = [
+                   'id_user' => $this->session->userdata('id_user_hcdata'),
+                   'jenis_proses' => 'HAPUS',
+                   'data_proses' => 'UNIT SIMPER',
+                   'nama_data' => $kode_unit . ' | ' . $unit,
+                   'tgl_buat' => date('Y-m-d H:i:s'),
+               ];
 
                $this->db->delete('tb_unit', ['id_unit' => $id_unit]);
                if ($this->db->affected_rows() > 0) {
+                    $this->db->insert('tb_audit', $dtaudit);
                     return 200;
                } else {
                     return 201;
