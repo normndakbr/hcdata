@@ -1,11 +1,11 @@
-$('#btnrefDetailKary').click(function() {
-     location.reload();
- });
+$('#btnrefDetailKary').click(function () {
+    location.reload();
+});
 
- $("#btnSelesai").click(function() {
-     window.close();
- });
+$("#btnSelesai").click(function () {
+    window.close();
+});
 
- $("#logout").click(function() {
-     $("#logoutmdl").modal("show");
- });
+$("#logout").click(function () {
+    $("#logoutmdl").modal("show");
+});

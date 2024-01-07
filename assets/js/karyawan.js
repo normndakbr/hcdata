@@ -3017,7 +3017,7 @@ $(document).ready(function () {
           },
         });
       } else if (result.dismiss == "cancel") {
-        swal("Batal", "Data sertifikasi batal disimpan", "warning");
+        swal("Batal Edit", "Update data sertifikasi dibatalkan", "warning");
         return false;
       } else {
         swal.close();
