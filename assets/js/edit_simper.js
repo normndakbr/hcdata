@@ -5,9 +5,11 @@ $(document).ready(function () {
     let editAuthSIM = "";
     let editJenisSIM = "";
     let jenisIzinTambang = $("#valueJenisIzinTambang").val();
-    let idJenisIzinTambang = $("#valueIDJenisIzinTambang").val();
-    let editTglExpSIM = $("#editTglExpSim").val();
 
+    let no_reg_mine_permit = "";
+    let no_reg_simper = "";
+    let tgl_expired_mine_permit = "";
+    let tgl_expired_simper = "";
 
     $.ajax({
         type: "POST",
@@ -298,7 +300,7 @@ $(document).ready(function () {
         });
     }
 
-    $("#btnEditReuploadSIM").click(function () {
+    $("#btnSaveReuploadSIM").click(function () {
         let jenisIzin = "SIM";
         let auth_sim = editAuthSIM;
         let auth_kary = $("#valueAuthKaryawan").val();
@@ -322,7 +324,7 @@ $(document).ready(function () {
         reuploadFileIzin("SIM", formData);
     });
 
-    $("#btnEditReuploadSIMPER").click(function () {
+    $("#btnSaveReuploadSIMPER").click(function () {
         let jenisIzin = "SIMPER";
         let auth_simper = $("#valueAuthSIMPER").val();
         let auth_kary = $("#valueAuthKaryawan").val();
@@ -346,7 +348,7 @@ $(document).ready(function () {
         reuploadFileIzin("SIMPER", formData);
     });
 
-    $("#btnEditReuploadMINEPERMIT").click(function () {
+    $("#btnSaveReuploadMINEPERMIT").click(function () {
         let jenisIzin = "MINEPERMIT";
         let auth_mine_permit = $("#valueAuthMINEPERMIT").val();
         let auth_kary = $("#valueAuthKaryawan").val();
@@ -368,5 +370,95 @@ $(document).ready(function () {
         }
 
         reuploadFileIzin("MINE PERMIT", formData);
+    });
+
+    $("#btnEditMinePermit").click(() => {
+        no_reg_mine_permit = $("#valueNoRegMINEPERMIT").val();
+        tgl_expired_mine_permit = $("#valueTglExpiredMINEPERMIT").val();
+        $("#mdlEditIzinTambang").modal("show");
+        $("#jdlEditIzinTambang").text("Edit Detail Mine Permit");
+        $("#captionEditNoRegIzin").text("Nomor Registrasi MINE PERMIT");
+        $("#captionEditTanggalExpired").text("Tanggal Expired MINE PERMIT");
+        $("#editNoRegIzin").val(no_reg_mine_permit);
+        $("#editTanggalExpired").val(tgl_expired_mine_permit);
+        $("#fieldEditNoRegIzin").removeClass("d-none");
+        $("#fieldEditJenisSIM").addClass("d-none");
+        $("#btnSaveEditMINEPERMIT").removeClass("d-none");
+        $("#btnSaveEditSIMPER").addClass("d-none");
+        $("#btnSaveEditSIM").addClass("d-none");
+    });
+
+    $("#btnEditSimper").click(() => {
+        no_reg_simper = $("#valueNoRegSIMPER").val();
+        tgl_expired_simper = $("#valueTglExpiredSIMPER").val();
+        $("#mdlEditIzinTambang").modal("show");
+        $("#jdlEditIzinTambang").text("Edit Detail Simper");
+        $("#captionEditNoRegIzin").text("Nomor Registrasi SIMPER");
+        $("#captionEditTanggalExpired").text("Tanggal Expired SIMPER");
+        $("#editNoRegIzin").val(no_reg_simper);
+        $("#editTanggalExpired").val(tgl_expired_simper);
+        $("#fieldEditNoRegIzin").removeClass("d-none");
+        $("#fieldEditJenisSIM").addClass("d-none");
+        $("#btnSaveEditMINEPERMIT").addClass("d-none");
+        $("#btnSaveEditSIMPER").removeClass("d-none");
+        $("#btnSaveEditSIM").addClass("d-none");
+    });
+
+    $("#btnEditSIM").click(() => {
+        let tgl_expired = $("#valueTglExpiredSimKary").val();
+
+        $("#mdlEditIzinTambang").modal("show");
+        $("#jdlEditIzinTambang").text("Edit detail SIM Polisi");
+        $("#captionEditTanggalExpired").text("Tanggal Expired SIM Polisi");
+        $("#editTanggalExpired").val(tgl_expired);
+        $("#fieldEditNoRegIzin").addClass("d-none");
+        $("#fieldEditJenisSIM").removeClass("d-none");
+        $("#btnSaveEditMINEPERMIT").addClass("d-none");
+        $("#btnSaveEditSIMPER").addClass("d-none");
+        $("#btnSaveEditSIM").removeClass("d-none");
+    });
+
+    $("#btnSaveEditMINEPERMIT").click(() => {
+        let auth_mine_permit = $("#valueIDIzinTambang").val();
+        let no_reg = $("#editNoReg").val();
+        let tgl_exp = $("#editTglExp").val();
+
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/editSimper",
+            data: {
+                jenisIzin: "MINEPERMIT",
+                token: token,
+                authKary: authKary,
+                auth_izin_tambang: auth_mine_permit,
+                noReg: no_reg,
+                tglExp: tgl_exp,
+            },
+            success: function (res) {
+                console.log(data);
+                console.log("Success POST on " + site_url + "karyawan/editSimper");
+                let data = JSON.parse(res);
+                if (data.statusCode == 400) {
+                    addFormValidation(data.errorNoRegistrasi, data.errorTglExpIzin, data.errorJenisSIM, data.errorTglExpSIM);
+                } else if (data.statusCode == 204) {
+                    clearFormValidation();
+                    swal("Berhasil", data.message, "success");
+                } else {
+                    clearFormValidation();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "karyawan/editSimper");
+                console.log(thrownError);
+            }
+        });
+    });
+
+    $("#btnSaveEditSIMPER").click(() => {
+        console.log("Simpan Edit SIMPER");
+    });
+
+    $("#btnSaveEditSIM").click(() => {
+        console.log("Simpan Edit SIM");
     });
 });
