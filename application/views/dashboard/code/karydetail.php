@@ -7,4 +7,4 @@ echo '<script type="text/javascript" src="' . base_url('assets/js/edit_personal.
 echo '<script type="text/javascript" src="' . base_url('assets/js/edit_karyawan.js?auth=' . date('YmdHis')) . '"></script>';
 echo '<script type="text/javascript" src="' . base_url('assets/js/edit_simper.js?auth=' . date('YmdHis')) . '"></script>';
 echo '<script type="text/javascript" src="' . base_url('assets/js/edit_sertifikat.js?auth=' . date('YmdHis')) . '"></script>';
-echo '<script type="text/javascript" src="' . base_url('assets/js/utils.js?auth=' . date('YmdHis')) . '"></script>';
+// echo '<script type="text/javascript" src="' . base_url('assets/js/utils.js?auth=' . date('YmdHis')) . '"></script>';

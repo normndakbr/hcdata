@@ -1204,9 +1204,6 @@ $(document).ready(function () {
     formData.append("filesmpsv", filesmpsv);
     formData.append("token", token);
 
-    // console.log("filesim => " + formData.get("filesim"));
-    // console.log("filesmp => " + formData.get("filesmp"));
-
     $.ajax({
       type: "POST",
       url: site_url + "izin_tambang/add_unit_izin_tambang_new",
@@ -1215,7 +1212,7 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: function (data) {
-        console.log(data);
+        // console.log(data);
         var data = JSON.parse(data);
         if (data.statusCode == 200) {
           $("#jenisUnitSimpernw").val("").trigger("change");
