@@ -3021,27 +3021,23 @@ class Karyawan extends My_Controller
         }
     }
 
-    public function berkassim($auth_izin_tambang)
+    public function berkassim($auth_sim_kary)
     {
         $url_file = "";
-        $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
+        $dtsim = $this->kry->get_dt_sim($auth_sim_kary);
 
-        if (!empty($dtizin)) {
-            foreach ($dtizin as $list) {
+        if (!empty($dtsim)) {
+            foreach ($dtsim as $list) {
                 $id_personal = $list->id_personal;
                 $id_m_perusahaan = $list->id_m_perusahaan;
             }
 
             $dtsim = $this->kry->get_dt_sim_by_id($id_personal);
-            // echo json_encode(array($dtsim));
-            echo "id_personal => " . $id_personal;
 
             if (!empty($dtsim)) {
                 foreach ($dtsim as $list) {
                     $url_file = $list->url_file;
                 }
-
-                echo "url_file => " . $url_file;
 
                 $foldername = md5($id_personal);
                 $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_file;
