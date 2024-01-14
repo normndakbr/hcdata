@@ -685,7 +685,7 @@
                                                                     <td class="align-middle text-center"><?= $data_sim_kary->tgl_exp_sim ?></td>
                                                                     <td style="text-align:center;" style="width: 10%;">
                                                                         <button id="btnEditSIM" class="btn btn-success btn-sm text-white" title="Edit detail sim"><i class="fas fa-edit"></i></button>
-                                                                        <a href="<?= base_url('karyawan/berkassim/') . $data_mine_permit->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-file-alt"></i></a>
+                                                                        <a href="<?= base_url('karyawan/berkassim/') . $data_sim_kary->auth_sim_kary ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-file-alt"></i></a>
                                                                         <button id="btnReuploadSIM" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-file-upload"></i></button>
                                                                         <button id="btnDeleteSIM" class="btn btn-danger btn-sm text-white" title="Hapus data SIM"><i class="fas fa-trash"></i></button>
                                                                     </td>
