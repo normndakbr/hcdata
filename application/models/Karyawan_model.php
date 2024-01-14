@@ -927,8 +927,6 @@ class Karyawan_model extends CI_Model
 
     public function get_dt_sim($auth_simpol)
     {
-        // $this->db->order_by('tgl_exp_sim', 'desc');
-        // $this->db->limit(1);
         return $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_simpol])->result();
     }
 
