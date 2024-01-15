@@ -66,8 +66,8 @@
                         <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= isset($data_kary->auth_m_perusahaan) ? $data_kary->auth_m_perusahaan : '-' ?>"></input>
                         <input id="valueAuthPersonal" class="d-none" value="<?= isset($data_kary->auth_personal) ? $data_kary->auth_personal : '-' ?>"></input>
                         <input id="valueAuthKaryawan" class="d-none" value="<?= isset($data_kary->auth_karyawan) ? $data_kary->auth_karyawan : '-' ?>"></input>
-                        <input id="valueAuthMINEPERMIT" class="d-none" value="<?= isset($data_mine_permit->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
-                        <input id="valueAuthSIMPER" class="d-none" value="<?= isset($data_simper->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthMINEPERMIT" class="d-none" value="<?= isset($data_mine_permit->auth_izin_tambang) ? $data_mine_permit->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthSIMPER" class="d-none" value="<?= isset($data_simper->auth_izin_tambang) ? $data_simper->auth_izin_tambang : '-' ?>"></input>
                         <input id="valueAuthSIM" class="d-none" value="<?= isset($data_sim_kary->auth_sim_kary) ? $data_sim_kary->auth_sim_kary : '-' ?>"></input>
 
                         <!-- Data Personal -->
