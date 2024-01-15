@@ -101,11 +101,10 @@ $(document).ready(function () {
         $(".errorEditJenisSIM").html("");
     }
 
-    function addFormValidation(errorNoRegistrasi, errorTglExpIzin, errorJenisSIM, errorTglExpSIM) {
-        $(".errorEditNoReg").html(errorNoRegistrasi);
-        $(".errorEditTglExp").html(errorTglExpIzin);
+    function addFormValidation(errorNoRegistrasi, errorTglExpIzin, errorJenisSIM) {
+        $(".errorEditNoRegIzin").html(errorNoRegistrasi);
+        $(".errorEditTanggalExpired").html(errorTglExpIzin);
         $(".errorEditJenisSIM").html(errorJenisSIM);
-        $(".errorEditTglExpSIM").html(errorTglExpSIM);
     }
 
     $(document).on('click', '.btnDetailIzinKaryawan', function () {
@@ -300,6 +299,36 @@ $(document).ready(function () {
         });
     }
 
+    function updatePermit(payload) {
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/editPermit",
+            data: payload,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (res) {
+                // alert(res);
+                // console.log(res);
+                console.log("Success POST on " + site_url + "karyawan/editPermit");
+                let data = JSON.parse(res);
+                if (data.statusCode == 400) {
+                    $(".errorEditNoRegIzin").html(data.errorNoRegistrasi);
+                    $(".errorEditTanggalExpired").html(data.errorTglExpIzin);
+                } else if (data.statusCode == 204) {
+                    clearFormValidation();
+                    swal("Berhasil", data.message, "success");
+                } else {
+                    clearFormValidation();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "karyawan/editPermit");
+                console.log(thrownError);
+            }
+        });
+    }
+
     $("#btnSaveReuploadSIM").click(function () {
         let jenisIzin = "SIM";
         let auth_sim = editAuthSIM;
@@ -419,46 +448,47 @@ $(document).ready(function () {
     });
 
     $("#btnSaveEditMINEPERMIT").click(() => {
-        let auth_mine_permit = $("#valueIDIzinTambang").val();
-        let no_reg = $("#editNoReg").val();
-        let tgl_exp = $("#editTglExp").val();
+        let auth_mine_permit = $("#valueAuthMINEPERMIT").val();
+        let no_reg = $("#editNoRegIzin").val();
+        let tgl_exp = $("#editTanggalExpired").val();
 
-        $.ajax({
-            type: "POST",
-            url: site_url + "karyawan/editSimper",
-            data: {
-                jenisIzin: "MINEPERMIT",
-                token: token,
-                authKary: authKary,
-                auth_izin_tambang: auth_mine_permit,
-                noReg: no_reg,
-                tglExp: tgl_exp,
-            },
-            success: function (res) {
-                console.log(data);
-                console.log("Success POST on " + site_url + "karyawan/editSimper");
-                let data = JSON.parse(res);
-                if (data.statusCode == 400) {
-                    addFormValidation(data.errorNoRegistrasi, data.errorTglExpIzin, data.errorJenisSIM, data.errorTglExpSIM);
-                } else if (data.statusCode == 204) {
-                    clearFormValidation();
-                    swal("Berhasil", data.message, "success");
-                } else {
-                    clearFormValidation();
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                console.log("Error POST on " + site_url + "karyawan/editSimper");
-                console.log(thrownError);
-            }
-        });
+        let payload = new FormData();
+        payload.append("jenis_izin", "MINEPERMIT");
+        payload.append("token", token);
+        payload.append("auth_izin_tambang", auth_mine_permit);
+        payload.append("no_reg", no_reg);
+        payload.append("tgl_exp", tgl_exp);
+
+        updatePermit(payload);
     });
 
     $("#btnSaveEditSIMPER").click(() => {
-        console.log("Simpan Edit SIMPER");
+        let auth_simper = $("#valueAuthSIMPER").val();
+        let no_reg = $("#editNoRegIzin").val();
+        let tgl_exp = $("#editTanggalExpired").val();
+
+        let payload = new FormData();
+        payload.append("jenis_izin", "SIMPER");
+        payload.append("token", token);
+        payload.append("auth_izin_tambang", auth_simper);
+        payload.append("no_reg", no_reg);
+        payload.append("tgl_exp", tgl_exp);
+
+        updatePermit(payload);
     });
 
     $("#btnSaveEditSIM").click(() => {
-        console.log("Simpan Edit SIM");
+        let auth_sim = $("#valueAuthSIM").val();
+        let auth_jenis_sim = $("#editJenisSIM").val();
+        let tgl_exp = $("#editTanggalExpired").val();
+
+        let payload = new FormData();
+        payload.append("jenis_izin", "SIM");
+        payload.append("token", token);
+        payload.append("auth_sim_kary", auth_sim);
+        payload.append("auth_jenis_sim", auth_jenis_sim);
+        payload.append("tgl_exp", tgl_exp);
+
+        updatePermit(payload);
     });
 });
