@@ -130,7 +130,12 @@ class Izin_tambang_model extends CI_Model
     {
         $this->db->where('id_izin_tambang', $id_izin);
         $this->db->update('tb_izin_tambang', $dtizin);
-        return;
+
+        if ($this->db->affected_rows() > 0) {
+            return true; // Successful update
+        } else {
+            return false; // No records were updated
+        }
     }
 
     public function hapus_izin_tambang($auth_izin_tambang)
@@ -207,7 +212,6 @@ class Izin_tambang_model extends CI_Model
             foreach ($query->result() as $list) {
                 $id_izin = $list->id_izin_tambang;
             }
-
             return $id_izin;
         } else {
             return;
