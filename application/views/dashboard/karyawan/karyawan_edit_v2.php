@@ -614,9 +614,7 @@
                                                 <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
                                             </h6>
                                             <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
-                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">
-                                                <?= isset($data_izin->jenis_izin_tambang) ? "Data " . $data_izin->jenis_izin_tambang : 'Data SIMPER/MINE PERMIT' ?>
-                                            </h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Izin Tambang</h6>
                                             <hr style="height: 3px; background: #404443;">
                                         </div>
 
