@@ -635,8 +635,8 @@
                                                                     <td class="d-none">
                                                                         <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="<?= $data_mine_permit->no_reg ?>">
                                                                     </td>
-                                                                    <td class=""><?= $data_mine_permit->no_reg ?></td>
-                                                                    <td class="align-middle text-center"><?= $data_mine_permit->tgl_expired ?></td>
+                                                                    <td id="valueNoRegMinePermit" class=""><?= $data_mine_permit->no_reg ?></td>
+                                                                    <td id="valueTglExpMinePermit" class="align-middle text-center"><?= $data_mine_permit->tgl_expired ?></td>
                                                                     <td style="text-align:center;" style="width: 10%;">
                                                                         <button id="btnEditMinePermit" class="btn btn-success btn-sm text-white" title="Edit detail MINE PERMIT"><i class="fas fa-edit"></i></button>
                                                                         <a href="<?= base_url('karyawan/berkasizin/') . $data_mine_permit->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan MINE PERMIT"><i class="fas fa-file-alt"></i></a>
@@ -658,8 +658,8 @@
                                                             </tr>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td><?= $data_simper->no_reg ?> </td>
-                                                                    <td class="align-middle text-center"><?= $data_simper->tgl_expired ?></td>
+                                                                    <td id="valueNoRegSimper"><?= $data_simper->no_reg ?> </td>
+                                                                    <td id="valueTglExpSimper" class="align-middle text-center"><?= $data_simper->tgl_expired ?></td>
                                                                     <td style="text-align:center;" style="width: 10%;">
                                                                         <button id="btnEditSimper" class="btn btn-success btn-sm text-white" title="Edit detail SIMPER"><i class="fas fa-edit"></i></button>
                                                                         <a href="<?= base_url('karyawan/berkasizin/') . $data_simper->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIMPER"><i class="fas fa-file-alt"></i></a>
@@ -681,8 +681,8 @@
                                                             </tr>
                                                             <tbody>
                                                                 <tr>
-                                                                    <td><?= $data_sim_kary->sim ?></td>
-                                                                    <td class="align-middle text-center"><?= $data_sim_kary->tgl_exp_sim ?></td>
+                                                                    <td id="valueJenisSim"><?= $data_sim_kary->sim ?></td>
+                                                                    <td id="valueTglExpSim" class="align-middle text-center"><?= $data_sim_kary->tgl_exp_sim ?></td>
                                                                     <td style="text-align:center;" style="width: 10%;">
                                                                         <button id="btnEditSIM" class="btn btn-success btn-sm text-white" title="Edit detail sim"><i class="fas fa-edit"></i></button>
                                                                         <a href="<?= base_url('karyawan/berkassim/') . $data_sim_kary->auth_sim_kary ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-file-alt"></i></a>
@@ -696,10 +696,9 @@
                                                 <?php } ?>
 
                                                 <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                    <?php if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
+                                                    <?php if (isset($data_simper) !== null) { ?>
                                                         <a id="editTambahUnit" data-scroll href="#clSertifikasi" class="btn btn-success font-weight-bold" style="margin-left:30px;">Tambah Data Unit</a>
                                                     <?php } ?>
-                                                    <a id="editSimpanIzin" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold" style="margin-left:30px;">Simpan Data</a>
                                                 </div>
                                             <?php } else { ?>
                                                 <div class="card-body row justify-content-center">
