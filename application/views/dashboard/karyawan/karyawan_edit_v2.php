@@ -693,11 +693,11 @@
                                                     </div>
                                                 <?php } ?>
 
-                                                <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+                                                <!-- <div class="col-lg-12 col-md-12 col-sm-12 text-right">
                                                     <?php if (isset($data_simper) !== null) { ?>
                                                         <a id="editTambahUnit" data-scroll href="#clSertifikasi" class="btn btn-success font-weight-bold" style="margin-left:30px;">Tambah Data Unit</a>
                                                     <?php } ?>
-                                                </div>
+                                                </div> -->
                                             <?php } else { ?>
                                                 <div class="card-body row justify-content-center">
                                                     <h5 style='text-align:center;'>Data Izin Tambang Tidak Ditemukan.</h5>
