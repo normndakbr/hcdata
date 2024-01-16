@@ -4372,7 +4372,9 @@ class Karyawan extends My_Controller
                 if ($this->form_validation->run() == false) {
                     $error = array(
                         'statusCode' => 400,
-                        'errorEditJenisSIM' => form_error('no_reg'),
+                        'status' => "warning",
+                        'message' => "Input tidak valid, silahkan periksa kembali data anda",
+                        'errorEditJenisSIM' => form_error('auth_jenis_sim'),
                         'errorTglExpIzin' => form_error('tgl_exp'),
                     );
 
@@ -4386,15 +4388,15 @@ class Karyawan extends My_Controller
                     $tglExp = htmlspecialchars($this->input->post("tgl_exp", true));
                     $id_user = $this->session->userdata('id_user_hcdata');
 
-                    
+
                     $dataSIMKary = array(
                         'id_sim' => $idJenisSIM,
                         'tgl_exp_sim' => $tglExp,
                         'tgl_edit' => date('Y-m-d H:i:s'),
                         'id_user' => $id_user,
                     );
-                    
-                    
+
+
                     $test = $this->smm->update_sim($idSIMKary, $dataSIMKary);
                     // echo json_encode($test);
                     // die();
@@ -4402,7 +4404,7 @@ class Karyawan extends My_Controller
                     if ($test) {
                         $response = (array(
                             "statusCode" => 204,
-                            "status" => "Resource has been updated",
+                            "status" => "success",
                             "message" => "Data SIM Polisi berhasil diperbarui"
                         ));
 
