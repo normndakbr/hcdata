@@ -112,7 +112,11 @@ $(document).ready(function () {
     $("#editJenisSIM").change(() => {
         editAuthSIM = $("#editJenisSIM").val();
         if (!editAuthSIM) {
-            swal({ title: "Perhatian", text: "Data jenis SIM wajib dipilih apabila jenis dokumen adalah SIMPER", type: 'warning' });
+            swal({
+                title: "Perhatian",
+                text: "Data jenis SIM wajib dipilih",
+                type: 'warning'
+            });
             $(".errorEditJenisSIM").html('Jenis SIM wajib dipilih');
         } else {
             $.ajax({
@@ -297,7 +301,22 @@ $(document).ready(function () {
         });
     }
 
-    function updatePermit(payload, jenis_izin) {
+    function updatePermit(payload) {
+        let jenis_izin = payload.get('jenis_izin');
+        let jenis_sim = "";
+        let no_reg = "";
+        let tgl_exp = "";
+
+        if (jenis_izin == "SIM") {
+            tgl_exp = payload.get("tgl_exp");
+        } else if (jenis_izin == "SIMPER") {
+            no_reg = payload.get("no_reg");
+            tgl_exp = payload.get("tgl_exp");
+        } else if (jenis_izin == "MINEPERMIT") {
+            no_reg = payload.get("no_reg");
+            tgl_exp = payload.get("tgl_exp");
+        }
+
         $.LoadingOverlay("show");
 
         $.ajax({
@@ -317,32 +336,34 @@ $(document).ready(function () {
                         type: data.status,
                     });
                     if (jenis_izin == "SIM") {
-                        addFormValidation("", data.errorEditJenisSIM, data.errorTglExpIzin)
+                        addFormValidation("", data.errorEditJenisSIM, data.errorTglExpIzin);
                     } else {
-                        addFormValidation(data.errorNoRegistrasi, "", data.errorTglExpIzin)
+                        addFormValidation(data.errorNoRegistrasi, "", data.errorTglExpIzin);
                     }
                     $.LoadingOverlay("hide");
                 } else if (data.statusCode == 204) {
+                    if (jenis_izin == "SIM") {
+                        $("#valueJenisSim").text(data.jenis_sim);
+                        $("#valueTglExpSim").text(tgl_exp);
+                    } else if (jenis_izin == "SIMPER") {
+                        $("#valueNoRegSimper").text(no_reg);
+                        $("#valueTglExpSimper").text(tgl_exp);
+                    } else if (jenis_izin == "MINEPERMIT") {
+                        $("#valueNoRegMinePermit").text(no_reg);
+                        $("#valueTglExpMinePermit").text(tgl_exp);
+                    }
                     clearFormValidation();
-                    swal({
-                        title: "Berhasil",
-                        text: data.message,
-                        type: data.status,
-                        timer: 3000,
-                    });
+                    swal('Berhasil', data.message, data.status);
                     $.LoadingOverlay("hide");
                 } else {
                     clearFormValidation();
+                    swal('Error', data.message, data.status);
                     $.LoadingOverlay("hide");
                 }
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                swal({
-                    title: "Error",
-                    text: "Terjadi kesalahan pada server, silahkan hubungi admin",
-                    type: "error",
-                });
-                $.LoadingOverlay("hide");
+                swal('Error', 'Terjadi kesalahan pada server, silahkan hubungi admin', 'error');
+                $.LoadingOverlay('hide');
             }
         });
     }
