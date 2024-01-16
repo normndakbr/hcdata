@@ -3627,7 +3627,7 @@ class Karyawan extends My_Controller
             $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
 
             if ($save_dtPersonal && $save_dtAlamatKtp) {
-                echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
+                echo json_encode(array("statusCode" => 204, "status" => "success", "pesan" => "Data personal berhasil diperbarui."));
             } else if (!$save_dtPersonal) {
                 echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data personal."));
             } else if (!$save_dtAlamatKtp) {
@@ -4307,7 +4307,7 @@ class Karyawan extends My_Controller
         } else {
             $jenisIzin = htmlspecialchars($this->input->post("jenis_izin", true));
 
-            if ($jenisIzin == "SIMPER" || $jenisIzin == "MINE PERMIT") {
+            if ($jenisIzin == "SIMPER" || $jenisIzin == "MINEPERMIT") {
                 $this->form_validation->set_rules('no_reg', 'no_reg', 'required|trim|max_length[50]', array(
                     'required' => 'No. Registrasi wajib diisi',
                     'max_length' => 'No. Register maksimal 50 karakter',
@@ -4344,7 +4344,7 @@ class Karyawan extends My_Controller
                     if ($test) {
                         $response = (array(
                             "statusCode" => 204,
-                            "status" => "Resource has been updated",
+                            "status" => "success",
                             "message" => "Data berhasil diperbarui"
                         ));
 
@@ -4353,7 +4353,7 @@ class Karyawan extends My_Controller
                     } else {
                         $response = (array(
                             "statusCode" => 202,
-                            "status" => "Resource update failed",
+                            "status" => "warning",
                             "message" => "Terjadi Kesalahan, data gagal diperbarui"
                         ));
 
@@ -4396,15 +4396,14 @@ class Karyawan extends My_Controller
                         'id_user' => $id_user,
                     );
 
-
                     $test = $this->smm->update_sim($idSIMKary, $dataSIMKary);
-                    // echo json_encode($test);
-                    // die();
+                    $jenis_sim = $this->smm->get_jenis_sim_by_auth($authJenisSIMKary);
 
                     if ($test) {
                         $response = (array(
                             "statusCode" => 204,
                             "status" => "success",
+                            "jenis_sim" => $jenis_sim,
                             "message" => "Data SIM Polisi berhasil diperbarui"
                         ));
 
@@ -4413,7 +4412,7 @@ class Karyawan extends My_Controller
                     } else {
                         $response = (array(
                             "statusCode" => 202,
-                            "status" => "Resource update failed",
+                            "status" => "warning",
                             "message" => "Terjadi Kesalahan, data SIM Polisi gagal diperbarui"
                         ));
 

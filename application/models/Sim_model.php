@@ -249,4 +249,17 @@ class Sim_model extends CI_Model
                return false; // No records were updated
           }
      }
+
+     public function get_jenis_sim_by_auth($auth_sim)
+     {
+          $query = $this->db->get_where('vw_sim', ['auth_sim' => $auth_sim]);
+          if (!empty($query->result())) {
+               foreach ($query->result() as $list) {
+                    $jenis_sim = $list->sim;
+               }
+               return $jenis_sim;
+          } else {
+               return;
+          }
+     }
 }
