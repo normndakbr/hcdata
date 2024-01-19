@@ -533,4 +533,62 @@ $(document).ready(function () {
 
         updatePermit(payload, jenis_izin);
     });
+
+    $(document).on("click", ".HapusVaccine", function () {
+        let auth_vaksin = $(this).attr("id");
+
+        swal({
+            title: "Validasi",
+            text: "Hapus data vaksin?",
+            type: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#36c6d3",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Ya, hapus",
+            cancelButtonText: "Batalkan",
+        }).then(function (result) {
+            if (result.value) {
+                $.ajax({
+                    type: "POST",
+                    url: site_url + "karyawan/hapus_vaksin",
+                    data: {
+                        auth_vaksin: auth_vaksin,
+                        token: token,
+                    },
+                    success: function (data) {
+                        var data = JSON.parse(data);
+                        if (data.statusCode == 200) {
+                            $("#idEditVaccine").LoadingOverlay("show");
+                            $("#idEditVaccine").load(
+                                site_url + "karyawan/vaksin?auth_person=" + auth_person
+                            );
+                            $("#idEditVaccine").LoadingOverlay("hide");
+                            swal("Berhasil", data.pesan, "success");
+                        } else if (data.statusCode == 201) {
+                            swal("Error", data.pesan, "error");
+                        } else {
+                            $.LoadingOverlay("hide");
+                            $(".errormsgvaksin").removeClass("d-none");
+                            $(".errormsgvaksin").removeClass("alert-info");
+                            $(".errormsgvaksin").addClass("alert-danger");
+                            $(".errormsgvaksin").html(data.pesan);
+                        }
+                    },
+                    error: function (xhr, ajaxOptions, thrownError) {
+                        $.LoadingOverlay("hide");
+                        $(".errormsgvaksin").removeClass("d-none");
+                        $(".errormsgvaksin").removeClass("alert-info");
+                        $(".errormsgvaksin").addClass("alert-danger");
+                        if (thrownError != "") {
+                            $(".errormsgvaksin").html(
+                                "Terjadi kesalahan saat menghapus vaksin, hubungi administrator"
+                            );
+                        }
+                    },
+                });
+            } else {
+                swal.close();
+            }
+        });
+    });
 });

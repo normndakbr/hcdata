@@ -1,6 +1,10 @@
 <script>
     //========================================== User ========================================================
     $(document).ready(function() {
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, '<?= base_url('user/new'); ?>');
+        }
+
         $(".err_psn_user").fadeTo(2000, 500).slideUp(500, function() {
             $(".err_psn_user").slideUp(500);
             " <?= $this->session->set_flashdata('msg', ''); ?>";
@@ -16,6 +20,10 @@
         });
 
         $('#aksesUser').select2({
+            theme: 'bootstrap4'
+        });
+
+        $('#perusahaanUser').select2({
             theme: 'bootstrap4'
         });
 
@@ -330,7 +338,7 @@
             "serverSide": true,
             "ordering": true,
             "order": [
-                [1, 'asc'],
+                [1, 'desc'],
             ],
             "ajax": {
                 "url": "<?= base_url('user/ajax_list'); ?>",
@@ -373,12 +381,17 @@
                     "width": "1%"
                 },
                 {
-                    "data": 'id_menu',
+                    "data": 'NamaMenu',
                     "className": "text-nowrap align-middle",
                     "width": "10%"
                 },
                 {
                     "data": 'stat_user',
+                    "className": "text-center align-middle",
+                    "width": "1%"
+                },
+                {
+                    "data": 'kode_perusahaan',
                     "className": "text-center align-middle",
                     "width": "1%"
                 },

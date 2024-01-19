@@ -697,65 +697,105 @@
                                                     <h5 style='text-align:center;'>Data Izin Tambang Tidak Ditemukan.</h5>
                                                 </div>
                                             <?php } ?>
+
+                                            <?php if (!empty($data_unit)) { ?>
+                                                <div id="tabelListUnit" class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                                                    <div id="groupTbmUnitDetail" class="form-group">
+                                                        <h5 class="mb-3">Unit yang diizinkan</h5>
+                                                        <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th style="text-align:center; width: 1%;">No.</th>
+                                                                    <th style="text-align:center; width: 80%;">Unit</th>
+                                                                    <th style="text-align:center; width: 19%;">Akses</th>
+                                                                    <th style="text-align:center; width: 19%;">Aksi</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <?php
+                                                                $no = 1;
+                                                                if (!empty($data_unit)) {
+                                                                    foreach ($data_unit as $list) {
+                                                                        echo '<tr>';
+                                                                        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
+                                                                        echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
+                                                                        echo '<td class="align-middle text-center" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
+                                                                        echo "<td>";
+                                                                        echo "<button id='' type='button' class='btn btn-success btn-sm editUnit' title='Edit'><i class='fas fa-edit'></i></button> ";
+                                                                        echo "<button id='' type='button' class='btn btn-danger btn-sm deleteUnit' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
+                                                                        echo "</td>";
+                                                                        echo '</tr>';
+                                                                    }
+                                                                } else {
+                                                                    echo '<tr>';
+                                                                    echo '<td colspan=3 class=" align-middle text-center">Tidak ada data</td>';
+                                                                    echo '</tr>';
+                                                                }
+                                                                ?>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            <?php } ?>
                                             </div>
                                     </div>
-                                    <div class="tab-pane fade" id="certificateTab" role="tabpanel">
-                                        <div class="card-body row">
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                <h6 class="font-weight-bold" for="editPerKary">
-                                                    <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
-                                                </h6>
-                                                <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Sertifikasi</h6>
-                                                <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
-                                                <hr style="height: 3px; background: #404443;">
-                                            </div>
-
-                                            <div id="idEditSertifikat" class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                </div>
+                                <div class="tab-pane fade" id="certificateTab" role="tabpanel">
+                                    <div class="card-body row">
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tab-pane fade" id="mcuTab" role="tabpanel">
-                                        <div class="card-body row">
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
-                                                </div>
-                                            </div>
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                <h6 class="font-weight-bold" for="editPerKary">
-                                                    <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
-                                                </h6>
-                                                <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Medical
-                                                    Check Up</h6>
-                                                <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
-                                                <hr style="height: 3px; background: #404443;">
-                                            </div>
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <h6 class="font-weight-bold" for="editPerKary">
+                                                <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
+                                            </h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Sertifikasi</h6>
+                                            <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
+                                            <hr style="height: 3px; background: #404443;">
+                                        </div>
 
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12" id="dataEditMCU">
-                                            </div>
+                                        <div id="idEditSertifikat" class="mb-3 col-lg-12 col-md-12 col-sm-12">
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade" id="vaccineTab" role="tabpanel">
-                                        <div class="card-body row">
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
-                                                </div>
+                                </div>
+                                <div class="tab-pane fade" id="mcuTab" role="tabpanel">
+                                    <div class="card-body row">
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
                                             </div>
-                                            <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
-                                                <h6 class="font-weight-bold" for="editPerKary">
-                                                    <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
-                                                </h6>
-                                                <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Vaksinasi
-                                                </h6>
-                                                <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
-                                                <hr style="height: 3px; background: #404443;">
-                                            </div>
+                                        </div>
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <h6 class="font-weight-bold" for="editPerKary">
+                                                <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
+                                            </h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Medical
+                                                Check Up</h6>
+                                            <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
+                                            <hr style="height: 3px; background: #404443;">
+                                        </div>
 
-                                            <div id="idEditVaccine" class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12" id="dataEditMCU">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="vaccineTab" role="tabpanel">
+                                    <div class="card-body row">
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
                                             </div>
+                                        </div>
+                                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
+                                            <h6 class="font-weight-bold" for="editPerKary">
+                                                <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
+                                            </h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Vaksinasi
+                                            </h6>
+                                            <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
+                                            <hr style="height: 3px; background: #404443;">
+                                        </div>
+
+                                        <div id="idEditVaccine" class="mb-3 col-lg-12 col-md-12 col-sm-12">
                                         </div>
                                     </div>
                                 </div>
@@ -766,430 +806,431 @@
             </div>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="mdldetailsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
-                    <h5 class="modal-title text-white align-middle" id="jdldetailsertifikat">Detail Sertifikat</h5>
-                    <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
+<div class="modal fade" id="mdldetailsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
+                <h5 class="modal-title text-white align-middle" id="jdldetailsertifikat">Detail Sertifikat</h5>
+                <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
+            </div>
+
+            <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="jenisSertifikasiDetail">Jenis Sertifikasi :</label>
+                            <input style="background-color: none;" id='jenisSertifikasiDetail' name='jenisSertifikasiDetail' class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="noSertifikatDetail">No. Sertifikasi :</label>
+                            <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="namaLembagaDetail">Nama Lembaga :</label>
+                            <input style="background-color: none;" id='namaLembagaDetail' name='namaLembagaDetail' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="tanggalSertifikasiDetail">Tanggal Sertifikasi :</label>
+                            <input style="background-color: none;" id='tanggalSertifikasiDetail' name='tanggalSertifikasiDetail' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="tanggalSertifikasiAkhirDetail">Tanggal Expired
+                                :</label>
+                            <input style="background-color: none;" id='tanggalSertifikasiAkhirDetail' name='tanggalSertifikasiAkhirEdit' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div>
 
+<div class="modal fade" id="mdlEditIzinTambang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow d-flex align-items-center align-middle">
+                <h5 class="modal-title text-white align-middle font-weight-bold" id="jdlEditIzinTambang"></h5>
+                <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row px-3">
+                    <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert errEditIzinTambang alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                    </div>
+                    <div id="fieldEditJenisSIM" class="mb-3 col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="editJenisSIM">Jenis SIM :</label>
+                            <div id="txtEditJenisSIM" class="input-group">
+                                <select id='editJenisSIM' name='editJenisSIM' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                    <option value="">-- WAJIB DIPILIH --</option>
+                                </select>
+                                <!-- <div class="input-group-prepend">
+                                    <button id="refreshEditJenisSIM" name="refreshEditJenisSIM" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                </div> -->
+                            </div>
+                            <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                    <!-- No Registrasi -->
+                    <div id="fieldEditNoRegIzin" class="mb-3 col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" id="captionEditNoRegIzin" for="editNoRegIzin">No. Registrasi :</label>
+                            <input id='editNoRegIzin' name='editNoRegIzin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorEditNoRegIzin text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                    <!-- Tanggal Expired -->
+                    <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" id="captionEditTanggalExpired" for="editTanggalExpired">Tanggal Expired :</label>
+                            <input id='editTanggalExpired' name='editTanggalExpired' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorEditTanggalExpired text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" name="btnSimpanEdit" id="btnSaveEditMINEPERMIT" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
+                <button type="button" name="btnSimpanEdit" id="btnSaveEditSIMPER" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
+                <button type="button" name="btnSimpanEdit" id="btnSaveEditSIM" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlUploadUlangIzinTambang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white" id="jdlMdlUploadUlangIzinTambang"></h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="d-flex-row justify-content-between">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert errorReuploadIzin alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div>
+                            <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang"></h6>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileReuploadIzin" class="d-none font-weight-bold" id="captionLblUploadUlangIzinTambang">Upload file sertifikat :</label>
+                            <input type="file" class="form-control-file" id="fileReuploadIzin">
+                            <small class="errorFileReuploadIzin text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" name="btnEditReupload" id="btnSaveReuploadMINEPERMIT" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnSaveReuploadSIMPER" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button type="button" name="btnEditReupload" id="btnSaveReuploadSIM" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button name="btnbataluploadulangser" id="btnBatalReupload" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdluploadulangser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white" id="jdluploadulangser">Upload Ulang Sertifikat</h5>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert erruploadulangser alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
+                        <div>
+                            <h6 class="text-danger font-italic">Catatan : Upload file Sertifikat dalam format pdf,
+                                ukuran file Sertifikat maksimal 300 kb.</h6>
+                        </div>
+                        <div class="form-group">
+                            <label for="fileSertifikasiUlang"><b>Upload file sertifikat</b> :</label>
+                            <input type="file" class="form-control-file" id="fileSertifikasiUlang">
+                            <small class="errorFileSertifikasiUlang text-danger font-italic font-weight-bold"></small>
+                            <span class="9f7fjmuj8ik2js4n8k66g3hjl323 d-none"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" name="btnEditReuploadSertifikat" id="btnEditReuploadSertifikat" class="btn font-weight-bold btn-primary mr-3">Upload File</button>
+                <button name="btnbataluploadulangser" id="btnbataluploadulangser" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdleditsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow d-flex align-items-center align-middle">
+                <h5 class="modal-title text-white align-middle font-weight-bold" id="jdlEditSertifikat">Edit Sertifikat
+                </h5>
+                <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row px-3">
+                    <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert erreditsertifikat alert-danger animate__animated animate__bounce d-none" role="alert"></div>
+                    </div>
+                    <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="jenisSertifikasiEdit">Jenis Sertifikasi :</label>
+                            <div id="txtjenisSertifikasiEdit" class="input-group">
+                                <select id='jenisSertifikasiEdit' name='jenisSertifikasiEdit' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                    <option value="">-- WAJIB DIPILIH --</option>
+                                </select>
+                                <div class="input-group-prepend">
+                                    <button id="refreshjenisSertifikasiEdit" name="refreshjenisSertifikasiEdit" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
+                                </div>
+                            </div>
+                            <small class="errorjenisSertifikasiEdit text-danger font-italic font-weight-bold"></small>
+                            <span class="7u67u834hs7dg4haj231hh67ju7a2 d-none"></span>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-4 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="noSertifikatEdit">No. Sertifikasi :</label>
+                            <input id='noSertifikatEdit' name='noSertifikatEdit' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorNoSertifikatEdit text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-8 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="namaLembagaEdit">Nama Lembaga :</label>
+                            <input id='namaLembagaEdit' name='namaLembagaEdit' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorNamaLembagaEdit text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="tanggalSertifikasiEdit">Tanggal Sertifikasi :</label>
+                            <input id='tanggalSertifikasiEdit' name='tanggalSertifikasiEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorTanggalSertifikasiEdit text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="masaBerlakuSertifikatEdit">Masa Berlaku (Tahun)
+                                :</label>
+                            <select id='masaBerlakuSertifikatEdit' name='masaBerlakuSertifikatEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                <option value="">-- PILIH MASA BERLAKU --</option>
+                                <option value="1">1 TAHUN</option>
+                                <option value="2">2 TAHUN</option>
+                                <option value="3">3 TAHUN</option>
+                                <option value="4">4 TAHUN</option>
+                                <option value="5">5 TAHUN</option>
+                                <option value="6">6 TAHUN</option>
+                                <option value="7">7 TAHUN</option>
+                                <option value="8">8 TAHUN</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="tanggalSertifikasiAkhirEdit">Tanggal Expired :</label>
+                            <input id='tanggalSertifikasiAkhirEdit' name='tanggalSertifikasiAkhirEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                            <small class="errorTanggalSertifikasiAkhir text-danger font-italic font-weight-bold"></small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer p-3">
+                <button type="button" name="btnSimpanEditSertifikat" id="btnSimpanEditSertifikat" class="btn font-weight-bold btn-primary">Simpan Data</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlDetailMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
+                <h5 class="modal-title text-white align-middle">Detail Medical Check Up</h5>
+                <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
+            </div>
+
+            <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="alert alert-danger errorDetailMCU animate__animated animate__bounce d-none">
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="tanggalMCU">Tanggal Medical Check Up
+                                :</label>
+                            <input style="background-color: none;" type="text" id='tanggalMCU' class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="hasilMCU">Hasil Medical Check Up :</label>
+                            <input style="background-color: none;" id='hasilMCU' type="text" class="form-control" value="" disabled>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="form-group">
+                            <label class="font-weight-bold" for="keteranganMCU">Keterangan :</label>
+                            <textarea class="form-control" id="keteranganMCU" disabled></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlUploadMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white">Upload Ulang File MCU</h5>
+            </div>
+            <form action="javascript:void(0)" id="uploadUlangMCU" method="post" data-parsley-validate>
                 <div style="background-color:rgba(240,240,240,1);" class="modal-body">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="jenisSertifikasiDetail">Jenis Sertifikasi :</label>
-                                <input style="background-color: none;" id='jenisSertifikasiDetail' name='jenisSertifikasiDetail' class="form-control" value="" disabled>
+                            <div class="alert errUploadMCU alert-danger animate__animated animate__bounce d-none" role="alert">
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="noSertifikatDetail">No. Sertifikasi :</label>
-                                <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-8 col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="namaLembagaDetail">Nama Lembaga :</label>
-                                <input style="background-color: none;" id='namaLembagaDetail' name='namaLembagaDetail' type="text" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="tanggalSertifikasiDetail">Tanggal Sertifikasi :</label>
-                                <input style="background-color: none;" id='tanggalSertifikasiDetail' name='tanggalSertifikasiDetail' type="text" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="tanggalSertifikasiAkhirDetail">Tanggal Expired
-                                    :</label>
-                                <input style="background-color: none;" id='tanggalSertifikasiAkhirDetail' name='tanggalSertifikasiAkhirEdit' type="text" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdlEditIzinTambang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow d-flex align-items-center align-middle">
-                    <h5 class="modal-title text-white align-middle font-weight-bold" id="jdlEditIzinTambang"></h5>
-                    <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row px-3">
-                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                            <div class="alert errEditIzinTambang alert-danger animate__animated animate__bounce d-none" role="alert"></div>
-                        </div>
-                        <div id="fieldEditJenisSIM" class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="editJenisSIM">Jenis SIM :</label>
-                                <div id="txtEditJenisSIM" class="input-group">
-                                    <select id='editJenisSIM' name='editJenisSIM' autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                        <option value="">-- WAJIB DIPILIH --</option>
-                                    </select>
-                                    <!-- <div class="input-group-prepend">
-                                    <button id="refreshEditJenisSIM" name="refreshEditJenisSIM" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
-                                </div> -->
-                                </div>
-                                <small class="errorEditJenisSIM text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                        <!-- No Registrasi -->
-                        <div id="fieldEditNoRegIzin" class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" id="captionEditNoRegIzin" for="editNoRegIzin">No. Registrasi :</label>
-                                <input id='editNoRegIzin' name='editNoRegIzin' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorEditNoRegIzin text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                        <!-- Tanggal Expired -->
-                        <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" id="captionEditTanggalExpired" for="editTanggalExpired">Tanggal Expired :</label>
-                                <input id='editTanggalExpired' name='editTanggalExpired' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorEditTanggalExpired text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer p-3">
-                    <button type="button" name="btnSimpanEdit" id="btnSaveEditMINEPERMIT" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
-                    <button type="button" name="btnSimpanEdit" id="btnSaveEditSIMPER" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
-                    <button type="button" name="btnSimpanEdit" id="btnSaveEditSIM" class="d-none btn font-weight-bold btn-primary mr-3">Simpan Data</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdlUploadUlangIzinTambang" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="jdlMdlUploadUlangIzinTambang"></h5>
-                </div>
-
-                <div class="modal-body">
-                    <div class="d-flex-row justify-content-between">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="alert errorReuploadIzin alert-danger animate__animated animate__bounce d-none" role="alert"></div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
                             <div>
-                                <h6 class="text-danger font-italic" id="captionMdlUploadUlangIzinTambang"></h6>
+                                <h6 class="text-danger font-italic">Catatan : Upload file MCU dalam format pdf,
+                                    ukuran file MCU maksimal 200 kb.</h6>
                             </div>
                             <div class="form-group">
-                                <label for="fileReuploadIzin" class="d-none font-weight-bold" id="captionLblUploadUlangIzinTambang">Upload file sertifikat :</label>
-                                <input type="file" class="form-control-file" id="fileReuploadIzin">
-                                <small class="errorFileReuploadIzin text-danger font-italic font-weight-bold"></small>
+                                <label for="fileMCUnew" class="form-label">File MCU <span class="text-danger">*</span></label>
+                                <input type="file" class="form-control-file" id="fileMCUnew" name="fileMCUnew" accept=".pdf" required>
+                                <small class="errorFileMCUnew text-danger font-italic font-weight-bold"></small>
                             </div>
+                            <span class="bg83t12trgr98h9 d-none"></span>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer p-3">
-                    <button type="button" name="btnEditReupload" id="btnSaveReuploadMINEPERMIT" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
-                    <button type="button" name="btnEditReupload" id="btnSaveReuploadSIMPER" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
-                    <button type="button" name="btnEditReupload" id="btnSaveReuploadSIM" class="d-none btn font-weight-bold btn-primary mr-3">Upload File</button>
-                    <button name="btnbataluploadulangser" id="btnBatalReupload" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+                <div class="modal-footer m-3">
+                    <button type="submit" class="btn font-weight-bold btn-primary">Upload
+                        Data</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="mdluploadulangser" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:50%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white" id="jdluploadulangser">Upload Ulang Sertifikat</h5>
-                </div>
-
+<div class="modal fade" id="mdlEditMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow">
+                <h5 class="modal-title text-white">Edit MCU</h5>
+            </div>
+            <form action="javascript:void(0)" id="editMCU" method="post" data-parsley-validate>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="alert erruploadulangser alert-danger animate__animated animate__bounce d-none" role="alert"></div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                            <div>
-                                <h6 class="text-danger font-italic">Catatan : Upload file Sertifikat dalam format pdf,
-                                    ukuran file Sertifikat maksimal 300 kb.</h6>
-                            </div>
-                            <div class="form-group">
-                                <label for="fileSertifikasiUlang"><b>Upload file sertifikat</b> :</label>
-                                <input type="file" class="form-control-file" id="fileSertifikasiUlang">
-                                <small class="errorFileSertifikasiUlang text-danger font-italic font-weight-bold"></small>
-                                <span class="9f7fjmuj8ik2js4n8k66g3hjl323 d-none"></span>
+                            <div class="alert errEditMCU alert-danger animate__animated animate__bounce d-none" role="alert">
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="modal-footer p-3">
-                    <button type="button" name="btnEditReuploadSertifikat" id="btnEditReuploadSertifikat" class="btn font-weight-bold btn-primary mr-3">Upload File</button>
-                    <button name="btnbataluploadulangser" id="btnbataluploadulangser" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdleditsertifikat" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow d-flex align-items-center align-middle">
-                    <h5 class="modal-title text-white align-middle font-weight-bold" id="jdlEditSertifikat">Edit Sertifikat
-                    </h5>
-                    <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
-                </div>
-
-                <div class="modal-body">
-                    <div class="row px-3">
-                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                            <div class="alert erreditsertifikat alert-danger animate__animated animate__bounce d-none" role="alert"></div>
-                        </div>
-                        <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
+                        <div class="col-lg-4 col-md-4 col-sm-12">
                             <div class="form-group">
-                                <label class="font-weight-bold" for="jenisSertifikasiEdit">Jenis Sertifikasi :</label>
-                                <div id="txtjenisSertifikasiEdit" class="input-group">
-                                    <select id='jenisSertifikasiEdit' name='jenisSertifikasiEdit' autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                        <option value="">-- WAJIB DIPILIH --</option>
-                                    </select>
-                                    <div class="input-group-prepend">
-                                        <button id="refreshjenisSertifikasiEdit" name="refreshjenisSertifikasiEdit" class="btn btn-primary btn-sm" disabled><i class="fas fa-sync-alt"></i></button>
-                                    </div>
-                                </div>
-                                <small class="errorjenisSertifikasiEdit text-danger font-italic font-weight-bold"></small>
-                                <span class="7u67u834hs7dg4haj231hh67ju7a2 d-none"></span>
+                                <label for="editTanggalMCU" class="form-label">Tanggal MCU <span class="text-danger">*</span></label>
+                                <input id='editTanggalMCU' type="date" autocomplete="off" spellcheck="false" class="form-control" max="<?= date('Y-m-d') ?>" value="" required>
+                                <span class="89621y398thnr8 d-none"></span>
                             </div>
                         </div>
-                        <div class="mb-3 col-lg-4 col-md-12 col-sm-12">
+                        <div class="col-lg-8 col-md-8 col-sm-12">
                             <div class="form-group">
-                                <label class="font-weight-bold" for="noSertifikatEdit">No. Sertifikasi :</label>
-                                <input id='noSertifikatEdit' name='noSertifikatEdit' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorNoSertifikatEdit text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                        <div class="mb-3 col-lg-8 col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="namaLembagaEdit">Nama Lembaga :</label>
-                                <input id='namaLembagaEdit' name='namaLembagaEdit' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorNamaLembagaEdit text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                        <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="tanggalSertifikasiEdit">Tanggal Sertifikasi :</label>
-                                <input id='tanggalSertifikasiEdit' name='tanggalSertifikasiEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorTanggalSertifikasiEdit text-danger font-italic font-weight-bold"></small>
-                            </div>
-                        </div>
-                        <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="masaBerlakuSertifikatEdit">Masa Berlaku (Tahun)
-                                    :</label>
-                                <select id='masaBerlakuSertifikatEdit' name='masaBerlakuSertifikatEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                    <option value="">-- PILIH MASA BERLAKU --</option>
-                                    <option value="1">1 TAHUN</option>
-                                    <option value="2">2 TAHUN</option>
-                                    <option value="3">3 TAHUN</option>
-                                    <option value="4">4 TAHUN</option>
-                                    <option value="5">5 TAHUN</option>
-                                    <option value="6">6 TAHUN</option>
-                                    <option value="7">7 TAHUN</option>
-                                    <option value="8">8 TAHUN</option>
+                                <label for="editHasilMCU" class="form-label">Hasil MCU <span class="text-danger">*</span></label>
+                                <select id='editHasilMCU' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                    <option value=""></option>
                                 </select>
                             </div>
                         </div>
-                        <div class="mb-3 col-lg-4 col-md-4 col-sm-12">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="form-group">
-                                <label class="font-weight-bold" for="tanggalSertifikasiAkhirEdit">Tanggal Expired :</label>
-                                <input id='tanggalSertifikasiAkhirEdit' name='tanggalSertifikasiAkhirEdit' type="date" autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                <small class="errorTanggalSertifikasiAkhir text-danger font-italic font-weight-bold"></small>
+                                <label for="editKeteranganMCU" class="form-label">Keterangan <span class="text-danger">*</span></label>
+                                <textarea id='editKeteranganMCU' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer m-3">
+                    <button type="submit" class="btn font-weight-bold btn-primary">Upload
+                        Data</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="mdlEditVaksin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
+        <div class="modal-content">
+            <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
+                <h5 class="modal-title text-white align-middle">Edit Data Vaksin</h5>
+            </div>
+            <form action="javascript:void(0)" id="updateDataVaksin" method="post" data-parsley-validate>
+                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="alert alert-danger erroreditvaksin animate__animated animate__bounce d-none">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold form-label" for="jenisVaksin">Jenis Vaksin</label>
+                                <select id='jenisVaksin' autocomplete="off" spellcheck="false" class="form-control" value="" disabled>
+                                    <option value="">-- PILIH JENIS VAKSIN --</option>
+                                </select>
+                                <span class="fb19rg2hrr2hr52980r2 d-none"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold form-label" for="namaVaksin">Nama Vaksin <span class="text-danger">*</span></label>
+                                <select id='namaVaksin' autocomplete="off" spellcheck="false" class="form-control" value="" required>
+                                    <option value="">-- PILIH VAKSIN --</option>
+                                </select>
+                                <span class="b912rgh298htrnt8 d-none"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12">
+                            <div class="form-group">
+                                <label class="font-weight-bold form-label" for="tanggalVaksin">Tanggal Vaksin <span class="text-danger">*</span></label>
+                                <input style="background-color: none;" id='tanggalVaksin' type="date" autocomplete="off" spellcheck="false" max="<?= date('Y-m-d') ?>" class="form-control" value="" required>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer p-3">
-                    <button type="button" name="btnSimpanEditSertifikat" id="btnSimpanEditSertifikat" class="btn font-weight-bold btn-primary">Simpan Data</button>
+                    <button type="submit" class="btn font-weight-bold btn-primary">Simpan Data</button>
+                    <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
+</div>
 
-    <div class="modal fade" id="mdlDetailMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
-                    <h5 class="modal-title text-white align-middle">Detail Medical Check Up</h5>
-                    <button data-dismiss="modal" class="btn btn-sm btn-icon btn-danger"><i class="feather icon-x"></i></button>
-                </div>
-
-                <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="alert alert-danger errorDetailMCU animate__animated animate__bounce d-none">
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="tanggalMCU">Tanggal Medical Check Up
-                                    :</label>
-                                <input style="background-color: none;" type="text" id='tanggalMCU' class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="hasilMCU">Hasil Medical Check Up :</label>
-                                <input style="background-color: none;" id='hasilMCU' type="text" class="form-control" value="" disabled>
-                            </div>
-                        </div>
-                        <div class="col-lg-12 col-md-12 col-sm-12">
-                            <div class="form-group">
-                                <label class="font-weight-bold" for="keteranganMCU">Keterangan :</label>
-                                <textarea class="form-control" id="keteranganMCU" disabled></textarea>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdlUploadMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white">Upload Ulang File MCU</h5>
-                </div>
-                <form action="javascript:void(0)" id="uploadUlangMCU" method="post" data-parsley-validate>
-                    <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="alert errUploadMCU alert-danger animate__animated animate__bounce d-none" role="alert">
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div>
-                                    <h6 class="text-danger font-italic">Catatan : Upload file MCU dalam format pdf,
-                                        ukuran file MCU maksimal 200 kb.</h6>
-                                </div>
-                                <div class="form-group">
-                                    <label for="fileMCUnew" class="form-label">File MCU <span class="text-danger">*</span></label>
-                                    <input type="file" class="form-control-file" id="fileMCUnew" name="fileMCUnew" accept=".pdf" required>
-                                    <small class="errorFileMCUnew text-danger font-italic font-weight-bold"></small>
-                                </div>
-                                <span class="bg83t12trgr98h9 d-none"></span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer m-3">
-                        <button type="submit" class="btn font-weight-bold btn-primary">Upload
-                            Data</button>
-                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdlEditMCU" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow">
-                    <h5 class="modal-title text-white">Edit MCU</h5>
-                </div>
-                <form action="javascript:void(0)" id="editMCU" method="post" data-parsley-validate>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="alert errEditMCU alert-danger animate__animated animate__bounce d-none" role="alert">
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label for="editTanggalMCU" class="form-label">Tanggal MCU <span class="text-danger">*</span></label>
-                                    <input id='editTanggalMCU' type="date" autocomplete="off" spellcheck="false" class="form-control" max="<?= date('Y-m-d') ?>" value="" required>
-                                    <span class="89621y398thnr8 d-none"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-8 col-md-8 col-sm-12">
-                                <div class="form-group">
-                                    <label for="editHasilMCU" class="form-label">Hasil MCU <span class="text-danger">*</span></label>
-                                    <select id='editHasilMCU' autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                        <option value=""></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="form-group">
-                                    <label for="editKeteranganMCU" class="form-label">Keterangan <span class="text-danger">*</span></label>
-                                    <textarea id='editKeteranganMCU' type="text" autocomplete="off" spellcheck="false" class="form-control" value="" required></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer m-3">
-                        <button type="submit" class="btn font-weight-bold btn-primary">Upload
-                            Data</button>
-                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-warning">Batal</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="mdlEditVaksin" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="margin-left: auto; margin-right: auto;max-width:70%;">
-            <div class="modal-content">
-                <div class="modal-header bg-c-yellow align-middle d-flex align-items-center">
-                    <h5 class="modal-title text-white align-middle">Edit Data Vaksin</h5>
-                </div>
-                <form action="javascript:void(0)" id="updateDataVaksin" method="post" data-parsley-validate>
-                    <div style="background-color:rgba(240,240,240,1);" class="modal-body">
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="alert alert-danger erroreditvaksin animate__animated animate__bounce d-none">
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold form-label" for="jenisVaksin">Jenis Vaksin</label>
-                                    <select id='jenisVaksin' autocomplete="off" spellcheck="false" class="form-control" value="" disabled>
-                                        <option value="">-- PILIH JENIS VAKSIN --</option>
-                                    </select>
-                                    <span class="fb19rg2hrr2hr52980r2 d-none"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold form-label" for="namaVaksin">Nama Vaksin <span class="text-danger">*</span></label>
-                                    <select id='namaVaksin' autocomplete="off" spellcheck="false" class="form-control" value="" required>
-                                        <option value="">-- PILIH VAKSIN --</option>
-                                    </select>
-                                    <span class="b912rgh298htrnt8 d-none"></span>
-                                </div>
-                            </div>
-                            <div class="col-lg-4 col-md-4 col-sm-12">
-                                <div class="form-group">
-                                    <label class="font-weight-bold form-label" for="tanggalVaksin">Tanggal Vaksin <span class="text-danger">*</span></label>
-                                    <input style="background-color: none;" id='tanggalVaksin' type="date" autocomplete="off" spellcheck="false" max="<?= date('Y-m-d') ?>" class="form-control" value="" required>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer p-3">
-                        <button type="submit" class="btn font-weight-bold btn-primary">Simpan Data</button>
-                        <button type="button" data-dismiss="modal" class="btn font-weight-bold btn-danger">Batal</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <!-- <script>
+<!-- <script>
     // Access the data in JavaScript
     var myData = "<?php echo $jsonData; ?>";
     console.log(myData);

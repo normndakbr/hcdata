@@ -11,73 +11,70 @@ class Dash extends My_Controller
 
     public function index()
     {
-        if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
-            $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
+        // Header
+        $this->load->view('components/header');
+
+        // Sidebar
+        $this->load->view('components/sidebar');
+
+        // Navbar
+        $dataNavbar['nama'] = $this->session->userdata("nama_main");
+        $this->load->view('components/navbar', $dataNavbar);
+
+        // Main
+        $tgl_now = date('Y-m-d');
+        $jml_karyawan = $this->dsmod->count_all_karyawan();
+        $new_kry = $this->dsmod->new_emp();
+        $jml_user = $this->dsmod->count_all_perusahaan();
+        $kary_sum = $this->dsmod->get_data_sum($tgl_now);
+        $jml_lgr_aktif = $this->dsmod->get_langgar_aktif();
+        $dataMain['nama'] = $this->session->userdata("nama_main");
+        $dataMain['email'] = $this->session->userdata("email_main");
+        $dataMain['menu'] = $this->session->userdata("id_menu_main");
+        $dataMain['jml_karyawan'] = $jml_karyawan;
+        $dataMain['jml_user'] = $jml_user;
+        $dataMain['new_kry'] = $new_kry;
+        $dataMain['kary_sum'] = $kary_sum;
+        $dataMain['jml_lgr_aktif'] = $jml_lgr_aktif;
+        $this->load->view('dashboard', $dataMain);
+
+        // Modal
+        if ($this->session->has_userdata('id_m_perusahaan_main')) {
+            $idmper = $this->session->userdata('id_m_perusahaan_main');
             if ($idmper != "") {
-                $data['permst'] = $this->str->getMaster($idmper, "");
-                $data['perstr'] = $this->str->getMenu($idmper, "");
+                $dataModal['permst'] = $this->str->getMaster($idmper, "");
+                $dataModal['perstr'] = $this->str->getMenu($idmper, "");
             } else {
-                $data['permst'] = "";
-                $data['perstr'] = "";
+                $dataModal['permst'] = "";
+                $dataModal['perstr'] = "";
             }
         } else {
             $idmper = "";
-            $data['permst'] = "";
-            $data['perstr'] = "";
+            $dataModal['permst'] = "";
+            $dataModal['perstr'] = "";
         }
+        $this->load->view('components/modal/dashboard', $dataModal);
 
-        $data['nama'] = $this->session->userdata("nama_hcdata");
-        $data['email'] = $this->session->userdata("email_hcdata");
-        $data['menu'] = $this->session->userdata("id_menu_hcdata");
-        $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
-        $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-        $data['get_menu'] = $this->dsmod->get_menu();
-        $this->load->view('dashboard/template/header', $data);
-        $this->load->view('dashboard/beranda', $data);
-        $this->load->view('dashboard/template/footer', $data);
+        // JS
+        $this->load->view('components/js');
+
+        // Page JS
+        $this->load->view('components/page_js/dashboard');
+
+        // Footer
+        $this->load->view('components/footer');
     }
 
-    public function tambahkaryawan()
+    public function show_jml_kary()
     {
-
-        if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
-            $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
-            if ($idmper != "") {
-                $data['permst'] = $this->str->getMaster($idmper, "");
-                $data['perstr'] = $this->str->getMenu($idmper, "");
-            } else {
-                $data['permst'] = "";
-                $data['perstr'] = "";
-            }
-        } else {
-            $idmper = "";
-            $data['permst'] = "";
-            $data['perstr'] = "";
+        $ta = $this->input->get('ta');
+        if ($ta == 0) {
+            $ta = date('Y-m-d');
         }
-
-        $data['nama'] = $this->session->userdata("nama_hcdata");
-        $data['email'] = $this->session->userdata("email_hcdata");
-        $data['menu'] = $this->session->userdata("id_menu_hcdata");
-        $id_perusahaan = $this->session->userdata("id_perusahaan_hcdata");
-        $data['nama_per'] = $this->prs->get_per_by_id($id_perusahaan);
-        $data['get_menu'] = $this->dsmod->get_menu();
-        $this->load->view('dashboard/template/header_add', $data);
-        $this->load->view('dashboard/karyawan/karyawan_add', $data);
-        $this->load->view('dashboard/modal/mdlform');
-        $this->load->view('dashboard/template/footer', $data);
-        $this->load->view('dashboard/code/karyawan');
-    }
-
-    public function Oauth()
-    {
-        $auth = htmlspecialchars($this->input->post("token", true));
-        $cekauth = $this->cek_auth($auth);
-
-        if ($cekauth == 501) {
-            echo json_encode(array('statusCode' => 201, "pesan" => "Autentikasi tidak valid, refresh data"));
-        } else {
-            echo json_encode(array('statusCode' => 200, "pesan" => "Autentikasi valid"));
-        }
+        $kary_sum = $this->dsmod->get_data_sum($ta);
+        $data['kary_sum'] = $kary_sum;
+        $data['tgln'] = date('d-M-Y', strtotime($ta));
+        $this->load->view('dashboard/perusahaan/jml_prs_beranda', $data);
     }
 
     public function form_modal()
@@ -85,10 +82,10 @@ class Dash extends My_Controller
         $this->load->view("dashboard/mdlform");
     }
 
-    public function logout()
+    public function data_langgar_aktif($prs)
     {
-        $this->session->sess_destroy();
-        redirect('login');
+        $data['prs'] = $prs;
+        $this->load->view("dashboard/datalanggaraktif", $data);
     }
 
     public function data_grafik()
@@ -135,6 +132,42 @@ class Dash extends My_Controller
     public function gt_data()
     {
         $query = $this->dsmod->get_data_grafik();
+
+        echo $query;
+    }
+    public function gt_gender()
+    {
+        $query = $this->dsmod->get_gender_grafik();
+
+        echo $query;
+    }
+    public function gt_jlok()
+    {
+        $query = $this->dsmod->get_lokasi_grafik();
+
+        echo $query;
+    }
+    public function gt_kls()
+    {
+        $query = $this->dsmod->get_klasifikasi_grafik();
+
+        echo $query;
+    }
+    public function gt_didik()
+    {
+        $query = $this->dsmod->get_pendidikan_grafik();
+
+        echo $query;
+    }
+    public function gt_stt_tinggal()
+    {
+        $query = $this->dsmod->get_residence_grafik();
+
+        echo $query;
+    }
+    public function gt_srt()
+    {
+        $query = $this->dsmod->get_sertifikasi_grafik();
 
         echo $query;
     }

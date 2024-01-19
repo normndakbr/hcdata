@@ -205,8 +205,8 @@ class Karyawan extends My_Controller
             $data['get_menu'] = $this->dsmod->get_menu();
 
             $data['jsonData'] = json_encode($data);
-            // echo $data['jsonData'];
-            // die;
+            echo $data['jsonData'];
+            die;
 
             $this->load->view('dashboard/template/header', $data);
             $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
