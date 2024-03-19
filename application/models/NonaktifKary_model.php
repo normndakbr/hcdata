@@ -213,6 +213,16 @@ class NonaktifKary_model extends CI_Model
           }
      }
 
+     public function get_alasan($auth_alasan)
+     {
+          $query = $this->db->get_where('vw_alasan_nonaktif', ['auth_alasan_nonaktif' => $auth_alasan]);
+          if (!empty($query->result())) {
+               return $query->result();
+          } else {
+               return;
+          }
+     }
+
      public function get_auth_posisi($id_posisi)
      {
           $auth_posisi = "";

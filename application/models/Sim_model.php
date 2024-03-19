@@ -142,32 +142,6 @@ class Sim_model extends CI_Model
           return $query->result();
      }
 
-     public function get_id_sim_kary($auth_sim_kary)
-     {
-          $query = $this->db->get_where('vw_sim_karyawan', ['auth_sim_kary' => $auth_sim_kary]);
-          if (!empty($query->result())) {
-               foreach ($query->result() as $list) {
-                    $id_sim_kary = $list->id_sim_kary;
-               }
-               return $id_sim_kary;
-          } else {
-               return;
-          }
-     }
-
-     public function get_id_jenis_sim($auth_sim)
-     {
-          $query = $this->db->get_where('vw_sim', ['auth_sim' => $auth_sim]);
-          if (!empty($query->result())) {
-               foreach ($query->result() as $list) {
-                    $id_jenis_sim = $list->id_sim;
-               }
-               return $id_jenis_sim;
-          } else {
-               return;
-          }
-     }
-
      public function edit_sim($sim, $ket_sim, $status)
      {
           $id_sim = $this->session->userdata('id_sim');
@@ -234,32 +208,7 @@ class Sim_model extends CI_Model
                return;
           } else {
                echo json_encode(array("statusCode" => 404, "pesan" => "Jenis SIM wajib dipilih"));
-               return;
-          }
-     }
-
-     public function update_sim($id_sim_kary, $dtSIMKary)
-     {
-          $this->db->where('id_sim_kary', $id_sim_kary);
-          $this->db->update('tb_sim_karyawan', $dtSIMKary);
-
-          if ($this->db->affected_rows() > 0) {
-               return true; // Successful update
-          } else {
-               return false; // No records were updated
-          }
-     }
-
-     public function get_jenis_sim_by_auth($auth_sim)
-     {
-          $query = $this->db->get_where('vw_sim', ['auth_sim' => $auth_sim]);
-          if (!empty($query->result())) {
-               foreach ($query->result() as $list) {
-                    $jenis_sim = $list->sim;
-               }
-               return $jenis_sim;
-          } else {
-               return;
+                return;
           }
      }
 }

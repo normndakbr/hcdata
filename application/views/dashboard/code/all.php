@@ -1,53 +1,15 @@
 <script>
-$.LoadingOverlaySetup({
-     background: "rgba(255, 255, 255, 1)",
-});
-
-function karysum() {
-     $.LoadingOverlay('show');
-     $('#detailkarysum').modal(
-          'show'
-     );
-
-     let tglaktif = $('#txtTglAktifPRs').val();
-     $('#tbmJmlKryPrs').load(site_url + "dash/show_jml_kary?ta=0");
-}
-
-$("#btnResetFilter").click(function() {
-     $.LoadingOverlay('show');
-     $('#tbmJmlKryPrs').load(site_url + "dash/show_jml_kary?ta=0");
-});
-
-$("#btnFilterJmlKary").click(function() {
-     $.LoadingOverlay('show');
-     $('#filtertglkarysum').modal(
-          'hide'
-     );
-
-     let tglaktif = $('#txtTglAktifPRs').val();
-     $('#tbmJmlKryPrs').load(site_url + "dash/show_jml_kary?ta=" + tglaktif);
-});
-
-$("#btnFilterDOH").click(function() {
-     $.LoadingOverlay('show');
-     $('#filtertglkarysum').modal(
-          'show'
-     );
-     $.LoadingOverlay('hide');
-});
-
      $(function() {
           var options = {
                chart: {
-                    height: 764,
+                    height: 500,
                     type: 'bar',
                },
                plotOptions: {
                     bar: {
-                         horizontal: true,
-                         dataLabels: {
-                              position: 'top',
-                         },
+                         horizontal: false,
+                         columnWidth: '55%',
+                         endingShape: 'rounded'
                     },
                },
                dataLabels: {
@@ -96,363 +58,8 @@ $("#btnFilterDOH").click(function() {
      });
 </script>
 <script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 230,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Jenis Kelamin'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-2"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_gender'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 230,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Lokasi Terima'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-3"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_jlok'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 300,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               colors: ["#0e9e4a", "#4680ff", "#ff5252"],
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Klasifikasi'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-4"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_kls'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 300,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               colors: ["#0e9e4a", "#4680ff", "#ff5252"],
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Pendidikan'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-5"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_didik'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 300,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Status Tinggal'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-6"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_stt_tinggal'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
-     $(function() {
-          var options = {
-               chart: {
-                    height: 300,
-                    type: 'bar',
-               },
-               plotOptions: {
-                    bar: {
-                         dataLabels: {
-                              position: 'top',
-                         },
-                    },
-               },
-               dataLabels: {
-                    enabled: true
-               },
-               stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent']
-               },
-               series: [],
-               noData: {
-                    text: 'Loading...'
-               },
-               yaxis: {
-                    title: {
-                         text: 'Sertifikasi'
-                    }
-               },
-               fill: {
-                    opacity: 1
-
-               },
-               tooltip: {
-                    y: {
-                         formatter: function(val) {
-                              return val + " Orang"
-                         }
-                    }
-               }
-          }
-          var chart = new ApexCharts(
-               document.querySelector("#bar-chart-7"),
-               options
-          );
-          chart.render();
-
-          var url = '<?= base_url('dash/gt_srt'); ?>';
-          $.getJSON(url, function(response) {
-               chart.updateSeries([{
-                    name: 'Jml Karyawan : ',
-                    data: response
-               }])
-          });
-     });
-</script>
-<script>
      //========================================== StatJanji ========================================================
      $(document).ready(function() {
-
-          $("#logout").click(function() {
-               $("#logoutmdl").modal("show");
-          });
-
           $('#btnupdateStatJanji').click(function() {
                let kode = $('#editStatJanjiKode').val();
                let stat_perjanjian = $('#editStatJanji').val();
@@ -469,7 +76,6 @@ $("#btnFilterDOH").click(function() {
                          ket: ket
                     },
                     success: function(data) {
-                         alert(data);
                          var data = JSON.parse(data);
                          if (data.statusCode == 200) {
                               tbmStatJanji.draw();
@@ -811,12 +417,7 @@ $("#btnFilterDOH").click(function() {
                     $('#tbmStatJanji').LoadingOverlay("hide");
                });
 
-		 tbmkarysum = $('#tbmkarysum').DataTable({
-               "aLengthMenu": [
-                    [7, 23, 50, 100],
-                    [7, 23, 50, 100]
-               ],
-          });               tbmStatJanji = $('#tbmStatJanji').DataTable({
+               tbmStatJanji = $('#tbmStatJanji').DataTable({
                     "processing": true,
                     "responsive": true,
                     "serverSide": true,
@@ -885,18 +486,7 @@ $("#btnFilterDOH").click(function() {
 
      });
 </script>
-<script>
-     //========================================== data langgar aktif ========================================================
-     $(document).ready(function() {
-        $("#detLanggar").click(function() {
-            let prs = $('#perDetLgrAktif').val();
 
-            $.LoadingOverlay('show');
-            $('#mdlDetLanggarAktif').modal('show');
-            $('#tbLanggarAktif').load(site_url + "dash/data_langgar_aktif/" + prs);
-        });
-     });
-</script>
 
 </body>
 

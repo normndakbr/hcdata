@@ -94,15 +94,18 @@ $(document).ready(function () {
     });
 
     function clearFormValidation() {
-        $(".errorEditNoRegIzin").html("");
-        $(".errorEditTanggalExpired").html("");
+        $(".errorEditNoReg").html("");
+        $(".errorEditTglExp").html("");
+        $(".errorEditJenisSIM").html("");
+        $(".errorEditTglExpSIM").html("");
         $(".errorEditJenisSIM").html("");
     }
 
-    function addFormValidation(errorNoRegistrasi, errorTglExpIzin, errorJenisSIM) {
-        $(".errorEditNoRegIzin").html(errorNoRegistrasi);
-        $(".errorEditTanggalExpired").html(errorTglExpIzin);
+    function addFormValidation(errorNoRegistrasi, errorTglExpIzin, errorJenisSIM, errorTglExpSIM) {
+        $(".errorEditNoReg").html(errorNoRegistrasi);
+        $(".errorEditTglExp").html(errorTglExpIzin);
         $(".errorEditJenisSIM").html(errorJenisSIM);
+        $(".errorEditTglExpSIM").html(errorTglExpSIM);
     }
 
     $(document).on('click', '.btnDetailIzinKaryawan', function () {
@@ -112,11 +115,7 @@ $(document).ready(function () {
     $("#editJenisSIM").change(() => {
         editAuthSIM = $("#editJenisSIM").val();
         if (!editAuthSIM) {
-            swal({
-                title: "Perhatian",
-                text: "Data jenis SIM wajib dipilih",
-                type: 'warning'
-            });
+            swal({ title: "Perhatian", text: "Data jenis SIM wajib dipilih apabila jenis dokumen adalah SIMPER", type: 'warning' });
             $(".errorEditJenisSIM").html('Jenis SIM wajib dipilih');
         } else {
             $.ajax({
@@ -301,73 +300,6 @@ $(document).ready(function () {
         });
     }
 
-    function updatePermit(payload) {
-        let jenis_izin = payload.get('jenis_izin');
-        let jenis_sim = "";
-        let no_reg = "";
-        let tgl_exp = "";
-
-        if (jenis_izin == "SIM") {
-            tgl_exp = payload.get("tgl_exp");
-        } else if (jenis_izin == "SIMPER") {
-            no_reg = payload.get("no_reg");
-            tgl_exp = payload.get("tgl_exp");
-        } else if (jenis_izin == "MINEPERMIT") {
-            no_reg = payload.get("no_reg");
-            tgl_exp = payload.get("tgl_exp");
-        }
-
-        $.LoadingOverlay("show");
-
-        $.ajax({
-            type: "POST",
-            url: site_url + "karyawan/editPermit",
-            data: payload,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function (res) {
-                console.log("Success POST on " + site_url + "karyawan/editPermit");
-                let data = JSON.parse(res);
-                if (data.statusCode == 400) {
-                    swal({
-                        title: "Perhatian",
-                        text: data.message,
-                        type: data.status,
-                    });
-                    if (jenis_izin == "SIM") {
-                        addFormValidation("", data.errorEditJenisSIM, data.errorTglExpIzin);
-                    } else {
-                        addFormValidation(data.errorNoRegistrasi, "", data.errorTglExpIzin);
-                    }
-                    $.LoadingOverlay("hide");
-                } else if (data.statusCode == 204) {
-                    if (jenis_izin == "SIM") {
-                        $("#valueJenisSim").text(data.jenis_sim);
-                        $("#valueTglExpSim").text(tgl_exp);
-                    } else if (jenis_izin == "SIMPER") {
-                        $("#valueNoRegSimper").text(no_reg);
-                        $("#valueTglExpSimper").text(tgl_exp);
-                    } else if (jenis_izin == "MINEPERMIT") {
-                        $("#valueNoRegMinePermit").text(no_reg);
-                        $("#valueTglExpMinePermit").text(tgl_exp);
-                    }
-                    clearFormValidation();
-                    swal('Berhasil', data.message, data.status);
-                    $.LoadingOverlay("hide");
-                } else {
-                    clearFormValidation();
-                    swal('Error', data.message, data.status);
-                    $.LoadingOverlay("hide");
-                }
-            },
-            error: function (xhr, ajaxOptions, thrownError) {
-                swal('Error', 'Terjadi kesalahan pada server, silahkan hubungi admin', 'error');
-                $.LoadingOverlay('hide');
-            }
-        });
-    }
-
     $("#btnSaveReuploadSIM").click(function () {
         let jenisIzin = "SIM";
         let auth_sim = editAuthSIM;
@@ -487,108 +419,46 @@ $(document).ready(function () {
     });
 
     $("#btnSaveEditMINEPERMIT").click(() => {
-        let jenis_izin = "MINEPERMIT";
-        let auth_mine_permit = $("#valueAuthMINEPERMIT").val();
-        let no_reg = $("#editNoRegIzin").val();
-        let tgl_exp = $("#editTanggalExpired").val();
+        let auth_mine_permit = $("#valueIDIzinTambang").val();
+        let no_reg = $("#editNoReg").val();
+        let tgl_exp = $("#editTglExp").val();
 
-        let payload = new FormData();
-        payload.append("jenis_izin", jenis_izin);
-        payload.append("token", token);
-        payload.append("auth_izin_tambang", auth_mine_permit);
-        payload.append("no_reg", no_reg);
-        payload.append("tgl_exp", tgl_exp);
-
-        updatePermit(payload, jenis_izin);
+        $.ajax({
+            type: "POST",
+            url: site_url + "karyawan/editSimper",
+            data: {
+                jenisIzin: "MINEPERMIT",
+                token: token,
+                authKary: authKary,
+                auth_izin_tambang: auth_mine_permit,
+                noReg: no_reg,
+                tglExp: tgl_exp,
+            },
+            success: function (res) {
+                console.log(data);
+                console.log("Success POST on " + site_url + "karyawan/editSimper");
+                let data = JSON.parse(res);
+                if (data.statusCode == 400) {
+                    addFormValidation(data.errorNoRegistrasi, data.errorTglExpIzin, data.errorJenisSIM, data.errorTglExpSIM);
+                } else if (data.statusCode == 204) {
+                    clearFormValidation();
+                    swal("Berhasil", data.message, "success");
+                } else {
+                    clearFormValidation();
+                }
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log("Error POST on " + site_url + "karyawan/editSimper");
+                console.log(thrownError);
+            }
+        });
     });
 
     $("#btnSaveEditSIMPER").click(() => {
-        let auth_simper = $("#valueAuthSIMPER").val();
-        let jenis_izin = "SIMPER";
-        let no_reg = $("#editNoRegIzin").val();
-        let tgl_exp = $("#editTanggalExpired").val();
-
-        let payload = new FormData();
-        payload.append("jenis_izin", jenis_izin);
-        payload.append("token", token);
-        payload.append("auth_izin_tambang", auth_simper);
-        payload.append("no_reg", no_reg);
-        payload.append("tgl_exp", tgl_exp);
-
-        updatePermit(payload, jenis_izin);
+        console.log("Simpan Edit SIMPER");
     });
 
     $("#btnSaveEditSIM").click(() => {
-        let jenis_izin = "SIM";
-        let auth_sim = $("#valueAuthSIM").val();
-        let auth_jenis_sim = $("#editJenisSIM").val();
-        let tgl_exp = $("#editTanggalExpired").val();
-
-        let payload = new FormData();
-        payload.append("jenis_izin", jenis_izin);
-        payload.append("token", token);
-        payload.append("auth_sim_kary", auth_sim);
-        payload.append("auth_jenis_sim", auth_jenis_sim);
-        payload.append("tgl_exp", tgl_exp);
-
-        updatePermit(payload, jenis_izin);
-    });
-
-    $(document).on("click", ".HapusVaccine", function () {
-        let auth_vaksin = $(this).attr("id");
-
-        swal({
-            title: "Validasi",
-            text: "Hapus data vaksin?",
-            type: "question",
-            showCancelButton: true,
-            confirmButtonColor: "#36c6d3",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Ya, hapus",
-            cancelButtonText: "Batalkan",
-        }).then(function (result) {
-            if (result.value) {
-                $.ajax({
-                    type: "POST",
-                    url: site_url + "karyawan/hapus_vaksin",
-                    data: {
-                        auth_vaksin: auth_vaksin,
-                        token: token,
-                    },
-                    success: function (data) {
-                        var data = JSON.parse(data);
-                        if (data.statusCode == 200) {
-                            $("#idEditVaccine").LoadingOverlay("show");
-                            $("#idEditVaccine").load(
-                                site_url + "karyawan/vaksin?auth_person=" + auth_person
-                            );
-                            $("#idEditVaccine").LoadingOverlay("hide");
-                            swal("Berhasil", data.pesan, "success");
-                        } else if (data.statusCode == 201) {
-                            swal("Error", data.pesan, "error");
-                        } else {
-                            $.LoadingOverlay("hide");
-                            $(".errormsgvaksin").removeClass("d-none");
-                            $(".errormsgvaksin").removeClass("alert-info");
-                            $(".errormsgvaksin").addClass("alert-danger");
-                            $(".errormsgvaksin").html(data.pesan);
-                        }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        $.LoadingOverlay("hide");
-                        $(".errormsgvaksin").removeClass("d-none");
-                        $(".errormsgvaksin").removeClass("alert-info");
-                        $(".errormsgvaksin").addClass("alert-danger");
-                        if (thrownError != "") {
-                            $(".errormsgvaksin").html(
-                                "Terjadi kesalahan saat menghapus vaksin, hubungi administrator"
-                            );
-                        }
-                    },
-                });
-            } else {
-                swal.close();
-            }
-        });
+        console.log("Simpan Edit SIM");
     });
 });

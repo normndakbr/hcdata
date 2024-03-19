@@ -8,6 +8,7 @@ $(document).ready(function () {
     let auth_lokker = "";
     let initial_auth_per = $("#valuePerusahaan").val();
     let auth_perusahaan = $("#valueAuthPerusahaan").val();
+    let auth_m_perusahaan = $("#valueAuthMasterPerusahaan").val();
     let idPosisi = $("#valuePosisi").val();
     let idDepart = $("#valueDepart").val();
     let idTipe = $("#valueTipe").val();
@@ -128,6 +129,7 @@ $(document).ready(function () {
                     url: site_url + "level/get_auth_Level_by_id",
                     data: { id_level: idLevel, token: token },
                     success: function (res) {
+                        // console.log(res);
                         let data = JSON.parse(res);
                         auth_level = data.auth_level;
                         if (!flag_level) {
@@ -333,7 +335,7 @@ $(document).ready(function () {
             type: "POST",
             url: site_url + "level/get_all",
             data: {
-                auth_per: auth_perusahaan,
+                auth_per: auth_m_perusahaan,
                 token: token
             },
             success: function (res) {

@@ -38,7 +38,7 @@ class Karyawan extends My_Controller
         $this->load->view('dashboard/code/karyawan');
     }
 
-    public function new()
+    public function new ()
     {
         if ($this->session->has_userdata('id_m_perusahaan_hcdata')) {
             $idmper = $this->session->userdata('id_m_perusahaan_hcdata');
@@ -197,7 +197,8 @@ class Karyawan extends My_Controller
 
             $data["data_izin"] = $this->kry->get_izin_by_auth($auth_kary);
             $data["data_simper"] = $this->kry->get_detail_izin_tambang($auth_kary, "SIMPER");
-            $data["data_mine_permit"] =  $this->kry->get_detail_izin_tambang($auth_kary, "MINE PERMIT");
+            $data["data_mine_permit"] = $this->kry->get_detail_izin_tambang($auth_kary, "MINE PERMIT");
+
             $data["data_sim_kary"] = $this->kry->get_sim_by_auth($data["data_kary"]->auth_personal);
             $data["data_unit"] = $this->kry->get_izin_unit_by_auth($auth_kary);
             $data["data_sertifikasi"] = $this->kry->get_sertifikasi_by_auth($auth_kary);
@@ -205,8 +206,8 @@ class Karyawan extends My_Controller
             $data['get_menu'] = $this->dsmod->get_menu();
 
             $data['jsonData'] = json_encode($data);
-            echo $data['jsonData'];
-            die;
+            // echo $data['jsonData'];
+            // die;
 
             $this->load->view('dashboard/template/header', $data);
             $this->load->view('dashboard/karyawan/karyawan_edit_v2', $data);
@@ -2719,7 +2720,7 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filedukung" => "Format file pendukung yang diupload wajib dalam bentuk jpg.",
-                    "filefoto" => ""
+                    "filefoto" => "",
                 ));
                 return;
             }
@@ -2728,7 +2729,7 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 202,
                     "filedukung" => "Ukuran file maksimal 700kb.",
-                    "filefoto" => ""
+                    "filefoto" => "",
                 ));
                 return;
             }
@@ -3020,23 +3021,27 @@ class Karyawan extends My_Controller
         }
     }
 
-    public function berkassim($auth_sim_kary)
+    public function berkassim($auth_izin_tambang)
     {
         $url_file = "";
-        $dtsim = $this->kry->get_dt_sim($auth_sim_kary);
+        $dtizin = $this->kry->get_dt_izin($auth_izin_tambang);
 
-        if (!empty($dtsim)) {
-            foreach ($dtsim as $list) {
+        if (!empty($dtizin)) {
+            foreach ($dtizin as $list) {
                 $id_personal = $list->id_personal;
                 $id_m_perusahaan = $list->id_m_perusahaan;
             }
 
             $dtsim = $this->kry->get_dt_sim_by_id($id_personal);
+            // echo json_encode(array($dtsim));
+            echo "id_personal => " . $id_personal;
 
             if (!empty($dtsim)) {
                 foreach ($dtsim as $list) {
                     $url_file = $list->url_file;
                 }
+
+                echo "url_file => " . $url_file;
 
                 $foldername = md5($id_personal);
                 $fileizin = "berkas/karyawan/" . $foldername . "/" . $url_file;
@@ -3121,7 +3126,6 @@ class Karyawan extends My_Controller
                 $auth_personal = $lskary->auth_personal;
                 $id_m_perusahaan = $lskary->id_m_perusahaan;
             }
-
 
             $dtpersonal = $this->kry->get_personal_by_auth($auth_personal);
             if (!empty($dtpersonal)) {
@@ -3627,7 +3631,7 @@ class Karyawan extends My_Controller
             $save_dtAlamatKtp = $this->kry->update_dtAlamat($id_alamat_ktp, $data_alamat_ktp);
 
             if ($save_dtPersonal && $save_dtAlamatKtp) {
-                echo json_encode(array("statusCode" => 204, "status" => "success", "pesan" => "Data personal berhasil diperbarui."));
+                echo json_encode(array("statusCode" => 204, "status" => "Success", "pesan" => "Data personal berhasil diperbarui."));
             } else if (!$save_dtPersonal) {
                 echo json_encode(array("statusCode" => 400, "status" => "Bad Request", "pesan" => "Terjadi kesalahan saat menyimpan data personal."));
             } else if (!$save_dtAlamatKtp) {
@@ -4076,58 +4080,73 @@ class Karyawan extends My_Controller
     public function editSimper()
     {
         $auth = htmlspecialchars($this->input->post("token", true));
+        $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
         $cekauth = $this->cek_auth($auth);
-        $jenisIzin = htmlspecialchars($this->input->post("jenis_izin", true));
 
         if ($cekauth == 501) {
             echo json_encode(array(
                 'statusCode' => 501,
-                'status' => 'Gagal',
-                'message' => 'Autentikasi tidak valid, silahkan refresh data',
+                "status" => "Gagal",
+                "message" => "Autentikasi tidak valid, silahkan refresh data",
             ));
             return;
-        } elseif ($jenisIzin == 'MINEPERMIT' || $jenisIzin == 'SIMPER') {
-            $this->form_validation->set_rules('editNoReg', 'editNoReg', 'required|trim|max_length[50]', array(
-                'required' => 'No. Registrasi wajib diisi',
-                'max_length' => 'No. Register maksimal 50 karakter',
-            ));
-            $this->form_validation->set_rules('editTglExp', 'editTglExp', 'required|trim', array(
-                'required' => 'Tanggal expired wajib diisi',
-            ));
-        } elseif ($jenisIzin == 'SIM') {
-            $this->form_validation->set_rules('editJenisSim', 'editJenisSim', 'required', array(
-                'required' => 'Jenis SIM wajib dipilih',
-            ));
-            $this->form_validation->set_rules('editTglExp', 'editTglExp', 'required|trim', array(
-                'required' => 'Tanggal expired wajib diisi',
-            ));
+        } else
+        if ($jenisIzin == "MINEPERMIT" || $jenisIzin == "SIMPER") {
+            $this->form_validation->set_rules("editNoReg", "editNoReg", "required|trim|max_length[50]", [
+                "required" => "No. Registrasi wajib diisi",
+                "max_length" => "No. Register maksimal 50 karakter",
+            ]);
+            $this->form_validation->set_rules("editTglExp", "editTglExp", "required|trim", [
+                "required" => "Tanggal expired wajib diisi",
+            ]);
         }
 
         if ($this->form_validation->run() == false) {
-            $jenisIzin = htmlspecialchars($this->input->post('jenisIzin', true));
-            $jenisSIM = htmlspecialchars($this->input->post('editJenisSIM', true));
-            $tglExpSIM = htmlspecialchars($this->input->post('editTglExpSIM', true));
+            $jenisIzin = htmlspecialchars($this->input->post("jenisIzin", true));
+            $jenisSIM = htmlspecialchars($this->input->post("editJenisSIM", true));
+            $tglExpSIM = htmlspecialchars($this->input->post("editTglExpSIM", true));
+            // $filesmp = htmlspecialchars($this->input->post("filesmp", true));
 
-            $errorJenisSIM = '';
-            $errorTglExpSIM = '';
-
-            if ($jenisIzin == 'SIM') {
-                if ($jenisSIM == '') {
-                    $errorJenisSIM = '<p>Jenis SIM wajib dipilih</p>';
+            if ($jenisIzin == 'SIMPER') {
+                // $filesim = htmlspecialchars($this->input->post("filesim", true));
+                if ($jenisSIM == "") {
+                    $errorJenisSIM = "<p>Jenis SIM wajib dipilih</p>";
+                } else {
+                    $errorJenisSIM = "";
                 }
 
-                if ($tglExpSIM == '') {
-                    $errorTglExpSIM = '<p>Tanggal expired SIM wajib diisi</p>';
+                if ($tglExpSIM == "") {
+                    $errorTglExpSIM = "<p>Tanggal expired SIM wajib diisi</p>";
+                } else {
+                    $errorTglExpSIM = "";
                 }
+
+                // if ($filesim == "") {
+                //     $errsim = "<p>SIM Polisi wajib diupload</p>";
+                // } else {
+                //     $errsim = "";
+                // }
+            } else {
+                $errorJenisSIM = "";
+                $errorTglExpSIM = "";
+                // $errFileSIM = "";
             }
 
-            $error = array(
+            // if ($filesmp == "") {
+            //     $errsmp = "<p>SIMPER / MINE PERMIT wajib diupload</p>";
+            // } else {
+            //     $errsmp = "";
+            // }
+
+            $error = [
                 'statusCode' => 400,
-                'errorNoRegistrasi' => form_error('editNoReg'),
-                'errorTglExpIzin' => form_error('editTglExp'),
+                'errorNoRegistrasi' => form_error("editNoReg"),
+                'errorTglExpIzin' => form_error("editTglExp"),
                 'errorJenisSIM' => $errorJenisSIM,
                 'errorTglExpSIM' => $errorTglExpSIM,
-            );
+                // 'filesim' => $errsim,
+                // 'filesmp' => $errsmp,
+            ];
 
             echo json_encode($error);
             return;
@@ -4177,7 +4196,7 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 404,
                     "status" => "Not Found",
-                    "pesan" => "Data karyawan tidak ditemukan"
+                    "pesan" => "Data karyawan tidak ditemukan",
                 ));
                 return;
             }
@@ -4185,7 +4204,7 @@ class Karyawan extends My_Controller
             echo json_encode(array(
                 "statusCode" => 204,
                 "status" => "Resource has been updated",
-                "message" => "Data SIMPER/Mine Permit Berhasil Diperbarui"
+                "message" => "Data SIMPER/Mine Permit Berhasil Diperbarui",
             ));
             return;
         }
@@ -4232,7 +4251,7 @@ class Karyawan extends My_Controller
                     echo json_encode(array(
                         "statusCode" => 400,
                         "status" => "warning",
-                        "message" => "File yang ingin diperbarui wajib diupload."
+                        "message" => "File yang ingin diperbarui wajib diupload.",
                     ));
                     return;
                 }
@@ -4241,7 +4260,7 @@ class Karyawan extends My_Controller
                     echo json_encode(array(
                         "statusCode" => 400,
                         "status" => "warning",
-                        "message" => "Format file yang diupload wajib dalam bentuk pdf."
+                        "message" => "Format file yang diupload wajib dalam bentuk pdf.",
                     ));
                     return;
                 }
@@ -4250,7 +4269,7 @@ class Karyawan extends My_Controller
                     echo json_encode(array(
                         "statusCode" => 400,
                         "status" => "warning",
-                        "message" => "File melebihi batas ukuran file maksimal. Batas ukuran file yang diperbolehkan adalah 1 Mb."
+                        "message" => "File melebihi batas ukuran file maksimal. Batas ukuran file yang diperbolehkan adalah 1 Mb.",
                     ));
                     return;
                 }
@@ -4274,7 +4293,7 @@ class Karyawan extends My_Controller
                 echo json_encode(array(
                     "statusCode" => 404,
                     "status" => "error",
-                    "pesan" => "Folder data karyawan tidak ditemukan"
+                    "pesan" => "Folder data karyawan tidak ditemukan",
                 ));
                 return;
             }
@@ -4282,7 +4301,7 @@ class Karyawan extends My_Controller
             echo json_encode(array(
                 "statusCode" => 400,
                 "status" => "error",
-                "pesan" => "Data dokumen tidak valid"
+                "pesan" => "Data dokumen tidak valid",
             ));
             return;
         }
@@ -4290,146 +4309,5 @@ class Karyawan extends My_Controller
         //     echo json_encode(array("statusCode" => 201, "pesan" => "On Development"));
         //     return;
         // }
-    }
-
-    public function editPermit()
-    {
-        $auth = htmlspecialchars($this->input->post("token", true));
-        $cekauth = $this->cek_auth($auth);
-
-        if ($cekauth == 501) {
-            echo json_encode(array(
-                'statusCode' => 501,
-                'status' => 'Gagal',
-                'message' => 'Autentikasi tidak valid, silahkan refresh data',
-            ));
-            return;
-        } else {
-            $jenisIzin = htmlspecialchars($this->input->post("jenis_izin", true));
-
-            if ($jenisIzin == "SIMPER" || $jenisIzin == "MINEPERMIT") {
-                $this->form_validation->set_rules('no_reg', 'no_reg', 'required|trim|max_length[50]', array(
-                    'required' => 'No. Registrasi wajib diisi',
-                    'max_length' => 'No. Register maksimal 50 karakter',
-                ));
-                $this->form_validation->set_rules('tgl_exp', 'tgl_exp', 'required|trim', array(
-                    'required' => 'Tanggal expired wajib diisi',
-                ));
-
-                if ($this->form_validation->run() == false) {
-                    $error = array(
-                        'statusCode' => 400,
-                        'errorNoRegistrasi' => form_error('no_reg'),
-                        'errorTglExpIzin' => form_error('tgl_exp'),
-                    );
-
-                    echo json_encode($error);
-                    return;
-                } else {
-                    $authIzinTambang = htmlspecialchars($this->input->post("auth_izin_tambang", true));
-                    $idIzinTambang = $this->smp->get_id_izin_tambang($authIzinTambang);
-                    $noReg = htmlspecialchars($this->input->post("no_reg", true));
-                    $tglExp = htmlspecialchars($this->input->post("tgl_exp", true));
-                    $id_user = $this->session->userdata('id_user_hcdata');
-
-                    $dataIzinTambang = array(
-                        'no_reg' => $noReg,
-                        'tgl_expired' => $tglExp,
-                        'tgl_edit' => date('Y-m-d H:i:s'),
-                        'id_user' => $id_user,
-                    );
-
-                    $test = $this->smp->update_izin($idIzinTambang, $dataIzinTambang);
-
-                    if ($test) {
-                        $response = (array(
-                            "statusCode" => 204,
-                            "status" => "success",
-                            "message" => "Data berhasil diperbarui"
-                        ));
-
-                        echo json_encode($response);
-                        return;
-                    } else {
-                        $response = (array(
-                            "statusCode" => 202,
-                            "status" => "warning",
-                            "message" => "Terjadi Kesalahan, data gagal diperbarui"
-                        ));
-
-                        echo json_encode($response);
-                        return;
-                    }
-                }
-            } else if ($jenisIzin == "SIM") {
-                $this->form_validation->set_rules('auth_jenis_sim', 'auth_jenis_sim', 'required|trim', array(
-                    'required' => 'Jenis SIM wajib dipilih',
-                ));
-                $this->form_validation->set_rules('tgl_exp', 'tgl_exp', 'required|trim', array(
-                    'required' => 'Tanggal expired wajib diisi',
-                ));
-
-                if ($this->form_validation->run() == false) {
-                    $error = array(
-                        'statusCode' => 400,
-                        'status' => "warning",
-                        'message' => "Input tidak valid, silahkan periksa kembali data anda",
-                        'errorEditJenisSIM' => form_error('auth_jenis_sim'),
-                        'errorTglExpIzin' => form_error('tgl_exp'),
-                    );
-
-                    echo json_encode($error);
-                    return;
-                } else {
-                    $authSIMKary = htmlspecialchars($this->input->post("auth_sim_kary", true));
-                    $idSIMKary = $this->smm->get_id_sim_kary($authSIMKary);
-                    $authJenisSIMKary = htmlspecialchars($this->input->post("auth_jenis_sim", true));
-                    $idJenisSIM = $this->smm->get_id_jenis_sim($authJenisSIMKary);
-                    $tglExp = htmlspecialchars($this->input->post("tgl_exp", true));
-                    $id_user = $this->session->userdata('id_user_hcdata');
-
-
-                    $dataSIMKary = array(
-                        'id_sim' => $idJenisSIM,
-                        'tgl_exp_sim' => $tglExp,
-                        'tgl_edit' => date('Y-m-d H:i:s'),
-                        'id_user' => $id_user,
-                    );
-
-                    $test = $this->smm->update_sim($idSIMKary, $dataSIMKary);
-                    $jenis_sim = $this->smm->get_jenis_sim_by_auth($authJenisSIMKary);
-
-                    if ($test) {
-                        $response = (array(
-                            "statusCode" => 204,
-                            "status" => "success",
-                            "jenis_sim" => $jenis_sim,
-                            "message" => "Data SIM Polisi berhasil diperbarui"
-                        ));
-
-                        echo json_encode($response);
-                        return;
-                    } else {
-                        $response = (array(
-                            "statusCode" => 202,
-                            "status" => "warning",
-                            "message" => "Terjadi Kesalahan, data SIM Polisi gagal diperbarui"
-                        ));
-
-                        echo json_encode($response);
-                        return;
-                    }
-                }
-            } else {
-                $response = (array(
-                    "statusCode" => 202,
-                    "status" => "Resource update failed",
-                    "message" => "Jenis izin tidak diketahui"
-                ));
-
-                echo json_encode($response);
-                return;
-            }
-        }
     }
 }
