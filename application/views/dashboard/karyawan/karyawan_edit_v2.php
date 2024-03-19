@@ -66,8 +66,8 @@
                         <input id="valueAuthMasterPerusahaan" class="d-none" value="<?= isset($data_kary->auth_m_perusahaan) ? $data_kary->auth_m_perusahaan : '-' ?>"></input>
                         <input id="valueAuthPersonal" class="d-none" value="<?= isset($data_kary->auth_personal) ? $data_kary->auth_personal : '-' ?>"></input>
                         <input id="valueAuthKaryawan" class="d-none" value="<?= isset($data_kary->auth_karyawan) ? $data_kary->auth_karyawan : '-' ?>"></input>
-                        <input id="valueAuthMINEPERMIT" class="d-none" value="<?= isset($data_mine_permit->auth_izin_tambang) ? $data_mine_permit->auth_izin_tambang : '-' ?>"></input>
-                        <input id="valueAuthSIMPER" class="d-none" value="<?= isset($data_simper->auth_izin_tambang) ? $data_simper->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthMINEPERMIT" class="d-none" value="<?= isset($data_mine_permit->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
+                        <input id="valueAuthSIMPER" class="d-none" value="<?= isset($data_simper->auth_izin_tambang) ? $data_izin->auth_izin_tambang : '-' ?>"></input>
                         <input id="valueAuthSIM" class="d-none" value="<?= isset($data_sim_kary->auth_sim_kary) ? $data_sim_kary->auth_sim_kary : '-' ?>"></input>
 
                         <!-- Data Personal -->
@@ -607,140 +607,102 @@
                                 <div class="tab-pane fade" id="licenseTab" role="tabpanel">
                                     <div class="card-body row">
                                         <div class="mb-3 col-lg-12 col-md-12 col-sm-12">
-                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none"></div>
+                                            <div class="alert alert-danger errorMsgEditIzin animate__animated animate__bounce d-none">
+                                            </div>
                                         </div>
                                         <div class="mb-3 col-lg-12 col-md-12 col-sm-12 mb-3">
                                             <h6 class="font-weight-bold" for="editPerKary">
                                                 <span><?= $data_kary->nama_perusahaan ?></span> - <span class="namalengkapshow text-uppercase"><?= $data_kary->nama_lengkap ?></span>
                                             </h6>
+
                                             <span class="jkj234asdf u7i8o9h6u8s34 lk3kjdff3 n3m8h6x6 d-none"><?= $data_kary->auth_perusahaan ?></span>
-                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">Data Izin Tambang</h6>
+                                            <h6 class="text-uppercase font-weight-bold" for="editPerKary">
+                                                <?= isset($data_izin->jenis_izin_tambang) ? "Data " . $data_izin->jenis_izin_tambang : 'Data SIMPER/MINE PERMIT' ?>
+                                            </h6>
                                             <hr style="height: 3px; background: #404443;">
+
                                         </div>
 
                                         <?php if (isset($data_izin->jenis_izin_tambang)) { ?>
                                             <div class="card-body row">
-                                                <?php if (isset($data_mine_permit)) { ?>
-                                                    <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                        <table id="tbmMINEPERMITDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
+                                                    <table id="tbmMINEPERMITDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                        <tr>
+                                                            <th style="width: 50%;">No. Registrasi Mine Permit</th>
+                                                            <th style="text-align:center; width: 30%;">Tanggal Expired</th>
+                                                            <th style="text-align:center; width: 10%;">Aksi</th>
+                                                        </tr>
+                                                        <tbody>
                                                             <tr>
-                                                                <th style="width: 50%;">No. Registrasi Mine Permit</th>
-                                                                <th style="text-align:center; width: 30%;">Tanggal Expired</th>
-                                                                <th style="text-align:center; width: 10%;">Aksi</th>
+                                                                <td class="d-none">
+                                                                    <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="<?= $data_mine_permit->no_reg ?>">
+                                                                </td>
+                                                                <td class=""><?= $data_mine_permit->no_reg ?></td>
+                                                                <td class="align-middle text-center"><?= $data_mine_permit->tgl_expired ?></td>
+                                                                <td style="text-align:center;" style="width: 10%;">
+                                                                    <button id="btnEditMinePermit" class="btn btn-success btn-sm text-white" title="Edit detail MINE PERMIT"><i class="fas fa-edit"></i></button>
+                                                                    <a href="<?= base_url('karyawan/berkasizin/') . $data_mine_permit->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan MINE PERMIT"><i class="fas fa-file-alt"></i></a>
+                                                                    <button id="btnReuploadMinePermit" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-file-upload"></i></button>
+                                                                    <button id="btnDeleteMinePermit" class="btn btn-danger btn-sm text-white" title="Hapus data MINE PERMIT"><i class="fas fa-trash"></i></button>
+                                                                </td>
                                                             </tr>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="d-none">
-                                                                        <input style="background-color: none;" id='noSertifikatDetail' name='noSertifikatDetail' type="text" class="form-control" value="<?= $data_mine_permit->no_reg ?>">
-                                                                    </td>
-                                                                    <td id="valueNoRegMinePermit" class=""><?= $data_mine_permit->no_reg ?></td>
-                                                                    <td id="valueTglExpMinePermit" class="align-middle text-center"><?= $data_mine_permit->tgl_expired ?></td>
-                                                                    <td style="text-align:center;" style="width: 10%;">
-                                                                        <button id="btnEditMinePermit" class="btn btn-success btn-sm text-white" title="Edit detail MINE PERMIT"><i class="fas fa-edit"></i></button>
-                                                                        <a href="<?= base_url('karyawan/berkasizin/') . $data_mine_permit->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan MINE PERMIT"><i class="fas fa-file-alt"></i></a>
-                                                                        <button id="btnReuploadMinePermit" class="btn btn-warning btn-sm text-white" title="Upload ulang MINE PERMIT"><i class="fas fa-file-upload"></i></button>
-                                                                        <button id="btnDeleteMinePermit" class="btn btn-danger btn-sm text-white" title="Hapus data MINE PERMIT"><i class="fas fa-trash"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                            <tbody>
-                                                        </table>
-                                                    </div>
-                                                <?php } ?>
-                                                <?php if (isset($data_simper)) { ?>
-                                                    <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                        <table id="tbmSIMPERDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                            <tr>
-                                                                <th style="width: 50%;">No. Registrasi SIMPER</th>
-                                                                <th style="text-align:center; width: 30%;">Tanggal Expired</th>
-                                                                <th style="text-align:center; width: 10%;">Aksi</th>
-                                                            </tr>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td id="valueNoRegSimper"><?= $data_simper->no_reg ?> </td>
-                                                                    <td id="valueTglExpSimper" class="align-middle text-center"><?= $data_simper->tgl_expired ?></td>
-                                                                    <td style="text-align:center;" style="width: 10%;">
-                                                                        <button id="btnEditSimper" class="btn btn-success btn-sm text-white" title="Edit detail SIMPER"><i class="fas fa-edit"></i></button>
-                                                                        <a href="<?= base_url('karyawan/berkasizin/') . $data_simper->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIMPER"><i class="fas fa-file-alt"></i></a>
-                                                                        <button id="btnReuploadSimper" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-file-upload"></i></button>
-                                                                        <button id="btnDeleteSimper" class="btn btn-danger btn-sm text-white" title="Hapus data SIMPER"><i class="fas fa-trash"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                            <tbody>
-                                                        </table>
-                                                    </div>
-                                                <?php } ?>
-                                                <?php if (isset($data_sim_kary)) { ?>
-                                                    <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
-                                                        <table id="tbmSIMDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                            <tr>
-                                                                <th style="width: 50%;">Jenis SIM</th>
-                                                                <th style="text-align:center; width: 30%;">Tanggal Expired</th>
-                                                                <th style="text-align:center; width: 10%;">Aksi</th>
-                                                            </tr>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td id="valueJenisSim"><?= $data_sim_kary->sim ?></td>
-                                                                    <td id="valueTglExpSim" class="align-middle text-center"><?= $data_sim_kary->tgl_exp_sim ?></td>
-                                                                    <td style="text-align:center;" style="width: 10%;">
-                                                                        <button id="btnEditSIM" class="btn btn-success btn-sm text-white" title="Edit detail sim"><i class="fas fa-edit"></i></button>
-                                                                        <a href="<?= base_url('karyawan/berkassim/') . $data_sim_kary->auth_sim_kary ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-file-alt"></i></a>
-                                                                        <button id="btnReuploadSIM" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-file-upload"></i></button>
-                                                                        <button id="btnDeleteSIM" class="btn btn-danger btn-sm text-white" title="Hapus data SIM"><i class="fas fa-trash"></i></button>
-                                                                    </td>
-                                                                </tr>
-                                                            <tbody>
-                                                        </table>
-                                                    </div>
-                                                <?php } ?>
+                                                        <tbody>
+                                                    </table>
+                                                </div>
 
-                                                <!-- <div class="col-lg-12 col-md-12 col-sm-12 text-right">
-                                                    <?php if (isset($data_simper) !== null) { ?>
+                                                <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
+                                                    <table id="tbmSIMPERDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                        <tr>
+                                                            <th style="width: 50%;">No. Registrasi SIMPER</th>
+                                                            <th style="text-align:center; width: 30%;">Tanggal Expired</th>
+                                                            <th style="text-align:center; width: 10%;">Aksi</th>
+                                                        </tr>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?= $data_simper->no_reg ?> </td>
+                                                                <td class="align-middle text-center"><?= $data_simper->tgl_expired ?></td>
+                                                                <td style="text-align:center;" style="width: 10%;">
+                                                                    <button id="btnEditSimper" class="btn btn-success btn-sm text-white" title="Edit detail SIMPER"><i class="fas fa-edit"></i></button>
+                                                                    <a href="<?= base_url('karyawan/berkasizin/') . $data_simper->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIMPER"><i class="fas fa-file-alt"></i></a>
+                                                                    <button id="btnReuploadSimper" class="btn btn-warning btn-sm text-white" title="Upload ulang SIMPER"><i class="fas fa-file-upload"></i></button>
+                                                                    <button id="btnDeleteSimper" class="btn btn-danger btn-sm text-white" title="Hapus data SIMPER"><i class="fas fa-trash"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        <tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class=" mb-3 col-lg-12 col-md-12 col-sm-12">
+                                                    <table id="tbmSIMDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                                                        <tr>
+                                                            <th style="width: 50%;">Jenis SIM</th>
+                                                            <th style="text-align:center; width: 30%;">Tanggal Expired</th>
+                                                            <th style="text-align:center; width: 10%;">Aksi</th>
+                                                        </tr>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td><?= $data_sim_kary->sim ?></td>
+                                                                <td class="align-middle text-center"><?= $data_sim_kary->tgl_exp_sim ?></td>
+                                                                <td style="text-align:center;" style="width: 10%;">
+                                                                    <button id="btnEditSIM" class="btn btn-success btn-sm text-white" title="Edit detail sim"><i class="fas fa-edit"></i></button>
+                                                                    <a href="<?= base_url('karyawan/berkassim/') . $data_mine_permit->auth_izin_tambang ?>" target="_blank" class="btn btn-primary btn-sm text-white" title="Tampilkan SIM"><i class="fas fa-file-alt"></i></a>
+                                                                    <button id="btnReuploadSIM" class="btn btn-warning btn-sm text-white" title="Upload ulang SIM"><i class="fas fa-file-upload"></i></button>
+                                                                    <button id="btnDeleteSIM" class="btn btn-danger btn-sm text-white" title="Hapus data SIM"><i class="fas fa-trash"></i></button>
+                                                                </td>
+                                                            </tr>
+                                                        <tbody>
+                                                    </table>
+                                                </div>
+
+                                                <div class="col-lg-12 col-md-12 col-sm-12 text-right">
+                                                    <?php if (isset($data_izin->id_jenis_izin_tambang) == 2) { ?>
                                                         <a id="editTambahUnit" data-scroll href="#clSertifikasi" class="btn btn-success font-weight-bold" style="margin-left:30px;">Tambah Data Unit</a>
                                                     <?php } ?>
-                                                </div> -->
+                                                    <a id="editSimpanIzin" data-scroll href="#clSertifikasi" class="btn btn-primary font-weight-bold" style="margin-left:30px;">Simpan Data</a>
+                                                </div>
                                             <?php } else { ?>
                                                 <div class="card-body row justify-content-center">
                                                     <h5 style='text-align:center;'>Data Izin Tambang Tidak Ditemukan.</h5>
-                                                </div>
-                                            <?php } ?>
-
-                                            <?php if (!empty($data_unit)) { ?>
-                                                <div id="tabelListUnit" class="col-lg-12 col-md-12 col-sm-12 mt-3">
-                                                    <div id="groupTbmUnitDetail" class="form-group">
-                                                        <h5 class="mb-3">Unit yang diizinkan</h5>
-                                                        <table id="tbmUnitDetail" class="table table-striped table-bordered table-hover text-black text-nowrap" style="width:100%;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th style="text-align:center; width: 1%;">No.</th>
-                                                                    <th style="text-align:center; width: 80%;">Unit</th>
-                                                                    <th style="text-align:center; width: 19%;">Akses</th>
-                                                                    <th style="text-align:center; width: 19%;">Aksi</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <?php
-                                                                $no = 1;
-                                                                if (!empty($data_unit)) {
-                                                                    foreach ($data_unit as $list) {
-                                                                        echo '<tr>';
-                                                                        echo '<td class="align-middle" style="text-align:center;width: 1%;">' . $no++ . '</td>';
-                                                                        echo '<td class="align-middle" style="width: 80%;">' . $list->unit . '</td>';
-                                                                        echo '<td class="align-middle text-center" style="width: 19%;">' . $list->tipe_akses_unit . '</td>';
-                                                                        echo "<td>";
-                                                                        echo "<button id='' type='button' class='btn btn-success btn-sm editUnit' title='Edit'><i class='fas fa-edit'></i></button> ";
-                                                                        echo "<button id='' type='button' class='btn btn-danger btn-sm deleteUnit' title='Hapus'><i class='fas fa-trash-alt'></i></button> ";
-                                                                        echo "</td>";
-                                                                        echo '</tr>';
-                                                                    }
-                                                                } else {
-                                                                    echo '<tr>';
-                                                                    echo '<td colspan=3 class=" align-middle text-center">Tidak ada data</td>';
-                                                                    echo '</tr>';
-                                                                }
-                                                                ?>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
                                                 </div>
                                             <?php } ?>
                                             </div>

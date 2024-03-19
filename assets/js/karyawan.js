@@ -1200,9 +1200,6 @@ $(document).ready(function () {
     formData.append("tipeakses", tipeakses);
     formData.append("filesimnm", filesimnm);
     formData.append("filesimsv", filesimsv);
-    formData.append("filesmpnm", filesmpnm);
-    formData.append("filesmpsv", filesmpsv);
-    formData.append("token", token);
 
     $.ajax({
       type: "POST",
@@ -1212,7 +1209,6 @@ $(document).ready(function () {
       processData: false,
       contentType: false,
       success: function (data) {
-        // console.log(data);
         var data = JSON.parse(data);
         if (data.statusCode == 200) {
           $("#jenisUnitSimpernw").val("").trigger("change");
@@ -1246,6 +1242,7 @@ $(document).ready(function () {
           );
           swal("Berhasil", data.pesan, "success");
         } else if (data.statusCode == 201) {
+          console.log("HERE");
           swal("Error", data.message, "error");
         } else {
           $(".errorjenisUnitSimpernw").html(data.jenisunit);
@@ -1260,7 +1257,7 @@ $(document).ready(function () {
         $(".errormdlsimpernw").addClass("alert-danger");
         if (thrownError != "") {
           $(".errormdlsimpernw").html(
-            "Terjadi kesalahan saat menyimpan data unit, silahkan hubungi administrator"
+            "Terjadi kesalahan saat menyimpan unit hubungi administrator"
           );
         }
       },

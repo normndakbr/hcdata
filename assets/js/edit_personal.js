@@ -703,7 +703,7 @@ $(document).ready(function () {
                         $.LoadingOverlay("show");
                         var data = JSON.parse(res);
                         if (data.statusCode == 204) {
-                            swal("Berhasil", data.pesan, data.status);
+                            swal("Sukses", data.pesan, "success");
                             $(".noktpshow").val(new_no_ktp);
                             $(".namalengkapshow").text(new_nama_lengkap);
                             $("#currentNoKTP").val(new_no_ktp);

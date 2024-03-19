@@ -9,6 +9,7 @@
      <meta name="description" content="" />
      <meta name="keywords" content="" />
      <meta name="author" content="Phoenixcoded" />
+     <meta name="robots" content="noindex, nofollow">
      <!-- Favicon icon -->
 
      <link rel="icon" href="<?=base_url();?>assets/assets/images/favicon.ico" type="image/x-icon" />

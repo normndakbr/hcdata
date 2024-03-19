@@ -129,9 +129,6 @@ class NonaktifKary extends My_Controller
                'required' => 'Keterangan wajib diisi',
                'max_length' => 'Keterangan maksimal 1000 karakter'
           ]);
-          $this->form_validation->set_rules("file_nonaktif", "file_nonaktif", "trim|required", [
-               'required' => 'Berkas karyawan wajib diupload'
-          ]);
 
           if ($this->form_validation->run() == false) {
                $error = [
@@ -141,7 +138,6 @@ class NonaktifKary extends My_Controller
                     'tglnonaktif' => form_error("tglnonaktif"),
                     'alasan' => form_error("auth_alasan"),
                     'ket' => form_error("ket_alasan"),
-                    'fileup' => form_error("file_nonaktif"),
                ];
 
                echo json_encode($error);
@@ -163,10 +159,23 @@ class NonaktifKary extends My_Controller
           $tglnonaktif = htmlspecialchars($this->input->post("tglnonaktif", true));
           $auth_alasan = htmlspecialchars($this->input->post("auth_alasan", true));
           $ket_alasan = htmlspecialchars($this->input->post("ket_alasan", true));
+          $file_nonaktif = htmlspecialchars($this->input->post("file_nonaktif", true));
           $id_m_perusahaan = $this->str->get_id_per($auth_m_per);
           $id_personal = $this->kry->get_id_personal_by_kary($auth_kary);
           $id_kary = $this->kry->get_id_karyawan($auth_kary);
           $id_alasan = $this->nakary->get_id_alasan($auth_alasan);
+          $alasan = $this->nakary->get_alasan($auth_alasan);
+          if (!empty($alasan)) {
+               foreach ($alasan as $lstalasan) {
+                    $stat_upload = $lstalasan->stat_upload_berkas;
+                    if ($stat_upload = "") {
+                         $stat_upload = "T";
+                    }
+               }
+          } else {
+               $stat_upload = "T";
+          }
+
           $foldername = md5($id_personal);
           $now = date('YmdHis');
           $nama_file = $now . "-NONAKTIF.pdf";
@@ -188,63 +197,83 @@ class NonaktifKary extends My_Controller
                return;
           }
 
-          if (is_dir('./berkas/karyawan/' . $foldername) == false) {
-               mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
-          }
+          if ($stat_upload == "T") {
+               if (is_dir('./berkas/karyawan/' . $foldername) == false) {
+                    mkdir('./berkas/karyawan/' . $foldername, 0775, TRUE);
+               }
 
-          if (is_dir('./berkas/karyawan/' . $foldername)) {
-               $config['upload_path'] = './berkas/karyawan/' . $foldername;
-               $config['allowed_types'] = 'pdf';
-               $config['max_size'] = 200;
-               $config['file_name'] = $nama_file;
+               if (is_dir('./berkas/karyawan/' . $foldername)) {
+                    $config['upload_path'] = './berkas/karyawan/' . $foldername;
+                    $config['allowed_types'] = 'pdf';
+                    $config['max_size'] = 200;
+                    $config['file_name'] = $nama_file;
 
-               $this->load->library('upload', $config);
-               if (!$this->upload->do_upload('fl_nonaktif')) {
-                    $err = $this->upload->display_errors();
+                    $this->load->library('upload', $config);
+                    if (!$this->upload->do_upload('fl_nonaktif')) {
+                         $err = $this->upload->display_errors();
 
-                    if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
-                         $error = "<p>Ukuran file maksimal 100 kb.</p>";
-                    } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
-                         $error = "<p>Format file nya dalam bentuk pdf</p>";
+                         if ($err == "<p>The file you are attempting to upload is larger than the permitted size.</p>") {
+                              $error = "<p>Ukuran file maksimal 200 kb.</p>";
+                         } else if ($err == "<p>The filetype you are attempting to upload is not allowed.</p>") {
+                              $error = "<p>Format file nya dalam bentuk pdf</p>";
+                         } else {
+                              $error = $err;
+                         }
+
+                         $err_nonaktif = [
+                              'statusCode' => 202,
+                              'prs' => '',
+                              'kary' => '',
+                              'tglnonaktif' => '',
+                              'alasan' => '',
+                              'ket' => '',
+                              'fileup' => $error,
+                         ];
+
+                         echo json_encode($err_nonaktif);
+                         die;
                     } else {
-                         $error = $err;
+                         $dt_nonaktif = array(
+                              'id_kary' => $id_kary,
+                              'tgl_nonaktif' => $tglnonaktif,
+                              'id_alasan_nonaktif' => $id_alasan,
+                              'ket_nonaktif' => $ket_alasan,
+                              'url_berkas_nonaktif' => $nama_file,
+                              'tgl_buat' => date('Y-m-d H:i:s'),
+                              'tgl_edit' => date('Y-m-d H:i:s'),
+                              'id_user' => $this->session->userdata('id_user_hcdata')
+                         );
+
+                         $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
+                         if ($ins_nonaktif) {
+                              echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
+                              return;
+                         } else {
+                              echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
+                         }
                     }
-
-                    $err_nonaktif = [
-                         'statusCode' => 202,
-                         'prs' => '',
-                         'kary' => '',
-                         'tglnonaktif' => '',
-                         'alasan' => '',
-                         'ket' => '',
-                         'fileup' => $error,
-                    ];
-
-                    echo json_encode($err_nonaktif);
-                    die;
                } else {
-
-                    $dt_nonaktif = array(
-                         'id_kary' => $id_kary,
-                         'tgl_nonaktif' => $tglnonaktif,
-                         'id_alasan_nonaktif' => $id_alasan,
-                         'ket_nonaktif' => $ket_alasan,
-                         'url_berkas_nonaktif' => $nama_file,
-                         'tgl_buat' => date('Y-m-d H:i:s'),
-                         'tgl_edit' => date('Y-m-d H:i:s'),
-                         'id_user' => $this->session->userdata('id_user_hcdata')
-                    );
-
-                    $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
-                    if ($ins_nonaktif) {
-                         echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
-                         return;
-                    } else {
-                         echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
-                    }
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Folder penyimpanan tidak ditemukan"));
                }
           } else {
-               echo json_encode(array("statusCode" => 201, "pesan" => "Folder penyimpanan tidak ditemukan"));
+               $dt_nonaktif = array(
+                    'id_kary' => $id_kary,
+                    'tgl_nonaktif' => $tglnonaktif,
+                    'id_alasan_nonaktif' => $id_alasan,
+                    'ket_nonaktif' => $ket_alasan,
+                    'url_berkas_nonaktif' => $nama_file,
+                    'tgl_buat' => date('Y-m-d H:i:s'),
+                    'tgl_edit' => date('Y-m-d H:i:s'),
+                    'id_user' => $this->session->userdata('id_user_hcdata')
+               );
+
+               $ins_nonaktif = $this->nakary->input_NonaktifKary($dt_nonaktif);
+               if ($ins_nonaktif) {
+                    echo json_encode(array("statusCode" => 200, "pesan" => "Data nonaktif karyawan berhasil disimpan"));
+                    return;
+               } else {
+                    echo json_encode(array("statusCode" => 201, "pesan" => "Data nonaktif karyawan gagal disimpan"));
+               }
           }
      }
 

@@ -71,8 +71,8 @@
 
                                    <input type="hidden" id="token" name="token" value="<?= $this->session->csrf_token ?>">
                                    <div class="col-lg-6 col-md-12 col-sm-12 mt-2">
-                                        <label for="perDepartData">Pilih Perusahaan :</label><br>
-                                        <select id='perDepartData' name='perDepartData' class=" form-control form-control-user">
+                                        <label for="perLanggarData">Pilih Perusahaan :</label><br>
+                                        <select id='perLanggarData' name='perLanggarData' class=" form-control form-control-user">
                                              <option value="">-- PILIH PERUSAHAAN --</option>
                                              <?= $permst . $perstr; ?>
                                         </select>
